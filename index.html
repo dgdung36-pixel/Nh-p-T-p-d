@@ -1,759 +1,408 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<meta name="theme-color" content="#070810">
-<title>CYBER RE-PACKER V10 PRO - ULTIMATE PROTOBUF ENGINE | TRONG DUNG</title>
-<style>
-:root {
-  --primary: #ff0055;
-  --primary-glow: rgba(255, 0, 85, 0.65);
-  --accent: #00f3ff;
-  --accent-glow: rgba(0, 243, 255, 0.65);
-  --gold: #ffd700;
-  --gold-glow: rgba(255, 215, 0, 0.65);
-  --success: #00ff9d;
-  --bg-dark: #040509;
-  --card-bg: rgba(9, 12, 22, 0.94);
-  --border-color: rgba(0, 243, 255, 0.3);
-  --text-main: #f0f3f8;
-  --font-mono: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
-}
-
-*{ box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
-
-body {
-  margin: 0; min-height: 100vh; background: var(--bg-dark);
-  color: var(--text-main); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  display: flex; justify-content: center; padding: 20px 12px; position: relative; overflow-x: hidden;
-}
-
-#bgCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
-body::before {
-  content: ""; position: fixed; inset: 0;
-  background-image: radial-gradient(rgba(0, 243, 255, 0.08) 1px, transparent 0);
-  background-size: 24px 24px; pointer-events: none; z-index: 1; opacity: 0.5;
-}
-
-.app-container {
-  width: 100%; max-width: 1280px; position: relative; z-index: 2;
-  display: grid; grid-template-columns: 1fr 340px; gap: 20px;
-}
-
-@media (max-width: 1024px) {
-  .app-container { grid-template-columns: 1fr; }
-}
-
-header { text-align: center; margin-bottom: 20px; grid-column: 1 / -1; }
-
-.owner-badge {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(255, 0, 85, 0.2) 100%);
-  border: 1px solid var(--gold); border-radius: 30px; padding: 6px 20px; margin-bottom: 10px;
-  box-shadow: 0 0 20px var(--gold-glow); animation: pulseGlow 3s infinite alternate;
-}
-.owner-badge .crown { font-size: 16px; filter: drop-shadow(0 0 5px var(--gold)); }
-.owner-badge .owner-name {
-  font-family: var(--font-mono); font-size: 12px; font-weight: 900; letter-spacing: 2px;
-  background: linear-gradient(90deg, #fff 0%, var(--gold) 50%, var(--accent) 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase;
-}
-
-@keyframes pulseGlow {
-  0% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.4); border-color: rgba(255, 215, 0, 0.6); }
-  100% { box-shadow: 0 0 25px rgba(255, 215, 0, 0.9); border-color: rgba(0, 243, 255, 0.9); }
-}
-
-.logo-title {
-  font-size: 34px; font-weight: 900; letter-spacing: 3px; margin: 0;
-  background: linear-gradient(135deg, #fff 0%, var(--primary) 40%, var(--accent) 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 0 18px var(--primary-glow));
-}
-
-.sub-tag {
-  display: inline-block; margin-top: 6px; padding: 4px 16px;
-  color: var(--accent); font-size: 10px; font-weight: 800; letter-spacing: 2px;
-  background: rgba(0, 243, 255, 0.08); border: 1px solid var(--accent); border-radius: 20px;
-  box-shadow: 0 0 15px var(--accent-glow); text-transform: uppercase;
-}
-
-.hud-panel {
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 14px;
-  padding: 10px 16px; background: rgba(0, 0, 0, 0.8); border: 1px solid var(--border-color);
-  border-radius: 14px; font-size: 10px; font-family: var(--font-mono); color: #888; text-align: center;
-}
-.hud-panel span.val { color: #fff; font-weight: bold; text-shadow: 0 0 8px var(--accent); display: block; margin-top: 2px; }
-
-.card {
-  background: var(--card-bg); backdrop-filter: blur(20px);
-  border: 1px solid var(--border-color); border-radius: 20px; padding: 20px; margin-bottom: 20px;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.85); transition: all 0.3s ease;
-}
-
-.card-header {
-  font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px;
-  color: var(--accent); margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between;
-}
-.card-header .title-text { display: flex; align-items: center; gap: 8px; }
-.card-header .title-text::before {
-  content: ""; display: inline-block; width: 4px; height: 14px; background: var(--primary); border-radius: 2px;
-}
-
-.drop-zone {
-  border: 2px dashed rgba(0, 243, 255, 0.4); border-radius: 16px; padding: 28px 16px;
-  text-align: center; cursor: pointer; transition: all 0.3s ease; background: rgba(4, 6, 14, 0.6);
-}
-.drop-zone:hover, .drop-zone.over {
-  border-color: var(--primary); background: rgba(255, 0, 85, 0.12); transform: translateY(-2px);
-}
-.drop-zone .icon { font-size: 40px; margin-bottom: 6px; filter: drop-shadow(0 0 12px var(--accent)); }
-
-.files-list { margin-top: 14px; display: grid; gap: 8px; max-height: 280px; overflow-y: auto; padding-right: 4px; }
-.files-list::-webkit-scrollbar { width: 5px; }
-.files-list::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
-
-.file-row {
-  display: flex; align-items: center; gap: 10px; background: rgba(7, 9, 18, 0.95);
-  border-radius: 12px; padding: 10px 12px; border: 1px solid rgba(255, 255, 255, 0.08);
-}
-.file-row.is-base { border-color: var(--gold); background: rgba(255, 215, 0, 0.05); }
-
-.file-row .num { font-size: 11px; font-weight: 900; color: var(--primary); font-family: var(--font-mono); width: 20px; }
-.file-row .info { flex: 1; overflow: hidden; }
-.file-row .name { font-size: 12px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #fff; }
-.file-row .details { font-size: 10px; color: #888; margin-top: 2px; font-family: var(--font-mono); display: flex; gap: 8px; align-items: center; }
-
-.tag-badge { display: inline-block; font-size: 8px; font-weight: 800; padding: 2px 6px; border-radius: 4px; }
-.tag-pb { background: rgba(0, 243, 255, 0.2); color: var(--accent); border: 1px solid var(--accent); }
-.tag-json { background: rgba(0, 255, 157, 0.2); color: var(--success); border: 1px solid var(--success); }
-.tag-bin { background: rgba(255, 0, 85, 0.2); color: var(--primary); border: 1px solid var(--primary); }
-.tag-base { background: rgba(255, 215, 0, 0.2); color: var(--gold); border: 1px solid var(--gold); }
-
-.file-btns { display: flex; gap: 4px; }
-.btn-mini {
-  background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); color: #ccc;
-  border-radius: 6px; padding: 5px 8px; font-size: 11px; cursor: pointer; transition: all 0.2s ease;
-}
-.btn-mini:hover { background: var(--accent); color: #000; font-weight: bold; }
-
-.form-grid { display: grid; gap: 12px; margin-top: 10px; }
-.form-group label { display: block; font-size: 10px; font-weight: 800; color: var(--accent); margin-bottom: 5px; text-transform: uppercase; }
-.form-group select, .form-group input {
-  width: 100%; padding: 11px; background: rgba(0, 0, 0, 0.75); color: #fff;
-  border: 1px solid var(--border-color); border-radius: 10px; font-size: 12px; font-weight: 600;
-}
-.form-group select:focus, .form-group input:focus { border-color: var(--primary); box-shadow: 0 0 10px var(--primary-glow); }
-
-button.btn-main {
-  width: 100%; border: 0; border-radius: 14px; padding: 16px; font-size: 14px; font-weight: 900;
-  cursor: pointer; transition: all 0.3s ease; letter-spacing: 1px; text-transform: uppercase; margin-top: 15px;
-}
-.btn-primary { background: linear-gradient(135deg, var(--primary) 0%, #b8003a 100%); color: #fff; box-shadow: 0 6px 20px var(--primary-glow); }
-.btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 25px var(--primary-glow); }
-.btn-primary:disabled { background: #161218; color: #444; box-shadow: none; cursor: not-allowed; border: 1px solid #222; }
-
-.status-box { margin-top: 12px; font-size: 12px; text-align: center; min-height: 20px; font-weight: 700; }
-.status-box.ok { color: var(--success); text-shadow: 0 0 10px rgba(0, 255, 157, 0.5); }
-.status-box.err { color: #ff3366; text-shadow: 0 0 10px rgba(255, 51, 102, 0.5); }
-
-/* SIDEBAR AI AGENT */
-.ai-agent-card {
-  background: rgba(8, 11, 20, 0.96); border: 1px solid var(--accent);
-  border-radius: 20px; padding: 16px; display: flex; flex-direction: column;
-  height: calc(100% - 20px); box-shadow: 0 0 25px rgba(0, 243, 255, 0.15);
-}
-
-.ai-header {
-  display: flex; align-items: center; justify-content: space-between;
-  padding-bottom: 10px; border-bottom: 1px solid rgba(0, 243, 255, 0.2);
-}
-.ai-title { font-size: 12px; font-weight: 900; color: var(--accent); display: flex; align-items: center; gap: 8px; }
-.ai-status-dot { width: 8px; height: 8px; background: var(--success); border-radius: 50%; box-shadow: 0 0 8px var(--success); }
-
-.ai-chat-box {
-  flex: 1; min-height: 380px; max-height: 520px; overflow-y: auto; margin: 12px 0;
-  display: flex; flex-direction: column; gap: 10px; padding-right: 4px;
-}
-.ai-chat-box::-webkit-scrollbar { width: 4px; }
-.ai-chat-box::-webkit-scrollbar-thumb { background: rgba(0, 243, 255, 0.4); border-radius: 4px; }
-
-.chat-msg {
-  font-size: 11px; padding: 10px 12px; border-radius: 10px; line-height: 1.4;
-  word-break: break-word; font-family: var(--font-mono);
-}
-.chat-msg.ai { background: rgba(0, 243, 255, 0.08); border: 1px solid rgba(0, 243, 255, 0.2); color: #d0f8ff; align-self: flex-start; }
-.chat-msg.user { background: rgba(255, 0, 85, 0.15); border: 1px solid rgba(255, 0, 85, 0.3); color: #ffd0e0; align-self: flex-end; }
-.chat-msg.system { background: rgba(255, 215, 0, 0.1); border: 1px solid var(--gold); color: var(--gold); }
-
-.ai-input-area { display: flex; gap: 6px; }
-.ai-input-area input {
-  flex: 1; padding: 10px; background: rgba(0, 0, 0, 0.8); border: 1px solid var(--border-color);
-  border-radius: 8px; color: #fff; font-size: 11px;
-}
-.ai-input-area button {
-  padding: 10px 14px; background: var(--accent); border: 0; border-radius: 8px;
-  color: #000; font-weight: bold; cursor: pointer; font-size: 11px;
-}
-
-.ai-quick-actions { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 8px; }
-.chip-btn {
-  font-size: 9px; font-weight: 800; padding: 4px 8px; background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; color: #aaa; cursor: pointer;
-}
-.chip-btn:hover { border-color: var(--accent); color: var(--accent); }
-
-/* MODAL HEX INSPECTOR */
-.modal-overlay {
-  display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.92);
-  backdrop-filter: blur(16px); z-index: 999; padding: 20px; align-items: center; justify-content: center;
-}
-.modal-window {
-  background: #080a12; border: 1px solid var(--accent); border-radius: 20px;
-  width: 100%; max-width: 720px; max-height: 85vh; display: flex; flex-direction: column; overflow: hidden;
-  box-shadow: 0 0 40px rgba(0, 243, 255, 0.3);
-}
-.modal-head { padding: 16px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
-.modal-body { padding: 16px; overflow-y: auto; font-family: var(--font-mono); font-size: 11px; color: var(--accent); white-space: pre-wrap; word-break: break-all; }
-.modal-close { background: none; border: 0; color: #fff; font-size: 24px; cursor: pointer; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hex & Byte Master Tool - Version 11</title>
+    <!-- Font Awesome & Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- pako (Zlib/Gzip/Deflate) & CryptoJS (AES/XOR) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <style>
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+        .font-mono-code { font-family: 'Courier New', Courier, monospace; }
+        .hex-byte:hover { background-color: #3b82f6; color: white; cursor: pointer; }
+        .hex-byte.active { background-color: #2563eb; color: white; font-weight: bold; }
+    </style>
 </head>
-<body>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans">
 
-<canvas id="bgCanvas"></canvas>
-
-<div class="app-container">
-  <header>
-    <div class="owner-badge">
-      <span class="crown">👑</span>
-      <span class="owner-name">OWNER: TRONG DUNG</span>
-    </div>
-    <h1 class="logo-title">CYBER RE-PACKER V10 PRO</h1>
-    <div><span class="sub-tag">ULTIMATE PROTOBUF & SMART CONFLICT RESOLVER</span></div>
-    
-    <div class="hud-panel">
-      <div>PARSER ENGINE<span class="val" id="parserStatus">V10 READY</span></div>
-      <div>PROTO DEDUPLICATE<span class="val" style="color:var(--success)">ENABLED</span></div>
-      <div>AI COPILOT<span class="val" style="color:var(--accent)">ACTIVE</span></div>
-      <div>SYSTEM TIME<span class="val" id="clock">--:--:--</span></div>
-    </div>
-  </header>
-
-  <!-- MAIN ENGINE (LEFT) -->
-  <div class="main-engine">
-    <div class="card">
-      <div class="card-header">
-        <div class="title-text">Danh sách File Mod Game (.Bytes)</div>
-        <div style="font-size:10px; color:#888;" id="totalSizeTag">Tổng: 0 KB</div>
-      </div>
-      <div id="dropZone" class="drop-zone">
-        <div class="icon">🔮</div>
-        <b style="font-size:15px; color:#fff;">KÉO THẢ HOẶC BẤM ĐỂ CHỌN FILE .BYTES MOD</b>
-        <div style="font-size:11px; color:#888; margin-top:5px;">Hỗ trợ Protobuf V2/V3, FlatBuffers, Smart Field Overlay, Skin & Biến Về</div>
-        <input id="picker" type="file" accept=".bytes" multiple style="display:none;">
-      </div>
-      <div id="filesList" class="files-list"></div>
-    </div>
-
-    <div class="card">
-      <div class="card-header">
-        <div class="title-text">Chế độ Giải Mã V10 & Gộp Smart Field</div>
-      </div>
-      <div class="form-grid">
-        <div class="form-group">
-          <label>🛠️ Thuật toán xử lý gộp V10 Pro (Sửa triệt để lỗi ghi đè biến về):</label>
-          <select id="mergeAlgorithm">
-            <option value="protobuf_smart_overlay">1. Protobuf Smart Tag Overlay & Deduplicate (Khuyên Dùng Cho Biến Về & Skin)</option>
-            <option value="protobuf_deep_merge">2. Protobuf Stream Append (Gộp Nối Tiếp Từng Tag Field V9)</option>
-            <option value="unity_container_rebuilder">3. Unity TextAsset Container Header (Bọc Header Unity Chuẩn)</option>
-            <option value="smart_json_merger">4. Smart JSON Key Merger (Gộp Config JSON/Text)</option>
-            <option value="lua_scope_wrapper">5. Lua Safe Scope Wrapper (Chống Trùng Biến Lua Mod)</option>
-          </select>
+    <!-- Top Navigation Bar -->
+    <header class="bg-slate-900 border-b border-slate-800 px-6 py-3 flex items-center justify-between shadow-lg sticky top-0 z-50">
+        <div class="flex items-center space-x-3">
+            <div class="bg-indigo-600 p-2 rounded-lg">
+                <i class="fa-solid fa-microchip text-xl text-white"></i>
+            </div>
+            <div>
+                <h1 class="text-lg font-bold bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">HEX & BYTE MASTER</h1>
+                <p class="text-xs text-slate-400">Phiên bản V11 - Ultimate Editor & Modding Tool</p>
+            </div>
         </div>
-
-        <div class="form-group">
-          <label>✏️ Tên File Xuất (.bytes):</label>
-          <input type="text" id="customFileName" placeholder="Nhập tên file đầu ra...">
+        <div class="flex items-center space-x-3">
+            <input type="file" id="fileInput" class="hidden" onchange="handleFileSelect(event)">
+            <button onclick="document.getElementById('fileInput').click()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2">
+                <i class="fa-solid fa-folder-open"></i> Mở File
+            </button>
+            <button onclick="exportFile()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2">
+                <i class="fa-solid fa-download"></i> Xuất File (Fix Reset Game)
+            </button>
         </div>
-      </div>
+    </header>
 
-      <button class="btn-main btn-primary" id="mergeBtn" disabled>XỬ LÝ DEEP BYTE & RE-PACK V10</button>
-      <div id="statusBox" class="status-box"></div>
+    <!-- Main App Container -->
+    <div class="flex flex-1 overflow-hidden">
+        <!-- Sidebar Navigation -->
+        <aside class="w-64 bg-slate-900/50 border-r border-slate-800 p-4 flex flex-col justify-between hidden md:flex">
+            <div class="space-y-1">
+                <p class="text-xs font-semibold text-slate-500 uppercase px-3 mb-2">Chức năng chính</p>
+                <button onclick="switchTab('hexEditor')" id="btn-hexEditor" class="tab-btn w-full text-left px-3 py-2.5 rounded-lg text-sm flex items-center gap-3 bg-indigo-600/20 text-indigo-400 font-medium">
+                    <i class="fa-solid fa-code w-5"></i> Hex Editor & Inspector
+                </button>
+                <button onclick="switchTab('decompressor')" id="btn-decompressor" class="tab-btn w-full text-left px-3 py-2.5 rounded-lg text-sm flex items-center gap-3 text-slate-400 hover:bg-slate-800 transition">
+                    <i class="fa-solid fa-file-zipper w-5"></i> Giải nén Bytes
+                </button>
+                <button onclick="switchTab('decryptor')" id="btn-decryptor" class="tab-btn w-full text-left px-3 py-2.5 rounded-lg text-sm flex items-center gap-3 text-slate-400 hover:bg-slate-800 transition">
+                    <i class="fa-solid fa-key w-5"></i> Giải mã hóa File
+                </button>
+                <button onclick="switchTab('merger')" id="btn-merger" class="tab-btn w-full text-left px-3 py-2.5 rounded-lg text-sm flex items-center gap-3 text-slate-400 hover:bg-slate-800 transition">
+                    <i class="fa-solid fa-[#10b981] fa-object-group w-5"></i> Gộp File Game
+                </button>
+            </div>
+            
+            <div class="bg-slate-800/40 border border-slate-700/50 rounded-xl p-3 text-xs text-slate-400 space-y-1">
+                <p class="font-semibold text-slate-300">Trạng thái File:</p>
+                <p id="infoFileName" class="truncate">Tên file: Chưa chọn</p>
+                <p id="infoFileSize">Kích thước: 0 Bytes</p>
+            </div>
+        </aside>
+
+        <!-- Dynamic Content Area -->
+        <main class="flex-1 bg-slate-950 p-6 overflow-y-auto">
+            
+            <!-- TAB 1: HEX EDITOR & INSPECTOR -->
+            <section id="tab-hexEditor" class="tab-content space-y-4">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- View Hex Grid -->
+                    <div class="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-xl p-4 flex flex-col">
+                        <div class="flex justify-between items-center mb-3">
+                            <h2 class="text-md font-semibold text-slate-200 flex items-center gap-2">
+                                <i class="fa-solid fa-table-cells text-indigo-400"></i> Xem Dữ Liệu Hex
+                            </h2>
+                            <span class="text-xs text-slate-500 font-mono-code">Offset: 16 Bytes / Dòng</span>
+                        </div>
+                        <div id="hexViewContainer" class="bg-slate-950 p-4 rounded-lg border border-slate-800 font-mono-code text-xs overflow-x-auto h-96 space-y-1 select-none">
+                            <p class="text-slate-600 italic">Vui lòng mở file để hiển thị dữ liệu byte...</p>
+                        </div>
+                    </div>
+
+                    <!-- Live Hex Inspector & Modal Repair -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 flex flex-col justify-between">
+                        <div>
+                            <h2 class="text-md font-semibold text-slate-200 mb-3 flex items-center gap-2">
+                                <i class="fa-solid fa-[#3b82f6] fa-magnifying-glass text-blue-400"></i> Hex Inspector
+                            </h2>
+                            <div class="space-y-3 bg-slate-950 p-3 rounded-lg border border-slate-800 text-xs font-mono-code">
+                                <div class="flex justify-between border-b border-slate-800 pb-2">
+                                    <span class="text-slate-500">Byte offset:</span>
+                                    <span id="inspectOffset" class="text-indigo-400 font-bold">0x00000000</span>
+                                </div>
+                                <div class="flex justify-between border-b border-slate-800 pb-2">
+                                    <span class="text-slate-500">Hex Value:</span>
+                                    <span id="inspectHex" class="text-emerald-400 font-bold">0x00</span>
+                                </div>
+                                <div class="flex justify-between border-b border-slate-800 pb-2">
+                                    <span class="text-slate-500">Dec (Unsigned Int8):</span>
+                                    <span id="inspectDec" class="text-cyan-400">0</span>
+                                </div>
+                                <div class="flex justify-between border-b border-slate-800 pb-2">
+                                    <span class="text-slate-500">Binary:</span>
+                                    <span id="inspectBin" class="text-slate-300">00000000</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-slate-500">Ký tự ASCII:</span>
+                                    <span id="inspectAscii" class="text-amber-400">.</span>
+                                </div>
+                            </div>
+
+                            <!-- Form sửa Byte trực tiếp -->
+                            <div class="mt-4 p-3 bg-slate-800/30 border border-slate-700/50 rounded-lg space-y-3">
+                                <h3 class="text-xs font-bold text-slate-300">Chỉnh sửa Byte này trực tiếp:</h3>
+                                <div class="flex gap-2">
+                                    <input type="text" id="editByteHex" placeholder="Hex (vd: FF)" maxlength="2" class="w-1/2 bg-slate-900 border border-slate-700 rounded p-2 text-xs font-mono-code uppercase focus:border-indigo-500 outline-none">
+                                    <input type="number" id="editByteDec" min="0" max="255" placeholder="Dec (0-255)" class="w-1/2 bg-slate-900 border border-slate-700 rounded p-2 text-xs font-mono-code focus:border-indigo-500 outline-none">
+                                </div>
+                                <button onclick="saveCurrentByteEdit()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white text-xs py-2 rounded font-medium transition">
+                                    Lưu Thay Đổi Byte
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 2: DECOMPRESSOR -->
+            <section id="tab-decompressor" class="tab-content hidden space-y-4">
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4">
+                    <h2 class="text-md font-semibold text-slate-200 flex items-center gap-2">
+                        <i class="fa-solid fa-file-zipper text-indigo-400"></i> Giải nén Tệp Bytes (Zlib / Gzip / Deflate)
+                    </h2>
+                    <p class="text-xs text-slate-400">Hỗ trợ tự động nhận dạng và giải nén khối dữ liệu nén trong game file.</p>
+                    <div class="flex gap-3">
+                        <button onclick="decompressBytes('zlib')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 px-4 py-2 rounded-lg text-xs font-medium transition">
+                            Giải Nén Zlib
+                        </button>
+                        <button onclick="decompressBytes('gzip')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 px-4 py-2 rounded-lg text-xs font-medium transition">
+                            Giải Nén Gzip
+                        </button>
+                    </div>
+                    <div>
+                        <label class="text-xs text-slate-400 block mb-1">Kết quả giải nén (Preview Text/ASCII):</label>
+                        <textarea id="decompressResult" readonly class="w-full h-48 bg-slate-950 border border-slate-800 rounded-lg p-3 text-xs font-mono-code text-emerald-400 outline-none" placeholder="Dữ liệu sau khi giải nén sẽ xuất hiện ở đây..."></textarea>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 3: DECRYPTOR -->
+            <section id="tab-decryptor" class="tab-content hidden space-y-4">
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4">
+                    <h2 class="text-md font-semibold text-slate-200 flex items-center gap-2">
+                        <i class="fa-solid fa-key text-indigo-400"></i> Giải Mã Hóa Dữ Liệu
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-xs text-slate-400 block mb-1">Chìa khóa (Key - Hex/Text):</label>
+                            <input type="text" id="decryptKey" placeholder="Nhập Key (vd: 0xAF hoặc SecKey123)" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-xs font-mono-code outline-none focus:border-indigo-500">
+                        </div>
+                        <div>
+                            <label class="text-xs text-slate-400 block mb-1">Thuật toán:</label>
+                            <select id="decryptAlgo" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-xs outline-none focus:border-indigo-500">
+                                <option value="xor">XOR Operation Simple</option>
+                                <option value="aes">AES-256 (CBC/ECB)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button onclick="decryptData()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2 rounded-lg text-xs font-medium transition">
+                        Bắt Đầu Giải Mã
+                    </button>
+                </div>
+            </section>
+
+            <!-- TAB 4: MERGER & GAME FIX -->
+            <section id="tab-merger" class="tab-content hidden space-y-4">
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+                    <h2 class="text-md font-semibold text-slate-200 flex items-center gap-2">
+                        <i class="fa-solid fa-bug-slash text-emerald-400"></i> Sửa Lỗi Gộp File Game (Anti-Reset Patch)
+                    </h2>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Lỗi file bị reset khi dán vào Game thường xuất hiện do <b class="text-slate-200">Kích thước Byte không chia hết cho 16/32</b> hoặc mất <b class="text-slate-200">Byte Padding Signature</b> gốc. Công cụ sẽ tự cân bằng lại byte aligned chuẩn cho file.
+                    </p>
+                    <button onclick="fixAndAlignBytes()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2 rounded-lg text-xs font-medium transition">
+                        Tự Động Căn Chỉnh & Fix Null Padding (Align 16-bit)
+                    </button>
+                </div>
+            </section>
+
+        </main>
     </div>
-  </div>
 
-  <!-- MINI AI COPILOT (RIGHT SIDEBAR) -->
-  <div class="sidebar-ai">
-    <div class="ai-agent-card">
-      <div class="ai-header">
-        <div class="ai-title">
-          <span class="ai-status-dot"></span>
-          CYBER AI COPILOT V10
+    <!-- Footer - Chủ Tool -->
+    <footer class="bg-slate-900 border-t border-slate-800 px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+        <div class="flex items-center gap-2">
+            <span>Hex & Byte Master Tool V11 &copy; 2026. All rights reserved.</span>
         </div>
-        <span style="font-size: 9px; color: var(--gold); font-family: var(--font-mono);">PRO ENGINE</span>
-      </div>
-
-      <div class="ai-chat-box" id="aiChatBox">
-        <div class="chat-msg ai">
-          🤖 Xin chào TRONG DUNG! Tôi là <b>Cyber AI Copilot v10</b>. Tôi sẽ tự động phân tích cấu trúc Byte khi bạn nạp file và cảnh báo lỗi trùng Tag Field.
+        <div class="flex items-center space-x-4">
+            <span class="font-medium text-slate-300">Liên hệ hỗ trợ:</span>
+            <a href="https://facebook.com" target="_blank" class="text-blue-400 hover:text-blue-300 flex items-center gap-1 font-semibold transition">
+                <i class="fa-brands fa-facebook text-base"></i> Facebook Chủ Tool
+            </a>
+            <a href="https://zalo.me" target="_blank" class="text-cyan-400 hover:text-cyan-300 flex items-center gap-1 font-semibold transition">
+                <i class="fa-solid fa-comment-dots text-base"></i> Zalo Support
+            </a>
         </div>
-      </div>
+    </footer>
 
-      <div class="ai-quick-actions">
-        <button class="chip-btn" onclick="askAI('Kiểm tra file có bị lỗi Protobuf không?')">🔍 Quét lỗi File</button>
-        <button class="chip-btn" onclick="askAI('Cách gộp biến về và skin không bị đè?')">💡 Mẹo Biến Về</button>
-        <button class="chip-btn" onclick="askAI('Xóa danh sách file')">🧹 Dọn File</button>
-      </div>
+    <!-- Logic JS JavaScript -->
+    <script>
+        let fileBuffer = null; // Uint8Array chính lưu byte
+        let selectedOffset = 0;
 
-      <div class="ai-input-area" style="margin-top: 10px;">
-        <input type="text" id="aiInput" placeholder="Hỏi AI trợ lý..." onkeydown="if(event.key==='Enter') sendAIMessage()">
-        <button onclick="sendAIMessage()">GỬI</button>
-      </div>
-    </div>
-  </div>
-</div>
+        // Chuyển Tab
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(el => {
+                el.classList.remove('bg-indigo-600/20', 'text-indigo-400', 'font-medium');
+                el.classList.add('text-slate-400');
+            });
 
-<div id="previewModal" class="modal-overlay">
-  <div class="modal-window">
-    <div class="modal-head">
-      <b id="modalTitle" style="font-size:12px; color:var(--accent);">Protobuf Hex Inspector</b>
-      <button class="modal-close" id="closeModal">&times;</button>
-    </div>
-    <div class="modal-body" id="modalBody"></div>
-  </div>
-</div>
-
-<script>
-// --- BACKGROUND ANIMATION ---
-const canvas = document.getElementById('bgCanvas');
-const ctx = canvas.getContext('2d');
-let particles = [];
-function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-window.addEventListener('resize', resizeCanvas); resizeCanvas();
-
-class Particle {
-  constructor() {
-    this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height;
-    this.size = Math.random() * 2 + 0.5; this.speedX = (Math.random() - 0.5) * 0.4;
-    this.speedY = (Math.random() - 0.5) * 0.4; this.color = Math.random() > 0.5 ? '#00f3ff' : '#ff0055';
-  }
-  update() {
-    this.x += this.speedX; this.y += this.speedY;
-    if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
-    if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
-  }
-  draw() {
-    ctx.fillStyle = this.color; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
-  }
-}
-for (let i = 0; i < 40; i++) particles.push(new Particle());
-function animateParticles() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  particles.forEach(p => { p.update(); p.draw(); });
-  requestAnimationFrame(animateParticles);
-}
-animateParticles();
-
-// --- STATE MANAGEMENT ---
-let selectedFiles = [];
-let baseFileIndex = 0;
-
-const picker = document.getElementById('picker');
-const dropZone = document.getElementById('dropZone');
-const filesList = document.getElementById('filesList');
-const mergeBtn = document.getElementById('mergeBtn');
-const statusBox = document.getElementById('statusBox');
-const mergeAlgorithm = document.getElementById('mergeAlgorithm');
-const customFileName = document.getElementById('customFileName');
-const totalSizeTag = document.getElementById('totalSizeTag');
-const parserStatus = document.getElementById('parserStatus');
-const aiChatBox = document.getElementById('aiChatBox');
-
-function updateClock(){ document.getElementById('clock').textContent = new Date().toTimeString().split(' ')[0]; }
-setInterval(updateClock, 1000); updateClock();
-
-function fmtSize(bytes){
-  if(bytes < 1024) return bytes + ' B';
-  if(bytes < 1048576) return (bytes/1024).toFixed(1) + ' KB';
-  return (bytes/1048576).toFixed(2) + ' MB';
-}
-
-function escHTML(str){ return str.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m])); }
-
-// --- FIXED PROTOBUF PARSER ENGINE V10 ---
-function readVarint(buffer, offset) {
-  let res = 0;
-  let shift = 0;
-  let bytesRead = 0;
-  while (offset < buffer.length) {
-    let b = buffer[offset++];
-    bytesRead++;
-    res |= (b & 0x7f) << shift;
-    if ((b & 0x80) === 0) break;
-    shift += 7;
-    if (shift >= 35) break; // Khống chế va chạm tràn số
-  }
-  return { value: res, bytesRead: bytesRead };
-}
-
-function parseProtobufFieldsV10(buffer) {
-  let offset = 0;
-  let fields = [];
-  try {
-    while (offset < buffer.length) {
-      let tagVar = readVarint(buffer, offset);
-      let tag = tagVar.value;
-      let tagSize = tagVar.bytesRead;
-      if (tag === 0 || tagSize === 0) break;
-
-      let fieldNumber = tag >> 3;
-      let wireType = tag & 0x07;
-      offset += tagSize;
-
-      let startValOffset = offset;
-      if (wireType === 0) { // Varint
-        let valVar = readVarint(buffer, offset);
-        offset += valVar.bytesRead;
-      } else if (wireType === 1) { // 64-bit
-        offset += 8;
-      } else if (wireType === 2) { // Length-delimited
-        let lenVar = readVarint(buffer, offset);
-        offset += lenVar.bytesRead + lenVar.value;
-      } else if (wireType === 5) { // 32-bit
-        offset += 4;
-      } else {
-        break; // Dừng lại khi phát hiện wire type không xác định
-      }
-
-      if (offset <= buffer.length) {
-        fields.push({
-          fieldNumber: fieldNumber,
-          wireType: wireType,
-          rawBytes: buffer.subarray(startValOffset - tagSize, offset)
-        });
-      } else {
-        break;
-      }
-    }
-  } catch (e) {
-    console.warn("PB Parse fallback:", e);
-  }
-  return fields;
-}
-
-async function detectFileFormat(file) {
-  const slice = await file.slice(0, 512).arrayBuffer();
-  const arr = new Uint8Array(slice);
-  
-  let isTxt = true;
-  for(let i = 0; i < Math.min(arr.length, 64); i++) {
-    let b = arr[i];
-    if (b < 9 || (b > 13 && b < 32 && b !== 27)) { isTxt = false; break; }
-  }
-  
-  if (isTxt) {
-    const text = new TextDecoder().decode(arr).trim();
-    if (text.startsWith('{') || text.startsWith('[')) return 'JSON';
-    return 'LUA/TXT';
-  }
-  
-  const pbFields = parseProtobufFieldsV10(arr);
-  if (pbFields.length > 0) return 'PROTOBUF';
-  
-  return 'BINARY';
-}
-
-async function renderFiles(){
-  filesList.innerHTML = '';
-  let totalBytes = 0;
-
-  for(let idx = 0; idx < selectedFiles.length; idx++) {
-    const file = selectedFiles[idx];
-    totalBytes += file.size;
-    const format = await detectFileFormat(file);
-
-    const row = document.createElement('div');
-    row.className = `file-row ${idx === baseFileIndex ? 'is-base' : ''}`;
-    row.innerHTML = `
-      <div class="num">${String(idx + 1).padStart(2, '0')}</div>
-      <div class="info">
-        <div class="name">${escHTML(file.name)}</div>
-        <div class="details">
-          <span>${fmtSize(file.size)}</span>
-          <span class="tag-badge ${format==='PROTOBUF'?'tag-pb':(format==='JSON'?'tag-json':'tag-bin')}">${format}</span>
-          ${idx === baseFileIndex ? '<span class="tag-badge tag-base">FILE GỐC (BASE)</span>' : ''}
-        </div>
-      </div>
-      <div class="file-btns">
-        <button class="btn-mini" onclick="setBaseFile(${idx})" title="Đặt làm file gốc">📌 Base</button>
-        <button class="btn-mini" onclick="moveFile(${idx}, -1)">▲</button>
-        <button class="btn-mini" onclick="moveFile(${idx}, 1)">▼</button>
-        <button class="btn-mini" onclick="previewFile(${idx})">👁️ Hex</button>
-        <button class="btn-mini" onclick="removeFile(${idx})" style="color:var(--primary)">✕</button>
-      </div>
-    `;
-    filesList.appendChild(row);
-  }
-
-  totalSizeTag.textContent = `Tổng: ${fmtSize(totalBytes)}`;
-  mergeBtn.disabled = selectedFiles.length < 2;
-  parserStatus.textContent = selectedFiles.length >= 2 ? 'READY V10' : 'WAITING';
-
-  if (selectedFiles.length >= 2 && !customFileName.value) {
-    customFileName.value = selectedFiles[0].name.replace(/\.bytes$/i, '') + '_v10_repack.bytes';
-  }
-}
-
-function handleFiles(fileList){
-  const valid = Array.from(fileList).filter(f => f.name.toLowerCase().endsWith('.bytes'));
-  if (valid.length > 0) {
-    selectedFiles.push(...valid);
-    renderFiles();
-    triggerAIAnalysis(valid);
-  }
-}
-
-dropZone.onclick = () => picker.click();
-picker.onchange = (e) => { handleFiles(e.target.files); picker.value = ''; };
-['dragenter', 'dragover'].forEach(evt => dropZone.addEventListener(evt, e => { e.preventDefault(); dropZone.classList.add('over'); }));
-['dragleave', 'drop'].forEach(evt => dropZone.addEventListener(evt, e => { e.preventDefault(); dropZone.classList.remove('over'); }));
-dropZone.addEventListener('drop', e => handleFiles(e.dataTransfer.files));
-
-window.setBaseFile = (idx) => { baseFileIndex = idx; renderFiles(); addAIMessage(`📌 Đã chọn file <b>${selectedFiles[idx].name}</b> làm File Base Gốc.`, 'system'); };
-window.moveFile = (idx, dir) => {
-  const target = idx + dir;
-  if(target < 0 || target >= selectedFiles.length) return;
-  const temp = selectedFiles[idx];
-  selectedFiles[idx] = selectedFiles[target];
-  selectedFiles[target] = temp;
-  if(baseFileIndex === idx) baseFileIndex = target;
-  else if(baseFileIndex === target) baseFileIndex = idx;
-  renderFiles();
-};
-
-window.removeFile = (idx) => {
-  selectedFiles.splice(idx, 1);
-  if(baseFileIndex >= selectedFiles.length) baseFileIndex = 0;
-  renderFiles();
-};
-
-window.previewFile = async (idx) => {
-  const file = selectedFiles[idx];
-  const buffer = new Uint8Array(await file.arrayBuffer());
-  const format = await detectFileFormat(file);
-
-  let displayContent = `=== CYBER V10 HEX & PROTOBUF INSPECTOR ===\nFile: ${file.name}\nSize: ${fmtSize(file.size)}\nFormat: ${format}\n-----------------------------------\n`;
-
-  if (format === 'PROTOBUF') {
-    const fields = parseProtobufFieldsV10(buffer);
-    displayContent += `Phát hiện ${fields.length} Protobuf Fields:\n`;
-    fields.forEach((f, i) => {
-      displayContent += `[Index #${i+1}] Tag Field: ${f.fieldNumber} | WireType: ${f.wireType} | Len: ${f.rawBytes.length}B\n`;
-    });
-  } else {
-    displayContent += Array.from(buffer.slice(0, 512)).map((b, i) => b.toString(16).padStart(2, '0').toUpperCase() + ((i+1)%16===0?'\n':' ')).join('');
-  }
-
-  document.getElementById('modalTitle').textContent = `HEX INSPECTOR: ${file.name}`;
-  document.getElementById('modalBody').textContent = displayContent;
-  document.getElementById('previewModal').style.display = 'flex';
-};
-
-document.getElementById('closeModal').onclick = () => { document.getElementById('previewModal').style.display = 'none'; };
-
-function showStatus(msg, type){
-  statusBox.textContent = msg;
-  statusBox.className = 'status-box ' + type;
-}
-
-// --- MINI AI COPILOT LOGIC ---
-function addAIMessage(msg, type = 'ai') {
-  const div = document.createElement('div');
-  div.className = `chat-msg ${type}`;
-  div.innerHTML = msg;
-  aiChatBox.appendChild(div);
-  aiChatBox.scrollTop = aiChatBox.scrollHeight;
-}
-
-function sendAIMessage() {
-  const input = document.getElementById('aiInput');
-  const txt = input.value.trim();
-  if(!txt) return;
-  addAIMessage(txt, 'user');
-  input.value = '';
-  setTimeout(() => respondAI(txt), 400);
-}
-
-function askAI(prompt) {
-  addAIMessage(prompt, 'user');
-  setTimeout(() => respondAI(prompt), 400);
-}
-
-async function triggerAIAnalysis(newFiles) {
-  addAIMessage(`⚡ <i>AI đang quét ${newFiles.length} file vừa nạp...</i>`, 'system');
-  let pbCount = 0;
-  for(let f of newFiles) {
-    let fmt = await detectFileFormat(f);
-    if(fmt === 'PROTOBUF') pbCount++;
-  }
-  if(pbCount > 0) {
-    addAIMessage(`✅ Đã phát hiện <b>${pbCount} file Protobuf Mod</b>. Khuyên dùng Thuật toán <b>Option 1: Smart Tag Overlay</b> để giữ nguyên hiệu ứng Biến Về & Skin không bị đè lỗi.`);
-  } else {
-    addAIMessage(`ℹ️ Phát hiện các file dạng Binary/JSON. Bạn có thể dùng thuật toán Unity Container hoặc JSON Merger.`);
-  }
-}
-
-function respondAI(query) {
-  let q = query.toLowerCase();
-  if(q.includes('dọn') || q.includes('xóa')) {
-    selectedFiles = []; renderFiles();
-    addAIMessage(`🧹 Đã dọn sạch danh sách file theo yêu cầu.`);
-  } else if(q.includes('biến về') || q.includes('skin')) {
-    addAIMessage(`💡 <b>Mẹo Fix Biến Về V10:</b><br>1. Chọn file Mod Biến Về chính làm <b>Base (📌)</b>.<br>2. Chọn thuật toán <b>Smart Tag Overlay</b>.<br>3. Engine V10 sẽ tự lọc trùng Tag Field và ưu tiên giữ lại Animation Effect.`);
-  } else if(q.includes('quét') || q.includes('lỗi')) {
-    if(selectedFiles.length === 0) {
-      addAIMessage(`⚠️ Bạn chưa chọn file nào để quét.`);
-    } else {
-      addAIMessage(`🔍 Kết quả quét: Tất cả ${selectedFiles.length} file đều hợp lệ và sẵn sàng Re-pack V10.`);
-    }
-  } else {
-    addAIMessage(`🤖 Tôi đã ghi nhận yêu cầu. Bạn hãy bấm nút <b>XỬ LÝ DEEP BYTE & RE-PACK V10</b> để tiến hành gộp file nhé!`);
-  }
-}
-
-// --- CORE RE-PACK ENGINE V10 ---
-mergeBtn.onclick = async () => {
-  if(selectedFiles.length < 2) return;
-
-  try {
-    mergeBtn.disabled = true;
-    parserStatus.textContent = 'RE-PACKING V10...';
-    showStatus('⚡ CYBER V10: Đang phân tích Tag Field & Khử trùng lặp (Deduplicate)...', 'ok');
-
-    const mode = mergeAlgorithm.value;
-    let finalUint8Array = null;
-
-    if (mode === 'protobuf_smart_overlay') {
-      // THUẬT TOÁN MỚI V10: SMART TAG OVERLAY & DEDUPLICATE
-      let tagMap = new Map(); // Key: FieldNumber_WireType -> Value: Uint8Array Raw Bytes
-      let totalFieldsProcessed = 0;
-
-      // Đọc File Base trước
-      let baseFile = selectedFiles[baseFileIndex];
-      let otherFiles = selectedFiles.filter((_, i) => i !== baseFileIndex);
-      let orderedFiles = [baseFile, ...otherFiles];
-
-      for (let file of orderedFiles) {
-        let buf = new Uint8Array(await file.arrayBuffer());
-        let fields = parseProtobufFieldsV10(buf);
-
-        if (fields.length === 0) {
-          if (!tagMap.has("0_0")) tagMap.set("0_0", buf);
-        } else {
-          fields.forEach(f => {
-            // Smart Overlay: File Mod sau sẽ Update đè hoặc thêm Field vào Map
-            tagMap.set(`${f.fieldNumber}_${f.wireType}`, f.rawBytes);
-            totalFieldsProcessed++;
-          });
+            document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`btn-${tabName}`);
+            activeBtn.classList.add('bg-indigo-600/20', 'text-indigo-400', 'font-medium');
+            activeBtn.classList.remove('text-slate-400');
         }
-      }
 
-      // Re-pack lại các Stream đã lọc trùng theo thứ tự Tag Field
-      let byteChunks = Array.from(tagMap.values());
-      let totalLen = byteChunks.reduce((acc, chunk) => acc + chunk.length, 0);
+        // Đọc File được Tải Lên
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
 
-      finalUint8Array = new Uint8Array(totalLen);
-      let offset = 0;
-      for (let chunk of byteChunks) {
-        finalUint8Array.set(chunk, offset);
-        offset += chunk.length;
-      }
+            document.getElementById('infoFileName').innerText = `Tên file: ${file.name}`;
+            document.getElementById('infoFileSize').innerText = `Kích thước: ${file.size.toLocaleString()} Bytes`;
 
-      showStatus(`🎉 V10 SMART OVERLAY SUCCESS: Đã tối ưu & Re-pack ${totalFieldsProcessed} Tag Fields (Đã fix đè Biến Về)!`, 'ok');
-      addAIMessage(`🎉 <b>Re-pack V10 Thành Công!</b> Đã xử lý ${totalFieldsProcessed} Tag Fields, tự động khắc phục xung đột biến về/skin.`, 'system');
-    }
-    else if (mode === 'protobuf_deep_merge') {
-      let byteChunks = [];
-      for (let file of selectedFiles) {
-        byteChunks.push(new Uint8Array(await file.arrayBuffer()));
-      }
-      let totalLen = byteChunks.reduce((acc, c) => acc + c.length, 0);
-      finalUint8Array = new Uint8Array(totalLen);
-      let offset = 0;
-      for (let chunk of byteChunks) {
-        finalUint8Array.set(chunk, offset);
-        offset += chunk.length;
-      }
-      showStatus(`🎉 STREAM MERGED SUCCESS: Đã nối tiếp ${selectedFiles.length} file bytes!`, 'ok');
-    }
-    else if (mode === 'unity_container_rebuilder') {
-      let rawChunks = [];
-      for (let file of selectedFiles) {
-        rawChunks.push(new Uint8Array(await file.arrayBuffer()));
-      }
-      let totalDataSize = rawChunks.reduce((acc, c) => acc + c.length, 0);
-      let header = new Uint8Array(8);
-      let view = new DataView(header.buffer);
-      view.setUint32(0, 0x554E4954, true); // 'UNIT' Header Magic
-      view.setUint32(4, totalDataSize, true);
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                fileBuffer = new Uint8Array(e.target.result);
+                renderHexView();
+                inspectByte(0);
+            };
+            reader.readAsArrayBuffer(file);
+        }
 
-      finalUint8Array = new Uint8Array(8 + totalDataSize);
-      finalUint8Array.set(header, 0);
-      let offset = 8;
-      for (let chunk of rawChunks) {
-        finalUint8Array.set(chunk, offset);
-        offset += chunk.length;
-      }
-      showStatus(`🎉 UNITY CONTAINER BUILT: Bọc Header Unity chuẩn thành công!`, 'ok');
-    }
-    else if (mode === 'smart_json_merger') {
-      let mergedArr = [];
-      for (let file of selectedFiles) {
-        try {
-          let txt = await file.text();
-          let json = JSON.parse(txt.replace(/^\uFEFF/, '').trim());
-          if (Array.isArray(json)) mergedArr.push(...json);
-          else mergedArr.push(json);
-        } catch(e) {}
-      }
-      finalUint8Array = new TextEncoder().encode(JSON.stringify(mergedArr, null, 2));
-      showStatus(`🎉 JSON MERGED SUCCESS: Đã gộp dữ liệu JSON!`, 'ok');
-    }
-    else if (mode === 'lua_scope_wrapper') {
-      let luaMerged = "-- AUTHOR: TRONG DUNG | CYBER RE-PACKER V10\n";
-      for (let i = 0; i < selectedFiles.length; i++) {
-        let txt = await selectedFiles[i].text();
-        luaMerged += `\n-- === MOD BLOCK ${i+1}: ${selectedFiles[i].name} ===\ndo\n${txt.trim()}\nend\n;`;
-      }
-      finalUint8Array = new TextEncoder().encode(luaMerged);
-      showStatus(`🎉 LUA SCOPE WRAPPED SUCCESS: Bảo vệ Scope Lua thành công!`, 'ok');
-    }
+        // Render Xem Dữ Liệu Hex
+        function renderHexView() {
+            const container = document.getElementById('hexViewContainer');
+            if (!fileBuffer || fileBuffer.length === 0) {
+                container.innerHTML = `<p class="text-slate-600 italic">File rỗng hoặc chưa chọn file...</p>`;
+                return;
+            }
 
-    // TẢI FILE THÀNH PHẨM V10
-    const blob = new Blob([finalUint8Array], { type: 'application/octet-stream' });
-    const url = URL.createObjectURL(blob);
-    let outputName = customFileName.value.trim();
-    if(!outputName.toLowerCase().endsWith('.bytes')) outputName += '.bytes';
+            let html = '';
+            const maxLen = Math.min(fileBuffer.length, 4096); // Render max 4KB preview cho mượt
+            
+            for (let i = 0; i < maxLen; i += 16) {
+                let offsetHex = i.toString(16).padStart(8, '0').toUpperCase();
+                let hexStr = '';
+                let asciiStr = '';
 
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = outputName;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
+                for (let j = 0; j < 16; j++) {
+                    if (i + j < maxLen) {
+                        const b = fileBuffer[i + j];
+                        const byteHex = b.toString(16).padStart(2, '0').toUpperCase();
+                        const isActive = (i + j === selectedOffset) ? 'active' : '';
+                        hexStr += `<span onclick="inspectByte(${i + j})" class="hex-byte px-1 rounded ${isActive}">${byteHex}</span> `;
+                        asciiStr += (b >= 32 && b <= 126) ? String.fromCharCode(b) : '.';
+                    } else {
+                        hexStr += '   ';
+                    }
+                }
 
-    parserStatus.textContent = 'V10 SUCCESS';
+                html += `<div class="flex gap-4"><span class="text-indigo-400">${offsetHex}</span><span class="flex-1">${hexStr}</span><span class="text-amber-500">${asciiStr}</span></div>`;
+            }
 
-  } catch (err) {
-    parserStatus.textContent = 'ERROR';
-    showStatus('❌ Lỗi xử lý V10 Deep Bytes: ' + err.message, 'err');
-    addAIMessage(`❌ <b>Lỗi Re-pack:</b> ${err.message}`, 'system');
-  } finally {
-    mergeBtn.disabled = selectedFiles.length < 2;
-  }
-};
-</script>
+            if (fileBuffer.length > 4096) {
+                html += `<div class="text-slate-500 italic mt-2">...Hiển thị tối đa 4096 bytes xem trước...</div>`;
+            }
+
+            container.innerHTML = html;
+        }
+
+        // Hex Inspector & Cập nhật Inspector
+        function inspectByte(offset) {
+            if (!fileBuffer || offset >= fileBuffer.length) return;
+            selectedOffset = offset;
+
+            const b = fileBuffer[offset];
+            document.getElementById('inspectOffset').innerText = `0x${offset.toString(16).padStart(8, '0').toUpperCase()}`;
+            document.getElementById('inspectHex').innerText = `0x${b.toString(16).padStart(2, '0').toUpperCase()}`;
+            document.getElementById('inspectDec').innerText = b;
+            document.getElementById('inspectBin').innerText = b.toString(2).padStart(8, '0');
+            document.getElementById('inspectAscii').innerText = (b >= 32 && b <= 126) ? String.fromCharCode(b) : '.';
+
+            document.getElementById('editByteHex').value = b.toString(16).padStart(2, '0').toUpperCase();
+            document.getElementById('editByteDec').value = b;
+
+            renderHexView();
+        }
+
+        // Sửa Byte Trực Tiếp trong Inspector
+        function saveCurrentByteEdit() {
+            if (!fileBuffer) {
+                alert("Vui lòng mở file trước khi chỉnh sửa!");
+                return;
+            }
+            const hexInput = document.getElementById('editByteHex').value.trim();
+            const val = parseInt(hexInput, 16);
+
+            if (isNaN(val) || val < 0 || val > 255) {
+                alert("Giá trị Hex không hợp lệ! (Phải từ 00 đến FF)");
+                return;
+            }
+
+            fileBuffer[selectedOffset] = val;
+            inspectByte(selectedOffset);
+            alert(`Đã cập nhật byte tại offset 0x${selectedOffset.toString(16).toUpperCase()} thành 0x${val.toString(16).toUpperCase()}`);
+        }
+
+        // Giải Nén Bytes
+        function decompressBytes(type) {
+            if (!fileBuffer) {
+                alert("Vui lòng mở file trước!");
+                return;
+            }
+            try {
+                let decompressed;
+                if (type === 'zlib' || type === 'gzip') {
+                    decompressed = pako.inflate(fileBuffer);
+                }
+                const str = new TextDecoder().decode(decompressed);
+                document.getElementById('decompressResult').value = str;
+            } catch (err) {
+                alert("Không thể giải nén file với định dạng đã chọn! Lỗi: " + err.message);
+            }
+        }
+
+        // Giải Mã Dữ Liệu (XOR Operation)
+        function decryptData() {
+            if (!fileBuffer) {
+                alert("Vui lòng tải lên file cần giải mã!");
+                return;
+            }
+            const keyStr = document.getElementById('decryptKey').value;
+            if (!keyStr) {
+                alert("Vui lòng nhập Key giải mã!");
+                return;
+            }
+
+            const key = parseInt(keyStr, 16) || keyStr.charCodeAt(0) || 0x5A;
+            for (let i = 0; i < fileBuffer.length; i++) {
+                fileBuffer[i] = fileBuffer[i] ^ key; // Thao tác XOR giải mã
+            }
+
+            renderHexView();
+            alert("Đã giải mã XOR thành công dữ liệu!");
+        }
+
+        // Fix Lỗi Align Byte Tránh Reset Game
+        function fixAndAlignBytes() {
+            if (!fileBuffer) {
+                alert("Chưa có file để căn chỉnh Byte!");
+                return;
+            }
+            const remainder = fileBuffer.length % 16;
+            if (remainder === 0) {
+                alert("Cấu trúc Byte đã chuẩn Aligned 16-bit! Không bị lỗi Reset Game.");
+                return;
+            }
+
+            const paddingNeeded = 16 - remainder;
+            const newBuffer = new Uint8Array(fileBuffer.length + paddingNeeded);
+            newBuffer.set(fileBuffer);
+            // Điền Null Bytes 0x00 vào cuối file
+            for (let i = fileBuffer.length; i < newBuffer.length; i++) {
+                newBuffer[i] = 0x00;
+            }
+
+            fileBuffer = newBuffer;
+            renderHexView();
+            alert(`Đã tự động thêm ${paddingNeeded} Null Byte(s) để align chuẩn 16-bit! File đã sẵn sàng dán vào game.`);
+        }
+
+        // Xuất File đã Chỉnh Sửa
+        function exportFile() {
+            if (!fileBuffer) {
+                alert("Chưa có dữ liệu để xuất!");
+                return;
+            }
+            const blob = new Blob([fileBuffer], { type: "application/octet-stream" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "modded_game_file.bin";
+            link.click();
+        }
+    </script>
 </body>
 </html>
