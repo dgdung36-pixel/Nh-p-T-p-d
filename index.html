@@ -3,405 +3,330 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hex & Byte Master Tool - Version 11</title>
-    <!-- Font Awesome & Tailwind CSS -->
+    <title>Hex & Byte Master Tool - V11 (V10 Classic Interface)</title>
+    <!-- Tailwind CSS & Font Awesome -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- pako (Zlib/Gzip/Deflate) & CryptoJS (AES/XOR) -->
+    <!-- Pako library cho giải nén bytes -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <style>
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #0f172a; }
-        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: #475569; }
-        .font-mono-code { font-family: 'Courier New', Courier, monospace; }
-        .hex-byte:hover { background-color: #3b82f6; color: white; cursor: pointer; }
-        .hex-byte.active { background-color: #2563eb; color: white; font-weight: bold; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .font-code { font-family: 'Courier New', Courier, monospace; }
+        .hex-byte:hover { background-color: #3b82f6; color: #ffffff; cursor: pointer; }
+        .hex-byte.selected { background-color: #1d4ed8; color: #ffffff; font-weight: bold; }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans">
+<body class="bg-gray-900 text-gray-100 min-h-screen flex flex-col justify-between">
 
-    <!-- Top Navigation Bar -->
-    <header class="bg-slate-900 border-b border-slate-800 px-6 py-3 flex items-center justify-between shadow-lg sticky top-0 z-50">
-        <div class="flex items-center space-x-3">
-            <div class="bg-indigo-600 p-2 rounded-lg">
-                <i class="fa-solid fa-microchip text-xl text-white"></i>
-            </div>
-            <div>
-                <h1 class="text-lg font-bold bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">HEX & BYTE MASTER</h1>
-                <p class="text-xs text-slate-400">Phiên bản V11 - Ultimate Editor & Modding Tool</p>
-            </div>
-        </div>
-        <div class="flex items-center space-x-3">
-            <input type="file" id="fileInput" class="hidden" onchange="handleFileSelect(event)">
-            <button onclick="document.getElementById('fileInput').click()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2">
-                <i class="fa-solid fa-folder-open"></i> Mở File
-            </button>
-            <button onclick="exportFile()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2">
-                <i class="fa-solid fa-download"></i> Xuất File (Fix Reset Game)
-            </button>
-        </div>
-    </header>
-
-    <!-- Main App Container -->
-    <div class="flex flex-1 overflow-hidden">
-        <!-- Sidebar Navigation -->
-        <aside class="w-64 bg-slate-900/50 border-r border-slate-800 p-4 flex flex-col justify-between hidden md:flex">
-            <div class="space-y-1">
-                <p class="text-xs font-semibold text-slate-500 uppercase px-3 mb-2">Chức năng chính</p>
-                <button onclick="switchTab('hexEditor')" id="btn-hexEditor" class="tab-btn w-full text-left px-3 py-2.5 rounded-lg text-sm flex items-center gap-3 bg-indigo-600/20 text-indigo-400 font-medium">
-                    <i class="fa-solid fa-code w-5"></i> Hex Editor & Inspector
-                </button>
-                <button onclick="switchTab('decompressor')" id="btn-decompressor" class="tab-btn w-full text-left px-3 py-2.5 rounded-lg text-sm flex items-center gap-3 text-slate-400 hover:bg-slate-800 transition">
-                    <i class="fa-solid fa-file-zipper w-5"></i> Giải nén Bytes
-                </button>
-                <button onclick="switchTab('decryptor')" id="btn-decryptor" class="tab-btn w-full text-left px-3 py-2.5 rounded-lg text-sm flex items-center gap-3 text-slate-400 hover:bg-slate-800 transition">
-                    <i class="fa-solid fa-key w-5"></i> Giải mã hóa File
-                </button>
-                <button onclick="switchTab('merger')" id="btn-merger" class="tab-btn w-full text-left px-3 py-2.5 rounded-lg text-sm flex items-center gap-3 text-slate-400 hover:bg-slate-800 transition">
-                    <i class="fa-solid fa-[#10b981] fa-object-group w-5"></i> Gộp File Game
-                </button>
-            </div>
-            
-            <div class="bg-slate-800/40 border border-slate-700/50 rounded-xl p-3 text-xs text-slate-400 space-y-1">
-                <p class="font-semibold text-slate-300">Trạng thái File:</p>
-                <p id="infoFileName" class="truncate">Tên file: Chưa chọn</p>
-                <p id="infoFileSize">Kích thước: 0 Bytes</p>
-            </div>
-        </aside>
-
-        <!-- Dynamic Content Area -->
-        <main class="flex-1 bg-slate-950 p-6 overflow-y-auto">
-            
-            <!-- TAB 1: HEX EDITOR & INSPECTOR -->
-            <section id="tab-hexEditor" class="tab-content space-y-4">
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <!-- View Hex Grid -->
-                    <div class="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-xl p-4 flex flex-col">
-                        <div class="flex justify-between items-center mb-3">
-                            <h2 class="text-md font-semibold text-slate-200 flex items-center gap-2">
-                                <i class="fa-solid fa-table-cells text-indigo-400"></i> Xem Dữ Liệu Hex
-                            </h2>
-                            <span class="text-xs text-slate-500 font-mono-code">Offset: 16 Bytes / Dòng</span>
-                        </div>
-                        <div id="hexViewContainer" class="bg-slate-950 p-4 rounded-lg border border-slate-800 font-mono-code text-xs overflow-x-auto h-96 space-y-1 select-none">
-                            <p class="text-slate-600 italic">Vui lòng mở file để hiển thị dữ liệu byte...</p>
-                        </div>
-                    </div>
-
-                    <!-- Live Hex Inspector & Modal Repair -->
-                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 flex flex-col justify-between">
-                        <div>
-                            <h2 class="text-md font-semibold text-slate-200 mb-3 flex items-center gap-2">
-                                <i class="fa-solid fa-[#3b82f6] fa-magnifying-glass text-blue-400"></i> Hex Inspector
-                            </h2>
-                            <div class="space-y-3 bg-slate-950 p-3 rounded-lg border border-slate-800 text-xs font-mono-code">
-                                <div class="flex justify-between border-b border-slate-800 pb-2">
-                                    <span class="text-slate-500">Byte offset:</span>
-                                    <span id="inspectOffset" class="text-indigo-400 font-bold">0x00000000</span>
-                                </div>
-                                <div class="flex justify-between border-b border-slate-800 pb-2">
-                                    <span class="text-slate-500">Hex Value:</span>
-                                    <span id="inspectHex" class="text-emerald-400 font-bold">0x00</span>
-                                </div>
-                                <div class="flex justify-between border-b border-slate-800 pb-2">
-                                    <span class="text-slate-500">Dec (Unsigned Int8):</span>
-                                    <span id="inspectDec" class="text-cyan-400">0</span>
-                                </div>
-                                <div class="flex justify-between border-b border-slate-800 pb-2">
-                                    <span class="text-slate-500">Binary:</span>
-                                    <span id="inspectBin" class="text-slate-300">00000000</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="text-slate-500">Ký tự ASCII:</span>
-                                    <span id="inspectAscii" class="text-amber-400">.</span>
-                                </div>
-                            </div>
-
-                            <!-- Form sửa Byte trực tiếp -->
-                            <div class="mt-4 p-3 bg-slate-800/30 border border-slate-700/50 rounded-lg space-y-3">
-                                <h3 class="text-xs font-bold text-slate-300">Chỉnh sửa Byte này trực tiếp:</h3>
-                                <div class="flex gap-2">
-                                    <input type="text" id="editByteHex" placeholder="Hex (vd: FF)" maxlength="2" class="w-1/2 bg-slate-900 border border-slate-700 rounded p-2 text-xs font-mono-code uppercase focus:border-indigo-500 outline-none">
-                                    <input type="number" id="editByteDec" min="0" max="255" placeholder="Dec (0-255)" class="w-1/2 bg-slate-900 border border-slate-700 rounded p-2 text-xs font-mono-code focus:border-indigo-500 outline-none">
-                                </div>
-                                <button onclick="saveCurrentByteEdit()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white text-xs py-2 rounded font-medium transition">
-                                    Lưu Thay Đổi Byte
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+    <!-- Header Giữ theo phong cách V10 -->
+    <div>
+        <header class="bg-gray-800 border-b border-gray-700 px-6 py-4 flex items-center justify-between shadow">
+            <div class="flex items-center space-x-3">
+                <i class="fa-solid fa-code text-blue-500 text-2xl"></i>
+                <div>
+                    <h1 class="text-xl font-bold text-white">Hex & Byte Editor Tool</h1>
+                    <p class="text-xs text-gray-400">Phiên bản V11 - Giữ giao diện V10 Classic & Nâng cấp Chức năng</p>
                 </div>
-            </section>
+            </div>
+            <div class="flex items-center space-x-3">
+                <input type="file" id="fileLoader" class="hidden" onchange="loadFile(event)">
+                <button onclick="document.getElementById('fileLoader').click()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-semibold transition">
+                    <i class="fa-solid fa-folder-open mr-1"></i> Mở File
+                </button>
+                <button onclick="exportFile()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm font-semibold transition">
+                    <i class="fa-solid fa-download mr-1"></i> Xuất File
+                </button>
+            </div>
+        </header>
 
-            <!-- TAB 2: DECOMPRESSOR -->
-            <section id="tab-decompressor" class="tab-content hidden space-y-4">
-                <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4">
-                    <h2 class="text-md font-semibold text-slate-200 flex items-center gap-2">
-                        <i class="fa-solid fa-file-zipper text-indigo-400"></i> Giải nén Tệp Bytes (Zlib / Gzip / Deflate)
-                    </h2>
-                    <p class="text-xs text-slate-400">Hỗ trợ tự động nhận dạng và giải nén khối dữ liệu nén trong game file.</p>
-                    <div class="flex gap-3">
-                        <button onclick="decompressBytes('zlib')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 px-4 py-2 rounded-lg text-xs font-medium transition">
-                            Giải Nén Zlib
-                        </button>
-                        <button onclick="decompressBytes('gzip')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 px-4 py-2 rounded-lg text-xs font-medium transition">
-                            Giải Nén Gzip
+        <!-- Main Content Area -->
+        <div class="container mx-auto p-6 space-y-6">
+
+            <!-- Panel Thông Tin File & Sửa Lỗi Game -->
+            <div class="bg-gray-800 border border-gray-700 rounded-lg p-4 flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="text-sm">
+                    <span class="text-gray-400">Tệp đang chọn: </span>
+                    <span id="fileName" class="font-bold text-blue-400">Chưa mở file</span>
+                    <span class="text-gray-500 mx-2">|</span>
+                    <span class="text-gray-400">Kích thước: </span>
+                    <span id="fileSize" class="font-bold text-green-400">0 Bytes</span>
+                </div>
+                <!-- Fix lỗi reset game bằng Align 16-byte Padding -->
+                <button onclick="fixGameResetError()" class="bg-amber-600 hover:bg-amber-700 text-white px-3 py-1.5 rounded text-xs font-semibold transition">
+                    <i class="fa-solid fa-wrench mr-1"></i> Fix Lỗi Reset Game (Align 16-bit Padding)
+                </button>
+            </div>
+
+            <!-- Panel Tính Năng Mới: Giải Nén & Giải Mã -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Chức năng Giải nén -->
+                <div class="bg-gray-800 border border-gray-700 rounded-lg p-4 space-y-3">
+                    <h3 class="text-sm font-bold text-gray-200 border-b border-gray-700 pb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-file-zipper text-blue-400"></i> Giải Nén Tệp Bytes
+                    </h3>
+                    <div class="flex gap-2">
+                        <button onclick="decompressZlib()" class="bg-gray-700 hover:bg-gray-600 text-white px-3 py-1.5 rounded text-xs font-medium transition">
+                            Giải nén Zlib / Deflate
                         </button>
                     </div>
-                    <div>
-                        <label class="text-xs text-slate-400 block mb-1">Kết quả giải nén (Preview Text/ASCII):</label>
-                        <textarea id="decompressResult" readonly class="w-full h-48 bg-slate-950 border border-slate-800 rounded-lg p-3 text-xs font-mono-code text-emerald-400 outline-none" placeholder="Dữ liệu sau khi giải nén sẽ xuất hiện ở đây..."></textarea>
+                    <textarea id="decompressOutput" readonly placeholder="Kết quả giải nén sẽ hiển thị tại đây..." class="w-full h-24 bg-gray-900 border border-gray-700 rounded p-2 text-xs font-code text-green-400 resize-none outline-none"></textarea>
+                </div>
+
+                <!-- Chức năng Giải mã hóa -->
+                <div class="bg-gray-800 border border-gray-700 rounded-lg p-4 space-y-3">
+                    <h3 class="text-sm font-bold text-gray-200 border-b border-gray-700 pb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-key text-blue-400"></i> Giải Mã Hóa File (XOR Key)
+                    </h3>
+                    <div class="flex gap-2">
+                        <input type="text" id="xorKeyInput" placeholder="Nhập Key Hex/Dec (ví dụ: 0x5A hoặc 90)" class="flex-1 bg-gray-900 border border-gray-700 rounded p-1.5 text-xs font-code outline-none focus:border-blue-500">
+                        <button onclick="decryptXOR()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded text-xs font-medium transition">
+                            Giải Mã XOR
+                        </button>
+                    </div>
+                    <p class="text-xs text-gray-400">Thao tác này sẽ mã hóa/giải mã toàn bộ mảng Byte bằng khóa XOR được nhập.</p>
+                </div>
+            </div>
+
+            <!-- Visual Hex View & Hex Inspector Modal -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Bảng Hiển Thị Hex -->
+                <div class="lg:col-span-2 bg-gray-800 border border-gray-700 rounded-lg p-4">
+                    <h3 class="text-sm font-bold text-gray-200 mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-table-cells text-blue-400"></i> Hex View Data
+                    </h3>
+                    <div id="hexContainer" class="bg-gray-900 p-3 rounded border border-gray-700 font-code text-xs overflow-x-auto h-80 space-y-1 select-none">
+                        <span class="text-gray-500 italic">Vui lòng chọn file để nạp dữ liệu...</span>
                     </div>
                 </div>
-            </section>
 
-            <!-- TAB 3: DECRYPTOR -->
-            <section id="tab-decryptor" class="tab-content hidden space-y-4">
-                <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4">
-                    <h2 class="text-md font-semibold text-slate-200 flex items-center gap-2">
-                        <i class="fa-solid fa-key text-indigo-400"></i> Giải Mã Hóa Dữ Liệu
-                    </h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="text-xs text-slate-400 block mb-1">Chìa khóa (Key - Hex/Text):</label>
-                            <input type="text" id="decryptKey" placeholder="Nhập Key (vd: 0xAF hoặc SecKey123)" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-xs font-mono-code outline-none focus:border-indigo-500">
-                        </div>
-                        <div>
-                            <label class="text-xs text-slate-400 block mb-1">Thuật toán:</label>
-                            <select id="decryptAlgo" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-xs outline-none focus:border-indigo-500">
-                                <option value="xor">XOR Operation Simple</option>
-                                <option value="aes">AES-256 (CBC/ECB)</option>
-                            </select>
-                        </div>
+                <!-- Hex Inspector & Trực tiếp chỉnh sửa Byte -->
+                <div class="bg-gray-800 border border-gray-700 rounded-lg p-4 space-y-4">
+                    <h3 class="text-sm font-bold text-gray-200 flex items-center gap-2 border-b border-gray-700 pb-2">
+                        <i class="fa-solid fa-magnifying-glass text-blue-400"></i> Hex Inspector & Edit
+                    </h3>
+
+                    <div class="space-y-2 text-xs font-code bg-gray-900 p-3 rounded border border-gray-700">
+                        <div class="flex justify-between"><span class="text-gray-400">Offset:</span><span id="inspectOffset" class="text-blue-400">0x00000000</span></div>
+                        <div class="flex justify-between"><span class="text-gray-400">Hex Value:</span><span id="inspectHex" class="text-green-400">0x00</span></div>
+                        <div class="flex justify-between"><span class="text-gray-400">Decimal:</span><span id="inspectDec" class="text-amber-400">0</span></div>
+                        <div class="flex justify-between"><span class="text-gray-400">Binary:</span><span id="inspectBin" class="text-gray-300">00000000</span></div>
                     </div>
-                    <button onclick="decryptData()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2 rounded-lg text-xs font-medium transition">
-                        Bắt Đầu Giải Mã
-                    </button>
-                </div>
-            </section>
 
-            <!-- TAB 4: MERGER & GAME FIX -->
-            <section id="tab-merger" class="tab-content hidden space-y-4">
-                <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
-                    <h2 class="text-md font-semibold text-slate-200 flex items-center gap-2">
-                        <i class="fa-solid fa-bug-slash text-emerald-400"></i> Sửa Lỗi Gộp File Game (Anti-Reset Patch)
-                    </h2>
-                    <p class="text-xs text-slate-400 leading-relaxed">
-                        Lỗi file bị reset khi dán vào Game thường xuất hiện do <b class="text-slate-200">Kích thước Byte không chia hết cho 16/32</b> hoặc mất <b class="text-slate-200">Byte Padding Signature</b> gốc. Công cụ sẽ tự cân bằng lại byte aligned chuẩn cho file.
-                    </p>
-                    <button onclick="fixAndAlignBytes()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2 rounded-lg text-xs font-medium transition">
-                        Tự Động Căn Chỉnh & Fix Null Padding (Align 16-bit)
-                    </button>
+                    <!-- Sửa byte trực tiếp trong modal inspector -->
+                    <div class="bg-gray-900/50 p-3 rounded border border-gray-700 space-y-2">
+                        <label class="text-xs font-bold text-gray-300 block">Sửa giá trị Byte được chọn:</label>
+                        <div class="flex gap-2">
+                            <input type="text" id="editHexValue" placeholder="Hex (vd: FF)" maxlength="2" class="w-1/2 bg-gray-900 border border-gray-700 rounded p-1.5 text-xs font-code uppercase outline-none focus:border-blue-500">
+                            <input type="number" id="editDecValue" min="0" max="255" placeholder="Dec (0-255)" class="w-1/2 bg-gray-900 border border-gray-700 rounded p-1.5 text-xs font-code outline-none focus:border-blue-500">
+                        </div>
+                        <button onclick="saveByteEdit()" class="w-full bg-blue-600 hover:bg-blue-700 text-white text-xs py-2 rounded font-semibold transition">
+                            Lưu Byte Này
+                        </button>
+                    </div>
                 </div>
-            </section>
+            </div>
 
-        </main>
+        </div>
     </div>
 
-    <!-- Footer - Chủ Tool -->
-    <footer class="bg-slate-900 border-t border-slate-800 px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
-        <div class="flex items-center gap-2">
-            <span>Hex & Byte Master Tool V11 &copy; 2026. All rights reserved.</span>
-        </div>
-        <div class="flex items-center space-x-4">
-            <span class="font-medium text-slate-300">Liên hệ hỗ trợ:</span>
-            <a href="https://facebook.com" target="_blank" class="text-blue-400 hover:text-blue-300 flex items-center gap-1 font-semibold transition">
-                <i class="fa-brands fa-facebook text-base"></i> Facebook Chủ Tool
-            </a>
-            <a href="https://zalo.me" target="_blank" class="text-cyan-400 hover:text-cyan-300 flex items-center gap-1 font-semibold transition">
-                <i class="fa-solid fa-comment-dots text-base"></i> Zalo Support
-            </a>
+    <!-- Footer Hiển thị Thông tin Chủ Tool (Facebook & Zalo) -->
+    <footer class="bg-gray-800 border-t border-gray-700 px-6 py-4 mt-8">
+        <div class="container mx-auto flex flex-col md:flex-row justify-between items-center gap-3 text-xs text-gray-400">
+            <div>
+                <span>Hex & Byte Master V11 &copy; 2026. Giao diện V10 giữ nguyên.</span>
+            </div>
+            <div class="flex items-center space-x-6">
+                <span class="font-semibold text-gray-300">Liên hệ hỗ trợ:</span>
+                <a href="https://facebook.com" target="_blank" class="text-blue-400 hover:text-blue-300 flex items-center gap-1 font-semibold transition">
+                    <i class="fa-brands fa-facebook text-sm"></i> Facebook Admin
+                </a>
+                <a href="https://zalo.me" target="_blank" class="text-cyan-400 hover:text-cyan-300 flex items-center gap-1 font-semibold transition">
+                    <i class="fa-solid fa-comment-dots text-sm"></i> Zalo Support
+                </a>
+            </div>
         </div>
     </footer>
 
-    <!-- Logic JS JavaScript -->
+    <!-- Logic Xử Lý Javascript -->
     <script>
-        let fileBuffer = null; // Uint8Array chính lưu byte
-        let selectedOffset = 0;
+        let fileBytes = null;
+        let selectedIndex = 0;
 
-        // Chuyển Tab
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            document.querySelectorAll('.tab-btn').forEach(el => {
-                el.classList.remove('bg-indigo-600/20', 'text-indigo-400', 'font-medium');
-                el.classList.add('text-slate-400');
-            });
-
-            document.getElementById(`tab-${tabName}`).classList.remove('hidden');
-            const activeBtn = document.getElementById(`btn-${tabName}`);
-            activeBtn.classList.add('bg-indigo-600/20', 'text-indigo-400', 'font-medium');
-            activeBtn.classList.remove('text-slate-400');
-        }
-
-        // Đọc File được Tải Lên
-        function handleFileSelect(event) {
+        // 1. Đọc File Hoàn Chỉnh
+        function loadFile(event) {
             const file = event.target.files[0];
             if (!file) return;
 
-            document.getElementById('infoFileName').innerText = `Tên file: ${file.name}`;
-            document.getElementById('infoFileSize').innerText = `Kích thước: ${file.size.toLocaleString()} Bytes`;
+            document.getElementById('fileName').innerText = file.name;
+            document.getElementById('fileSize').innerText = `${file.size.toLocaleString()} Bytes`;
 
             const reader = new FileReader();
             reader.onload = function(e) {
-                fileBuffer = new Uint8Array(e.target.result);
+                fileBytes = new Uint8Array(e.target.result);
                 renderHexView();
                 inspectByte(0);
             };
             reader.readAsArrayBuffer(file);
         }
 
-        // Render Xem Dữ Liệu Hex
+        // 2. Render Dữ liệu Hex View
         function renderHexView() {
-            const container = document.getElementById('hexViewContainer');
-            if (!fileBuffer || fileBuffer.length === 0) {
-                container.innerHTML = `<p class="text-slate-600 italic">File rỗng hoặc chưa chọn file...</p>`;
+            const container = document.getElementById('hexContainer');
+            if (!fileBytes || fileBytes.length === 0) {
+                container.innerHTML = '<span class="text-gray-500 italic">File rỗng...</span>';
                 return;
             }
 
             let html = '';
-            const maxLen = Math.min(fileBuffer.length, 4096); // Render max 4KB preview cho mượt
-            
-            for (let i = 0; i < maxLen; i += 16) {
-                let offsetHex = i.toString(16).padStart(8, '0').toUpperCase();
+            const limit = Math.min(fileBytes.length, 2048); // Render preview 2KB để tối ưu hiệu năng
+
+            for (let i = 0; i < limit; i += 16) {
+                let offsetStr = i.toString(16).padStart(8, '0').toUpperCase();
                 let hexStr = '';
                 let asciiStr = '';
 
                 for (let j = 0; j < 16; j++) {
-                    if (i + j < maxLen) {
-                        const b = fileBuffer[i + j];
-                        const byteHex = b.toString(16).padStart(2, '0').toUpperCase();
-                        const isActive = (i + j === selectedOffset) ? 'active' : '';
-                        hexStr += `<span onclick="inspectByte(${i + j})" class="hex-byte px-1 rounded ${isActive}">${byteHex}</span> `;
+                    const idx = i + j;
+                    if (idx < limit) {
+                        const b = fileBytes[idx];
+                        const hexVal = b.toString(16).padStart(2, '0').toUpperCase();
+                        const isSelected = (idx === selectedIndex) ? 'selected' : '';
+                        hexStr += `<span onclick="inspectByte(${idx})" class="hex-byte px-1 rounded ${isSelected}">${hexVal}</span> `;
                         asciiStr += (b >= 32 && b <= 126) ? String.fromCharCode(b) : '.';
                     } else {
                         hexStr += '   ';
                     }
                 }
 
-                html += `<div class="flex gap-4"><span class="text-indigo-400">${offsetHex}</span><span class="flex-1">${hexStr}</span><span class="text-amber-500">${asciiStr}</span></div>`;
+                html += `<div class="flex gap-4"><span class="text-blue-400">${offsetStr}</span><span class="flex-1">${hexStr}</span><span class="text-amber-400">${asciiStr}</span></div>`;
             }
 
-            if (fileBuffer.length > 4096) {
-                html += `<div class="text-slate-500 italic mt-2">...Hiển thị tối đa 4096 bytes xem trước...</div>`;
+            if (fileBytes.length > 2048) {
+                html += '<div class="text-gray-500 italic mt-2">...Hiển thị 2048 bytes đầu tiên...</div>';
             }
 
             container.innerHTML = html;
         }
 
-        // Hex Inspector & Cập nhật Inspector
-        function inspectByte(offset) {
-            if (!fileBuffer || offset >= fileBuffer.length) return;
-            selectedOffset = offset;
+        // 3. Inspector Byte
+        function inspectByte(index) {
+            if (!fileBytes || index >= fileBytes.length) return;
+            selectedIndex = index;
 
-            const b = fileBuffer[offset];
-            document.getElementById('inspectOffset').innerText = `0x${offset.toString(16).padStart(8, '0').toUpperCase()}`;
+            const b = fileBytes[index];
+            document.getElementById('inspectOffset').innerText = `0x${index.toString(16).padStart(8, '0').toUpperCase()}`;
             document.getElementById('inspectHex').innerText = `0x${b.toString(16).padStart(2, '0').toUpperCase()}`;
             document.getElementById('inspectDec').innerText = b;
             document.getElementById('inspectBin').innerText = b.toString(2).padStart(8, '0');
-            document.getElementById('inspectAscii').innerText = (b >= 32 && b <= 126) ? String.fromCharCode(b) : '.';
 
-            document.getElementById('editByteHex').value = b.toString(16).padStart(2, '0').toUpperCase();
-            document.getElementById('editByteDec').value = b;
+            document.getElementById('editHexValue').value = b.toString(16).padStart(2, '0').toUpperCase();
+            document.getElementById('editDecValue').value = b;
 
             renderHexView();
         }
 
-        // Sửa Byte Trực Tiếp trong Inspector
-        function saveCurrentByteEdit() {
-            if (!fileBuffer) {
+        // 4. Sửa Byte Trực Tiếp trong Modal Hex Inspector
+        function saveByteEdit() {
+            if (!fileBytes) {
                 alert("Vui lòng mở file trước khi chỉnh sửa!");
                 return;
             }
-            const hexInput = document.getElementById('editByteHex').value.trim();
-            const val = parseInt(hexInput, 16);
+
+            const hexVal = document.getElementById('editHexValue').value.trim();
+            const val = parseInt(hexVal, 16);
 
             if (isNaN(val) || val < 0 || val > 255) {
-                alert("Giá trị Hex không hợp lệ! (Phải từ 00 đến FF)");
+                alert("Giá trị Hex không hợp lệ! Vui lòng nhập từ 00 đến FF.");
                 return;
             }
 
-            fileBuffer[selectedOffset] = val;
-            inspectByte(selectedOffset);
-            alert(`Đã cập nhật byte tại offset 0x${selectedOffset.toString(16).toUpperCase()} thành 0x${val.toString(16).toUpperCase()}`);
+            fileBytes[selectedIndex] = val;
+            inspectByte(selectedIndex);
+            alert(`Đã lưu Byte tại Offset 0x${selectedIndex.toString(16).toUpperCase()} thành 0x${val.toString(16).toUpperCase()}`);
         }
 
-        // Giải Nén Bytes
-        function decompressBytes(type) {
-            if (!fileBuffer) {
-                alert("Vui lòng mở file trước!");
+        // 5. Fix Lỗi Reset File Khi Dán Vào Game (Align Null Padding 16-bit)
+        function fixGameResetError() {
+            if (!fileBytes) {
+                alert("Chưa nạp file!");
+                return;
+            }
+
+            const remainder = fileBytes.length % 16;
+            if (remainder === 0) {
+                alert("File đã chuẩn định dạng Aligned 16-byte! Không gây ra lỗi reset game.");
+                return;
+            }
+
+            const padLength = 16 - remainder;
+            const newBytes = new Uint8Array(fileBytes.length + padLength);
+            newBytes.set(fileBytes);
+
+            // Bổ sung các null byte padding
+            for (let i = fileBytes.length; i < newBytes.length; i++) {
+                newBytes[i] = 0x00;
+            }
+
+            fileBytes = newBytes;
+            document.getElementById('fileSize').innerText = `${fileBytes.length.toLocaleString()} Bytes`;
+            renderHexView();
+            alert(`Đã cân bằng dữ liệu! Thêm ${padLength} Null Byte(s) giúp game nhận diện file an toàn.`);
+        }
+
+        // 6. Chức năng Giải Nén Bytes (Zlib/Deflate)
+        function decompressZlib() {
+            if (!fileBytes) {
+                alert("Vui lòng mở tệp nén!");
                 return;
             }
             try {
-                let decompressed;
-                if (type === 'zlib' || type === 'gzip') {
-                    decompressed = pako.inflate(fileBuffer);
-                }
+                const decompressed = pako.inflate(fileBytes);
                 const str = new TextDecoder().decode(decompressed);
-                document.getElementById('decompressResult').value = str;
+                document.getElementById('decompressOutput').value = str;
             } catch (err) {
-                alert("Không thể giải nén file với định dạng đã chọn! Lỗi: " + err.message);
+                alert("Giải nén thất bại: Tệp không chứa cấu trúc Zlib/Deflate hợp lệ!");
             }
         }
 
-        // Giải Mã Dữ Liệu (XOR Operation)
-        function decryptData() {
-            if (!fileBuffer) {
-                alert("Vui lòng tải lên file cần giải mã!");
-                return;
-            }
-            const keyStr = document.getElementById('decryptKey').value;
-            if (!keyStr) {
-                alert("Vui lòng nhập Key giải mã!");
+        // 7. Chức năng Giải Mã Hóa File (XOR Key)
+        function decryptXOR() {
+            if (!fileBytes) {
+                alert("Vui lòng nạp file cần giải mã!");
                 return;
             }
 
-            const key = parseInt(keyStr, 16) || keyStr.charCodeAt(0) || 0x5A;
-            for (let i = 0; i < fileBuffer.length; i++) {
-                fileBuffer[i] = fileBuffer[i] ^ key; // Thao tác XOR giải mã
+            const keyInput = document.getElementById('xorKeyInput').value.trim();
+            if (!keyInput) {
+                alert("Vui lòng nhập Key!");
+                return;
+            }
+
+            let key = parseInt(keyInput, 16);
+            if (isNaN(key)) key = keyInput.charCodeAt(0) || 0x5A;
+
+            for (let i = 0; i < fileBytes.length; i++) {
+                fileBytes[i] = fileBytes[i] ^ key;
             }
 
             renderHexView();
-            alert("Đã giải mã XOR thành công dữ liệu!");
+            inspectByte(selectedIndex);
+            alert("Đã giải mã/mã hóa dữ liệu XOR thành công!");
         }
 
-        // Fix Lỗi Align Byte Tránh Reset Game
-        function fixAndAlignBytes() {
-            if (!fileBuffer) {
-                alert("Chưa có file để căn chỉnh Byte!");
-                return;
-            }
-            const remainder = fileBuffer.length % 16;
-            if (remainder === 0) {
-                alert("Cấu trúc Byte đã chuẩn Aligned 16-bit! Không bị lỗi Reset Game.");
-                return;
-            }
-
-            const paddingNeeded = 16 - remainder;
-            const newBuffer = new Uint8Array(fileBuffer.length + paddingNeeded);
-            newBuffer.set(fileBuffer);
-            // Điền Null Bytes 0x00 vào cuối file
-            for (let i = fileBuffer.length; i < newBuffer.length; i++) {
-                newBuffer[i] = 0x00;
-            }
-
-            fileBuffer = newBuffer;
-            renderHexView();
-            alert(`Đã tự động thêm ${paddingNeeded} Null Byte(s) để align chuẩn 16-bit! File đã sẵn sàng dán vào game.`);
-        }
-
-        // Xuất File đã Chỉnh Sửa
+        // 8. Xuất File Sau Khi Chỉnh Sửa
         function exportFile() {
-            if (!fileBuffer) {
-                alert("Chưa có dữ liệu để xuất!");
+            if (!fileBytes) {
+                alert("Không có dữ liệu file để xuất!");
                 return;
             }
-            const blob = new Blob([fileBuffer], { type: "application/octet-stream" });
-            const link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
-            link.download = "modded_game_file.bin";
-            link.click();
+
+            const blob = new Blob([fileBytes], { type: 'application/octet-stream' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = "edited_game_file.bin";
+            a.click();
+            URL.revokeObjectURL(url);
         }
     </script>
 </body>
