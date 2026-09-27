@@ -2,628 +2,178 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>CYBER V18 | LIQUID GLASS x iOS 26</title>
-
-<!-- JSZip cho tính năng Convert ZIP -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-<!-- Fonts -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CYBER RE-PACKER V10 CLASSIC | TRỌNG DŨNG</title>
 <style>
-/* CSS VARIABLES & RESET */
-:root {
-    --bg-dark: #05050a;
-    --liquid-blue: #0a84ff;
-    --liquid-purple: #bf5af2;
-    --liquid-pink: #ff375f;
-    --glass-bg: rgba(25, 25, 35, 0.4);
-    --glass-border: rgba(255, 255, 255, 0.1);
-    --neon-white: rgba(255, 255, 255, 0.7);
-    --text-main: #ffffff;
-    --text-muted: #8e8e93;
-    --font-main: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
-    --spring: cubic-bezier(0.175, 0.885, 0.32, 1.275); /* iOS Spring Animation */
-}
-
-* { margin: 0; padding: 0; box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
-
-body {
-    background-color: var(--bg-dark);
-    color: var(--text-main);
-    font-family: var(--font-main);
-    min-height: 100vh;
-    overflow-x: hidden;
-    padding-top: 80px;
-    padding-bottom: 60px;
-}
-
-/* LIQUID BACKGROUND BLOBS */
-.liquid-bg { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
-.blob { position: absolute; filter: blur(120px); opacity: 0.5; animation: floatBlob 20s infinite alternate ease-in-out; border-radius: 50%; }
-.blob-1 { width: 50vw; height: 50vw; background: var(--liquid-blue); top: -10%; left: -10%; }
-.blob-2 { width: 45vw; height: 45vw; background: var(--liquid-purple); bottom: -10%; right: -5%; animation-delay: -5s; }
-.blob-3 { width: 35vw; height: 35vw; background: var(--liquid-pink); top: 40%; left: 30%; opacity: 0.3; animation-delay: -10s; }
-
-@keyframes floatBlob { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(15%, 20%) scale(1.1); } }
-
-/* TOP NAV BAR */
-.top-nav {
-    position: fixed; top: 0; left: 0; right: 0; height: 70px;
-    background: rgba(10, 10, 15, 0.5); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%);
-    border-bottom: 1px solid var(--glass-border);
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 0 24px; z-index: 100;
-}
-.brand-title { font-size: 20px; font-weight: 800; letter-spacing: 1px; background: linear-gradient(to right, #fff, var(--liquid-blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.pill-clock { background: rgba(255,255,255,0.05); padding: 6px 16px; border-radius: 30px; font-weight: 600; font-size: 13px; border: 1px solid var(--glass-border); }
-.hamburger {
-    width: 40px; height: 40px; border-radius: 12px; background: rgba(255,255,255,0.05);
-    border: 1px solid var(--glass-border); color: #fff; font-size: 20px;
-    display: flex; justify-content: center; align-items: center; cursor: pointer;
-    transition: all 0.3s var(--spring);
-}
-.hamburger:hover { box-shadow: 0 0 15px var(--neon-white); border-color: rgba(255,255,255,0.5); transform: scale(1.05); }
-
-/* SIDE MENU (Hamburger Content) */
-.side-menu {
-    position: fixed; top: 70px; right: -320px; width: 280px; height: calc(100vh - 70px);
-    background: rgba(15, 15, 20, 0.7); backdrop-filter: blur(50px);
-    border-left: 1px solid var(--glass-border); transition: right 0.4s var(--spring);
-    padding: 20px; z-index: 99; display: flex; flex-direction: column; gap: 10px;
-}
-.side-menu.active { right: 0; }
-.menu-item {
-    padding: 14px 16px; border-radius: 14px; font-size: 14px; font-weight: 600;
-    color: var(--text-muted); cursor: pointer; transition: all 0.3s;
-    display: flex; align-items: center; gap: 10px;
-}
-.menu-item:hover, .menu-item.active {
-    background: rgba(255,255,255,0.1); color: #fff; box-shadow: inset 0 0 15px rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-}
-
-/* APP GRID (V14 Layout Style) */
-.app-container {
-    max-width: 1400px; margin: 0 auto; padding: 20px;
-    display: grid; grid-template-columns: 1fr 380px; gap: 24px;
-}
-@media (max-width: 1024px) { .app-container { grid-template-columns: 1fr; } }
-
-/* GLASS PANELS */
-.glass-panel {
-    background: var(--glass-bg); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%);
-    border: 1px solid var(--glass-border); border-radius: 28px; padding: 24px; margin-bottom: 24px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3); transition: all 0.4s var(--spring);
-}
-.glass-panel:hover { border-color: rgba(255,255,255,0.2); box-shadow: 0 15px 40px rgba(0,0,0,0.4), 0 0 15px rgba(255,255,255,0.05); }
-.panel-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
-.panel-title::before { content: ''; width: 4px; height: 18px; background: var(--liquid-blue); border-radius: 2px; }
-
-/* DRAG & DROP ZONE */
-.drop-zone {
-    border: 2px dashed rgba(255,255,255,0.2); border-radius: 20px; padding: 40px 20px;
-    text-align: center; cursor: pointer; transition: all 0.3s; background: rgba(0,0,0,0.2);
-    display: flex; flex-direction: column; align-items: center; gap: 10px;
-}
-.drop-zone:hover { border-color: #fff; background: rgba(255,255,255,0.05); box-shadow: inset 0 0 20px rgba(255,255,255,0.1); }
-.drop-icon { font-size: 44px; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5)); transition: transform 0.3s; }
-.drop-zone:hover .drop-icon { transform: translateY(-5px); }
-
-/* FILE LIST & DEEP VIEW ITEM */
-.file-list { margin-top: 15px; display: flex; flex-direction: column; gap: 10px; max-height: 250px; overflow-y: auto; }
-.file-item {
-    background: rgba(0,0,0,0.3); padding: 14px 16px; border-radius: 16px;
-    display: flex; justify-content: space-between; align-items: center;
-    border: 1px solid rgba(255,255,255,0.05); cursor: pointer; transition: all 0.3s;
-}
-.file-item:hover { border-color: rgba(255,255,255,0.3); box-shadow: 0 0 15px rgba(255,255,255,0.1); transform: translateX(5px); }
-.file-info h4 { font-size: 14px; margin-bottom: 4px; }
-.file-info p { font-size: 11px; color: var(--liquid-blue); font-family: var(--font-mono); }
-.btn-remove { background: none; border: none; color: #ff375f; font-size: 16px; cursor: pointer; font-weight: bold; }
-
-/* INPUTS & BUTTONS */
-.input-glass {
-    width: 100%; padding: 16px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border);
-    border-radius: 16px; color: #fff; font-size: 14px; font-family: var(--font-main); margin-top: 15px;
-    transition: all 0.3s;
-}
-.input-glass:focus { border-color: var(--liquid-blue); box-shadow: 0 0 15px rgba(10, 132, 255, 0.3); }
-
-.btn-primary {
-    width: 100%; padding: 18px; border-radius: 18px; border: none;
-    background: #fff; color: #000; font-size: 15px; font-weight: 800; letter-spacing: 0.5px;
-    cursor: pointer; margin-top: 20px; transition: all 0.4s var(--spring);
-    box-shadow: 0 10px 20px rgba(255,255,255,0.2);
-}
-.btn-primary:hover:not(:disabled) { transform: scale(1.02); box-shadow: 0 15px 30px rgba(255,255,255,0.4), 0 0 15px var(--neon-white); }
-.btn-primary:disabled { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.4); box-shadow: none; cursor: not-allowed; }
-.status-text { margin-top: 15px; font-size: 13px; text-align: center; font-weight: 600; font-family: var(--font-mono); }
-
-/* FLOATING AI CHAT BUBBLE */
-.floating-bubble {
-    position: fixed; bottom: 30px; right: 30px; width: 64px; height: 64px;
-    background: linear-gradient(135deg, var(--liquid-blue), var(--liquid-purple));
-    border-radius: 24px; display: flex; justify-content: center; align-items: center;
-    font-size: 28px; box-shadow: 0 10px 30px rgba(10, 132, 255, 0.4);
-    cursor: pointer; transition: all 0.4s var(--spring); z-index: 1000; border: 1px solid rgba(255,255,255,0.2);
-}
-.floating-bubble:hover { transform: scale(1.1) translateY(-5px); box-shadow: 0 15px 40px rgba(10, 132, 255, 0.6), 0 0 20px var(--neon-white); }
-.bubble-badge {
-    position: absolute; top: -5px; right: -5px; background: var(--liquid-pink); color: #fff;
-    font-size: 12px; font-weight: 800; width: 24px; height: 24px; border-radius: 50%;
-    display: flex; justify-content: center; align-items: center; border: 2px solid var(--bg-dark);
-}
-
-/* AI CHAT WINDOW */
-.chat-window {
-    position: fixed; bottom: 110px; right: 30px; width: 340px; height: 450px;
-    background: rgba(15, 15, 20, 0.85); backdrop-filter: blur(40px);
-    border: 1px solid var(--glass-border); border-radius: 28px;
-    display: flex; flex-direction: column; opacity: 0; pointer-events: none;
-    transform: translateY(20px) scale(0.9); transition: all 0.4s var(--spring); z-index: 999;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.5); overflow: hidden;
-}
-.chat-window.active { opacity: 1; pointer-events: auto; transform: translateY(0) scale(1); }
-.chat-header { padding: 16px 20px; background: rgba(255,255,255,0.05); border-bottom: 1px solid var(--glass-border); font-weight: 700; display: flex; justify-content: space-between; align-items: center;}
-.chat-body { flex: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
-.chat-msg { padding: 12px 16px; border-radius: 18px; font-size: 13px; max-width: 85%; line-height: 1.4; }
-.chat-msg.ai { background: rgba(255,255,255,0.1); align-self: flex-start; border-bottom-left-radius: 4px; }
-.chat-msg.user { background: var(--liquid-blue); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
-.chat-input { display: flex; padding: 12px; border-top: 1px solid var(--glass-border); background: rgba(0,0,0,0.2); }
-.chat-input input { flex: 1; background: transparent; border: none; color: #fff; padding: 0 10px; font-size: 14px; }
-.chat-input button { background: #fff; color: #000; border: none; border-radius: 12px; padding: 10px 16px; font-weight: 700; cursor: pointer; }
-
-/* POPUP MODAL (Alert & Deep View) */
-.modal-overlay {
-    position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(15px);
-    display: flex; justify-content: center; align-items: center; z-index: 2000;
-    opacity: 0; pointer-events: none; transition: opacity 0.3s;
-}
-.modal-overlay.active { opacity: 1; pointer-events: auto; }
-.modal-content {
-    background: rgba(30, 30, 35, 0.85); border: 1px solid var(--glass-border);
-    border-radius: 28px; padding: 24px; width: 90%; max-width: 500px;
-    text-align: center; transform: scale(0.9); transition: all 0.4s var(--spring);
-    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-}
-.modal-overlay.active .modal-content { transform: scale(1); }
-.modal-title { font-size: 18px; font-weight: 700; margin-bottom: 15px; }
-.modal-text { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; font-family: var(--font-mono); text-align: left; max-height: 400px; overflow-y: auto; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 12px; word-wrap: break-word;}
-.modal-text::-webkit-scrollbar { width: 5px; }
-.modal-text::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 5px; }
-.modal-btn { background: #fff; color: #000; padding: 14px 24px; border-radius: 16px; border: none; font-weight: 800; width: 100%; cursor: pointer; transition: all 0.3s; }
-.modal-btn:hover { box-shadow: 0 0 15px var(--neon-white); }
-
-/* WIDGETS (Sidebar) */
-.music-widget { display: flex; align-items: center; gap: 15px; }
-.owner-card { display: flex; align-items: center; gap: 15px; }
-.owner-avatar { width: 50px; height: 50px; border-radius: 16px; background: linear-gradient(135deg, var(--liquid-blue), var(--liquid-purple)); display: flex; justify-content: center; align-items: center; font-size: 20px; box-shadow: 0 5px 15px rgba(10, 132, 255, 0.3); }
-
-/* SECTIONS */
-.tab-section { display: none; animation: slideUp 0.4s var(--spring) forwards; }
-.tab-section.active { display: block; }
-@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-/* Mod Hub Grid */
-.mod-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; }
-.mod-item { background: rgba(0,0,0,0.3); padding: 14px; border-radius: 16px; border: 1px solid var(--glass-border); display: flex; align-items: center; gap: 10px; cursor: pointer; transition: 0.3s; }
-.mod-item:hover { border-color: var(--liquid-blue); background: rgba(10, 132, 255, 0.1); }
+    :root {
+        --bg: #121212;
+        --surface: #1e1e1e;
+        --primary: #00e5ff;
+        --text: #e0e0e0;
+        --border: #333;
+    }
+    * { box-sizing: border-box; font-family: 'Consolas', monospace; }
+    body { background-color: var(--bg); color: var(--text); margin: 0; padding: 20px; }
+    .container { max-width: 1000px; margin: 0 auto; }
+    header { text-align: center; margin-bottom: 30px; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
+    h1 { color: var(--primary); margin: 0 0 10px 0; letter-spacing: 2px; }
+    .dev-info { color: #888; font-size: 14px; }
+    .panel { background: var(--surface); border: 1px solid var(--border); padding: 20px; margin-bottom: 20px; border-radius: 8px; }
+    .panel h2 { margin-top: 0; color: var(--primary); font-size: 18px; border-bottom: 1px dashed var(--border); padding-bottom: 10px; }
+    .drop-zone { border: 2px dashed #555; padding: 40px 20px; text-align: center; cursor: pointer; background: #1a1a1a; border-radius: 8px; transition: 0.2s; }
+    .drop-zone:hover { border-color: var(--primary); background: #222; }
+    .file-list { margin-top: 15px; }
+    .file-item { display: flex; justify-content: space-between; padding: 10px; background: #2a2a2a; margin-bottom: 5px; border-radius: 4px; border-left: 3px solid var(--primary); }
+    button { background: var(--primary); color: #000; border: none; padding: 12px 20px; font-weight: bold; cursor: pointer; width: 100%; border-radius: 4px; font-size: 16px; margin-top: 10px; }
+    button:disabled { background: #444; color: #888; cursor: not-allowed; }
+    button:hover:not(:disabled) { opacity: 0.9; }
+    .status { margin-top: 15px; text-align: center; font-weight: bold; color: #4caf50; }
+    .contact { text-align: center; margin-top: 40px; font-size: 14px; color: #888; }
+    .contact a { color: var(--primary); text-decoration: none; }
 </style>
 </head>
 <body>
 
-<!-- LIQUID BG -->
-<div class="liquid-bg">
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
-    <div class="blob blob-3"></div>
-</div>
+<div class="container">
+    <header>
+        <h1>CYBER RE-PACKER V10</h1>
+        <div class="dev-info">Developer: TRỌNG DŨNG | Classic Core Engine</div>
+    </header>
 
-<!-- TOP NAVIGATION -->
-<div class="top-nav">
-    <div class="brand-title">CYBER V18</div>
-    <div style="display:flex; gap:15px; align-items:center;">
-        <div class="pill-clock"><span id="sysClock">00:00:00</span> 🚀</div>
-        <div class="hamburger" onclick="toggleMenu()">☰</div>
-    </div>
-</div>
-
-<!-- SIDE MENU -->
-<div class="side-menu" id="sideMenu">
-    <div class="menu-item active" onclick="switchTab('tab-merge', this)">📦 Auto-Merge Mod (Gộp File)</div>
-    <div class="menu-item" onclick="switchTab('tab-convert', this)">🔄 ZIP OS Converter</div>
-    <div class="menu-item" onclick="switchTab('tab-decrypt', this)">🔓 Deep Text Decryptor</div>
-    <div class="menu-item" onclick="switchTab('tab-modhub', this)">🔥 Advanced Mod Hub</div>
-    <div class="menu-item" onclick="switchTab('tab-patcher', this)">🛠 Plist/JSON Patcher</div>
-    <hr style="border:none; border-top:1px solid var(--glass-border); margin: 10px 0;">
-    <div class="menu-item" onclick="toggleLanguage()">🌐 Đổi Ngôn Ngữ (EN/VN)</div>
-</div>
-
-<!-- MAIN GRID CONTAINER -->
-<div class="app-container">
-    
-    <!-- LEFT COLUMN (WORKSPACES) -->
-    <div class="workspaces">
-        
-        <!-- WORKSPACE 1: MERGE MODS -->
-        <div id="tab-merge" class="tab-section active">
-            <div class="glass-panel">
-                <h2 class="panel-title" data-i18n="merge_title">Gộp Mod Thông Minh (No Base Required)</h2>
-                <div class="drop-zone" id="mergeDrop">
-                    <div class="drop-icon">📦</div>
-                    <b data-i18n="merge_drop">Kéo thả các file .bytes vào đây</b>
-                    <p style="font-size: 12px; color: var(--text-muted);">Gộp tự động từ nhiều file khác nhau. Bấm vào file để xem Deep View Code.</p>
-                    <input type="file" id="mergePicker" multiple style="display:none;">
-                </div>
-                <div class="file-list" id="mergeList"></div>
-                <button class="btn-primary" id="btnMerge" disabled data-i18n="btn_merge">TIẾN HÀNH GỢP FILE MOD</button>
-                <div id="mergeStatus" class="status-text"></div>
-            </div>
+    <div class="panel">
+        <h2>📦 1. Gộp File Mod (.bytes)</h2>
+        <div class="drop-zone" id="mergeDrop" onclick="document.getElementById('mergePicker').click()">
+            <p>Click hoặc Kéo thả các file .bytes cần gộp vào đây</p>
+            <input type="file" id="mergePicker" multiple accept=".bytes" style="display:none;" onchange="handleMergeFiles(this.files)">
         </div>
-
-        <!-- WORKSPACE 2: ZIP CONVERTER -->
-        <div id="tab-convert" class="tab-section">
-            <div class="glass-panel">
-                <h2 class="panel-title" data-i18n="convert_title">iOS ↔ Android ZIP Converter</h2>
-                <div class="drop-zone" id="convertDrop">
-                    <div class="drop-icon">🔄</div>
-                    <b>Kéo thả file ZIP Mod vào đây</b>
-                    <p style="font-size: 12px; color: var(--text-muted);">Hỗ trợ convert Tướng, Hiệu Ứng, Âm thanh tự động vá cấu trúc Unity</p>
-                    <input type="file" id="convertPicker" accept=".zip" style="display:none;">
-                </div>
-                <p id="convertFileInfo" style="margin-top:10px; font-size:13px; text-align:center; color:var(--liquid-blue);"></p>
-                <select class="input-glass" id="convertDir">
-                    <option value="to_ios">Từ Android ➡️ Chuyển sang iOS</option>
-                    <option value="to_android">Từ iOS ➡️ Chuyển sang Android</option>
-                </select>
-                <button class="btn-primary" id="btnConvert" disabled>CHUYỂN ĐỔI HỆ ĐIỀU HÀNH</button>
-                <div id="convertStatus" class="status-text"></div>
-            </div>
-        </div>
-
-        <!-- WORKSPACE 3: DECRYPT TEXT -->
-        <div id="tab-decrypt" class="tab-section">
-            <div class="glass-panel">
-                <h2 class="panel-title">Giải Mã Text Chữ Thường 100%</h2>
-                <div class="drop-zone" id="decryptDrop">
-                    <div class="drop-icon">🔓</div>
-                    <b>Kéo thả file cần trích xuất mã hóa</b>
-                    <p style="font-size: 12px; color: var(--text-muted);">Công cụ sẽ bóc tách và ép toàn bộ định dạng về chữ thường sạch rác</p>
-                    <input type="file" id="decryptPicker" style="display:none;">
-                </div>
-                <button class="btn-primary" id="btnDecrypt" disabled style="margin-top: 15px;">GIẢI MÃ RA TEXT CHỮ THƯỜNG</button>
-                <div id="decryptStatus" class="status-text"></div>
-            </div>
-        </div>
-
-        <!-- WORKSPACE 4: MOD HUB -->
-        <div id="tab-modhub" class="tab-section">
-            <div class="glass-panel">
-                <h2 class="panel-title">Advanced Mod Hub (Tiêm Tính Năng)</h2>
-                <p style="font-size: 13px; color: var(--text-muted);">Chọn các tính năng mod muốn tích hợp vào gói Pack của bạn.</p>
-                <div class="mod-grid">
-                    <label class="mod-item"><input type="checkbox" id="modMap"> <span>👁️ Hack Map / Cam Xa</span></label>
-                    <label class="mod-item"><input type="checkbox" id="modAntiBan" checked> <span>🛡️ Anti-Ban Bypass</span></label>
-                    <label class="mod-item"><input type="checkbox" id="modVoice"> <span>🎧 Mod Voice Tiếng Nhật</span></label>
-                    <label class="mod-item"><input type="checkbox" id="modUI"> <span>🎇 Mod Giao Diện Lobby</span></label>
-                </div>
-                <button class="btn-primary" onclick="injectModHub()">TIÊM MOD & XUẤT PACK</button>
-            </div>
-        </div>
-
-        <!-- WORKSPACE 5: PATCHER -->
-        <div id="tab-patcher" class="tab-section">
-            <div class="glass-panel">
-                <h2 class="panel-title">Tiêm Config (Plist/JSON Patcher)</h2>
-                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 15px;">Tính năng nâng cao dành cho Modder can thiệp thông số Game.</p>
-                <textarea class="input-glass" rows="6" placeholder="Dán nội dung JSON hoặc Plist cần Patch vào đây..."></textarea>
-                <button class="btn-primary">TIẾN HÀNH PATCH</button>
-            </div>
-        </div>
-
+        <div class="file-list" id="mergeList"></div>
+        <button id="btnMerge" disabled onclick="mergeFiles()">TIẾN HÀNH GỢP FILE</button>
+        <div id="mergeStatus" class="status"></div>
     </div>
 
-    <!-- RIGHT COLUMN (WIDGETS) -->
-    <div class="widgets">
-        <!-- DEVELOPER INFO -->
-        <div class="glass-panel" style="padding: 16px 20px;">
-            <div class="owner-card">
-                <div class="owner-avatar">👑</div>
-                <div>
-                    <h3 style="font-size: 15px; font-weight: 700;">TRỌNG DŨNG</h3>
-                    <p style="font-size: 12px; color: var(--text-muted);">Developer • V18 Liquid Glass</p>
-                </div>
-            </div>
+    <div class="panel">
+        <h2>🔑 2. Giải Mã Ký Tự Rác (Lua/Bytes)</h2>
+        <div class="drop-zone" id="decryptDrop" onclick="document.getElementById('decryptPicker').click()">
+            <p>Click để chọn file bị mã hóa (Lua/Bytes)</p>
+            <input type="file" id="decryptPicker" style="display:none;" onchange="handleDecryptFile(this.files)">
         </div>
-
-        <!-- SPOTIFY MUSIC WIDGET -->
-        <div class="glass-panel" style="padding: 16px 20px;">
-            <h4 style="font-size: 12px; font-weight: 800; color: #1db954; margin-bottom: 12px;">🎵 NOW PLAYING</h4>
-            <div class="music-widget">
-                <iframe style="border-radius:12px; width:100%;" src="https://open.spotify.com/embed/track/4Wi0nUqTCwNGB01yKVnmnK?utm_source=generator&theme=0" height="80" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media"></iframe>
-            </div>
-        </div>
-
-        <!-- QUICK REPORT -->
-        <div class="glass-panel" style="padding: 16px 20px;">
-            <h4 style="font-size: 12px; font-weight: 800; color: var(--liquid-pink); margin-bottom: 12px;">📬 BÁO CÁO LỖI V18</h4>
-            <form action="https://formsubmit.co/hfvvfrgg@gmail.com" method="POST" target="_blank">
-                <input type="hidden" name="_captcha" value="false">
-                <input class="input-glass" type="text" name="message" placeholder="Mô tả lỗi gặp phải..." required style="padding: 12px; margin-top:0; font-size: 12px;">
-                <button type="submit" class="btn-primary" style="padding: 10px; font-size: 12px; margin-top: 10px;">GỬI REPORT</button>
-            </form>
-        </div>
+        <div id="decryptFileInfo" style="margin-top: 10px; color: var(--primary); text-align: center;"></div>
+        <button id="btnDecrypt" disabled onclick="decryptFile()">GIẢI MÃ THÀNH CHỮ THƯỜNG</button>
+        <div id="decryptStatus" class="status"></div>
     </div>
 
-</div>
-
-<!-- FLOATING AI BUBBLE -->
-<div class="floating-bubble" onclick="toggleChat()">
-    💬
-    <div class="bubble-badge">1</div>
-</div>
-
-<!-- AI CHAT WINDOW -->
-<div class="chat-window" id="chatWindow">
-    <div class="chat-header">
-        <span>AI Copilot V18</span>
-        <button onclick="toggleChat()" style="background:none; border:none; color:#fff; font-size:20px; cursor:pointer;">×</button>
-    </div>
-    <div class="chat-body" id="chatBody">
-        <div class="chat-msg ai">Xin chào Trọng Dũng! Tôi là ChatGPT tích hợp. Các tính năng Gộp Mod Auto-Merge, Deep View và Convert ZIP đều sẵn sàng. Bạn cần hỗ trợ gì?</div>
-    </div>
-    <div class="chat-input">
-        <input type="text" id="aiInput" placeholder="Hỏi AI..." onkeydown="if(event.key==='Enter') sendChat()">
-        <button onclick="sendChat()">Gửi</button>
-    </div>
-</div>
-
-<!-- POPUP MODAL -->
-<div class="modal-overlay" id="popupModal">
-    <div class="modal-content">
-        <h3 class="modal-title" id="popupTitle">Thông báo</h3>
-        <div class="modal-text" id="popupText">Nội dung...</div>
-        <button class="modal-btn" onclick="closePopup()">Đóng lại</button>
+    <div class="contact">
+        Báo cáo lỗi qua Zalo: <a href="https://zalo.me/0836376886" target="_blank">0836376886</a> | Email: hfvvfrgg@gmail.com
     </div>
 </div>
 
 <script>
-// --- CLOCK ---
-setInterval(() => { document.getElementById('sysClock').textContent = new Date().toTimeString().split(' ')[0]; }, 1000);
-
-// --- MENU & TABS LOGIC ---
-function toggleMenu() { document.getElementById('sideMenu').classList.toggle('active'); }
-function switchTab(tabId, el) {
-    document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
-    document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
-    document.getElementById(tabId).classList.add('active');
-    el.classList.add('active');
-    toggleMenu();
-}
-
-// --- TRANSLATION LOGIC ---
-let isEn = false;
-const dict = {
-    'merge_title': {vi: 'Gộp Mod Thông Minh (No Base Required)', en: 'Smart Auto-Merge (No Base Required)'},
-    'merge_drop': {vi: 'Kéo thả các file .bytes vào đây', en: 'Drop .bytes files here'},
-    'btn_merge': {vi: 'TIẾN HÀNH GỢP FILE MOD', en: 'PROCEED TO MERGE FILES'},
-    'convert_title': {vi: 'iOS ↔ Android ZIP Converter', en: 'iOS ↔ Android ZIP Converter'}
-};
-function toggleLanguage() {
-    isEn = !isEn; const lang = isEn ? 'en' : 'vi';
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        if(dict[key]) el.textContent = dict[key][lang];
-    });
-    showAlert(`Đã chuyển ngôn ngữ sang ${isEn ? 'Tiếng Anh' : 'Tiếng Việt'}!`, 'info');
-}
-
-// --- POPUP LOGIC ---
-function showAlert(msg, type='info', title='Thông báo') {
-    document.getElementById('popupTitle').textContent = title;
-    document.getElementById('popupText').innerHTML = msg;
-    document.getElementById('popupModal').classList.add('active');
-}
-function closePopup() { document.getElementById('popupModal').classList.remove('active'); }
-
-// --- TAB 1: AUTO-MERGE & DEEP VIEW ---
-let mergeFiles = [];
-const mergeDrop = document.getElementById('mergeDrop');
-const mergePicker = document.getElementById('mergePicker');
-const mergeList = document.getElementById('mergeList');
-const btnMerge = document.getElementById('btnMerge');
-
-mergeDrop.onclick = () => mergePicker.click();
-mergePicker.onchange = e => handleMerge(e.target.files);
-mergeDrop.addEventListener('dragover', e => { e.preventDefault(); mergeDrop.style.borderColor = '#0a84ff'; });
-mergeDrop.addEventListener('dragleave', e => { e.preventDefault(); mergeDrop.style.borderColor = 'rgba(255,255,255,0.2)'; });
-mergeDrop.addEventListener('drop', e => { e.preventDefault(); mergeDrop.style.borderColor = 'rgba(255,255,255,0.2)'; handleMerge(e.dataTransfer.files); });
-
-function handleMerge(files) {
-    Array.from(files).forEach(f => mergeFiles.push(f));
-    renderMerge();
-}
-function renderMerge() {
-    mergeList.innerHTML = '';
-    mergeFiles.forEach((f, idx) => {
-        let div = document.createElement('div');
-        div.className = 'file-item';
-        div.onclick = (e) => { if(e.target.tagName !== 'BUTTON') showDeepView(f); };
-        div.innerHTML = `
-            <div class="file-info"><h4>${f.name}</h4><p>${(f.size/1024).toFixed(1)} KB • Bấm để xem Code (Deep View)</p></div>
-            <button class="btn-remove" onclick="removeMergeFile(${idx})">✕</button>
-        `;
-        mergeList.appendChild(div);
-    });
-    btnMerge.disabled = mergeFiles.length < 2;
-}
-window.removeMergeFile = (idx) => { mergeFiles.splice(idx, 1); renderMerge(); };
-
-async function showDeepView(file) {
-    let buf = new Uint8Array(await file.slice(0, 300).arrayBuffer());
-    let hex = Array.from(buf).map(b => b.toString(16).padStart(2,'0')).join(' ');
-    let text = new TextDecoder().decode(buf).replace(/[^a-zA-Z0-9\s{}[\],._-]/g, '.');
-    let content = `<b style="color:var(--liquid-blue);">HEX CODE:</b><br>${hex}<br><br><b style="color:var(--liquid-purple);">TEXT DATA:</b><br>${text}`;
-    showAlert(content, 'info', `Deep View: ${file.name}`);
-}
-
-btnMerge.onclick = async () => {
-    btnMerge.disabled = true;
-    document.getElementById('mergeStatus').textContent = "Đang phân tích cấu trúc và gộp không cần base...";
-    try {
-        let totalSize = mergeFiles.reduce((sum, f) => sum + f.size, 0);
-        let finalBuf = new Uint8Array(totalSize);
-        let offset = 0;
-        
-        for(let file of mergeFiles) {
-            let buf = new Uint8Array(await file.arrayBuffer());
-            finalBuf.set(buf, offset); offset += buf.length;
-        }
-
-        const blob = new Blob([finalBuf], { type: 'application/octet-stream' });
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = 'V18_AutoMerged_Pack.bytes'; a.click();
-        
-        document.getElementById('mergeStatus').innerHTML = "✅ <b>Gộp Pack thành công!</b>";
-        document.getElementById('mergeStatus').style.color = "var(--liquid-blue)";
-    } catch(e) { document.getElementById('mergeStatus').textContent = "❌ Lỗi: " + e.message; } 
-    finally { btnMerge.disabled = false; }
-};
-
-// --- TAB 2: ZIP CONVERT ---
-let zipFile = null;
-document.getElementById('convertDrop').onclick = () => document.getElementById('convertPicker').click();
-document.getElementById('convertPicker').onchange = e => { 
-    if(e.target.files.length) { 
-        zipFile = e.target.files[0]; document.getElementById('btnConvert').disabled = false; 
-        document.getElementById('convertFileInfo').textContent = `Đã nạp: ${zipFile.name}`; 
+    // --- GỘP FILE MOD ---
+    let filesToMerge = [];
+    
+    function handleMergeFiles(files) {
+        Array.from(files).forEach(f => filesToMerge.push(f));
+        renderMergeList();
     }
-};
 
-document.getElementById('btnConvert').onclick = async () => {
-    document.getElementById('btnConvert').disabled = true;
-    document.getElementById('convertStatus').textContent = "Đang chuyển đổi hệ điều hành trong ZIP...";
-    try {
-        const dir = document.getElementById('convertDir').value;
-        const oldZip = new JSZip();
-        const newZip = new JSZip();
-        const contents = await oldZip.loadAsync(zipFile);
-        let count = 0;
+    function renderMergeList() {
+        const list = document.getElementById('mergeList');
+        list.innerHTML = '';
+        filesToMerge.forEach((f, i) => {
+            list.innerHTML += `<div class="file-item">
+                <span>${f.name} (${(f.size/1024).toFixed(1)} KB)</span>
+                <span style="color: #ff5252; cursor: pointer;" onclick="removeFile(${i})">Xóa</span>
+            </div>`;
+        });
+        document.getElementById('btnMerge').disabled = filesToMerge.length < 2;
+    }
 
-        for(const [path, file] of Object.entries(contents.files)) {
-            if(!file.dir) {
-                const data = await file.async('uint8array');
-                let newPath = path;
-                if(dir === 'to_ios') {
-                    if(newPath.endsWith('.ab')) newPath = newPath.replace('.ab', '.unity3d');
-                    if(data.length > 20) data[12] = 0x09;
-                } else {
-                    if(newPath.endsWith('.unity3d')) newPath = newPath.replace('.unity3d', '.ab');
-                    if(data.length > 20) data[12] = 0x0D;
-                }
-                newZip.file(newPath, data);
-                count++;
+    function removeFile(index) {
+        filesToMerge.splice(index, 1);
+        renderMergeList();
+    }
+
+    async function mergeFiles() {
+        document.getElementById('mergeStatus').innerText = "Đang xử lý...";
+        document.getElementById('btnMerge').disabled = true;
+        
+        try {
+            let totalSize = filesToMerge.reduce((acc, f) => acc + f.size, 0);
+            let mergedBuffer = new Uint8Array(totalSize);
+            let offset = 0;
+            
+            for(let file of filesToMerge) {
+                let buf = new Uint8Array(await file.arrayBuffer());
+                mergedBuffer.set(buf, offset);
+                offset += buf.length;
             }
+            
+            const blob = new Blob([mergedBuffer], { type: 'application/octet-stream' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'V10_Merged.bytes';
+            a.click();
+            
+            document.getElementById('mergeStatus').innerText = "✅ Gộp file thành công!";
+        } catch (e) {
+            document.getElementById('mergeStatus').innerText = "❌ Lỗi: " + e.message;
+            document.getElementById('mergeStatus').style.color = "#ff5252";
+        } finally {
+            document.getElementById('btnMerge').disabled = false;
         }
-
-        const blob = await newZip.generateAsync({type:"blob"});
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = zipFile.name.replace('.zip', '') + (dir === 'to_ios' ? '_iOS.zip' : '_Adr.zip'); a.click();
-        
-        document.getElementById('convertStatus').textContent = `✅ Convert thành công ${count} files bên trong!`;
-        document.getElementById('convertStatus').style.color = "var(--liquid-blue)";
-    } catch(e) { document.getElementById('convertStatus').textContent = "❌ Lỗi: " + e.message; } 
-    finally { document.getElementById('btnConvert').disabled = false; }
-};
-
-// --- TAB 3: DECRYPT ---
-let decryptFile = null;
-document.getElementById('decryptDrop').onclick = () => document.getElementById('decryptPicker').click();
-document.getElementById('decryptPicker').onchange = e => { 
-    if(e.target.files.length) { 
-        decryptFile = e.target.files[0]; document.getElementById('btnDecrypt').disabled = false; 
-        showAlert(`Đã nạp file: ${decryptFile.name}`, 'info', 'Sẵn sàng giải mã');
     }
-};
 
-document.getElementById('btnDecrypt').onclick = async () => {
-    document.getElementById('btnDecrypt').disabled = true;
-    document.getElementById('decryptStatus').textContent = "Đang bóc tách thành chữ thường...";
-    try {
-        let buf = new Uint8Array(await decryptFile.arrayBuffer());
-        let str = new TextDecoder('utf-8', {fatal:false}).decode(buf);
-        let clean = [];
-        for(let i=0; i<str.length; i++) {
-            let code = str.charCodeAt(i);
-            if(code === 10 || code === 13 || (code >= 32 && code <= 126)) clean.push(str[i]);
-            else if(clean.length && clean[clean.length-1] !== ' ') clean.push(' ');
+    // --- GIẢI MÃ CHỮ THƯỜNG ---
+    let targetDecryptFile = null;
+
+    function handleDecryptFile(files) {
+        if(files.length > 0) {
+            targetDecryptFile = files[0];
+            document.getElementById('decryptFileInfo').innerText = `Đã chọn: ${targetDecryptFile.name}`;
+            document.getElementById('btnDecrypt').disabled = false;
         }
-        let result = clean.join('').toLowerCase().replace(/\s+/g, ' ').trim();
-        
-        const blob = new Blob([result], { type: 'text/plain' });
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob); a.download = 'V18_Decrypted_Lowercase.txt'; a.click();
-        
-        document.getElementById('decryptStatus').textContent = "✅ Đã trích xuất chữ thường thành công!";
-    } catch(e) { document.getElementById('decryptStatus').textContent = "❌ Lỗi: " + e.message; } 
-    finally { document.getElementById('btnDecrypt').disabled = false; }
-};
+    }
 
-// --- TAB 4: MOD HUB INJECT ---
-function injectModHub() {
-    let mods = [];
-    if(document.getElementById('modMap').checked) mods.push("Hack Map/Cam Xa");
-    if(document.getElementById('modAntiBan').checked) mods.push("Anti-Ban Bypass");
-    if(document.getElementById('modVoice').checked) mods.push("Voice Tiếng Nhật");
-    if(document.getElementById('modUI').checked) mods.push("Lobby UI Mod");
-    
-    if(mods.length === 0) return showAlert("Vui lòng chọn ít nhất 1 tính năng để tiêm Mod!", 'err');
-    
-    let txt = "CYBER V18 MOD HUB PACK\nTính năng đã tiêm:\n- " + mods.join("\n- ");
-    const blob = new Blob([txt], { type: 'text/plain' });
-    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'V18_Mod_Pack.txt'; a.click();
-    
-    showAlert(`Đã tạo Pack Mod Hub thành công với các tính năng:<br><b>${mods.join(", ")}</b>`, 'info', 'Thành Công');
-}
+    async function decryptFile() {
+        if(!targetDecryptFile) return;
+        document.getElementById('decryptStatus').innerText = "Đang bóc tách...";
+        document.getElementById('btnDecrypt').disabled = true;
 
-// --- AI CHATBOT LOGIC ---
-const chatWindow = document.getElementById('chatWindow');
-const chatBody = document.getElementById('chatBody');
-const aiInput = document.getElementById('aiInput');
+        try {
+            let buf = new Uint8Array(await targetDecryptFile.arrayBuffer());
+            let rawString = new TextDecoder('utf-8', {fatal: false}).decode(buf);
+            let cleanString = "";
+            
+            for(let i=0; i<rawString.length; i++) {
+                let code = rawString.charCodeAt(i);
+                if(code === 10 || code === 13 || (code >= 32 && code <= 126)) {
+                    cleanString += rawString[i];
+                } else if(cleanString.length > 0 && cleanString[cleanString.length-1] !== ' ') {
+                    cleanString += ' ';
+                }
+            }
+            
+            let finalOutput = cleanString.toLowerCase().trim();
+            const blob = new Blob([finalOutput], { type: 'text/plain' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = targetDecryptFile.name + '_V10_Decrypted.txt';
+            a.click();
 
-function toggleChat() {
-    chatWindow.classList.toggle('active');
-    document.querySelector('.bubble-badge').style.display = 'none';
-}
-function addMsg(type, txt) {
-    let div = document.createElement('div');
-    div.className = `chat-msg ${type}`; div.textContent = txt;
-    chatBody.appendChild(div); chatBody.scrollTop = chatBody.scrollHeight;
-}
-function sendChat() {
-    let txt = aiInput.value.trim();
-    if(!txt) return;
-    addMsg('user', txt); aiInput.value = '';
-    
-    setTimeout(() => {
-        let q = txt.toLowerCase();
-        if(q.includes('convert') || q.includes('zip') || q.includes('ios')) {
-            addMsg('ai', 'Để Convert ZIP, hãy vào tab iOS ↔ Android ZIP Converter. Bạn kéo nguyên file ZIP vào, chọn hệ điều hành, AI sẽ tự patch các file Unity bên trong!');
-        } else if(q.includes('gộp') || q.includes('bytes')) {
-            addMsg('ai', 'Tính năng Gộp Mod Auto-Merge của V18 rất thông minh. Thả bao nhiêu file cũng được, tool tự nhận diện và gộp nối tiếp. Bạn click vào file để dùng Deep View nhé.');
-        } else if(q.includes('giải mã') || q.includes('chữ thường')) {
-            addMsg('ai', 'Chức năng giải mã sâu đã được nâng cấp, nó ép 100% mã rác thành khoảng trắng và chuyển chữ thành chữ thường cho bạn dễ đọc cấu trúc.');
-        } else {
-            addMsg('ai', 'V18 đã được thiết kế lại theo tiêu chuẩn iOS 26 Liquid Glass và bố cục chia Panel thông minh. Trọng Dũng thấy sao?');
+            document.getElementById('decryptStatus').innerText = "✅ Giải mã Text thành công!";
+        } catch (e) {
+            document.getElementById('decryptStatus').innerText = "❌ Lỗi: " + e.message;
+            document.getElementById('decryptStatus').style.color = "#ff5252";
+        } finally {
+            document.getElementById('btnDecrypt').disabled = false;
         }
-    }, 600);
-}
+    }
+
+    // Kéo thả files
+    const dropMerge = document.getElementById('mergeDrop');
+    dropMerge.addEventListener('dragover', (e) => { e.preventDefault(); dropMerge.style.borderColor = '#00e5ff'; });
+    dropMerge.addEventListener('dragleave', (e) => { e.preventDefault(); dropMerge.style.borderColor = '#555'; });
+    dropMerge.addEventListener('drop', (e) => { e.preventDefault(); dropMerge.style.borderColor = '#555'; handleMergeFiles(e.dataTransfer.files); });
 </script>
-
 </body>
 </html>
