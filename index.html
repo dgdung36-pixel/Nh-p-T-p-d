@@ -94,6 +94,15 @@ button{
 input{display:none}
 .progress{height:7px;background:#292929;border-radius:10px;overflow:hidden;margin-top:12px;display:none}
 .bar{height:100%;width:0;background:#ff3030;transition:width .15s}
+
+/* Music Player Styles */
+.music-player { display: flex; flex-direction: column; gap: 10px; }
+.track-title { font-size: 13px; font-weight: bold; color: #ddd; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.player-controls { display: flex; gap: 8px; align-items: center; }
+.player-controls button { margin-top: 0; padding: 10px; font-size: 14px; background: #222; border: 1px solid #333; color: #fff; }
+.player-controls button:hover { background: #333; }
+.music-slider { width: 100%; accent-color: #e92727; cursor: pointer; margin: 4px 0; }
+.volume-box { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #aaa; }
 </style>
 </head>
 <body>
@@ -103,6 +112,24 @@ input{display:none}
   <div><span class="sub">code by tdung</span></div>
   <div class="clock">Hiện giờ: <span id="clock">--:--:--</span></div>
 </header>
+
+<!-- MUSIC PLAYER CARD -->
+<div class="card">
+  <div class="music-player">
+    <div class="track-title" id="trackTitle">🎵 Phát nhạc thư giãn</div>
+    <audio id="audioEl" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+    <input type="range" id="seekSlider" class="music-slider" value="0" max="100" step="0.1">
+    <div class="player-controls">
+      <button id="prevTrack" class="secondary">⏮</button>
+      <button id="playPauseBtn" class="primary" style="margin-top:0;">▶ Phát</button>
+      <button id="nextTrack" class="secondary">⏭</button>
+    </div>
+    <div class="volume-box">
+      <span>🔊</span>
+      <input type="range" id="volumeSlider" class="music-slider" min="0" max="1" step="0.05" value="0.7">
+    </div>
+  </div>
+</div>
 
 <div class="card">
   <div id="drop" class="drop">
@@ -135,6 +162,74 @@ input{display:none}
 </div>
 
 <script>
+// --- MUSIC PLAYER SCRIPT ---
+const audioEl = document.getElementById('audioEl');
+const playPauseBtn = document.getElementById('playPauseBtn');
+const seekSlider = document.getElementById('seekSlider');
+const volumeSlider = document.getElementById('volumeSlider');
+const trackTitle = document.getElementById('trackTitle');
+const prevTrackBtn = document.getElementById('prevTrack');
+const nextTrackBtn = document.getElementById('nextTrack');
+
+const playlist = [
+  { name: "🎵 SoundHelix Song 1 (Thư giãn)", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
+  { name: "🎵 SoundHelix Song 2 (Sôi động)", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
+  { name: "🎵 SoundHelix Song 3 (Nhẹ nhàng)", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" }
+];
+let currentTrackIdx = 0;
+
+function loadTrack(idx) {
+  currentTrackIdx = idx;
+  audioEl.src = playlist[idx].src;
+  trackTitle.textContent = playlist[idx].name;
+  audioEl.load();
+}
+
+playPauseBtn.onclick = () => {
+  if (audioEl.paused) {
+    audioEl.play();
+    playPauseBtn.textContent = '⏸ Tạm dừng';
+  } else {
+    audioEl.pause();
+    playPauseBtn.textContent = '▶ Phát';
+  }
+};
+
+audioEl.ontimeupdate = () => {
+  if (!isNaN(audioEl.duration)) {
+    seekSlider.value = (audioEl.currentTime / audioEl.duration) * 100;
+  }
+};
+
+seekSlider.oninput = () => {
+  if (!isNaN(audioEl.duration)) {
+    audioEl.currentTime = (seekSlider.value / 100) * audioEl.duration;
+  }
+};
+
+volumeSlider.oninput = () => {
+  audioEl.volume = volumeSlider.value;
+};
+
+prevTrackBtn.onclick = () => {
+  currentTrackIdx = (currentTrackIdx - 1 + playlist.length) % playlist.length;
+  loadTrack(currentTrackIdx);
+  audioEl.play();
+  playPauseBtn.textContent = '⏸ Tạm dừng';
+};
+
+nextTrackBtn.onclick = () => {
+  currentTrackIdx = (currentTrackIdx + 1) % playlist.length;
+  loadTrack(currentTrackIdx);
+  audioEl.play();
+  playPauseBtn.textContent = '⏸ Tạm dừng';
+};
+
+audioEl.onended = () => {
+  nextTrackBtn.click();
+};
+
+// --- TOOL GỘP SCRIPT ---
 const picker = document.getElementById('picker');
 const drop = document.getElementById('drop');
 const filesEl = document.getElementById('files');
