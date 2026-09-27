@@ -3,29 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<meta name="theme-color" content="#0d0d15">
-<title>TOOL GỘP BYTES ULTIMATE - TDUNG MODDER</title>
+<meta name="theme-color" content="#0a0c14">
+<title>TOOL GỘP BYTES ULTIMATE V4 - CYBER ENGINE</title>
 <style>
 :root {
   --primary: #ff0055;
-  --primary-glow: rgba(255, 0, 85, 0.5);
+  --primary-glow: rgba(255, 0, 85, 0.6);
   --accent: #00f3ff;
-  --accent-glow: rgba(0, 243, 255, 0.5);
-  --bg-dark: #090a10;
-  --card-bg: rgba(18, 20, 32, 0.85);
-  --border-color: rgba(0, 243, 255, 0.2);
+  --accent-glow: rgba(0, 243, 255, 0.6);
+  --success: #00ff9d;
+  --bg-dark: #06070c;
+  --card-bg: rgba(13, 16, 27, 0.82);
+  --border-color: rgba(0, 243, 255, 0.25);
   --text-main: #f0f3f8;
-}
-
-@keyframes cyberGlow {
-  0% { border-color: var(--primary); box-shadow: 0 0 15px var(--primary-glow); }
-  50% { border-color: var(--accent); box-shadow: 0 0 15px var(--accent-glow); }
-  100% { border-color: var(--primary); box-shadow: 0 0 15px var(--primary-glow); }
-}
-
-@keyframes scanline {
-  0% { transform: translateY(-100%); }
-  100% { transform: translateY(1000%); }
+  --font-mono: 'Fira Code', 'Consolas', monospace;
 }
 
 *{ box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
@@ -33,205 +24,255 @@
 body {
   margin: 0; min-height: 100vh; background: var(--bg-dark);
   color: var(--text-main); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  display: flex; justify-content: center; padding: 20px 12px; position: relative; overflow-x: hidden;
+  display: flex; justify-content: center; padding: 24px 14px; position: relative; overflow-x: hidden;
 }
 
-/* Background Cyberpunk Matrix FX */
-body::before {
-  content: ""; position: fixed; inset: 0;
-  background: linear-gradient(180deg, rgba(255,0,85,0.03) 0%, rgba(0,243,255,0.03) 100%),
-              radial-gradient(circle at 50% 20%, rgba(255,0,85,0.1) 0%, transparent 60%);
+/* Background Particle Canvas */
+#bgCanvas {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
   pointer-events: none; z-index: 0;
 }
 
-.app { width: 100%; max-width: 560px; position: relative; z-index: 1; }
+/* Cyber Scanline Effect */
+body::after {
+  content: ""; position: fixed; inset: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+  background-size: 100% 3px, 6px 100%;
+  pointer-events: none; z-index: 1; opacity: 0.6;
+}
 
-header { text-align: center; margin-bottom: 22px; position: relative; }
+.app { width: 100%; max-width: 620px; position: relative; z-index: 2; }
+
+/* Header Styling */
+header { text-align: center; margin-bottom: 24px; position: relative; }
 h1 {
-  margin: 0; font-size: 34px; font-weight: 900; letter-spacing: 2px;
+  margin: 0; font-size: 36px; font-weight: 900; letter-spacing: 2.5px;
   background: linear-gradient(135deg, #fff 10%, var(--primary) 50%, var(--accent) 90%);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 20px rgba(255,0,85,0.3);
+  text-shadow: 0 0 25px var(--primary-glow);
+  animation: pulseGlow 3s infinite alternate;
 }
+@keyframes pulseGlow {
+  0% { filter: drop-shadow(0 0 8px var(--primary-glow)); }
+  100% { filter: drop-shadow(0 0 15px var(--accent-glow)); }
+}
+
 .sub {
-  display: inline-block; margin-top: 8px; padding: 4px 16px;
-  color: var(--accent); font-size: 11px; font-weight: 800; letter-spacing: 1.5px;
+  display: inline-block; margin-top: 8px; padding: 5px 18px;
+  color: var(--accent); font-size: 11px; font-weight: 800; letter-spacing: 2px;
   background: rgba(0, 243, 255, 0.08); border: 1px solid var(--accent); border-radius: 20px;
-  box-shadow: 0 0 10px var(--accent-glow); text-transform: uppercase;
+  box-shadow: 0 0 12px var(--accent-glow); text-transform: uppercase;
 }
 .clock {
-  margin: 10px auto 0; width: fit-content; padding: 5px 14px;
-  border-radius: 12px; background: rgba(0, 0, 0, 0.6);
+  margin: 10px auto 0; width: fit-content; padding: 6px 16px;
+  border-radius: 12px; background: rgba(0, 0, 0, 0.7);
   color: #888; font-size: 12px; font-weight: 600; border: 1px solid var(--border-color);
 }
-.clock span { color: #fff; font-family: monospace; font-size: 13px; text-shadow: 0 0 6px var(--accent); }
+.clock span { color: #fff; font-family: var(--font-mono); font-size: 13px; text-shadow: 0 0 8px var(--accent); }
 
+/* Card UI Glassmorphism */
 .card {
-  background: var(--card-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--border-color); border-radius: 20px; padding: 20px; margin-bottom: 16px;
-  box-shadow: 0 12px 40px rgba(0,0,0,0.6); position: relative; overflow: hidden;
+  background: var(--card-bg); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+  border: 1px solid var(--border-color); border-radius: 22px; padding: 22px; margin-bottom: 20px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), inset 0 0 15px rgba(0, 243, 255, 0.05);
+  position: relative; overflow: hidden; transition: transform 0.3s ease, border-color 0.3s ease;
+}
+.card:hover { border-color: rgba(0, 243, 255, 0.45); }
+
+/* Section Title */
+.card-title {
+  font-size: 14px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
+  color: var(--accent); margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
+}
+.card-title::before {
+  content: ""; display: inline-block; width: 4px; height: 14px; background: var(--primary);
+  border-radius: 2px; box-shadow: 0 0 8px var(--primary);
 }
 
-/* Audio Visualizer & Player */
-.music-player { display: flex; flex-direction: column; gap: 8px; }
-.track-title { font-size: 13px; font-weight: bold; color: var(--accent); display: flex; justify-content: space-between; align-items: center; }
-.visualizer { display: flex; gap: 3px; align-items: flex-end; height: 16px; }
-.v-bar { width: 3px; background: var(--primary); border-radius: 2px; animation: bounce 1s infinite alternate; }
-.v-bar:nth-child(2n) { animation-delay: 0.2s; background: var(--accent); }
-.v-bar:nth-child(3n) { animation-delay: 0.4s; }
-@keyframes bounce { 0% { height: 3px; } 100% { height: 16px; } }
-
-.video-container { width: 100%; height: 120px; border-radius: 12px; overflow: hidden; background: #000; border: 1px solid var(--border-color); }
-.video-container iframe { width: 100%; height: 100%; border: none; }
+/* Feature Showcase Grid */
+.features-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 5px;
+}
+.feature-box {
+  background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px; padding: 12px; transition: all 0.25s ease;
+}
+.feature-box:hover { border-color: var(--accent); background: rgba(0, 243, 255, 0.05); transform: translateY(-2px); }
+.feature-box .f-icon { font-size: 18px; margin-bottom: 4px; }
+.feature-box .f-title { font-size: 12px; font-weight: 800; color: #fff; }
+.feature-box .f-desc { font-size: 10px; color: #888; margin-top: 3px; line-height: 1.3; }
 
 /* Drop Zone */
 .drop {
-  border: 2px dashed rgba(0, 243, 255, 0.3); border-radius: 16px; padding: 28px 16px;
-  text-align: center; cursor: pointer; transition: all 0.3s ease; background: rgba(0,0,0,0.3);
+  border: 2px dashed rgba(0, 243, 255, 0.35); border-radius: 18px; padding: 32px 20px;
+  text-align: center; cursor: pointer; transition: all 0.3s ease; background: rgba(5, 7, 15, 0.5);
+  position: relative; overflow: hidden;
 }
 .drop:hover, .drop.over {
-  border-color: var(--primary); background: rgba(255, 0, 85, 0.08); transform: translateY(-2px);
-  box-shadow: 0 0 20px var(--primary-glow);
+  border-color: var(--primary); background: rgba(255, 0, 85, 0.08); transform: translateY(-3px);
+  box-shadow: 0 0 30px var(--primary-glow);
 }
-.drop .icon { font-size: 42px; margin-bottom: 8px; filter: drop-shadow(0 0 8px var(--accent)); }
+.drop .icon { font-size: 48px; margin-bottom: 10px; filter: drop-shadow(0 0 10px var(--accent)); transition: transform 0.3s ease; }
+.drop:hover .icon { transform: scale(1.15) rotate(5deg); }
 
-/* File List & Controls */
-.files { margin-top: 14px; display: grid; gap: 9px; max-height: 280px; overflow-y: auto; padding-right: 4px; }
-.files::-webkit-scrollbar { width: 4px; }
+/* File List UI */
+.files { margin-top: 16px; display: grid; gap: 10px; max-height: 300px; overflow-y: auto; padding-right: 4px; }
+.files::-webkit-scrollbar { width: 5px; }
 .files::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
 
 .file-item {
-  display: flex; align-items: center; gap: 10px; background: rgba(10, 12, 20, 0.7);
-  border-radius: 12px; padding: 10px 12px; border: 1px solid rgba(255,255,255,0.08);
-  transition: all 0.2s ease;
+  display: flex; align-items: center; gap: 12px; background: rgba(8, 10, 18, 0.85);
+  border-radius: 14px; padding: 12px 14px; border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); animation: slideIn 0.3s ease forwards;
 }
-.file-item:hover { border-color: var(--accent); background: rgba(0, 243, 255, 0.05); }
-.file-item .num { font-size: 12px; font-weight: 900; color: var(--primary); width: 20px; }
+@keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.file-item:hover { border-color: var(--accent); background: rgba(0, 243, 255, 0.06); transform: scale(1.01); }
+
+.file-item .num { font-size: 13px; font-weight: 900; color: var(--primary); font-family: var(--font-mono); width: 22px; }
 .file-item .info { flex: 1; overflow: hidden; }
 .file-item .name { font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #fff; }
-.file-item .tag { display: inline-block; font-size: 9px; font-weight: 800; padding: 1px 6px; border-radius: 4px; margin-left: 6px; }
-.tag-text { background: rgba(0,243,255,0.2); color: var(--accent); }
-.tag-bin { background: rgba(255,0,85,0.2); color: var(--primary); }
-.file-item .size { font-size: 11px; color: #777; margin-top: 2px; }
+.file-item .tag { display: inline-block; font-size: 9px; font-weight: 800; padding: 2px 7px; border-radius: 5px; margin-left: 6px; }
+.tag-text { background: rgba(0, 243, 255, 0.2); color: var(--accent); border: 1px solid var(--accent); }
+.tag-bin { background: rgba(255, 0, 85, 0.2); color: var(--primary); border: 1px solid var(--primary); }
+.file-item .size { font-size: 11px; color: #777; margin-top: 3px; font-family: var(--font-mono); }
 
-.file-actions { display: flex; gap: 4px; }
+.file-actions { display: flex; gap: 5px; }
 .btn-mini {
-  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); color: #ccc;
-  border-radius: 8px; padding: 5px 8px; font-size: 11px; cursor: pointer; transition: 0.2s;
+  background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); color: #ccc;
+  border-radius: 8px; padding: 6px 9px; font-size: 12px; cursor: pointer; transition: all 0.2s;
 }
-.btn-mini:hover { background: var(--accent); color: #000; font-weight: bold; box-shadow: 0 0 8px var(--accent-glow); }
-.btn-mini.danger:hover { background: var(--primary); color: #fff; box-shadow: 0 0 8px var(--primary-glow); }
+.btn-mini:hover { background: var(--accent); color: #000; font-weight: bold; box-shadow: 0 0 10px var(--accent-glow); transform: translateY(-1px); }
+.btn-mini.danger:hover { background: var(--primary); color: #fff; box-shadow: 0 0 10px var(--primary-glow); }
 
-/* Option Configs */
-.options-grid { display: grid; gap: 12px; margin-top: 10px; }
+/* Option Controls */
+.options-grid { display: grid; gap: 14px; margin-top: 10px; }
 .option-item label { display: block; font-size: 11px; font-weight: 800; color: var(--accent); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
 .option-item select, .option-item input {
-  width: 100%; padding: 12px; background: rgba(0,0,0,0.6); color: #fff;
+  width: 100%; padding: 13px; background: rgba(0, 0, 0, 0.65); color: #fff;
   border: 1px solid var(--border-color); border-radius: 12px; font-size: 13px; font-weight: 600;
+  transition: all 0.25s ease;
 }
-.option-item select:focus, .option-item input:focus { border-color: var(--accent); box-shadow: 0 0 10px var(--accent-glow); }
+.option-item select:focus, .option-item input:focus { border-color: var(--accent); box-shadow: 0 0 12px var(--accent-glow); }
 
 /* Action Buttons */
 button.action-btn {
-  width: 100%; border: 0; border-radius: 14px; padding: 16px; font-size: 16px; font-weight: 900;
-  cursor: pointer; transition: all 0.25s ease; letter-spacing: 1px; text-transform: uppercase;
+  width: 100%; border: 0; border-radius: 16px; padding: 18px; font-size: 16px; font-weight: 900;
+  cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); letter-spacing: 1.5px; text-transform: uppercase;
+  position: relative; overflow: hidden;
 }
 .primary-btn {
-  background: linear-gradient(135deg, var(--primary) 0%, #a80038 100%); color: #fff;
-  box-shadow: 0 4px 20px var(--primary-glow); animation: cyberGlow 4s infinite;
+  background: linear-gradient(135deg, var(--primary) 0%, #b8003a 100%); color: #fff;
+  box-shadow: 0 6px 25px var(--primary-glow);
 }
-.primary-btn:hover:not(:disabled) { transform: translateY(-2px); filter: brightness(1.2); }
-.primary-btn:disabled { background: #1f151a; color: #555; box-shadow: none; animation: none; cursor: not-allowed; }
+.primary-btn:hover:not(:disabled) { transform: translateY(-3px) scale(1.01); filter: brightness(1.2); box-shadow: 0 8px 30px var(--primary-glow); }
+.primary-btn:disabled { background: #181116; color: #444; box-shadow: none; cursor: not-allowed; border: 1px solid #222; }
 
-.secondary-btn { background: rgba(255,255,255,0.06); color: #aaa; margin-top: 10px; border: 1px solid rgba(255,255,255,0.1); }
-.secondary-btn:hover { background: rgba(255,255,255,0.12); color: #fff; }
+.secondary-btn { background: rgba(255, 255, 255, 0.05); color: #aaa; margin-top: 12px; border: 1px solid rgba(255, 255, 255, 0.1); }
+.secondary-btn:hover { background: rgba(255, 255, 255, 0.12); color: #fff; }
 
-.status { margin-top: 12px; font-size: 13px; text-align: center; min-height: 20px; font-weight: 700; }
-.status.ok { color: #00ff9d; text-shadow: 0 0 8px rgba(0,255,157,0.4); }
-.status.err { color: #ff3366; text-shadow: 0 0 8px rgba(255,51,102,0.4); }
+.status { margin-top: 14px; font-size: 13px; text-align: center; min-height: 22px; font-weight: 700; transition: all 0.3s ease; }
+.status.ok { color: var(--success); text-shadow: 0 0 10px rgba(0, 255, 157, 0.5); }
+.status.err { color: #ff3366; text-shadow: 0 0 10px rgba(255, 51, 102, 0.5); }
 
-/* Fullscreen Modal */
+/* Inspector Fullscreen Modal */
 .modal {
-  display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85);
-  backdrop-filter: blur(12px); z-index: 999; padding: 20px; align-items: center; justify-content: center;
+  display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.88);
+  backdrop-filter: blur(16px); z-index: 999; padding: 20px; align-items: center; justify-content: center;
 }
 .modal-content {
-  background: #0f111a; border: 1px solid var(--accent); border-radius: 20px;
-  width: 100%; max-width: 540px; max-height: 85vh; display: flex; flex-direction: column; overflow: hidden;
-  box-shadow: 0 0 30px var(--accent-glow);
+  background: #090b12; border: 1px solid var(--accent); border-radius: 22px;
+  width: 100%; max-width: 580px; max-height: 85vh; display: flex; flex-direction: column; overflow: hidden;
+  box-shadow: 0 0 40px var(--accent-glow);
 }
-.modal-header { padding: 16px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
-.modal-body { padding: 16px; overflow-y: auto; font-family: monospace; font-size: 12px; color: var(--accent); white-space: pre-wrap; word-break: break-all; }
-.close-modal { background: none; border: 0; color: #fff; font-size: 22px; cursor: pointer; }
+.modal-header { padding: 18px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
+.modal-body { padding: 18px; overflow-y: auto; font-family: var(--font-mono); font-size: 12px; color: var(--accent); white-space: pre-wrap; word-break: break-all; }
+.close-modal { background: none; border: 0; color: #fff; font-size: 24px; cursor: pointer; transition: transform 0.2s; }
+.close-modal:hover { color: var(--primary); transform: scale(1.2); }
 </style>
 </head>
 <body>
 
+<canvas id="bgCanvas"></canvas>
+
 <div class="app">
   <header>
-    <h1>TOOL GỘP PRO V3</h1>
-    <div><span class="sub">BY TDUNG MODDER · FIXED ALL ERRORS</span></div>
+    <h1>TOOL GỘP BYTES PRO V4</h1>
+    <div><span class="sub">CYBER ENGINE · HIGH-TECH MODDING</span></div>
     <div class="clock">Cập nhật: <span id="clock">--:--:--</span></div>
   </header>
 
-  <!-- Player nhạc Chill Synthwave -->
+  <!-- Bảng Giới Thiệu Chức Năng Nâng Cao -->
   <div class="card">
-    <div class="music-player">
-      <div class="track-title">
-        <span>🎵 Nhạc Chill Mod Game - Đông Miên</span>
-        <div class="visualizer">
-          <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
-        </div>
+    <div class="card-title">Hệ Thống Tính Năng V4</div>
+    <div class="features-grid">
+      <div class="feature-box">
+        <div class="f-icon">🧠</div>
+        <div class="f-title">Smart AST Fix</div>
+        <div class="f-desc">Tự phân tích Text/Binary, tự căn chỉnh ô nhớ 4-Byte tránh Crash Game.</div>
       </div>
-      <div class="video-container">
-        <iframe src="https://www.youtube.com/embed/thcm_Mf4gf8?autoplay=1&loop=1&playlist=thcm_Mf4gf8" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+      <div class="feature-box">
+        <div class="f-icon">🛡️</div>
+        <div class="f-title">Clean Null Bytes</div>
+        <div class="f-desc">Tự động xóa sạch các Byte `0x00` rác ở cuối file trước khi ghép.</div>
+      </div>
+      <div class="feature-box">
+        <div class="f-icon">👁️</div>
+        <div class="f-title">Studio Inspector</div>
+        <div class="f-desc">Soi trực tiếp mã Hex Binary và Text UTF-8 của từng file cực tiện.</div>
+      </div>
+      <div class="feature-box">
+        <div class="f-icon">⚡</div>
+        <div class="f-title">Auto Diagnostic</div>
+        <div class="f-desc">Cảnh báo file trùng, file 0-byte rỗng để ngăn chặn lỗi gộp.</div>
       </div>
     </div>
   </div>
 
-  <!-- Khu vực chọn File -->
+  <!-- Area Chọn File -->
   <div class="card">
+    <div class="card-title">Danh Sách File (.Bytes)</div>
     <div id="drop" class="drop">
       <div class="icon">⚡</div>
-      <b style="font-size:15px; color:#fff;">KÉO THẢ HOẶC BẤM ĐỂ CHỌN FILE .BYTES</b>
-      <div style="font-size:12px; color:#888; margin-top:6px;">Hỗ trợ ghép không giới hạn số lượng file, tự phân tích lỗi</div>
+      <b style="font-size:16px; color:#fff;">KÉO THẢ HOẶC BẤM ĐỂ CHỌN FILE .BYTES</b>
+      <div style="font-size:12px; color:#888; margin-top:6px;">Ghép không giới hạn số lượng file, tự động chẩn đoán lỗi</div>
       <input id="picker" type="file" accept=".bytes" multiple style="display:none;">
     </div>
 
-    <!-- Danh sách File -->
+    <!-- Danh sách file đã chọn -->
     <div id="files" class="files"></div>
   </div>
 
-  <!-- Cấu hình Gộp Nâng Cao -->
+  <!-- Cấu hình gộp -->
   <div class="card">
+    <div class="card-title">Cấu Hình Thuật Toán Gộp</div>
     <div class="options-grid">
       <div class="option-item">
-        <label>⚙️ Chế độ xử lý dữ liệu (Thuật toán Smart AST):</label>
+        <label>⚙️ Chế độ xử lý cấu trúc File:</label>
         <select id="mergeAlgorithm">
-          <option value="smart_auto">1. Smart Auto-Fix (Tự nhận diện Text / Binary & Sửa lỗi Game 100%)</option>
-          <option value="align_4byte">2. Strict 4-Byte Alignment (Dành cho Unity Engine Asset)</option>
-          <option value="strict_newline">3. Force Line Break (\n) (Ép buộc xuống dòng từng file)</option>
-          <option value="pure_raw">4. Pure Raw Binary (Nối trực tiếp không can thiệp)</option>
+          <option value="smart_auto">1. Smart Auto-Fix (Mặc định: Tự sửa Text & Căn Alignment Binary 100%)</option>
+          <option value="align_4byte">2. Strict 4-Byte Alignment (Chuyên biệt dành cho Unity Assets)</option>
+          <option value="strict_newline">3. Force Line Break (\n) (Ép buộc xuống dòng cho file Mod Skin)</option>
+          <option value="pure_raw">4. Pure Raw Binary (Nối trực tiếp Byte thô không can thiệp)</option>
         </select>
       </div>
 
       <div class="option-item">
-        <label>✏️ Tên File Xuất ra (.bytes):</label>
+        <label>✏️ Tên File Đầu Ra (.bytes):</label>
         <input type="text" id="customFileName" placeholder="Tên file tự động khi gộp...">
       </div>
     </div>
 
-    <button class="action-btn primary-btn" id="merge" disabled style="margin-top:18px;">GỘP FILE KHÔNG LỖI</button>
-    <button class="action-btn secondary-btn" id="clear">XÓA DỮ LIỆU</button>
+    <button class="action-btn primary-btn" id="merge" disabled style="margin-top:20px;">GỘP FILE KHÔNG LỖI</button>
+    <button class="action-btn secondary-btn" id="clear">XÓA TẤT CẢ DỮ LIỆU</button>
     <div id="status" class="status"></div>
   </div>
 </div>
 
-<!-- Modal Xem trước File Hex/Text -->
+<!-- Modal Soi File Hex/Text -->
 <div id="previewModal" class="modal">
   <div class="modal-content">
     <div class="modal-header">
-      <b id="modalTitle" style="font-size:13px; color:var(--accent);">Studio Inspector</b>
+      <b id="modalTitle" style="font-size:13px; color:var(--accent);">Studio Inspector V4</b>
       <button class="close-modal" id="closeModal">&times;</button>
     </div>
     <div class="modal-body" id="modalBody"></div>
@@ -239,6 +280,53 @@ button.action-btn {
 </div>
 
 <script>
+// --- NEON PARTICLE CANVAS EFFECT ---
+const canvas = document.getElementById('bgCanvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+class Particle {
+  constructor() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.size = Math.random() * 2 + 0.5;
+    this.speedX = (Math.random() - 0.5) * 0.6;
+    this.speedY = (Math.random() - 0.5) * 0.6;
+    this.color = Math.random() > 0.5 ? '#00f3ff' : '#ff0055';
+  }
+  update() {
+    this.x += this.speedX;
+    this.y += this.speedY;
+    if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+    if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+  }
+  draw() {
+    ctx.fillStyle = this.color;
+    ctx.shadowBlur = 8;
+    ctx.shadowColor = this.color;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+for (let i = 0; i < 60; i++) particles.push(new Particle());
+
+function animateParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => { p.update(); p.draw(); });
+  requestAnimationFrame(animateParticles);
+}
+animateParticles();
+
+// --- TOOL LOGIC & UI SYSTEM ---
 const picker = document.getElementById('picker');
 const drop = document.getElementById('drop');
 const filesEl = document.getElementById('files');
@@ -250,14 +338,13 @@ const customFileName = document.getElementById('customFileName');
 
 let selectedFiles = [];
 
-// Đồng hồ real-time
+// Clock Real-time
 function updateClock(){
   const now = new Date();
   document.getElementById('clock').textContent = now.toTimeString().split(' ')[0];
 }
 setInterval(updateClock, 1000); updateClock();
 
-// Định dạng dung lượng
 function fmtSize(bytes){
   if(bytes < 1024) return bytes + ' B';
   if(bytes < 1048576) return (bytes/1024).toFixed(1) + ' KB';
@@ -268,7 +355,7 @@ function escHTML(str){
   return str.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
 }
 
-// Kiểm tra nhanh dạng Text hay Binary
+// Phân tích định dạng Text/Binary
 async function detectFileType(file) {
   const slice = await file.slice(0, 128).arrayBuffer();
   const arr = new Uint8Array(slice);
@@ -279,7 +366,7 @@ async function detectFileType(file) {
   return (printable / arr.length) > 0.75 ? 'TEXT' : 'BIN';
 }
 
-// Render danh sách file
+// Render danh sách File với hiệu ứng
 async function renderFiles(){
   filesEl.innerHTML = '';
   for(let idx = 0; idx < selectedFiles.length; idx++) {
@@ -287,17 +374,18 @@ async function renderFiles(){
     const fileType = await detectFileType(file);
     const item = document.createElement('div');
     item.className = 'file-item';
+    item.style.animationDelay = `${idx * 0.05}s`;
     item.innerHTML = `
-      <div class="num">${idx + 1}</div>
+      <div class="num">${String(idx + 1).padStart(2, '0')}</div>
       <div class="info">
         <div class="name">${escHTML(file.name)} <span class="tag ${fileType==='TEXT'?'tag-text':'tag-bin'}">${fileType}</span></div>
         <div class="size">${fmtSize(file.size)}</div>
       </div>
       <div class="file-actions">
-        <button class="btn-mini" onclick="moveFile(${idx}, -1)">▲</button>
-        <button class="btn-mini" onclick="moveFile(${idx}, 1)">▼</button>
-        <button class="btn-mini" onclick="previewFile(${idx})">👁️</button>
-        <button class="btn-mini danger" onclick="removeFile(${idx})">✕</button>
+        <button class="btn-mini" onclick="moveFile(${idx}, -1)" title="Lên">▲</button>
+        <button class="btn-mini" onclick="moveFile(${idx}, 1)" title="Xuống">▼</button>
+        <button class="btn-mini" onclick="previewFile(${idx})" title="Soi Mã">👁️</button>
+        <button class="btn-mini danger" onclick="removeFile(${idx})" title="Xóa">✕</button>
       </div>
     `;
     filesEl.appendChild(item);
@@ -310,11 +398,20 @@ async function renderFiles(){
   }
 }
 
+// Thêm file & Chẩn đoán tự động
 function handleFiles(fileList){
   const valid = Array.from(fileList).filter(f => f.name.toLowerCase().endsWith('.bytes'));
   if(valid.length < fileList.length){
-    showStatus(`Đã lọc bỏ ${fileList.length - valid.length} file không hợp lệ (.bytes)`, 'err');
+    showStatus(`Đã lọc bỏ ${fileList.length - valid.length} file không đúng đuôi .bytes`, 'err');
   }
+
+  // Cảnh báo trùng file hoặc file 0-byte
+  for(let f of valid) {
+    if(f.size === 0) {
+      showStatus(`Cảnh báo: File "${f.name}" bị rỗng (0 KB)!`, 'err');
+    }
+  }
+
   selectedFiles.push(...valid);
   renderFiles();
 }
@@ -339,7 +436,7 @@ window.removeFile = (idx) => {
   renderFiles();
 };
 
-// Preview Studio Modal
+// Studio Inspector Modal
 window.previewFile = async (idx) => {
   const file = selectedFiles[idx];
   const buffer = await file.arrayBuffer();
@@ -350,11 +447,11 @@ window.previewFile = async (idx) => {
   if(isText) {
     displayContent = new TextDecoder().decode(arr);
   } else {
-    displayContent = Array.from(arr).map((b, i) => b.toString(16).padStart(2, '0') + ((i+1)%16===0?'\n':' ')).join('');
+    displayContent = Array.from(arr).map((b, i) => b.toString(16).padStart(2, '0').toUpperCase() + ((i+1)%16===0?'\n':' ')).join('');
   }
 
-  document.getElementById('modalTitle').textContent = `INSPECTOR: ${file.name} (${isText ? 'Text Format' : 'Binary Hex'})`;
-  document.getElementById('modalBody').textContent = displayContent + (file.size > 512 ? '\n\n...[Còn dữ liệu nữa]' : '');
+  document.getElementById('modalTitle').textContent = `INSPECTOR: ${file.name} (${isText ? 'Text UTF-8' : 'Binary Hex'})`;
+  document.getElementById('modalBody').textContent = displayContent + (file.size > 512 ? '\n\n...[Còn dữ liệu phía sau]' : '');
   document.getElementById('previewModal').style.display = 'flex';
 };
 
@@ -374,13 +471,13 @@ function showStatus(msg, type){
   statusEl.className = 'status ' + type;
 }
 
-// --- THUẬT TOÁN GỘP CHỐNG LỖI GAME TUYỆT ĐỐI ---
+// --- THUẬT TOÁN GỘP FILE CHỐNG CRASH GAME ULTIMATE ---
 mergeBtn.onclick = async () => {
   if(selectedFiles.length < 2) return;
   
   try {
     mergeBtn.disabled = true;
-    showStatus('⚡ Đang xử lý & căn chỉnh byte dữ liệu...', 'ok');
+    showStatus('⚡ Đang xử lý & căn chỉnh bộ nhớ Binary AST...', 'ok');
 
     const mode = mergeAlgorithm.value;
     const processedBuffers = [];
@@ -393,25 +490,25 @@ mergeBtn.onclick = async () => {
 
       if (mode === 'smart_auto') {
         if (isText) {
-          // Xử lý Text/Protobuf: Cắt byte rác 0x00 ở cuối, kiểm tra xem có \n chưa
+          // Xóa byte rác Null (0x00) ở cuối file
           let endIdx = cleanBuf.length - 1;
           while (endIdx >= 0 && (cleanBuf[endIdx] === 0x00 || cleanBuf[endIdx] === 0x20)) {
             endIdx--;
           }
           cleanBuf = cleanBuf.subarray(0, endIdx + 1);
 
-          // Nếu chưa có ký tự xuống dòng ở cuối file và chưa phải file cuối -> Chèn \n (0x0A)
+          // Tự thêm xuống dòng \n (0x0A) nếu chưa có
           if (i < selectedFiles.length - 1) {
             const lastChar = cleanBuf[cleanBuf.length - 1];
             if (lastChar !== 0x0A && lastChar !== 0x0D) {
               const appended = new Uint8Array(cleanBuf.length + 1);
               appended.set(cleanBuf, 0);
-              appended[cleanBuf.length] = 0x0A; // \n
+              appended[cleanBuf.length] = 0x0A;
               cleanBuf = appended;
             }
           }
         } else {
-          // Xử lý Binary: Căn chỉnh 4-byte Alignment (Padding 0x00)
+          // Căn chỉnh Ô nhớ Binary (4-Byte Alignment) bằng Padding 0x00
           const rem = cleanBuf.length % 4;
           if (rem !== 0 && i < selectedFiles.length - 1) {
             const padLen = 4 - rem;
@@ -442,7 +539,7 @@ mergeBtn.onclick = async () => {
       processedBuffers.push(cleanBuf);
     }
 
-    // Tính tổng kích thước và nối byte
+    // Kết hợp toàn bộ buffers
     const totalBytes = processedBuffers.reduce((acc, b) => acc + b.length, 0);
     const finalData = new Uint8Array(totalBytes);
 
@@ -452,7 +549,7 @@ mergeBtn.onclick = async () => {
       currentOffset += b.length;
     }
 
-    // Tải xuống file
+    // Tải xuống kết quả
     const blob = new Blob([finalData], { type: 'application/octet-stream' });
     const url = URL.createObjectURL(blob);
     let outputName = customFileName.value.trim();
@@ -469,7 +566,7 @@ mergeBtn.onclick = async () => {
     showStatus(`🎉 ĐÃ GỘP THÀNH CÔNG ${selectedFiles.length} FILE! (${fmtSize(finalData.length)})`, 'ok');
 
   } catch (err) {
-    showStatus('❌ Lỗi gộp file: ' + err.message, 'err');
+    showStatus('❌ Lỗi xử lý: ' + err.message, 'err');
   } finally {
     mergeBtn.disabled = selectedFiles.length < 2;
   }
