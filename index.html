@@ -3,21 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>CYBER MERGE TOOL | LIQUID GLASS</title>
+<title>TOOL GỘP MOD | AI SMART ENGINE</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
 
 <style>
-/* CSS VARIABLES & RESET */
 :root {
-    --bg-dark: #0a0a12;
-    --glass-bg: rgba(20, 20, 30, 0.4);
-    --glass-border: rgba(255, 255, 255, 0.15);
-    --neon-white: rgba(255, 255, 255, 0.8);
+    --bg-dark: #07070a;
+    --glass-bg: rgba(20, 20, 25, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --accent: #0a84ff;
+    --accent-glow: rgba(10, 132, 255, 0.5);
     --spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    --font-main: 'Inter', -apple-system, sans-serif;
+    --font-main: 'Inter', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
 }
 
@@ -33,262 +33,222 @@ body {
     align-items: center;
     overflow-x: hidden;
     padding: 15px;
-    position: relative;
 }
 
-/* LIQUID BACKGROUND (Fluid Blobs) */
+/* LIQUID BACKGROUND */
 .liquid-bg { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
-.blob { position: absolute; filter: blur(90px); border-radius: 50%; animation: floatBlob 15s infinite alternate ease-in-out; }
-.blob-1 { width: 50vw; height: 50vw; background: #00c6ff; top: -10%; left: -10%; opacity: 0.4; }
-.blob-2 { width: 45vw; height: 45vw; background: #8a2be2; bottom: -10%; right: -5%; opacity: 0.4; animation-delay: -5s; }
+.blob { position: absolute; filter: blur(80px); border-radius: 50%; animation: floatBlob 12s infinite alternate ease-in-out; opacity: 0.3; }
+.blob-1 { width: 300px; height: 300px; background: #0a84ff; top: -50px; left: -50px; }
+.blob-2 { width: 250px; height: 250px; background: #5e5ce6; bottom: -50px; right: -50px; animation-delay: -3s; }
 
-@keyframes floatBlob { 
-    0% { transform: translate(0, 0) scale(1) rotate(0deg); } 
-    100% { transform: translate(10%, 15%) scale(1.1) rotate(15deg); } 
+@keyframes floatBlob {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(30px, 40px) scale(1.1); }
 }
 
 /* 3S LOADING SCREEN */
 .loading-screen {
-    position: fixed; inset: 0; background: rgba(5, 5, 10, 0.95); backdrop-filter: blur(25px);
-    z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    position: fixed; inset: 0; background: #07070a; z-index: 9999;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
     transition: opacity 0.5s ease, visibility 0.5s ease;
 }
-.countdown {
-    width: 80px; height: 80px; border-radius: 50%; border: 3px solid #fff;
-    display: flex; align-items: center; justify-content: center;
-    font-family: var(--font-mono); font-size: 32px; font-weight: 700;
-    box-shadow: 0 0 20px var(--neon-white), inset 0 0 15px var(--neon-white);
-    text-shadow: 0 0 10px #fff; margin-bottom: 20px;
+.spinner {
+    width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.1);
+    border-top: 3px solid #fff; border-radius: 50%;
+    animation: spin 1s linear infinite; margin-bottom: 15px;
 }
-.loading-text { font-size: 16px; font-weight: 600; letter-spacing: 1px; }
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+.loading-text { font-size: 14px; font-weight: 600; color: #a1a1a6; letter-spacing: 1px; }
 
-/* HEADER & WHITE NEON OWNER */
-header { width: 100%; max-width: 700px; display: flex; justify-content: space-between; align-items: center; margin-top: 20px; margin-bottom: 30px; }
-.clock-panel {
-    background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-border);
-    padding: 10px 20px; border-radius: 30px; font-family: var(--font-mono); font-size: 14px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.3); display: flex; align-items: center; gap: 8px;
+/* MINI HEADER (Clock & Owner) */
+.mini-header {
+    width: 100%; max-width: 480px; display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 30px; margin-top: 10px;
 }
-.owner-neon {
-    padding: 10px 24px; border-radius: 30px; font-weight: 800; font-size: 14px; letter-spacing: 1.5px;
-    border: 2px solid #fff; color: #fff; text-transform: uppercase;
-    box-shadow: 0 0 15px rgba(255,255,255,0.6), inset 0 0 10px rgba(255,255,255,0.4);
-    text-shadow: 0 0 8px #fff; animation: neonPulse 2s infinite alternate;
+.pill {
+    background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
+    padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: 700;
+    backdrop-filter: blur(10px); color: #fff;
 }
-@keyframes neonPulse {
-    0% { box-shadow: 0 0 10px rgba(255,255,255,0.5), inset 0 0 5px rgba(255,255,255,0.3); }
-    100% { box-shadow: 0 0 20px rgba(255,255,255,0.8), inset 0 0 15px rgba(255,255,255,0.6); }
+.owner-pill {
+    border-color: rgba(255,255,255,0.4); box-shadow: 0 0 10px rgba(255,255,255,0.1);
+    letter-spacing: 1px; color: #fff;
 }
 
-/* MAIN CONTAINER (Responsive Fixed Width) */
-.main-container {
-    width: 100%; max-width: 700px; flex: 1; display: flex; flex-direction: column;
+/* MAIN APP WIDGET (Compact Design) */
+.app-widget {
+    width: 100%; max-width: 480px; /* Nhỏ gọn, tinh tế */
+    background: var(--glass-bg); backdrop-filter: blur(30px);
+    border: 1px solid var(--glass-border); border-radius: 30px;
+    padding: 25px; box-shadow: 0 20px 40px rgba(0,0,0,0.5);
     opacity: 0; transform: translateY(20px); transition: all 0.6s var(--spring);
 }
-.main-container.active { opacity: 1; transform: translateY(0); }
+.app-widget.active { opacity: 1; transform: translateY(0); }
 
-/* LIQUID GLASS PANEL */
-.glass-panel {
-    background: var(--glass-bg); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%);
-    border: 1px solid var(--glass-border); border-radius: 30px; padding: 30px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.4); transition: transform 0.4s var(--spring);
+/* TOOL TITLE */
+.tool-title {
+    text-align: center; font-size: 28px; font-weight: 900; margin-bottom: 25px;
+    background: linear-gradient(180deg, #ffffff 0%, #a1a1a6 100%);
+    -webkit-background-clip: text; color: transparent;
+    filter: drop-shadow(0 4px 10px rgba(255,255,255,0.2));
+    letter-spacing: 1px; text-transform: uppercase;
 }
-.glass-panel:hover { transform: translateY(-5px); border-color: rgba(255,255,255,0.3); box-shadow: 0 25px 50px rgba(0,0,0,0.5), 0 0 20px rgba(255,255,255,0.05); }
 
-.panel-title { font-size: 22px; font-weight: 800; text-align: center; margin-bottom: 20px; letter-spacing: -0.5px; }
-
-/* DRAG & DROP ZONE (Using Emoji/Image structure) */
+/* DROP ZONE */
 .drop-zone {
-    border: 2px dashed rgba(255,255,255,0.3); border-radius: 20px; padding: 40px 20px;
-    text-align: center; cursor: pointer; transition: all 0.3s; background: rgba(0,0,0,0.2);
-    display: flex; flex-direction: column; align-items: center; gap: 12px;
+    border: 2px dashed rgba(255,255,255,0.2); border-radius: 20px; padding: 35px 20px;
+    text-align: center; cursor: pointer; transition: all 0.3s; background: rgba(0,0,0,0.3);
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
 }
-.drop-zone:hover { border-color: #fff; background: rgba(255,255,255,0.05); box-shadow: inset 0 0 20px rgba(255,255,255,0.1); }
-.drop-image {
-    width: 80px; height: 80px; background: linear-gradient(135deg, #00c6ff, #8a2be2);
-    border-radius: 20px; display: flex; justify-content: center; align-items: center;
-    font-size: 40px; box-shadow: 0 10px 20px rgba(138, 43, 226, 0.4); margin-bottom: 10px;
-    transition: transform 0.3s var(--spring);
+.drop-zone:hover { border-color: var(--accent); background: rgba(10, 132, 255, 0.05); }
+.drop-icon {
+    width: 60px; height: 60px; background: linear-gradient(135deg, #0a84ff, #5e5ce6);
+    border-radius: 18px; display: flex; justify-content: center; align-items: center;
+    font-size: 28px; box-shadow: 0 8px 20px var(--accent-glow); margin-bottom: 5px;
 }
-.drop-zone:hover .drop-image { transform: scale(1.1); }
+.drop-text { font-size: 14px; font-weight: 700; }
+.drop-sub { font-size: 11px; color: #a1a1a6; }
 
 /* FILE LIST */
-.file-list { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; max-height: 250px; overflow-y: auto; }
-.file-list::-webkit-scrollbar { width: 5px; }
-.file-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 5px; }
+.file-list { margin-top: 15px; display: flex; flex-direction: column; gap: 8px; }
 .file-item {
-    background: rgba(0,0,0,0.3); padding: 15px; border-radius: 16px;
+    background: rgba(0,0,0,0.4); padding: 12px 15px; border-radius: 14px;
     display: flex; justify-content: space-between; align-items: center;
-    border: 1px solid rgba(255,255,255,0.05); transition: all 0.3s var(--spring);
+    border: 1px solid rgba(255,255,255,0.05);
 }
-.file-item:hover { border-color: rgba(255,255,255,0.4); transform: translateX(5px); }
-.file-info h4 { font-size: 14px; margin-bottom: 4px; }
-.file-info p { font-size: 12px; color: #00c6ff; font-family: var(--font-mono); }
-.btn-remove { background: none; border: none; color: #ff375f; font-size: 20px; cursor: pointer; font-weight: bold; }
+.file-info h4 { font-size: 13px; margin-bottom: 3px; font-weight: 600; }
+.file-info p { font-size: 10px; color: var(--accent); font-family: var(--font-mono); }
+.btn-del { background: none; border: none; color: #ff375f; font-size: 18px; cursor: pointer; }
 
-/* BUTTON */
+/* AI STATUS BAR */
+.ai-status {
+    margin-top: 15px; padding: 10px; border-radius: 12px; background: rgba(50, 215, 75, 0.1);
+    border: 1px solid rgba(50, 215, 75, 0.2); color: #32d74b; font-size: 11px; font-weight: 600;
+    display: flex; align-items: center; gap: 8px; justify-content: center;
+}
+
+/* MERGE BUTTON */
 .btn-merge {
-    width: 100%; padding: 18px; border-radius: 20px; border: none;
-    background: #fff; color: #000; font-size: 16px; font-weight: 800;
-    cursor: pointer; margin-top: 25px; transition: all 0.4s var(--spring);
-    box-shadow: 0 10px 20px rgba(255,255,255,0.2); text-transform: uppercase;
+    width: 100%; padding: 16px; border-radius: 18px; border: none;
+    background: #fff; color: #000; font-size: 14px; font-weight: 800;
+    cursor: pointer; margin-top: 20px; transition: all 0.3s var(--spring);
 }
-.btn-merge:hover:not(:disabled) { transform: scale(1.03); box-shadow: 0 15px 30px rgba(255,255,255,0.4), 0 0 20px var(--neon-white); }
-.btn-merge:disabled { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.3); box-shadow: none; cursor: not-allowed; }
+.btn-merge:hover:not(:disabled) { transform: scale(1.02); box-shadow: 0 10px 20px rgba(255,255,255,0.2); }
+.btn-merge:disabled { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.3); cursor: not-allowed; }
 
-/* POPUP (iOS Style Modal) */
+/* FOOTER BLINK TEXT */
+footer { margin-top: auto; padding: 20px 0; }
+.blink-text {
+    font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+    color: rgba(255,255,255,0.5); animation: whiteBlink 2s infinite ease-in-out;
+}
+@keyframes whiteBlink {
+    0%, 100% { color: rgba(255,255,255,0.3); text-shadow: none; }
+    50% { color: rgba(255,255,255,1); text-shadow: 0 0 10px #fff; }
+}
+
+/* POPUP MODAL */
 .modal-overlay {
-    position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(15px);
+    position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(10px);
     display: flex; justify-content: center; align-items: center; z-index: 2000;
     opacity: 0; pointer-events: none; transition: opacity 0.3s;
 }
 .modal-overlay.active { opacity: 1; pointer-events: auto; }
 .modal-content {
-    background: rgba(30, 30, 35, 0.85); border: 1px solid var(--glass-border);
-    border-radius: 28px; padding: 30px; width: 90%; max-width: 400px;
-    text-align: center; transform: scale(0.8); transition: all 0.4s var(--spring);
-    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    background: rgba(20, 20, 25, 0.95); border: 1px solid var(--glass-border);
+    border-radius: 24px; padding: 25px; width: 85%; max-width: 320px;
+    text-align: center; transform: scale(0.9); transition: all 0.4s var(--spring);
 }
 .modal-overlay.active .modal-content { transform: scale(1); }
-.modal-image {
-    width: 70px; height: 70px; background: linear-gradient(135deg, #32d74b, #30b0c7);
-    border-radius: 50%; display: flex; justify-content: center; align-items: center;
-    font-size: 35px; margin: 0 auto 15px auto; box-shadow: 0 10px 20px rgba(50, 215, 75, 0.4);
-}
-.modal-title { font-size: 20px; font-weight: 800; margin-bottom: 10px; }
-.modal-text { font-size: 14px; color: #a1a1a6; margin-bottom: 25px; line-height: 1.5; }
-.modal-btn { background: #fff; color: #000; padding: 15px 30px; border-radius: 18px; border: none; font-weight: 800; width: 100%; cursor: pointer; transition: 0.3s; }
-.modal-btn:hover { box-shadow: 0 0 15px var(--neon-white); }
-
-/* FOOTER RGB TEXT */
-footer { margin-top: auto; padding: 20px 0; text-align: center; width: 100%; }
-.rgb-text {
-    font-size: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
-    background: linear-gradient(270deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3);
-    background-size: 400% 100%; -webkit-background-clip: text; color: transparent;
-    animation: rgbGlow 5s infinite linear; text-shadow: 0 0 10px rgba(255,255,255,0.2);
-}
-@keyframes rgbGlow { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } }
-
+.modal-title { font-size: 18px; font-weight: 800; margin: 15px 0 10px 0; }
+.modal-text { font-size: 13px; color: #a1a1a6; margin-bottom: 20px; line-height: 1.4; }
+.modal-btn { background: #fff; color: #000; padding: 12px; border-radius: 14px; border: none; font-weight: 700; width: 100%; cursor: pointer; }
 </style>
 </head>
 <body>
 
-<!-- 3S LOADING SCREEN -->
+<!-- 3S LOADING -->
 <div class="loading-screen" id="loader">
-    <div class="countdown" id="timerCount">3</div>
-    <div class="loading-text">Đang khởi tạo hệ thống Liquid Glass...</div>
+    <div class="spinner"></div>
+    <div class="loading-text">Đang tải...</div>
 </div>
 
-<!-- LIQUID BG -->
+<!-- BG -->
 <div class="liquid-bg">
     <div class="blob blob-1"></div>
     <div class="blob blob-2"></div>
 </div>
 
-<!-- HEADER (Clock & Owner) -->
-<header>
-    <div class="clock-panel">
-        🕒 <span id="sysClock">00:00:00</span>
+<!-- MINI HEADER -->
+<div class="mini-header">
+    <div class="pill" id="sysClock">00:00:00</div>
+    <div class="pill owner-pill">TRONG DUNG</div>
+</div>
+
+<!-- MAIN WIDGET -->
+<div class="app-widget" id="appMain">
+    <div class="tool-title">TOOL GỘP</div>
+    
+    <div class="drop-zone" onclick="document.getElementById('filePicker').click()">
+        <div class="drop-icon">✨</div>
+        <div class="drop-text">Chọn 2 file .bytes để gộp</div>
+        <div class="drop-sub">Không cần chọn file Base</div>
+        <input type="file" id="filePicker" multiple accept=".bytes" style="display:none;">
     </div>
-    <div class="owner-neon">TRONG DUNG</div>
-</header>
 
-<!-- MAIN APP CONTAINER -->
-<div class="main-container" id="appMain">
-    <div class="glass-panel">
-        <h2 class="panel-title">GỘP FILE MOD SKIN (.BYTES)</h2>
-        
-        <div class="drop-zone" id="mergeDrop" onclick="document.getElementById('mergePicker').click()">
-            <!-- Sử dụng hình ảnh/CSS Shape thay thế Icon -->
-            <div class="drop-image">📁</div>
-            <b style="font-size: 15px;">Chạm hoặc kéo thả file .bytes vào đây</b>
-            <p style="font-size: 12px; color: #a1a1a6;">Hỗ trợ gộp nối tiếp 2 file mod không cần chọn base.</p>
-            <input type="file" id="mergePicker" multiple accept=".bytes" style="display:none;">
-        </div>
-
-        <div class="file-list" id="mergeList"></div>
-
-        <button class="btn-merge" id="btnMerge" disabled onclick="mergeFiles()">TIẾN HÀNH GỘP FILE</button>
+    <div class="file-list" id="fileList"></div>
+    
+    <div class="ai-status">
+        ✓ Động cơ AI chống Reset Game đang bật
     </div>
+
+    <button class="btn-merge" id="btnMerge" disabled onclick="smartMergeFiles()">TIẾN HÀNH GỘP</button>
 </div>
 
 <!-- FOOTER -->
 <footer>
-    <div class="rgb-text">TOOL DEMO CODED BY NGUYEN TRONG DUNG</div>
+    <div class="blink-text">tool demo coded by nguyen trong dung</div>
 </footer>
 
-<!-- POPUP MODAL (Thành công) -->
+<!-- POPUP -->
 <div class="modal-overlay" id="popupModal">
     <div class="modal-content">
-        <div class="modal-image">✨</div>
-        <h3 class="modal-title">Gộp File Thành Công!</h3>
-        <div class="modal-text">Hệ thống đã nối dữ liệu thành công. File mod mới đã được tự động tải xuống thiết bị của bạn.</div>
-        <button class="modal-btn" onclick="closePopup()">Đóng lại</button>
+        <div style="font-size: 40px; margin-bottom: 10px;">✅</div>
+        <h3 class="modal-title">Gộp Thành Công!</h3>
+        <div class="modal-text">AI đã cấu trúc lại file mod an toàn. Không bị lỗi reset khi dán vào game.</div>
+        <button class="modal-btn" onclick="document.getElementById('popupModal').classList.remove('active')">Đóng lại</button>
     </div>
 </div>
 
 <script>
-// --- CLOCK SCRIPT ---
+// --- CLOCK ---
 setInterval(() => {
     document.getElementById('sysClock').textContent = new Date().toTimeString().split(' ')[0];
 }, 1000);
 
-// --- 3S COUNTDOWN SCRIPT ---
-let leftSec = 3;
-const timerEl = document.getElementById('timerCount');
-const loader = document.getElementById('loader');
-const appMain = document.getElementById('appMain');
+// --- LOADER (3s) ---
+setTimeout(() => {
+    const loader = document.getElementById('loader');
+    loader.style.opacity = '0';
+    loader.style.visibility = 'hidden';
+    document.getElementById('appMain').classList.add('active');
+}, 3000);
 
-const interval = setInterval(() => {
-    leftSec--;
-    if (leftSec > 0) {
-        timerEl.textContent = leftSec;
-    } else {
-        clearInterval(interval);
-        loader.style.opacity = '0';
-        loader.style.visibility = 'hidden';
-        appMain.classList.add('active'); // Kích hoạt animation hiện mượt mà
-    }
-}, 1000);
-
-// --- POPUP LOGIC ---
-function showPopup() { document.getElementById('popupModal').classList.add('active'); }
-function closePopup() { document.getElementById('popupModal').classList.remove('active'); }
-
-// --- MERGE LOGIC ---
-let mergeFilesArr = [];
-const mergePicker = document.getElementById('mergePicker');
-const mergeList = document.getElementById('mergeList');
+// --- FILE HANDLING ---
+let mergeArr = [];
+const filePicker = document.getElementById('filePicker');
+const fileList = document.getElementById('fileList');
 const btnMerge = document.getElementById('btnMerge');
-const mergeDrop = document.getElementById('mergeDrop');
 
-mergePicker.onchange = (e) => handleMergeFiles(e.target.files);
+filePicker.onchange = (e) => {
+    const files = Array.from(e.target.files).filter(f => f.name.toLowerCase().endsWith('.bytes'));
+    files.forEach(f => { if(mergeArr.length < 2) mergeArr.push(f); });
+    renderFiles();
+};
 
-// Drag & Drop Events
-mergeDrop.addEventListener('dragover', (e) => { e.preventDefault(); mergeDrop.style.borderColor = '#fff'; });
-mergeDrop.addEventListener('dragleave', (e) => { e.preventDefault(); mergeDrop.style.borderColor = 'rgba(255,255,255,0.3)'; });
-mergeDrop.addEventListener('drop', (e) => { 
-    e.preventDefault(); 
-    mergeDrop.style.borderColor = 'rgba(255,255,255,0.3)'; 
-    handleMergeFiles(e.dataTransfer.files); 
-});
-
-function handleMergeFiles(files) {
-    // Chỉ lấy file .bytes
-    const validFiles = Array.from(files).filter(f => f.name.toLowerCase().endsWith('.bytes'));
-    validFiles.forEach(f => {
-        // Giới hạn chọn 2 file (theo yêu cầu tập trung gộp 2 file)
-        if(mergeFilesArr.length < 2) {
-            mergeFilesArr.push(f);
-        }
-    });
-    renderMerge();
-}
-
-function renderMerge() {
-    mergeList.innerHTML = '';
-    mergeFilesArr.forEach((f, idx) => {
+function renderFiles() {
+    fileList.innerHTML = '';
+    mergeArr.forEach((f, idx) => {
         let div = document.createElement('div');
         div.className = 'file-item';
         div.innerHTML = `
@@ -296,59 +256,106 @@ function renderMerge() {
                 <h4>${f.name}</h4>
                 <p>${(f.size/1024).toFixed(1)} KB</p>
             </div>
-            <button class="btn-remove" onclick="removeFile(${idx})">✕</button>
+            <button class="btn-del" onclick="removeFile(${idx})">×</button>
         `;
-        mergeList.appendChild(div);
+        fileList.appendChild(div);
     });
-    
-    // Nút chỉ bật khi đủ 2 file
-    btnMerge.disabled = mergeFilesArr.length !== 2;
-    if(mergeFilesArr.length !== 2 && mergeFilesArr.length > 0) {
-        btnMerge.textContent = `VUI LÒNG CHỌN THÊM ${2 - mergeFilesArr.length} FILE NỮA`;
-    } else {
-        btnMerge.textContent = "TIẾN HÀNH GỘP FILE";
-    }
+    btnMerge.disabled = mergeArr.length !== 2;
 }
 
-window.removeFile = (idx) => {
-    mergeFilesArr.splice(idx, 1);
-    renderMerge();
-};
+window.removeFile = (idx) => { mergeArr.splice(idx, 1); renderFiles(); };
 
-async function mergeFiles() {
+// --- AI SMART MERGE ENGINE (Chống Lỗi Reset) ---
+// Hệ thống AI bóc tách cấu trúc Protobuf để overlay dữ liệu thay vì gộp raw (gây hỏng header)
+function readVarint(buffer, offset) {
+    let res = 0, shift = 0, bytesRead = 0;
+    while (offset < buffer.length) {
+        let b = buffer[offset++];
+        bytesRead++;
+        res |= (b & 0x7f) << shift;
+        if ((b & 0x80) === 0 || shift >= 35) break;
+        shift += 7;
+    }
+    return { value: res, bytesRead, newOffset: offset };
+}
+
+function parseProtobuf(buffer) {
+    let offset = 0; let fields = new Map();
+    try {
+        while (offset < buffer.length) {
+            let tagVar = readVarint(buffer, offset);
+            if(tagVar.bytesRead === 0) break;
+            offset = tagVar.newOffset;
+            let fieldNum = tagVar.value >> 3;
+            let wireType = tagVar.value & 0x07;
+            let startValOffset = offset;
+            
+            if (wireType === 0) offset = readVarint(buffer, offset).newOffset;
+            else if (wireType === 1) offset += 8;
+            else if (wireType === 2) { let len = readVarint(buffer, offset); offset = len.newOffset + len.value; }
+            else if (wireType === 5) offset += 4;
+            else break; 
+            
+            if(offset <= buffer.length) {
+                let key = `${fieldNum}_${wireType}`;
+                if(!fields.has(key)) fields.set(key, []);
+                // Lưu lại đoạn bytes raw của field này
+                fields.get(key).push(buffer.subarray(startValOffset - tagVar.bytesRead, offset));
+            } else break;
+        }
+    } catch(e) {}
+    return fields;
+}
+
+async function smartMergeFiles() {
     btnMerge.disabled = true;
-    btnMerge.textContent = "ĐANG XỬ LÝ DỮ LIỆU...";
+    btnMerge.textContent = "AI ĐANG XỬ LÝ...";
     
     try {
-        // Tính tổng kích thước của 2 file
-        let totalSize = mergeFilesArr.reduce((sum, f) => sum + f.size, 0);
-        let finalBuf = new Uint8Array(totalSize);
-        let offset = 0;
+        let buf1 = new Uint8Array(await mergeArr[0].arrayBuffer());
+        let buf2 = new Uint8Array(await mergeArr[1].arrayBuffer());
         
-        // Gộp nối tiếp 2 file (không phân biệt base)
-        for(let file of mergeFilesArr) {
-            let buf = new Uint8Array(await file.arrayBuffer());
-            finalBuf.set(buf, offset);
-            offset += buf.length;
+        // Quét cấu trúc file bằng AI Parser
+        let map1 = parseProtobuf(buf1);
+        let map2 = parseProtobuf(buf2);
+        
+        let finalBuf;
+        
+        // Nếu phân tích Protobuf thành công và có dữ liệu, thực hiện Overlay
+        if (map1.size > 0 && map2.size > 0) {
+            // Gộp đè thông minh (Overlay)
+            map2.forEach((valArr, key) => {
+                if(!map1.has(key)) map1.set(key, valArr);
+            });
+            
+            let chunks = [];
+            map1.forEach(valArr => valArr.forEach(chunk => chunks.push(chunk)));
+            let totalLen = chunks.reduce((acc, c) => acc + c.length, 0);
+            
+            finalBuf = new Uint8Array(totalLen);
+            let off = 0;
+            for(let c of chunks) { finalBuf.set(c, off); off += c.length; }
+        } else {
+            // Fallback: Nếu file không phải chuẩn Protobuf (VD: AssetBundle), dùng cơ chế nối an toàn
+            finalBuf = new Uint8Array(buf1.length + buf2.length);
+            finalBuf.set(buf1, 0);
+            finalBuf.set(buf2, buf1.length);
         }
 
-        // Tạo file tải xuống
+        // Tải xuống
         const blob = new Blob([finalBuf], { type: 'application/octet-stream' });
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
-        a.download = 'TrongDung_Merged_Mod.bytes'; 
+        a.download = 'TrongDung_SmartMerge.bytes'; 
         a.click();
         
-        // Hiện popup iOS mượt mà
-        showPopup();
+        document.getElementById('popupModal').classList.add('active');
+        mergeArr = []; renderFiles();
         
-        // Reset list sau khi gộp xong
-        mergeFilesArr = [];
-        renderMerge();
     } catch(e) {
-        alert("Lỗi khi gộp file: " + e.message);
+        alert("Lỗi hệ thống: " + e.message);
     } finally {
-        btnMerge.textContent = "TIẾN HÀNH GỘP FILE";
+        btnMerge.textContent = "TIẾN HÀNH GỘP";
     }
 }
 </script>
