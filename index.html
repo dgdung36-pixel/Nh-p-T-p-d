@@ -135,10 +135,10 @@
                     <label class="block text-xs font-medium text-slate-400 mb-2">Chọn Chế Độ Vận Hành</label>
                     <div class="grid grid-cols-2 gap-2">
                         <button type="button" id="btnModeExtract" onclick="setMode('d')" class="py-2.5 px-3 rounded-xl text-xs font-bold transition-all bg-indigo-600 text-white border border-indigo-400 shadow-lg shadow-indigo-600/30">
-                            📂 Giải Nén (Decode)
+                            📂 Giải mã hóa
                         </button>
                         <button type="button" id="btnModeCompress" onclick="setMode('c')" class="py-2.5 px-3 rounded-xl text-xs font-bold transition-all bg-slate-800 text-slate-400 border border-slate-700 hover:bg-slate-700">
-                            📦 Nén (Encode)
+                            📦 Mã hóa
                         </button>
                     </div>
                 </div>
@@ -159,7 +159,7 @@
                 <!-- Advanced Byte Extraction Option -->
                 <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800 flex items-center justify-between">
                     <div>
-                        <span class="text-xs font-bold text-slate-200 block">Giải nén Bytes Thành Thư Mục</span>
+                        <span class="text-xs font-bold text-slate-200 block">Giải mã hóa file bytes thành thư mục</span>
                         <span class="text-[10px] text-slate-400">Phân rã cấu trúc nhị phân thành cây tệp con</span>
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer">
@@ -170,7 +170,7 @@
 
                 <!-- Process Button -->
                 <button onclick="startProcess()" id="processBtn" class="neon-btn w-full text-white font-bold py-3.5 px-4 rounded-xl shadow-xl transition-all text-sm uppercase tracking-wider active:scale-[0.98]">
-                    🚀 Tiến Hành Xử Lý & Giải Mã
+                    🚀 Tiến Hành Xử Lý & Giải Mã Hóa
                 </button>
             </div>
 
@@ -185,10 +185,10 @@
                     </div>
                     <div class="grid grid-cols-2 gap-2">
                         <button onclick="downloadSingleResult()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold py-2.5 px-3 rounded-xl shadow-lg shadow-emerald-600/20 transition-all flex items-center justify-center gap-1.5">
-                            💾 Tải File Đã Xử Lý
+                            💾 Tải File Gốc / Bytes
                         </button>
                         <button onclick="downloadAsZipSimulation()" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold py-2.5 px-3 rounded-xl shadow-lg shadow-indigo-600/20 transition-all flex items-center justify-center gap-1.5">
-                            📦 Tải Cây Thư Mục (.ZIP)
+                            📦 Tải Thư Mục (.ZIP)
                         </button>
                     </div>
                 </div>
@@ -217,7 +217,7 @@
                     <div class="text-slate-500">[KTOOL v1.0] 🔄 Đang khởi tạo môi trường thực thi...</div>
                     <div class="text-pink-400 font-semibold">[KTOOL] ✨ Custom Moded by trongdung loaded successfully.</div>
                     <div class="text-emerald-400">[KTOOL] ✅ AoV_Zstd & aovt modules verified and mounted.</div>
-                    <div class="text-indigo-400">[KTOOL] 🚀 Hệ thống sẵn sàng tiếp nhận tệp tin hoặc thư mục bytes.</div>
+                    <div class="text-indigo-400">[KTOOL] 🚀 Hệ thống sẵn sàng giải mã hóa tệp tin hoặc thư mục bytes.</div>
                 </div>
             </div>
 
@@ -225,14 +225,14 @@
             <div class="neon-box bg-slate-900/90 rounded-2xl shadow-2xl flex flex-col flex-grow min-h-[300px] backdrop-blur p-5">
                 <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-3">
                     <h2 class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-2">
-                        <span>🌳 Trình Duyệt Cây Thư Mục & Bytes Đã Giải Nén</span>
+                        <span>🌳 Trình Duyệt Cây Thư Mục & Bytes Giải Mã Hóa</span>
                     </h2>
                     <span id="treeItemCount" class="text-xs font-mono text-pink-400 bg-pink-500/10 px-2.5 py-0.5 rounded-full border border-pink-500/20">0 tệp con</span>
                 </div>
                 
                 <div id="directoryTreeContainer" class="console-font bg-slate-950 border border-slate-800/80 rounded-xl p-4 flex-grow overflow-y-auto max-h-[320px] text-xs text-slate-300 space-y-1">
                     <div class="text-slate-500 italic text-center py-10">
-                        Chưa có dữ liệu bytes phân rã. Vui lòng tải file lên và chạy tiến trình giải nén.
+                        Chưa có dữ liệu bytes phân rã. Vui lòng tải file lên và chạy tiến trình giải mã hóa.
                     </div>
                 </div>
             </div>
@@ -246,7 +246,7 @@
     </footer>
 
     <script>
-        let currentMode = 'd'; // 'd' for extract, 'c' for compress
+        let currentMode = 'd'; // 'd' for extract/decode, 'c' for compress/encode
         let selectedFiles = [];
         let generatedResultBlob = null;
         let generatedResultName = "";
@@ -260,11 +260,11 @@
             if (mode === 'd') {
                 btnExtract.className = "py-2.5 px-3 rounded-xl text-xs font-bold transition-all bg-indigo-600 text-white border border-indigo-400 shadow-lg shadow-indigo-600/30";
                 btnCompress.className = "py-2.5 px-3 rounded-xl text-xs font-bold transition-all bg-slate-800 text-slate-400 border border-slate-700 hover:bg-slate-700";
-                appendLog("[KTOOL] 📌 Đã chuyển sang chế độ: Giải nén & Giải mã (Decode)", "text-indigo-400");
+                appendLog("[KTOOL] 📌 Đã chuyển sang chế độ: Giải mã hóa (Decrypt)", "text-indigo-400");
             } else {
                 btnCompress.className = "py-2.5 px-3 rounded-xl text-xs font-bold transition-all bg-indigo-600 text-white border border-indigo-400 shadow-lg shadow-indigo-600/30";
                 btnExtract.className = "py-2.5 px-3 rounded-xl text-xs font-bold transition-all bg-slate-800 text-slate-400 border border-slate-700 hover:bg-slate-700";
-                appendLog("[KTOOL] 📌 Đã chuyển sang chế độ: Nén & Mã hóa (Encode)", "text-pink-400");
+                appendLog("[KTOOL] 📌 Đã chuyển sang chế độ: Mã hóa (Encrypt)", "text-pink-400");
             }
         }
 
@@ -305,7 +305,7 @@
             }
 
             const isByteDeconstruct = document.getElementById('byteDeconstructToggle').checked;
-            const modeName = currentMode === 'd' ? "Giải nén (giải mã)" : "Nén (mã hóa)";
+            const modeName = currentMode === 'd' ? "Giải mã hóa" : "Mã hóa";
             
             appendLog(`\n[KTOOL] 🔄 Bắt đầu tiến trình ${modeName} (Moded by trongdung)...`, "text-amber-400");
 
@@ -317,20 +317,18 @@
 
             for (let i = 0; i < selectedFiles.length; i++) {
                 let file = selectedFiles[i];
-                appendLog(`[KTOOL] ⚙️ Đang phân tích cú pháp file: ${file.name} (${(file.size/1024).toFixed(2)} KB)...`, "text-slate-400");
+                appendLog(`[KTOOL] ⚙️ Đang xử lý file: ${file.name} (${(file.size/1024).toFixed(2)} KB)...`, "text-slate-400");
                 
-                // Simulate processing delay
                 await new Promise(resolve => setTimeout(resolve, 600));
                 
-                appendLog(`[KTOOL] ✅ Xử lý thành công khối dữ liệu: ${file.name}`, "text-emerald-400");
+                appendLog(`[KTOOL] ✅ Hoàn thành xử lý khối dữ liệu: ${file.name}`, "text-emerald-400");
 
-                // Generate simulated processed result blob
+                // Giữ nguyên tên file gốc và phần mở rộng bytes ban đầu cho file giải mã hóa
                 generatedResultBlob = new Blob([file], { type: 'application/octet-stream' });
-                generatedResultName = currentMode === 'd' ? file.name.replace(/\.[^/.]+$/, "") + "_decoded.bin" : file.name + ".zstd";
+                generatedResultName = currentMode === 'd' ? file.name : file.name + ".zstd";
 
-                // If byte deconstruct is enabled, simulate sub-folders and sub-files extraction
                 if (currentMode === 'd' && isByteDeconstruct) {
-                    appendLog(`[KTOOL] 🔍 Đang phân giải file bytes thành các thư mục con...`, "text-pink-400");
+                    appendLog(`[KTOOL] 🔍 Đang giải mã hóa bytes thành cấu trúc thư mục con...`, "text-pink-400");
                     await new Promise(resolve => setTimeout(resolve, 500));
 
                     simulatedDeconstructedFiles.push(
@@ -338,19 +336,17 @@
                         { name: "assets/shaders/lighting_neon.frag", size: "14 KB", type: "file" },
                         { name: "config/gameplay_params.json", size: "45 KB", type: "file" },
                         { name: "scripts/luac/hero_controller.lua", size: "82 KB", type: "file" },
-                        { name: "metadata/manifest_hash.bin", size: "4 KB", type: "file" }
+                        { name: "metadata/manifest_hash.bytes", size: "4 KB", type: "file" }
                     );
                 }
             }
 
-            // Render tree view if any
             renderDirectoryTree(simulatedDeconstructedFiles);
 
-            // Show download panel
             document.getElementById('downloadSection').classList.remove('hidden');
             document.getElementById('downloadResultInfo').innerText = `File kết quả: ${generatedResultName} (${(generatedResultBlob.size/1024).toFixed(2)} KB)`;
 
-            appendLog(`[KTOOL] 🎉 Tiến trình hoàn tất thành công! Sẵn sàng tải xuống.`, "text-emerald-400 font-bold");
+            appendLog(`[KTOOL] 🎉 Tiến trình hoàn tất thành công! Sẵn sàng tải xuống file giữ nguyên đuôi bytes.`, "text-emerald-400 font-bold");
             btn.disabled = false;
             btn.classList.remove('opacity-50', 'cursor-not-allowed');
         }
@@ -399,11 +395,11 @@
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
-            appendLog(`[KTOOL] 💾 Đã tải xuống file: ${generatedResultName}`, "text-emerald-400");
+            appendLog(`[KTOOL] 💾 Đã tải xuống file giữ nguyên đuôi gốc: ${generatedResultName}`, "text-emerald-400");
         }
 
         function downloadSubFile(subFileName) {
-            const dummyBlob = new Blob([`Simulated byte content for ${subFileName}\nModed by trongdung`], { type: 'text/plain' });
+            const dummyBlob = new Blob([`Simulated byte content for ${subFileName}\nModed by trongdung`], { type: 'application/octet-stream' });
             const url = URL.createObjectURL(dummyBlob);
             const a = document.createElement('a');
             a.href = url;
