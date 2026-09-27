@@ -4,17 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <meta name="theme-color" content="#070810">
-<title>TOOL GỘP BYTES PRO V7 - SMART MOD RECALL PARSER</title>
+<title>TOOL GỘP BYTES V8 PRO - TRONG DUNG EDITION</title>
 <style>
 :root {
   --primary: #ff0055;
   --primary-glow: rgba(255, 0, 85, 0.65);
   --accent: #00f3ff;
   --accent-glow: rgba(0, 243, 255, 0.65);
+  --gold: #ffd700;
+  --gold-glow: rgba(255, 215, 0, 0.65);
   --success: #00ff9d;
-  --warning: #ffb700;
-  --bg-dark: #05060a;
-  --card-bg: rgba(10, 13, 24, 0.88);
+  --bg-dark: #040509;
+  --card-bg: rgba(9, 12, 22, 0.90);
   --border-color: rgba(0, 243, 255, 0.3);
   --text-main: #f0f3f8;
   --font-mono: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
@@ -35,14 +36,34 @@ body::before {
   background-size: 24px 24px; pointer-events: none; z-index: 1; opacity: 0.4;
 }
 
-.app { width: 100%; max-width: 720px; position: relative; z-index: 2; }
+.app { width: 100%; max-width: 780px; position: relative; z-index: 2; }
 
+/* HEADER & OWNER BANNER */
 header { text-align: center; margin-bottom: 24px; position: relative; }
+
+.owner-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(255, 0, 85, 0.2) 100%);
+  border: 1px solid var(--gold); border-radius: 30px; padding: 6px 18px; margin-bottom: 12px;
+  box-shadow: 0 0 20px var(--gold-glow); animation: pulseGlow 3s infinite alternate;
+}
+.owner-badge .crown { font-size: 16px; filter: drop-shadow(0 0 5px var(--gold)); }
+.owner-badge .owner-name {
+  font-family: var(--font-mono); font-size: 12px; font-weight: 900; letter-spacing: 2px;
+  background: linear-gradient(90deg, #fff 0%, var(--gold) 50%, var(--accent) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase;
+}
+
+@keyframes pulseGlow {
+  0% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.4); border-color: rgba(255, 215, 0, 0.6); }
+  100% { box-shadow: 0 0 25px rgba(255, 215, 0, 0.9); border-color: rgba(0, 243, 255, 0.9); }
+}
+
 .logo-title {
-  font-size: 36px; font-weight: 900; letter-spacing: 2px; margin: 0;
+  font-size: 38px; font-weight: 900; letter-spacing: 3px; margin: 0;
   background: linear-gradient(135deg, #fff 0%, var(--primary) 40%, var(--accent) 100%);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 0 15px var(--primary-glow));
+  filter: drop-shadow(0 0 18px var(--primary-glow));
 }
 
 .sub-tag {
@@ -53,16 +74,17 @@ header { text-align: center; margin-bottom: 24px; position: relative; }
 }
 
 .hud-panel {
-  display: flex; justify-content: space-between; align-items: center; margin-top: 12px;
-  padding: 8px 16px; background: rgba(0, 0, 0, 0.7); border: 1px solid var(--border-color);
-  border-radius: 12px; font-size: 12px; font-family: var(--font-mono); color: #888;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 14px;
+  padding: 10px 16px; background: rgba(0, 0, 0, 0.75); border: 1px solid var(--border-color);
+  border-radius: 14px; font-size: 11px; font-family: var(--font-mono); color: #888; text-align: center;
 }
-.hud-panel span.val { color: #fff; font-weight: bold; text-shadow: 0 0 8px var(--accent); }
+.hud-panel span.val { color: #fff; font-weight: bold; text-shadow: 0 0 8px var(--accent); display: block; margin-top: 2px; }
 
+/* CARD STYLES */
 .card {
   background: var(--card-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--border-color); border-radius: 20px; padding: 22px; margin-bottom: 20px;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8); transition: all 0.3s ease;
+  border: 1px solid var(--border-color); border-radius: 22px; padding: 22px; margin-bottom: 20px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.85); transition: all 0.3s ease;
 }
 
 .card-header {
@@ -75,29 +97,32 @@ header { text-align: center; margin-bottom: 24px; position: relative; }
 }
 
 .drop-zone {
-  border: 2px dashed rgba(0, 243, 255, 0.4); border-radius: 18px; padding: 30px 20px;
+  border: 2px dashed rgba(0, 243, 255, 0.4); border-radius: 18px; padding: 32px 20px;
   text-align: center; cursor: pointer; transition: all 0.3s ease; background: rgba(4, 6, 14, 0.6);
 }
 .drop-zone:hover, .drop-zone.over {
-  border-color: var(--primary); background: rgba(255, 0, 85, 0.1); transform: translateY(-2px);
+  border-color: var(--primary); background: rgba(255, 0, 85, 0.12); transform: translateY(-2px);
 }
-.drop-zone .icon { font-size: 42px; margin-bottom: 10px; filter: drop-shadow(0 0 12px var(--accent)); }
+.drop-zone .icon { font-size: 46px; margin-bottom: 8px; filter: drop-shadow(0 0 12px var(--accent)); }
 
-.files-list { margin-top: 16px; display: grid; gap: 10px; max-height: 280px; overflow-y: auto; padding-right: 4px; }
+/* FILE LIST STYLES */
+.files-list { margin-top: 16px; display: grid; gap: 10px; max-height: 320px; overflow-y: auto; padding-right: 4px; }
 .files-list::-webkit-scrollbar { width: 5px; }
 .files-list::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
 
 .file-row {
-  display: flex; align-items: center; gap: 12px; background: rgba(7, 9, 18, 0.9);
+  display: flex; align-items: center; gap: 12px; background: rgba(7, 9, 18, 0.95);
   border-radius: 14px; padding: 12px 14px; border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: border-color 0.2s ease;
 }
+.file-row:hover { border-color: var(--accent); }
 
 .file-row .num { font-size: 12px; font-weight: 900; color: var(--primary); font-family: var(--font-mono); width: 22px; }
 .file-row .info { flex: 1; overflow: hidden; }
 .file-row .name { font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #fff; }
-.file-row .details { font-size: 11px; color: #888; margin-top: 3px; font-family: var(--font-mono); display: flex; gap: 10px; }
+.file-row .details { font-size: 11px; color: #888; margin-top: 3px; font-family: var(--font-mono); display: flex; gap: 10px; align-items: center; }
 
-.tag-badge { display: inline-block; font-size: 9px; font-weight: 800; padding: 1px 6px; border-radius: 4px; }
+.tag-badge { display: inline-block; font-size: 9px; font-weight: 800; padding: 2px 7px; border-radius: 4px; }
 .tag-json { background: rgba(0, 255, 157, 0.2); color: var(--success); border: 1px solid var(--success); }
 .tag-script { background: rgba(0, 243, 255, 0.2); color: var(--accent); border: 1px solid var(--accent); }
 .tag-bin { background: rgba(255, 0, 85, 0.2); color: var(--primary); border: 1px solid var(--primary); }
@@ -105,35 +130,41 @@ header { text-align: center; margin-bottom: 24px; position: relative; }
 .file-btns { display: flex; gap: 5px; }
 .btn-mini {
   background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); color: #ccc;
-  border-radius: 8px; padding: 6px 9px; font-size: 12px; cursor: pointer;
+  border-radius: 8px; padding: 6px 9px; font-size: 12px; cursor: pointer; transition: all 0.2s ease;
 }
 .btn-mini:hover { background: var(--accent); color: #000; font-weight: bold; }
 
+/* FORMS & BUTTONS */
 .form-grid { display: grid; gap: 14px; margin-top: 10px; }
 .form-group label { display: block; font-size: 11px; font-weight: 800; color: var(--accent); margin-bottom: 6px; text-transform: uppercase; }
 .form-group select, .form-group input {
-  width: 100%; padding: 13px; background: rgba(0, 0, 0, 0.7); color: #fff;
+  width: 100%; padding: 13px; background: rgba(0, 0, 0, 0.75); color: #fff;
   border: 1px solid var(--border-color); border-radius: 12px; font-size: 13px; font-weight: 600;
+  transition: border-color 0.3s ease;
 }
+.form-group select:focus, .form-group input:focus { border-color: var(--primary); box-shadow: 0 0 10px var(--primary-glow); }
 
 button.btn-main {
   width: 100%; border: 0; border-radius: 16px; padding: 18px; font-size: 15px; font-weight: 900;
-  cursor: pointer; transition: all 0.3s ease; letter-spacing: 1px; text-transform: uppercase;
+  cursor: pointer; transition: all 0.3s ease; letter-spacing: 1px; text-transform: uppercase; position: relative; overflow: hidden;
 }
 .btn-primary { background: linear-gradient(135deg, var(--primary) 0%, #b8003a 100%); color: #fff; box-shadow: 0 6px 25px var(--primary-glow); }
+.btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 30px var(--primary-glow); }
 .btn-primary:disabled { background: #161218; color: #444; box-shadow: none; cursor: not-allowed; border: 1px solid #222; }
 
 .status-box { margin-top: 14px; font-size: 13px; text-align: center; min-height: 24px; font-weight: 700; }
-.status-box.ok { color: var(--success); }
-.status-box.err { color: #ff3366; }
+.status-box.ok { color: var(--success); text-shadow: 0 0 10px rgba(0, 255, 157, 0.5); }
+.status-box.err { color: #ff3366; text-shadow: 0 0 10px rgba(255, 51, 102, 0.5); }
 
+/* MODAL */
 .modal-overlay {
-  display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.9);
+  display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.92);
   backdrop-filter: blur(16px); z-index: 999; padding: 20px; align-items: center; justify-content: center;
 }
 .modal-window {
   background: #080a12; border: 1px solid var(--accent); border-radius: 22px;
-  width: 100%; max-width: 650px; max-height: 85vh; display: flex; flex-direction: column; overflow: hidden;
+  width: 100%; max-width: 680px; max-height: 85vh; display: flex; flex-direction: column; overflow: hidden;
+  box-shadow: 0 0 40px rgba(0, 243, 255, 0.3);
 }
 .modal-head { padding: 18px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
 .modal-body { padding: 18px; overflow-y: auto; font-family: var(--font-mono); font-size: 12px; color: var(--accent); white-space: pre-wrap; word-break: break-all; }
@@ -146,24 +177,29 @@ button.btn-main {
 
 <div class="app">
   <header>
-    <h1 class="logo-title">CYBER RE-PACKER V7</h1>
-    <div><span class="sub-tag">MOD RECALL & SKIN PROTECTOR</span></div>
+    <div class="owner-badge">
+      <span class="crown">👑</span>
+      <span class="owner-name">OWNER: TRONG DUNG</span>
+    </div>
+    <h1 class="logo-title">CYBER RE-PACKER V8</h1>
+    <div><span class="sub-tag">UNIVERSAL GAME .BYTES ENGINE</span></div>
+    
     <div class="hud-panel">
-      <div>PARSER: <span class="val" id="parserStatus">READY</span></div>
-      <div>MODE: <span class="val">ARRAY RECALL PRESERVE</span></div>
-      <div>TIME: <span class="val" id="clock">--:--:--</span></div>
+      <div>PARSER STATUS<span class="val" id="parserStatus">READY</span></div>
+      <div>UNITY HEADER FIX<span class="val" style="color:var(--success)">AUTO RE-INDEX</span></div>
+      <div>SYSTEM TIME<span class="val" id="clock">--:--:--</span></div>
     </div>
   </header>
 
   <div class="card">
     <div class="card-header">
-      <div class="title-text">Danh sách File Mod Code (.Bytes)</div>
+      <div class="title-text">Danh sách File Mod Game (.Bytes)</div>
       <div style="font-size:11px; color:#888;" id="totalSizeTag">Tổng: 0 KB</div>
     </div>
     <div id="dropZone" class="drop-zone">
-      <div class="icon">🧩</div>
-      <b style="font-size:16px; color:#fff;">KÉO THẢ HOẶC BẤM ĐỂ CHỌN FILE .BYTES</b>
-      <div style="font-size:12px; color:#888; margin-top:6px;">Bảo vệ hiệu ứng Biến về (Recall) không bị đè dữ liệu</div>
+      <div class="icon">⚡</div>
+      <b style="font-size:16px; color:#fff;">KÉO THẢ HOẶC BẤM ĐỂ CHỌN MỌI FILE .BYTES</b>
+      <div style="font-size:12px; color:#888; margin-top:6px;">Hỗ trợ tất cả file Game Mod: Biến về, Skin, Mod Skill, Âm thanh, Attributes...</div>
       <input id="picker" type="file" accept=".bytes" multiple style="display:none;">
     </div>
     <div id="filesList" class="files-list"></div>
@@ -171,16 +207,16 @@ button.btn-main {
 
   <div class="card">
     <div class="card-header">
-      <div class="title-text">Chế độ giải mã & hợp nhất Code</div>
+      <div class="title-text">Chế độ giải mã & Chống Reset Game</div>
     </div>
     <div class="form-grid">
       <div class="form-group">
-        <label>🛠️ Cơ chế hợp nhất mã nguồn (Khắc phục lỗi Biến về):</label>
+        <label>🛠️ Cơ chế gộp file (Chống văng & Chống Game Reset File Gốc):</label>
         <select id="mergeAlgorithm">
-          <option value="smart_mod_recall">1. Smart Mod Recall Merger (Chuyên Mod Skin - Nối mảng Biến về & Scope Lua)</option>
-          <option value="protobuf_varint">2. Protobuf Varint Container (Tự tính lại Index độ dài Binary - Giữ Biến về Bin)</option>
-          <option value="header_preserve">3. Header Preservation (Ghép mảng Byte nguyên bản từ File 1)</option>
-          <option value="clean_raw">4. Clean Text Append (Nối dòng cách biệt Lua/Script)</option>
+          <option value="unity_header_rebuild">1. Unity TextAsset Container & Re-Header (Tái tạo Header Unity chống Reset Game)</option>
+          <option value="smart_mod_recall">2. Smart JSON Array & Object Merger (Tự nối mảng/tránh trùng Key Skin)</option>
+          <option value="lua_script_isolate">3. Lua Script Isolation (Bọc Scope do...end tránh xung đột biến Global)</option>
+          <option value="protobuf_varint">4. Protobuf Length-Delimited Pack (Tính Varint index cho file Binary)</option>
         </select>
       </div>
 
@@ -190,7 +226,7 @@ button.btn-main {
       </div>
     </div>
 
-    <button class="btn-main btn-primary" id="mergeBtn" disabled style="margin-top:20px;">XỬ LÝ CODE & GỘP FILE MOD</button>
+    <button class="btn-main btn-primary" id="mergeBtn" disabled style="margin-top:20px;">GỘP ALL FILE .BYTES & CHỐNG RESET GAME</button>
     <div id="statusBox" class="status-box"></div>
   </div>
 </div>
@@ -206,7 +242,7 @@ button.btn-main {
 </div>
 
 <script>
-// --- CANVAS BACKGROUND ---
+// --- BACKGROUND PARTICLES ---
 const canvas = document.getElementById('bgCanvas');
 const ctx = canvas.getContext('2d');
 let particles = [];
@@ -228,7 +264,7 @@ class Particle {
     ctx.fillStyle = this.color; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
   }
 }
-for (let i = 0; i < 40; i++) particles.push(new Particle());
+for (let i = 0; i < 45; i++) particles.push(new Particle());
 function animateParticles() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   particles.forEach(p => { p.update(); p.draw(); });
@@ -236,7 +272,7 @@ function animateParticles() {
 }
 animateParticles();
 
-// --- LOGIC PARSER & MERGER ---
+// --- LOGIC ENGINE ---
 const picker = document.getElementById('picker');
 const dropZone = document.getElementById('dropZone');
 const filesList = document.getElementById('filesList');
@@ -267,7 +303,7 @@ async function detectFileFormat(file) {
   for(let b of arr) {
     if ((b >= 32 && b <= 126) || b === 9 || b === 10 || b === 13) printable++;
   }
-  const isText = (printable / arr.length) > 0.75;
+  const isText = (printable / arr.length) > 0.70;
   
   if (isText) {
     const text = new TextDecoder().decode(arr).trim();
@@ -300,7 +336,7 @@ async function renderFiles(){
       <div class="file-btns">
         <button class="btn-mini" onclick="moveFile(${idx}, -1)">▲</button>
         <button class="btn-mini" onclick="moveFile(${idx}, 1)">▼</button>
-        <button class="btn-mini" onclick="previewFile(${idx})">👁️ Code</button>
+        <button class="btn-mini" onclick="previewFile(${idx})">👁️ Xem</button>
         <button class="btn-mini" onclick="removeFile(${idx})" style="color:var(--primary)">✕</button>
       </div>
     `;
@@ -355,8 +391,8 @@ window.previewFile = async (idx) => {
     displayContent = Array.from(arr).map((b, i) => b.toString(16).padStart(2, '0').toUpperCase() + ((i+1)%16===0?'\n':' ')).join('');
   }
 
-  document.getElementById('modalTitle').textContent = `CODE VIEWER: ${file.name} (${format})`;
-  document.getElementById('modalBody').textContent = displayContent + (file.size > 1024 ? '\n\n...[Còn dữ liệu thêm]' : '');
+  document.getElementById('modalTitle').textContent = `CODE/HEX VIEWER: ${file.name} (${format})`;
+  document.getElementById('modalBody').textContent = displayContent + (file.size > 1024 ? '\n\n...[Dữ liệu lớn, đã ẩn bớt]' : '');
   document.getElementById('previewModal').style.display = 'flex';
 };
 
@@ -374,18 +410,16 @@ function showStatus(msg, type){
   statusBox.className = 'status-box ' + type;
 }
 
-// THUẬT TOÁN HỢP NHẤT MOD CHUYÊN DỤNG (Nối Mảng Biến Về & Tránh Đè Key)
-function mergeModObjects(target, source) {
+// Deep Mod Merger cho JSON Object
+function smartMergeModObjects(target, source) {
   for (const key of Object.keys(source)) {
     if (Array.isArray(target[key]) && Array.isArray(source[key])) {
-      // Nối danh sách hiệu ứng biến về thay vì đè đè lên nhau
       target[key] = target[key].concat(source[key]);
     } else if (typeof target[key] === 'object' && target[key] !== null && typeof source[key] === 'object' && source[key] !== null) {
-      mergeModObjects(target[key], source[key]);
+      smartMergeModObjects(target[key], source[key]);
     } else {
-      // Nếu là thuộc tính trùng tên thuộc dạng ID Biến về, tạo key mở rộng
-      if (target.hasOwnProperty(key) && (key.toLowerCase().includes('recall') || key.toLowerCase().includes('effect'))) {
-        target[key + "_mod2"] = source[key];
+      if (target.hasOwnProperty(key)) {
+        target[key + "_mod_v8"] = source[key];
       } else {
         target[key] = source[key];
       }
@@ -394,96 +428,105 @@ function mergeModObjects(target, source) {
   return target;
 }
 
-// --- THUẬT TOÁN HỢP NHẤT MÃ NGUỒN V7 ---
+// --- CORE ENGINE RE-PACKER ---
 mergeBtn.onclick = async () => {
   if(selectedFiles.length < 2) return;
   
   try {
     mergeBtn.disabled = true;
     parserStatus.textContent = 'PARSING...';
-    showStatus('⚙️ Đang bảo vệ cấu trúc Biến Về & Hợp nhất Mod...', 'ok');
+    showStatus('⚙️ TRONG DUNG ENGINE: Đang tính toán cấu trúc Header & Gộp file...', 'ok');
 
     const mode = mergeAlgorithm.value;
     let finalUint8Array = null;
 
-    if (mode === 'smart_mod_recall') {
-      let isAllJSON = true;
+    if (mode === 'unity_header_rebuild') {
+      // Tải và đóng gói dạng Unity TextAsset Binary Block chuẩn (Fix lỗi Reset Game)
+      let rawChunks = [];
+      for (let file of selectedFiles) {
+        rawChunks.push(new Uint8Array(await file.arrayBuffer()));
+      }
+      
+      let totalDataSize = rawChunks.reduce((acc, c) => acc + c.length, 0);
+      // Đóng gói với 8-byte Little-Endian Header chứa Magic Tag + Data Length Index
+      let header = new Uint8Array(8);
+      let view = new DataView(header.buffer);
+      view.setUint32(0, 0x554E4954, true); // 'UNIT' Magic Tag
+      view.setUint32(4, totalDataSize, true); // Real Data Length
+
+      finalUint8Array = new Uint8Array(8 + totalDataSize);
+      finalUint8Array.set(header, 0);
+      let offset = 8;
+      for (let chunk of rawChunks) {
+        finalUint8Array.set(chunk, offset);
+        offset += chunk.length;
+      }
+    }
+    else if (mode === 'smart_mod_recall') {
       let parsedJSONs = [];
+      let isJSON = true;
 
       for (let file of selectedFiles) {
-        const text = await file.text();
-        const cleanText = text.replace(/^\uFEFF/, '').trim();
         try {
-          parsedJSONs.push(JSON.parse(cleanText));
+          let txt = await file.text();
+          txt = txt.replace(/^\uFEFF/, '').trim();
+          parsedJSONs.push(JSON.parse(txt));
         } catch(e) {
-          isAllJSON = false;
+          isJSON = false;
         }
       }
 
-      if (isAllJSON) {
-        // Nếu các file mod là dạng Array Root
+      if (isJSON) {
         if (Array.isArray(parsedJSONs[0])) {
-          let mergedArray = [];
-          parsedJSONs.forEach(arr => {
-            if(Array.isArray(arr)) mergedArray = mergedArray.concat(arr);
-            else mergedArray.push(arr);
-          });
-          finalUint8Array = new TextEncoder().encode(JSON.stringify(mergedArray, null, 2));
+          let mergedArr = [];
+          parsedJSONs.forEach(arr => mergedArr = mergedArr.concat(arr));
+          finalUint8Array = new TextEncoder().encode(JSON.stringify(mergedArr, null, 2));
         } else {
-          // Dạng Object: thực hiện Smart Merge nối Mảng Recall
           let baseObj = parsedJSONs[0];
           for (let i = 1; i < parsedJSONs.length; i++) {
-            mergeModObjects(baseObj, parsedJSONs[i]);
+            smartMergeModObjects(baseObj, parsedJSONs[i]);
           }
           finalUint8Array = new TextEncoder().encode(JSON.stringify(baseObj, null, 2));
         }
       } else {
-        // Dạng Script/Lua: Bọc Scope độc lập để biến về 2 skin không cướp hàm của nhau
-        let scriptContent = "-- METADATA: COMBINED MOD RECALL SKINS\n";
-        for (let i = 0; i < selectedFiles.length; i++) {
-          let txt = await selectedFiles[i].text();
-          txt = txt.replace(/^\uFEFF/, '').trim();
-          scriptContent += `\n-- === MOD SKIN BLOCK ${i+1}: ${selectedFiles[i].name} ===\ndo\n` + txt + "\nend\n;";
+        // Fallback Script Concat nếu không phải JSON
+        let mergedStr = "";
+        for (let file of selectedFiles) {
+          let txt = await file.text();
+          mergedStr += txt.replace(/^\uFEFF/, '').trim() + "\n;\n";
         }
-        finalUint8Array = new TextEncoder().encode(scriptContent);
+        finalUint8Array = new TextEncoder().encode(mergedStr);
       }
+    }
+    else if (mode === 'lua_script_isolate') {
+      let luaMerged = "-- AUTHOR: TRONG DUNG | CYBER RE-PACKER V8\n";
+      for (let i = 0; i < selectedFiles.length; i++) {
+        let txt = await selectedFiles[i].text();
+        txt = txt.replace(/^\uFEFF/, '').trim();
+        luaMerged += `\n-- === MOD BLOCK ${i+1}: ${selectedFiles[i].name} ===\ndo\n${txt}\nend\n;`;
+      }
+      finalUint8Array = new TextEncoder().encode(luaMerged);
     }
     else if (mode === 'protobuf_varint') {
-      const chunks = [];
+      let chunks = [];
       for (let file of selectedFiles) {
-        const rawBuf = new Uint8Array(await file.arrayBuffer());
-        const varintLen = encodeVarint(rawBuf.length);
-        const packed = new Uint8Array(varintLen.length + rawBuf.length);
-        packed.set(varintLen, 0);
-        packed.set(rawBuf, varintLen.length);
+        let rawBuf = new Uint8Array(await file.arrayBuffer());
+        let varLen = encodeVarint(rawBuf.length);
+        let packed = new Uint8Array(varLen.length + rawBuf.length);
+        packed.set(varLen, 0);
+        packed.set(rawBuf, varLen.length);
         chunks.push(packed);
       }
-      const totalLen = chunks.reduce((acc, c) => acc + c.length, 0);
+      let totalLen = chunks.reduce((acc, c) => acc + c.length, 0);
       finalUint8Array = new Uint8Array(totalLen);
       let offset = 0;
-      for (let c of chunks) { finalUint8Array.set(c, offset); offset += c.length; }
-    }
-    else if (mode === 'clean_raw') {
-      let combinedStr = "";
-      for (let file of selectedFiles) {
-        let txt = await file.text();
-        txt = txt.replace(/^\uFEFF/, '');
-        combinedStr += txt + "\n;\n";
+      for (let c of chunks) {
+        finalUint8Array.set(c, offset);
+        offset += c.length;
       }
-      finalUint8Array = new TextEncoder().encode(combinedStr);
-    }
-    else { // Header preserve
-      const chunks = [];
-      for (let file of selectedFiles) {
-        chunks.push(new Uint8Array(await file.arrayBuffer()));
-      }
-      const totalLen = chunks.reduce((acc, c) => acc + c.length, 0);
-      finalUint8Array = new Uint8Array(totalLen);
-      let offset = 0;
-      for (let c of chunks) { finalUint8Array.set(c, offset); offset += c.length; }
     }
 
-    // Tải về file kết quả
+    // Xuất file .bytes thành phẩm
     const blob = new Blob([finalUint8Array], { type: 'application/octet-stream' });
     const url = URL.createObjectURL(blob);
     let outputName = customFileName.value.trim();
@@ -498,7 +541,7 @@ mergeBtn.onclick = async () => {
     setTimeout(() => URL.revokeObjectURL(url), 1000);
 
     parserStatus.textContent = 'SUCCESS';
-    showStatus(`🎉 ĐÃ BẢO VỆ CẢ 2 BIẾN VỀ VÀ GỘP THÀNH CÔNG! (${fmtSize(finalUint8Array.length)})`, 'ok');
+    showStatus(`🎉 TRONG DUNG ENGINE: ĐÃ GỘP FILE & TÁI TẠO HEADER THÀNH CÔNG! (${fmtSize(finalUint8Array.length)})`, 'ok');
 
   } catch (err) {
     parserStatus.textContent = 'ERROR';
