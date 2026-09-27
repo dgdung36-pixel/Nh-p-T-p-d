@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>CYBER MERGE V22 | LIGHT/DARK NEON</title>
+<title>CYBER MERGE V22.3 | AURA GLOW EDITION</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@500;800;900&display=swap" rel="stylesheet">
 
 <style>
 :root {
@@ -55,7 +55,6 @@
     --drop-bg: rgba(255, 255, 255, 0.7);
     --item-bg: rgba(255, 255, 255, 0.9);
 
-    /* NEON & OWNER VARIABLES - Đổi màu để nổi bật trên nền sáng */
     --owner-border: #1a1a1a;
     --owner-text: #1a1a1a;
     --owner-glow: rgba(0, 0, 0, 0.4);
@@ -98,16 +97,70 @@ body {
 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 .loading-text { font-size: 15px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); }
 
-/* HEADER */
+/* HEADER & LOGO */
 header {
     width: 100%; max-width: 1000px; display: flex; justify-content: space-between; align-items: center;
     margin-top: 15px; margin-bottom: 30px; flex-wrap: wrap; gap: 15px;
 }
+.header-left {
+    display: flex; align-items: center; gap: 15px; flex-wrap: wrap;
+}
+
+/* APP LOGO VỚI HIỆU ỨNG AURA & HÀO QUANG */
+.app-logo {
+    display: flex; align-items: center; gap: 12px;
+    background: var(--glass-bg); padding: 8px 20px 8px 8px;
+    border-radius: 40px; border: 1px solid var(--glass-border);
+    box-shadow: 0 8px 25px var(--glass-shadow);
+    position: relative; overflow: visible;
+    transition: all 0.3s var(--spring); cursor: pointer;
+}
+.app-logo:hover { border-color: var(--accent); transform: translateY(-2px); }
+
+/* LỚP HÀO QUANG (AURA GLOW) BAO QUANH LOGO ICON */
+.logo-icon-wrapper {
+    position: relative; width: 40px; height: 40px;
+    display: flex; justify-content: center; align-items: center;
+}
+.logo-icon-wrapper::before {
+    content: ''; position: absolute; inset: -6px; border-radius: 50%;
+    background: linear-gradient(135deg, #00f2fe, #764ba2, #ff007f, #00f2fe);
+    background-size: 300% 300%;
+    animation: auraSpin 4s linear infinite, auraPulse 2s ease-in-out infinite alternate;
+    z-index: 1; filter: blur(6px); opacity: 0.8;
+}
+@keyframes auraSpin {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+@keyframes auraPulse {
+    0% { transform: scale(0.95); opacity: 0.6; }
+    100% { transform: scale(1.15); opacity: 1; }
+}
+
+.logo-icon {
+    position: relative; width: 40px; height: 40px;
+    background: linear-gradient(135deg, var(--accent), #764ba2);
+    border-radius: 50%; display: flex; justify-content: center; align-items: center;
+    font-size: 18px; color: #fff; z-index: 2;
+    box-shadow: inset 0 0 10px rgba(255,255,255,0.6);
+}
+
+.logo-text {
+    font-family: var(--font-mono); font-size: 14px; font-weight: 900;
+    line-height: 1.1; color: var(--text-main); letter-spacing: 1px;
+}
+.logo-text span { color: var(--accent); text-shadow: 0 0 10px var(--accent-glow); }
+
+/* CLOCK PANEL */
 .clock-panel {
     background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-border);
     padding: 10px 20px; border-radius: 30px; font-family: var(--font-mono); font-size: 13px;
-    box-shadow: 0 10px 20px var(--glass-shadow); display: flex; align-items: center; gap: 10px;
+    box-shadow: 0 8px 20px var(--glass-shadow); display: flex; align-items: center; gap: 8px;
 }
+
+/* CONTROLS (Right side) */
 .control-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
 .icon-btn {
     background: var(--glass-bg); border: 1px solid var(--glass-border); color: var(--text-main);
@@ -117,7 +170,7 @@ header {
 .icon-btn:hover { border-color: var(--accent); transform: scale(1.1); box-shadow: 0 0 15px var(--accent-glow); }
 .icon-btn.lang { width: auto; padding: 0 15px; border-radius: 20px; font-size: 13px; font-weight: 700; font-family: var(--font-mono); }
 
-/* TRONG DUNG NEON - FIXED FOR LIGHT/DARK MODE */
+/* TRONG DUNG NEON */
 .owner-neon {
     padding: 10px 24px; border-radius: 30px; font-weight: 900; font-size: 14px; letter-spacing: 2px;
     border: 2px solid var(--owner-border); color: var(--owner-text); text-transform: uppercase;
@@ -156,7 +209,7 @@ header {
 .drop-zone {
     border: 2px dashed var(--glass-border); border-radius: 20px; padding: 40px 20px;
     text-align: center; cursor: pointer; transition: all 0.3s; background: var(--drop-bg);
-    display: flex; flex-direction: column; align-items: center; gap: 12px;
+    display: flex; flex-direction: column; align-items: center; gap: 12px; margin-bottom: 20px;
 }
 .drop-zone:hover { border-color: var(--accent); background: var(--accent-glow); }
 .drop-image {
@@ -168,7 +221,7 @@ header {
 .drop-zone:hover .drop-image { transform: scale(1.1) translateY(-5px); }
 
 /* FILE LIST */
-.file-list { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
+.file-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;}
 .file-item {
     background: var(--item-bg); padding: 15px; border-radius: 16px;
     display: flex; justify-content: space-between; align-items: center;
@@ -180,18 +233,22 @@ header {
 .btn-remove { background: none; border: none; color: #ff375f; font-size: 22px; cursor: pointer; transition: 0.2s; }
 .btn-remove:hover { transform: scale(1.2); }
 
-/* SELECT & BUTTONS */
-.custom-select {
+/* INPUTS & SELECTS */
+.input-label {
+    font-size: 13px; font-weight: 700; color: var(--text-main); margin-bottom: 8px; display: block;
+}
+.custom-control {
     width: 100%; padding: 16px; border-radius: 16px; background: var(--item-bg);
     border: 1px solid var(--glass-border); color: var(--text-main); font-size: 14px; font-family: var(--font-main);
-    margin: 20px 0 10px 0; outline: none; transition: 0.3s;
+    margin-bottom: 15px; outline: none; transition: 0.3s;
 }
-.custom-select:focus { border-color: var(--accent); box-shadow: 0 0 15px var(--accent-glow); }
+.custom-control::placeholder { color: var(--text-muted); opacity: 0.6; }
+.custom-control:focus { border-color: var(--accent); box-shadow: 0 0 15px var(--accent-glow); }
 
 .btn-merge {
     width: 100%; padding: 20px; border-radius: 20px; border: none;
     background: var(--btn-bg); color: var(--btn-text); font-size: 16px; font-weight: 900;
-    cursor: pointer; margin-top: 15px; transition: all 0.4s var(--spring); text-transform: uppercase; letter-spacing: 1px;
+    cursor: pointer; margin-top: 5px; transition: all 0.4s var(--spring); text-transform: uppercase; letter-spacing: 1px;
     box-shadow: 0 10px 20px var(--glass-shadow);
 }
 .btn-merge:hover:not(:disabled) { transform: scale(1.02) translateY(-2px); box-shadow: 0 15px 30px var(--glass-shadow), 0 0 20px var(--glass-border); }
@@ -264,7 +321,18 @@ footer { margin-top: auto; padding: 25px 0; text-align: center; width: 100%; }
 </div>
 
 <header>
-    <div class="clock-panel">🕒 <span id="sysClock">00:00:00</span></div>
+    <!-- CỘT TRÁI: LOGO VỚI HIỆU ỨNG HÀO QUANG (AURA) & CLOCK -->
+    <div class="header-left">
+        <div class="app-logo">
+            <div class="logo-icon-wrapper">
+                <div class="logo-icon">🔮</div>
+            </div>
+            <div class="logo-text">CYBER<br><span>MERGE</span></div>
+        </div>
+        <div class="clock-panel">🕒 <span id="sysClock">00:00:00</span></div>
+    </div>
+    
+    <!-- CỘT PHẢI: CONTROLS & OWNER -->
     <div class="control-group">
         <button class="icon-btn" id="themeBtn" onclick="toggleTheme()" title="Đổi Giao Diện Sáng/Tối">☀️</button>
         <button class="icon-btn lang" id="langBtn" onclick="toggleLang()" title="Đổi Ngôn Ngữ">🇻🇳 VN</button>
@@ -274,7 +342,7 @@ footer { margin-top: auto; padding: 25px 0; text-align: center; width: 100%; }
 
 <div class="main-grid" id="appMain">
     <div class="glass-panel">
-        <h2 class="panel-title" id="lbl_title_main">CÔNG CỤ GỘP MOD SKIN V22</h2>
+        <h2 class="panel-title" id="lbl_title_main">CÔNG CỤ GỘP MOD SKIN V22.3</h2>
         
         <div class="drop-zone" id="mergeDrop" onclick="document.getElementById('filePicker').click()">
             <div class="drop-image">📦</div>
@@ -285,7 +353,12 @@ footer { margin-top: auto; padding: 25px 0; text-align: center; width: 100%; }
 
         <div class="file-list" id="fileList"></div>
 
-        <select class="custom-select" id="mergeMode">
+        <div>
+            <label class="input-label" id="lbl_filename_title">Tên File Xuất Ra (Để trống để giữ tên gốc):</label>
+            <input type="text" class="custom-control" id="customFileName" placeholder="Ví dụ: ModSkin_Zuka.bytes">
+        </div>
+
+        <select class="custom-control" id="mergeMode">
             <option value="ai_patch" id="lbl_opt_ai">Khuyên Dùng: Smart AI Patch (Cắt Header + Fix Lỗi Game)</option>
             <option value="raw" id="lbl_opt_raw">Cơ bản: Nối File Thô (Dành cho file đặc biệt)</option>
         </select>
@@ -349,9 +422,10 @@ function toggleTheme() {
 
 const i18n = {
     "lbl_loading": { vi: "Đang tải...", en: "Loading..." },
-    "lbl_title_main": { vi: "CÔNG CỤ GỘP MOD SKIN V22", en: "SKIN MOD MERGER V22" },
+    "lbl_title_main": { vi: "CÔNG CỤ GỘP MOD SKIN V22.3", en: "SKIN MOD MERGER V22.3" },
     "lbl_drop_main": { vi: "Chạm hoặc kéo thả file .bytes", en: "Click or drag .bytes files" },
     "lbl_drop_sub": { vi: "Hỗ trợ gộp 2 file, AI sẽ tự động xử lý Header.", en: "Merge 2 files, AI auto-handles Headers." },
+    "lbl_filename_title": { vi: "Tên File Xuất Ra (Để trống để giữ tên gốc):", en: "Output Name (Leave blank for original name):" },
     "lbl_opt_ai": { vi: "Khuyên Dùng: Smart AI Patch (Cắt Header + Fix Lỗi Game)", en: "Recommended: Smart AI Patch (Strip Header + Fix Game Errors)" },
     "lbl_opt_raw": { vi: "Cơ bản: Nối File Thô (Dành cho file đặc biệt)", en: "Basic: Raw Append (For special files)" },
     "lbl_btn_merge": { vi: "TIẾN HÀNH GỘP MOD", en: "PROCEED MERGE" },
@@ -370,6 +444,9 @@ function toggleLang() {
     isEnglish = !isEnglish;
     document.getElementById('langBtn').textContent = isEnglish ? '🇬🇧 EN' : '🇻🇳 VN';
     const langKey = isEnglish ? 'en' : 'vi';
+    
+    document.getElementById('customFileName').placeholder = isEnglish ? "Example: ModSkin_Zuka.bytes" : "Ví dụ: ModSkin_Zuka.bytes";
+    
     for (const [id, texts] of Object.entries(i18n)) {
         const el = document.getElementById(id);
         if (el) el.innerHTML = texts[langKey];
@@ -420,7 +497,7 @@ function renderFiles() {
 }
 window.removeFile = (idx) => { mergeFilesArr.splice(idx, 1); renderFiles(); };
 
-// --- V22 ULTIMATE AI ENGINE (Fix Header & Anti-Crash) ---
+// --- V22 ULTIMATE AI ENGINE ---
 function logAI(msg) { aiLogText.textContent = "> " + msg; console.log("AI Log:", msg); }
 
 async function executeSmartMerge() {
@@ -473,11 +550,20 @@ async function executeSmartMerge() {
             }
         }
 
+        // XỬ LÝ TÊN FILE XUẤT RA
+        let customName = document.getElementById('customFileName').value.trim();
+        let finalFileName = '';
+        if (customName) {
+            finalFileName = customName.endsWith('.bytes') ? customName : customName + '.bytes';
+        } else {
+            finalFileName = mergeFilesArr[0].name;
+        }
+
         // Tải xuống
         const blob = new Blob([finalBuf], { type: 'application/octet-stream' });
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
-        a.download = 'TrongDung_V22_Patched.bytes'; 
+        a.download = finalFileName; 
         a.click();
         
         document.getElementById('popupModal').classList.add('active');
