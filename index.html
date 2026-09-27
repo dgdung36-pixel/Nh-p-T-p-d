@@ -2,178 +2,356 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CYBER RE-PACKER V10 CLASSIC | TRỌNG DŨNG</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>CYBER MERGE TOOL | LIQUID GLASS</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+
 <style>
-    :root {
-        --bg: #121212;
-        --surface: #1e1e1e;
-        --primary: #00e5ff;
-        --text: #e0e0e0;
-        --border: #333;
-    }
-    * { box-sizing: border-box; font-family: 'Consolas', monospace; }
-    body { background-color: var(--bg); color: var(--text); margin: 0; padding: 20px; }
-    .container { max-width: 1000px; margin: 0 auto; }
-    header { text-align: center; margin-bottom: 30px; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
-    h1 { color: var(--primary); margin: 0 0 10px 0; letter-spacing: 2px; }
-    .dev-info { color: #888; font-size: 14px; }
-    .panel { background: var(--surface); border: 1px solid var(--border); padding: 20px; margin-bottom: 20px; border-radius: 8px; }
-    .panel h2 { margin-top: 0; color: var(--primary); font-size: 18px; border-bottom: 1px dashed var(--border); padding-bottom: 10px; }
-    .drop-zone { border: 2px dashed #555; padding: 40px 20px; text-align: center; cursor: pointer; background: #1a1a1a; border-radius: 8px; transition: 0.2s; }
-    .drop-zone:hover { border-color: var(--primary); background: #222; }
-    .file-list { margin-top: 15px; }
-    .file-item { display: flex; justify-content: space-between; padding: 10px; background: #2a2a2a; margin-bottom: 5px; border-radius: 4px; border-left: 3px solid var(--primary); }
-    button { background: var(--primary); color: #000; border: none; padding: 12px 20px; font-weight: bold; cursor: pointer; width: 100%; border-radius: 4px; font-size: 16px; margin-top: 10px; }
-    button:disabled { background: #444; color: #888; cursor: not-allowed; }
-    button:hover:not(:disabled) { opacity: 0.9; }
-    .status { margin-top: 15px; text-align: center; font-weight: bold; color: #4caf50; }
-    .contact { text-align: center; margin-top: 40px; font-size: 14px; color: #888; }
-    .contact a { color: var(--primary); text-decoration: none; }
+/* CSS VARIABLES & RESET */
+:root {
+    --bg-dark: #0a0a12;
+    --glass-bg: rgba(20, 20, 30, 0.4);
+    --glass-border: rgba(255, 255, 255, 0.15);
+    --neon-white: rgba(255, 255, 255, 0.8);
+    --spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    --font-main: 'Inter', -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
+
+body {
+    background-color: var(--bg-dark);
+    color: #fff;
+    font-family: var(--font-main);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+    padding: 15px;
+    position: relative;
+}
+
+/* LIQUID BACKGROUND (Fluid Blobs) */
+.liquid-bg { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+.blob { position: absolute; filter: blur(90px); border-radius: 50%; animation: floatBlob 15s infinite alternate ease-in-out; }
+.blob-1 { width: 50vw; height: 50vw; background: #00c6ff; top: -10%; left: -10%; opacity: 0.4; }
+.blob-2 { width: 45vw; height: 45vw; background: #8a2be2; bottom: -10%; right: -5%; opacity: 0.4; animation-delay: -5s; }
+
+@keyframes floatBlob { 
+    0% { transform: translate(0, 0) scale(1) rotate(0deg); } 
+    100% { transform: translate(10%, 15%) scale(1.1) rotate(15deg); } 
+}
+
+/* 3S LOADING SCREEN */
+.loading-screen {
+    position: fixed; inset: 0; background: rgba(5, 5, 10, 0.95); backdrop-filter: blur(25px);
+    z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+.countdown {
+    width: 80px; height: 80px; border-radius: 50%; border: 3px solid #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-size: 32px; font-weight: 700;
+    box-shadow: 0 0 20px var(--neon-white), inset 0 0 15px var(--neon-white);
+    text-shadow: 0 0 10px #fff; margin-bottom: 20px;
+}
+.loading-text { font-size: 16px; font-weight: 600; letter-spacing: 1px; }
+
+/* HEADER & WHITE NEON OWNER */
+header { width: 100%; max-width: 700px; display: flex; justify-content: space-between; align-items: center; margin-top: 20px; margin-bottom: 30px; }
+.clock-panel {
+    background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-border);
+    padding: 10px 20px; border-radius: 30px; font-family: var(--font-mono); font-size: 14px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3); display: flex; align-items: center; gap: 8px;
+}
+.owner-neon {
+    padding: 10px 24px; border-radius: 30px; font-weight: 800; font-size: 14px; letter-spacing: 1.5px;
+    border: 2px solid #fff; color: #fff; text-transform: uppercase;
+    box-shadow: 0 0 15px rgba(255,255,255,0.6), inset 0 0 10px rgba(255,255,255,0.4);
+    text-shadow: 0 0 8px #fff; animation: neonPulse 2s infinite alternate;
+}
+@keyframes neonPulse {
+    0% { box-shadow: 0 0 10px rgba(255,255,255,0.5), inset 0 0 5px rgba(255,255,255,0.3); }
+    100% { box-shadow: 0 0 20px rgba(255,255,255,0.8), inset 0 0 15px rgba(255,255,255,0.6); }
+}
+
+/* MAIN CONTAINER (Responsive Fixed Width) */
+.main-container {
+    width: 100%; max-width: 700px; flex: 1; display: flex; flex-direction: column;
+    opacity: 0; transform: translateY(20px); transition: all 0.6s var(--spring);
+}
+.main-container.active { opacity: 1; transform: translateY(0); }
+
+/* LIQUID GLASS PANEL */
+.glass-panel {
+    background: var(--glass-bg); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%);
+    border: 1px solid var(--glass-border); border-radius: 30px; padding: 30px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4); transition: transform 0.4s var(--spring);
+}
+.glass-panel:hover { transform: translateY(-5px); border-color: rgba(255,255,255,0.3); box-shadow: 0 25px 50px rgba(0,0,0,0.5), 0 0 20px rgba(255,255,255,0.05); }
+
+.panel-title { font-size: 22px; font-weight: 800; text-align: center; margin-bottom: 20px; letter-spacing: -0.5px; }
+
+/* DRAG & DROP ZONE (Using Emoji/Image structure) */
+.drop-zone {
+    border: 2px dashed rgba(255,255,255,0.3); border-radius: 20px; padding: 40px 20px;
+    text-align: center; cursor: pointer; transition: all 0.3s; background: rgba(0,0,0,0.2);
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+}
+.drop-zone:hover { border-color: #fff; background: rgba(255,255,255,0.05); box-shadow: inset 0 0 20px rgba(255,255,255,0.1); }
+.drop-image {
+    width: 80px; height: 80px; background: linear-gradient(135deg, #00c6ff, #8a2be2);
+    border-radius: 20px; display: flex; justify-content: center; align-items: center;
+    font-size: 40px; box-shadow: 0 10px 20px rgba(138, 43, 226, 0.4); margin-bottom: 10px;
+    transition: transform 0.3s var(--spring);
+}
+.drop-zone:hover .drop-image { transform: scale(1.1); }
+
+/* FILE LIST */
+.file-list { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; max-height: 250px; overflow-y: auto; }
+.file-list::-webkit-scrollbar { width: 5px; }
+.file-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 5px; }
+.file-item {
+    background: rgba(0,0,0,0.3); padding: 15px; border-radius: 16px;
+    display: flex; justify-content: space-between; align-items: center;
+    border: 1px solid rgba(255,255,255,0.05); transition: all 0.3s var(--spring);
+}
+.file-item:hover { border-color: rgba(255,255,255,0.4); transform: translateX(5px); }
+.file-info h4 { font-size: 14px; margin-bottom: 4px; }
+.file-info p { font-size: 12px; color: #00c6ff; font-family: var(--font-mono); }
+.btn-remove { background: none; border: none; color: #ff375f; font-size: 20px; cursor: pointer; font-weight: bold; }
+
+/* BUTTON */
+.btn-merge {
+    width: 100%; padding: 18px; border-radius: 20px; border: none;
+    background: #fff; color: #000; font-size: 16px; font-weight: 800;
+    cursor: pointer; margin-top: 25px; transition: all 0.4s var(--spring);
+    box-shadow: 0 10px 20px rgba(255,255,255,0.2); text-transform: uppercase;
+}
+.btn-merge:hover:not(:disabled) { transform: scale(1.03); box-shadow: 0 15px 30px rgba(255,255,255,0.4), 0 0 20px var(--neon-white); }
+.btn-merge:disabled { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.3); box-shadow: none; cursor: not-allowed; }
+
+/* POPUP (iOS Style Modal) */
+.modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(15px);
+    display: flex; justify-content: center; align-items: center; z-index: 2000;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s;
+}
+.modal-overlay.active { opacity: 1; pointer-events: auto; }
+.modal-content {
+    background: rgba(30, 30, 35, 0.85); border: 1px solid var(--glass-border);
+    border-radius: 28px; padding: 30px; width: 90%; max-width: 400px;
+    text-align: center; transform: scale(0.8); transition: all 0.4s var(--spring);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+}
+.modal-overlay.active .modal-content { transform: scale(1); }
+.modal-image {
+    width: 70px; height: 70px; background: linear-gradient(135deg, #32d74b, #30b0c7);
+    border-radius: 50%; display: flex; justify-content: center; align-items: center;
+    font-size: 35px; margin: 0 auto 15px auto; box-shadow: 0 10px 20px rgba(50, 215, 75, 0.4);
+}
+.modal-title { font-size: 20px; font-weight: 800; margin-bottom: 10px; }
+.modal-text { font-size: 14px; color: #a1a1a6; margin-bottom: 25px; line-height: 1.5; }
+.modal-btn { background: #fff; color: #000; padding: 15px 30px; border-radius: 18px; border: none; font-weight: 800; width: 100%; cursor: pointer; transition: 0.3s; }
+.modal-btn:hover { box-shadow: 0 0 15px var(--neon-white); }
+
+/* FOOTER RGB TEXT */
+footer { margin-top: auto; padding: 20px 0; text-align: center; width: 100%; }
+.rgb-text {
+    font-size: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
+    background: linear-gradient(270deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3);
+    background-size: 400% 100%; -webkit-background-clip: text; color: transparent;
+    animation: rgbGlow 5s infinite linear; text-shadow: 0 0 10px rgba(255,255,255,0.2);
+}
+@keyframes rgbGlow { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } }
+
 </style>
 </head>
 <body>
 
-<div class="container">
-    <header>
-        <h1>CYBER RE-PACKER V10</h1>
-        <div class="dev-info">Developer: TRỌNG DŨNG | Classic Core Engine</div>
-    </header>
+<!-- 3S LOADING SCREEN -->
+<div class="loading-screen" id="loader">
+    <div class="countdown" id="timerCount">3</div>
+    <div class="loading-text">Đang khởi tạo hệ thống Liquid Glass...</div>
+</div>
 
-    <div class="panel">
-        <h2>📦 1. Gộp File Mod (.bytes)</h2>
+<!-- LIQUID BG -->
+<div class="liquid-bg">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+</div>
+
+<!-- HEADER (Clock & Owner) -->
+<header>
+    <div class="clock-panel">
+        🕒 <span id="sysClock">00:00:00</span>
+    </div>
+    <div class="owner-neon">TRONG DUNG</div>
+</header>
+
+<!-- MAIN APP CONTAINER -->
+<div class="main-container" id="appMain">
+    <div class="glass-panel">
+        <h2 class="panel-title">GỘP FILE MOD SKIN (.BYTES)</h2>
+        
         <div class="drop-zone" id="mergeDrop" onclick="document.getElementById('mergePicker').click()">
-            <p>Click hoặc Kéo thả các file .bytes cần gộp vào đây</p>
-            <input type="file" id="mergePicker" multiple accept=".bytes" style="display:none;" onchange="handleMergeFiles(this.files)">
+            <!-- Sử dụng hình ảnh/CSS Shape thay thế Icon -->
+            <div class="drop-image">📁</div>
+            <b style="font-size: 15px;">Chạm hoặc kéo thả file .bytes vào đây</b>
+            <p style="font-size: 12px; color: #a1a1a6;">Hỗ trợ gộp nối tiếp 2 file mod không cần chọn base.</p>
+            <input type="file" id="mergePicker" multiple accept=".bytes" style="display:none;">
         </div>
+
         <div class="file-list" id="mergeList"></div>
-        <button id="btnMerge" disabled onclick="mergeFiles()">TIẾN HÀNH GỢP FILE</button>
-        <div id="mergeStatus" class="status"></div>
-    </div>
 
-    <div class="panel">
-        <h2>🔑 2. Giải Mã Ký Tự Rác (Lua/Bytes)</h2>
-        <div class="drop-zone" id="decryptDrop" onclick="document.getElementById('decryptPicker').click()">
-            <p>Click để chọn file bị mã hóa (Lua/Bytes)</p>
-            <input type="file" id="decryptPicker" style="display:none;" onchange="handleDecryptFile(this.files)">
-        </div>
-        <div id="decryptFileInfo" style="margin-top: 10px; color: var(--primary); text-align: center;"></div>
-        <button id="btnDecrypt" disabled onclick="decryptFile()">GIẢI MÃ THÀNH CHỮ THƯỜNG</button>
-        <div id="decryptStatus" class="status"></div>
+        <button class="btn-merge" id="btnMerge" disabled onclick="mergeFiles()">TIẾN HÀNH GỘP FILE</button>
     </div>
+</div>
 
-    <div class="contact">
-        Báo cáo lỗi qua Zalo: <a href="https://zalo.me/0836376886" target="_blank">0836376886</a> | Email: hfvvfrgg@gmail.com
+<!-- FOOTER -->
+<footer>
+    <div class="rgb-text">TOOL DEMO CODED BY NGUYEN TRONG DUNG</div>
+</footer>
+
+<!-- POPUP MODAL (Thành công) -->
+<div class="modal-overlay" id="popupModal">
+    <div class="modal-content">
+        <div class="modal-image">✨</div>
+        <h3 class="modal-title">Gộp File Thành Công!</h3>
+        <div class="modal-text">Hệ thống đã nối dữ liệu thành công. File mod mới đã được tự động tải xuống thiết bị của bạn.</div>
+        <button class="modal-btn" onclick="closePopup()">Đóng lại</button>
     </div>
 </div>
 
 <script>
-    // --- GỘP FILE MOD ---
-    let filesToMerge = [];
+// --- CLOCK SCRIPT ---
+setInterval(() => {
+    document.getElementById('sysClock').textContent = new Date().toTimeString().split(' ')[0];
+}, 1000);
+
+// --- 3S COUNTDOWN SCRIPT ---
+let leftSec = 3;
+const timerEl = document.getElementById('timerCount');
+const loader = document.getElementById('loader');
+const appMain = document.getElementById('appMain');
+
+const interval = setInterval(() => {
+    leftSec--;
+    if (leftSec > 0) {
+        timerEl.textContent = leftSec;
+    } else {
+        clearInterval(interval);
+        loader.style.opacity = '0';
+        loader.style.visibility = 'hidden';
+        appMain.classList.add('active'); // Kích hoạt animation hiện mượt mà
+    }
+}, 1000);
+
+// --- POPUP LOGIC ---
+function showPopup() { document.getElementById('popupModal').classList.add('active'); }
+function closePopup() { document.getElementById('popupModal').classList.remove('active'); }
+
+// --- MERGE LOGIC ---
+let mergeFilesArr = [];
+const mergePicker = document.getElementById('mergePicker');
+const mergeList = document.getElementById('mergeList');
+const btnMerge = document.getElementById('btnMerge');
+const mergeDrop = document.getElementById('mergeDrop');
+
+mergePicker.onchange = (e) => handleMergeFiles(e.target.files);
+
+// Drag & Drop Events
+mergeDrop.addEventListener('dragover', (e) => { e.preventDefault(); mergeDrop.style.borderColor = '#fff'; });
+mergeDrop.addEventListener('dragleave', (e) => { e.preventDefault(); mergeDrop.style.borderColor = 'rgba(255,255,255,0.3)'; });
+mergeDrop.addEventListener('drop', (e) => { 
+    e.preventDefault(); 
+    mergeDrop.style.borderColor = 'rgba(255,255,255,0.3)'; 
+    handleMergeFiles(e.dataTransfer.files); 
+});
+
+function handleMergeFiles(files) {
+    // Chỉ lấy file .bytes
+    const validFiles = Array.from(files).filter(f => f.name.toLowerCase().endsWith('.bytes'));
+    validFiles.forEach(f => {
+        // Giới hạn chọn 2 file (theo yêu cầu tập trung gộp 2 file)
+        if(mergeFilesArr.length < 2) {
+            mergeFilesArr.push(f);
+        }
+    });
+    renderMerge();
+}
+
+function renderMerge() {
+    mergeList.innerHTML = '';
+    mergeFilesArr.forEach((f, idx) => {
+        let div = document.createElement('div');
+        div.className = 'file-item';
+        div.innerHTML = `
+            <div class="file-info">
+                <h4>${f.name}</h4>
+                <p>${(f.size/1024).toFixed(1)} KB</p>
+            </div>
+            <button class="btn-remove" onclick="removeFile(${idx})">✕</button>
+        `;
+        mergeList.appendChild(div);
+    });
     
-    function handleMergeFiles(files) {
-        Array.from(files).forEach(f => filesToMerge.push(f));
-        renderMergeList();
+    // Nút chỉ bật khi đủ 2 file
+    btnMerge.disabled = mergeFilesArr.length !== 2;
+    if(mergeFilesArr.length !== 2 && mergeFilesArr.length > 0) {
+        btnMerge.textContent = `VUI LÒNG CHỌN THÊM ${2 - mergeFilesArr.length} FILE NỮA`;
+    } else {
+        btnMerge.textContent = "TIẾN HÀNH GỘP FILE";
     }
+}
 
-    function renderMergeList() {
-        const list = document.getElementById('mergeList');
-        list.innerHTML = '';
-        filesToMerge.forEach((f, i) => {
-            list.innerHTML += `<div class="file-item">
-                <span>${f.name} (${(f.size/1024).toFixed(1)} KB)</span>
-                <span style="color: #ff5252; cursor: pointer;" onclick="removeFile(${i})">Xóa</span>
-            </div>`;
-        });
-        document.getElementById('btnMerge').disabled = filesToMerge.length < 2;
-    }
+window.removeFile = (idx) => {
+    mergeFilesArr.splice(idx, 1);
+    renderMerge();
+};
 
-    function removeFile(index) {
-        filesToMerge.splice(index, 1);
-        renderMergeList();
-    }
-
-    async function mergeFiles() {
-        document.getElementById('mergeStatus').innerText = "Đang xử lý...";
-        document.getElementById('btnMerge').disabled = true;
+async function mergeFiles() {
+    btnMerge.disabled = true;
+    btnMerge.textContent = "ĐANG XỬ LÝ DỮ LIỆU...";
+    
+    try {
+        // Tính tổng kích thước của 2 file
+        let totalSize = mergeFilesArr.reduce((sum, f) => sum + f.size, 0);
+        let finalBuf = new Uint8Array(totalSize);
+        let offset = 0;
         
-        try {
-            let totalSize = filesToMerge.reduce((acc, f) => acc + f.size, 0);
-            let mergedBuffer = new Uint8Array(totalSize);
-            let offset = 0;
-            
-            for(let file of filesToMerge) {
-                let buf = new Uint8Array(await file.arrayBuffer());
-                mergedBuffer.set(buf, offset);
-                offset += buf.length;
-            }
-            
-            const blob = new Blob([mergedBuffer], { type: 'application/octet-stream' });
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = 'V10_Merged.bytes';
-            a.click();
-            
-            document.getElementById('mergeStatus').innerText = "✅ Gộp file thành công!";
-        } catch (e) {
-            document.getElementById('mergeStatus').innerText = "❌ Lỗi: " + e.message;
-            document.getElementById('mergeStatus').style.color = "#ff5252";
-        } finally {
-            document.getElementById('btnMerge').disabled = false;
+        // Gộp nối tiếp 2 file (không phân biệt base)
+        for(let file of mergeFilesArr) {
+            let buf = new Uint8Array(await file.arrayBuffer());
+            finalBuf.set(buf, offset);
+            offset += buf.length;
         }
+
+        // Tạo file tải xuống
+        const blob = new Blob([finalBuf], { type: 'application/octet-stream' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'TrongDung_Merged_Mod.bytes'; 
+        a.click();
+        
+        // Hiện popup iOS mượt mà
+        showPopup();
+        
+        // Reset list sau khi gộp xong
+        mergeFilesArr = [];
+        renderMerge();
+    } catch(e) {
+        alert("Lỗi khi gộp file: " + e.message);
+    } finally {
+        btnMerge.textContent = "TIẾN HÀNH GỘP FILE";
     }
-
-    // --- GIẢI MÃ CHỮ THƯỜNG ---
-    let targetDecryptFile = null;
-
-    function handleDecryptFile(files) {
-        if(files.length > 0) {
-            targetDecryptFile = files[0];
-            document.getElementById('decryptFileInfo').innerText = `Đã chọn: ${targetDecryptFile.name}`;
-            document.getElementById('btnDecrypt').disabled = false;
-        }
-    }
-
-    async function decryptFile() {
-        if(!targetDecryptFile) return;
-        document.getElementById('decryptStatus').innerText = "Đang bóc tách...";
-        document.getElementById('btnDecrypt').disabled = true;
-
-        try {
-            let buf = new Uint8Array(await targetDecryptFile.arrayBuffer());
-            let rawString = new TextDecoder('utf-8', {fatal: false}).decode(buf);
-            let cleanString = "";
-            
-            for(let i=0; i<rawString.length; i++) {
-                let code = rawString.charCodeAt(i);
-                if(code === 10 || code === 13 || (code >= 32 && code <= 126)) {
-                    cleanString += rawString[i];
-                } else if(cleanString.length > 0 && cleanString[cleanString.length-1] !== ' ') {
-                    cleanString += ' ';
-                }
-            }
-            
-            let finalOutput = cleanString.toLowerCase().trim();
-            const blob = new Blob([finalOutput], { type: 'text/plain' });
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = targetDecryptFile.name + '_V10_Decrypted.txt';
-            a.click();
-
-            document.getElementById('decryptStatus').innerText = "✅ Giải mã Text thành công!";
-        } catch (e) {
-            document.getElementById('decryptStatus').innerText = "❌ Lỗi: " + e.message;
-            document.getElementById('decryptStatus').style.color = "#ff5252";
-        } finally {
-            document.getElementById('btnDecrypt').disabled = false;
-        }
-    }
-
-    // Kéo thả files
-    const dropMerge = document.getElementById('mergeDrop');
-    dropMerge.addEventListener('dragover', (e) => { e.preventDefault(); dropMerge.style.borderColor = '#00e5ff'; });
-    dropMerge.addEventListener('dragleave', (e) => { e.preventDefault(); dropMerge.style.borderColor = '#555'; });
-    dropMerge.addEventListener('drop', (e) => { e.preventDefault(); dropMerge.style.borderColor = '#555'; handleMergeFiles(e.dataTransfer.files); });
+}
 </script>
+
 </body>
 </html>
