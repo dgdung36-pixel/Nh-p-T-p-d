@@ -441,7 +441,7 @@ button.btn-main {
       </div>
     </div>
     <div class="contact-links">
-      <a href="https://www.facebook.com/share/18a22S146N/" target="_blank" class="contact-btn btn-facebook">
+      <a href="https://www.facebook.com/share/1JzJhguw8k/?mibextid=wwXIfr" target="_blank" class="contact-btn btn-facebook">
         <span>📘</span> Facebook Chính Chủ
       </a>
       <a href="https://zalo.me/0349187313" target="_blank" class="contact-btn btn-zalo">
@@ -615,7 +615,6 @@ async function detectFileFormat(file) {
     return 'LUA/TXT';
   }
 
-  // Kiềm tra xem file có mã hóa không
   let highEntropyCount = 0;
   for(let i=0; i<Math.min(arr.length, 128); i++) {
     if(arr[i] > 0x7E || arr[i] < 0x09) highEntropyCount++;
@@ -753,14 +752,12 @@ unpackBtn.onclick = async () => {
     const buffer = new Uint8Array(await unpackTargetFile.arrayBuffer());
     const zip = new JSZip();
 
-    // Phân tích header và tách file Protobuf hoặc Unity Data Blocks
     const fields = parseProtobufFieldsV11(buffer);
     if(fields.length > 0) {
       fields.forEach((field, i) => {
         zip.file(`tag_field_${field.fieldNumber}_wire_${field.wireType}_idx_${i+1}.bytes`, field.rawBytes);
       });
     } else {
-      // Chunking mặc định 64KB nếu là binary nguyên khối
       let chunkSize = 65536;
       for(let offset = 0, idx = 1; offset < buffer.length; offset += chunkSize, idx++) {
         let chunk = buffer.subarray(offset, Math.min(offset + chunkSize, buffer.length));
@@ -806,7 +803,7 @@ decryptBtn.onclick = async () => {
 
     if (mode === 'xor_auto') {
       let keyInput = document.getElementById('xorCustomKey').value.trim();
-      let key = 0x5A; // Mặc định XOR Key thông dụng trong game Mod
+      let key = 0x5A;
       if (keyInput) {
         key = keyInput.startsWith('0x') ? parseInt(keyInput, 16) : keyInput.charCodeAt(0);
       }
@@ -822,7 +819,6 @@ decryptBtn.onclick = async () => {
         decryptedBytes[i] = binaryStr.charCodeAt(i);
       }
     } else if (mode === 'unity_header_strip') {
-      // Stripping Unity byte offset (xóa Header bảo vệ 16 byte hoặc 32 byte)
       let offset = (buffer[0] === 0x00 && buffer[1] === 0x00) ? 16 : 8;
       decryptedBytes = buffer.subarray(offset);
     }
@@ -932,7 +928,6 @@ mergeBtn.onclick = async () => {
       let byteChunks = Array.from(tagMap.values());
       let totalLen = byteChunks.reduce((acc, chunk) => acc + chunk.length, 0);
 
-      // Vá Header Length Chống Reset File Game nếu được tick
       if (isFixResetChecked) {
         let headerPrefix = encodeVarint(totalLen);
         finalUint8Array = new Uint8Array(headerPrefix.length + totalLen);
@@ -976,7 +971,7 @@ mergeBtn.onclick = async () => {
       let totalDataSize = rawChunks.reduce((acc, c) => acc + c.length, 0);
       let header = new Uint8Array(8);
       let view = new DataView(header.buffer);
-      view.setUint32(0, 0x554E4954, true); // 'UNIT' Header Magic
+      view.setUint32(0, 0x554E4954, true);
       view.setUint32(4, totalDataSize, true);
 
       finalUint8Array = new Uint8Array(8 + totalDataSize);
@@ -1011,7 +1006,6 @@ mergeBtn.onclick = async () => {
       showStatus(`🎉 LUA SCOPE WRAPPED: Đã bảo vệ Scope Lua Mod!`, 'ok');
     }
 
-    // DOWNLOAD FILE HOÀN THIỆN V11
     const blob = new Blob([finalUint8Array], { type: 'application/octet-stream' });
     const url = URL.createObjectURL(blob);
     let outputName = customFileName.value.trim();
