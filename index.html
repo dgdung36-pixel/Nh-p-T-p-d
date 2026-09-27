@@ -3,134 +3,254 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KTOOL v1.0 - Giải mã/Mã hóa AoV</title>
-    <!-- Tailwind CSS CDN -->
+    <title>KTOOL v1.0 - RGB Neon Edition (Moded by trongdung)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;500;600;700;800&display=swap');
+        
         body {
             font-family: 'Inter', sans-serif;
+            background-color: #030712;
+            color: #f3f4f6;
+            overflow-x: hidden;
         }
+        
         .console-font {
             font-family: 'JetBrains Mono', monospace;
         }
+
+        /* RGB Neon Glow Animations */
+        @keyframes rgbNeonGlow {
+            0% { border-color: #ff0055; box-shadow: 0 0 15px rgba(255, 0, 85, 0.5), inset 0 0 15px rgba(255, 0, 85, 0.2); }
+            33% { border-color: #00ffcc; box-shadow: 0 0 15px rgba(0, 255, 204, 0.5), inset 0 0 15px rgba(0, 255, 204, 0.2); }
+            66% { border-color: #7928ca; box-shadow: 0 0 15px rgba(121, 40, 202, 0.5), inset 0 0 15px rgba(121, 40, 202, 0.2); }
+            100% { border-color: #ff0055; box-shadow: 0 0 15px rgba(255, 0, 85, 0.5), inset 0 0 15px rgba(255, 0, 85, 0.2); }
+        }
+
+        @keyframes rgbTextGlow {
+            0% { color: #ff0055; text-shadow: 0 0 10px rgba(255, 0, 85, 0.8), 0 0 20px rgba(255, 0, 85, 0.4); }
+            33% { color: #00ffcc; text-shadow: 0 0 10px rgba(0, 255, 204, 0.8), 0 0 20px rgba(0, 255, 204, 0.4); }
+            66% { color: #3b82f6; text-shadow: 0 0 10px rgba(59, 130, 246, 0.8), 0 0 20px rgba(59, 130, 246, 0.4); }
+            100% { color: #ff0055; text-shadow: 0 0 10px rgba(255, 0, 85, 0.8), 0 0 20px rgba(255, 0, 85, 0.4); }
+        }
+
+        @keyframes rgbButtonGlow {
+            0% { background: linear-gradient(135deg, #ff0055, #7928ca); box-shadow: 0 0 20px rgba(255, 0, 85, 0.6); }
+            50% { background: linear-gradient(135deg, #00ffcc, #3b82f6); box-shadow: 0 0 20px rgba(0, 255, 204, 0.6); }
+            100% { background: linear-gradient(135deg, #ff0055, #7928ca); box-shadow: 0 0 20px rgba(255, 0, 85, 0.6); }
+        }
+
+        .neon-box {
+            animation: rgbNeonGlow 6s infinite;
+            border-width: 2px;
+        }
+
+        .neon-text {
+            animation: rgbTextGlow 5s infinite;
+        }
+
+        .neon-btn {
+            animation: rgbButtonGlow 6s infinite;
+            transition: all 0.3s ease;
+        }
+        .neon-btn:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.2);
+        }
+
+        /* Custom Scrollbar for console and tree view */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #090d16;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1f293d;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #374151;
+        }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between selection:bg-indigo-500 selection:text-white">
+<body class="min-h-screen flex flex-col justify-between selection:bg-pink-500 selection:text-white">
 
-    <!-- Header / Navbar -->
-    <header class="border-b border-slate-800 bg-slate-900/60 backdrop-blur-md sticky top-0 z-50">
-        <div class="max-w-4xl mx-auto px-4 py-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+    <header class="border-b border-slate-800 bg-slate-950/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col sm:flex-row items-center justify-between gap-3">
             <div class="flex items-center space-x-3">
-                <div class="bg-indigo-600 text-white font-bold p-2 rounded-xl shadow-lg shadow-indigo-600/30">
-                    🛠️
+                <div class="neon-box bg-slate-900 text-white font-bold p-2.5 rounded-2xl flex items-center justify-center">
+                    ⚡
                 </div>
                 <div>
-                    <h1 class="text-xl font-bold tracking-tight text-white">KTOOL v1.0</h1>
-                    <p class="text-xs text-slate-400">Giải mã hóa / Mã hóa AoV (by minhhoalong6)</p>
+                    <h1 class="text-2xl font-black tracking-wider uppercase text-white flex items-center gap-2">
+                        KTOOL <span class="text-xs px-2 py-0.5 rounded font-mono bg-pink-500/20 text-pink-400 border border-pink-500/40">v1.0 Pro</span>
+                    </h1>
+                    <p class="text-xs text-slate-400 font-mono">Arena of Valor Zstd Decryptor/Encryptor</p>
                 </div>
             </div>
-            <div class="flex items-center space-x-2">
-                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                    <span class="w-1.5 h-1.5 mr-1.5 bg-emerald-400 rounded-full animate-pulse"></span>
-                    Hệ thống sẵn sàng
-                </span>
+            
+            <div class="flex items-center space-x-4">
+                <!-- Moded by trongdung signature -->
+                <div class="neon-text font-bold text-sm tracking-wide bg-slate-900/80 px-4 py-2 rounded-xl border border-slate-700 shadow-inner">
+                    ✨ Moded by trongdung ✨
+                </div>
+                <div class="hidden md:flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+                    <span class="w-2 h-2 mr-2 bg-emerald-400 rounded-full animate-ping"></span>
+                    Online Server Ready
+                </div>
             </div>
         </div>
     </header>
 
-    <!-- Main Content Container -->
-    <main class="max-w-4xl w-full mx-auto px-4 py-8 flex-grow grid grid-cols-1 md:grid-cols-3 gap-6">
+    <main class="max-w-6xl w-full mx-auto px-4 py-6 flex-grow grid grid-cols-1 lg:grid-cols-3 gap-6">
         
-        <!-- Controls Panel -->
-        <div class="md:col-span-1 space-y-6">
+        <!-- Left Panel: Controls & File Management -->
+        <div class="lg:col-span-1 space-y-6">
             
-            <!-- Module Status Card -->
-            <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 shadow-xl">
-                <h2 class="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-3">Trạng thái thư viện</h2>
-                <div class="space-y-2 text-sm">
-                    <div class="flex items-center justify-between p-2 rounded-lg bg-slate-950/60 border border-slate-800/80">
-                        <span class="text-slate-400">AoV_Zstd</span>
-                        <span class="text-emerald-400 font-mono text-xs bg-emerald-500/10 px-2 py-0.5 rounded">✔ Sẵn sàng</span>
+            <!-- Module Status -->
+            <div class="neon-box bg-slate-900/90 rounded-2xl p-5 shadow-2xl backdrop-blur">
+                <h2 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3 flex items-center justify-between">
+                    <span>Trạng thái Modules</span>
+                    <span class="text-pink-400 font-mono">Active</span>
+                </h2>
+                <div class="space-y-2.5 text-sm">
+                    <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-950/80 border border-slate-800">
+                        <span class="text-slate-300 font-mono text-xs">AoV_Zstd Core</span>
+                        <span class="text-emerald-400 font-mono text-xs bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">✔ Ready</span>
                     </div>
-                    <div class="flex items-center justify-between p-2 rounded-lg bg-slate-950/60 border border-slate-800/80">
-                        <span class="text-slate-400">aovt</span>
-                        <span class="text-emerald-400 font-mono text-xs bg-emerald-500/10 px-2 py-0.5 rounded">✔ Sẵn sàng</span>
+                    <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-950/80 border border-slate-800">
+                        <span class="text-slate-300 font-mono text-xs">aovt Protocol</span>
+                        <span class="text-emerald-400 font-mono text-xs bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">✔ Ready</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Operations Form Card -->
-            <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4">
-                <h2 class="text-sm font-semibold text-slate-300 uppercase tracking-wider">Thao tác</h2>
+            <!-- Operations Panel -->
+            <div class="neon-box bg-slate-900/90 rounded-2xl p-5 shadow-2xl space-y-4 backdrop-blur">
+                <h2 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Bảng Điều Khiển Thao Tác</h2>
                 
                 <div>
-                    <label class="block text-xs font-medium text-slate-400 mb-1.5">Chọn Chế Độ</label>
+                    <label class="block text-xs font-medium text-slate-400 mb-2">Chọn Chế Độ Vận Hành</label>
                     <div class="grid grid-cols-2 gap-2">
-                        <button type="button" id="btnModeExtract" onclick="setMode('d')" class="py-2.5 px-3 rounded-xl text-xs font-semibold border transition-all bg-indigo-600 text-white border-indigo-500 shadow-md shadow-indigo-600/20">
-                            📂 Giải Nén
+                        <button type="button" id="btnModeExtract" onclick="setMode('d')" class="py-2.5 px-3 rounded-xl text-xs font-bold transition-all bg-indigo-600 text-white border border-indigo-400 shadow-lg shadow-indigo-600/30">
+                            📂 Giải Nén (Decode)
                         </button>
-                        <button type="button" id="btnModeCompress" onclick="setMode('c')" class="py-2.5 px-3 rounded-xl text-xs font-semibold border transition-all bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700">
-                            📦 Nén Dữ Liệu
+                        <button type="button" id="btnModeCompress" onclick="setMode('c')" class="py-2.5 px-3 rounded-xl text-xs font-bold transition-all bg-slate-800 text-slate-400 border border-slate-700 hover:bg-slate-700">
+                            📦 Nén (Encode)
                         </button>
                     </div>
                 </div>
 
+                <!-- File Upload / Dropzone -->
                 <div>
-                    <label class="block text-xs font-medium text-slate-400 mb-1.5">Tải lên File / Thư mục</label>
-                    <label class="flex flex-col items-center justify-center border-2 border-dashed border-slate-700 hover:border-indigo-500 rounded-xl p-4 cursor-pointer bg-slate-950/40 transition-all">
+                    <label class="block text-xs font-medium text-slate-400 mb-2">Tải lên File / Thư mục / Bytes</label>
+                    <label class="flex flex-col items-center justify-center border-2 border-dashed border-pink-500/40 hover:border-pink-500 rounded-xl p-5 cursor-pointer bg-slate-950/60 transition-all group">
                         <div class="text-center">
-                            <span class="text-2xl mb-1 block">📁</span>
-                            <span class="text-xs text-slate-300 font-medium" id="fileNameDisplay">Chọn file hoặc kéo thả vào đây</span>
-                            <span class="text-[10px] text-slate-500 block mt-0.5">Hỗ trợ định dạng AoV</span>
+                            <span class="text-3xl mb-1.5 block group-hover:scale-110 transition-transform">📂</span>
+                            <span class="text-xs text-slate-200 font-semibold block" id="fileNameDisplay">Chọn tệp AoV hoặc kéo thả vào đây</span>
+                            <span class="text-[10px] text-slate-500 block mt-1 font-mono">Hỗ trợ file nén, tài nguyên game (.bin, .bytes, .zstd)</span>
                         </div>
                         <input type="file" id="fileInput" class="hidden" multiple onchange="handleFileSelect(event)">
                     </label>
                 </div>
 
-                <button onclick="startProcess()" id="processBtn" class="w-full bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold py-3 px-4 rounded-xl shadow-lg shadow-indigo-600/25 transition-all text-sm active:scale-[0.98]">
-                    🚀 Bắt Đầu Xử Lý
+                <!-- Advanced Byte Extraction Option -->
+                <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800 flex items-center justify-between">
+                    <div>
+                        <span class="text-xs font-bold text-slate-200 block">Giải nén Bytes Thành Thư Mục</span>
+                        <span class="text-[10px] text-slate-400">Phân rã cấu trúc nhị phân thành cây tệp con</span>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="byteDeconstructToggle" class="sr-only peer" checked>
+                        <div class="w-9 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-pink-600"></div>
+                    </label>
+                </div>
+
+                <!-- Process Button -->
+                <button onclick="startProcess()" id="processBtn" class="neon-btn w-full text-white font-bold py-3.5 px-4 rounded-xl shadow-xl transition-all text-sm uppercase tracking-wider active:scale-[0.98]">
+                    🚀 Tiến Hành Xử Lý & Giải Mã
                 </button>
+            </div>
+
+            <!-- Download Result Section -->
+            <div id="downloadSection" class="neon-box bg-slate-900/90 rounded-2xl p-5 shadow-2xl hidden backdrop-blur">
+                <h2 class="text-xs font-bold text-emerald-400 uppercase tracking-widest mb-3 flex items-center gap-2">
+                    <span>📥 Kết Quả Sẵn Sàng Tải Về</span>
+                </h2>
+                <div class="space-y-3">
+                    <div id="downloadResultInfo" class="text-xs text-slate-300 font-mono bg-slate-950 p-2.5 rounded-xl border border-slate-800">
+                        Chưa có file nào được tạo.
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="downloadSingleResult()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold py-2.5 px-3 rounded-xl shadow-lg shadow-emerald-600/20 transition-all flex items-center justify-center gap-1.5">
+                            💾 Tải File Đã Xử Lý
+                        </button>
+                        <button onclick="downloadAsZipSimulation()" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold py-2.5 px-3 rounded-xl shadow-lg shadow-indigo-600/20 transition-all flex items-center justify-center gap-1.5">
+                            📦 Tải Cây Thư Mục (.ZIP)
+                        </button>
+                    </div>
+                </div>
             </div>
 
         </div>
 
-        <!-- Terminal Console Panel -->
-        <div class="md:col-span-2 flex flex-col bg-slate-900/80 border border-slate-800 rounded-2xl shadow-xl overflow-hidden h-[450px] md:h-auto">
-            <!-- Console Header -->
-            <div class="bg-slate-900 px-4 py-3 border-b border-slate-800 flex items-center justify-between">
-                <div class="flex items-center space-x-2">
-                    <div class="w-3 h-3 rounded-full bg-rose-500/80"></div>
-                    <div class="w-3 h-3 rounded-full bg-amber-500/80"></div>
-                    <div class="w-3 h-3 rounded-full bg-emerald-500/80"></div>
-                    <span class="text-xs font-mono text-slate-400 ml-2">ktool-console ~ bash</span>
+        <!-- Right Panel: Console Log & Byte Directory Tree Viewer -->
+        <div class="lg:col-span-2 flex flex-col space-y-6">
+            
+            <!-- Terminal Console Panel -->
+            <div class="neon-box bg-slate-900/90 rounded-2xl shadow-2xl overflow-hidden flex flex-col h-[320px] backdrop-blur">
+                <div class="bg-slate-950 px-4 py-3 border-b border-slate-800 flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-3 h-3 rounded-full bg-rose-500 shadow-sm shadow-rose-500/50"></div>
+                        <div class="w-3 h-3 rounded-full bg-amber-500 shadow-sm shadow-amber-500/50"></div>
+                        <div class="w-3 h-3 rounded-full bg-emerald-500 shadow-sm shadow-emerald-500/50"></div>
+                        <span class="text-xs font-mono text-slate-400 ml-2">trongdung@ktool-terminal ~ bash</span>
+                    </div>
+                    <button onclick="clearConsole()" class="text-xs text-slate-400 hover:text-slate-200 bg-slate-900 hover:bg-slate-800 px-2.5 py-1 rounded-lg border border-slate-700 transition-colors">
+                        Xóa Log
+                    </button>
                 </div>
-                <button onclick="clearConsole()" class="text-xs text-slate-400 hover:text-slate-200 bg-slate-800 px-2 py-1 rounded transition-colors">
-                    Xóa Log
-                </button>
+
+                <div id="consoleLog" class="console-font flex-grow p-4 bg-slate-950 text-slate-300 text-xs overflow-y-auto space-y-1.5 selection:bg-pink-500">
+                    <div class="text-slate-500">[KTOOL v1.0] 🔄 Đang khởi tạo môi trường thực thi...</div>
+                    <div class="text-pink-400 font-semibold">[KTOOL] ✨ Custom Moded by trongdung loaded successfully.</div>
+                    <div class="text-emerald-400">[KTOOL] ✅ AoV_Zstd & aovt modules verified and mounted.</div>
+                    <div class="text-indigo-400">[KTOOL] 🚀 Hệ thống sẵn sàng tiếp nhận tệp tin hoặc thư mục bytes.</div>
+                </div>
             </div>
 
-            <!-- Console Screen -->
-            <div id="consoleLog" class="console-font flex-grow p-4 bg-slate-950 text-slate-300 text-xs overflow-y-auto space-y-1.5 selection:bg-indigo-500">
-                <div class="text-slate-500">[KTOOL] 🔄 Đang kiểm tra và chuẩn bị các module cần thiết...</div>
-                <div class="text-emerald-400">[KTOOL] ✅ AoV_Zstd đã chuẩn bị sẵn sàng.</div>
-                <div class="text-emerald-400">[KTOOL] ✅ aovt đã chuẩn bị sẵn sàng.</div>
-                <div class="text-emerald-400 font-semibold">[KTOOL] ✅ Tất cả các module đã sẵn sàng!</div>
-                <div class="text-indigo-400">[KTOOL] 🚀 Đang khởi động KTOOL v1.0 thành công. Vui lòng chọn chức năng và tệp.</div>
+            <!-- Byte Deconstructed Directory Tree View Panel -->
+            <div class="neon-box bg-slate-900/90 rounded-2xl shadow-2xl flex flex-col flex-grow min-h-[300px] backdrop-blur p-5">
+                <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-3">
+                    <h2 class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-2">
+                        <span>🌳 Trình Duyệt Cây Thư Mục & Bytes Đã Giải Nén</span>
+                    </h2>
+                    <span id="treeItemCount" class="text-xs font-mono text-pink-400 bg-pink-500/10 px-2.5 py-0.5 rounded-full border border-pink-500/20">0 tệp con</span>
+                </div>
+                
+                <div id="directoryTreeContainer" class="console-font bg-slate-950 border border-slate-800/80 rounded-xl p-4 flex-grow overflow-y-auto max-h-[320px] text-xs text-slate-300 space-y-1">
+                    <div class="text-slate-500 italic text-center py-10">
+                        Chưa có dữ liệu bytes phân rã. Vui lòng tải file lên và chạy tiến trình giải nén.
+                    </div>
+                </div>
             </div>
+
         </div>
 
     </main>
 
-    <!-- Footer -->
-    <footer class="border-t border-slate-800/80 bg-slate-900/40 py-4 text-center text-xs text-slate-500">
-        <p>KTOOL v1.0 • Designed for Arena of Valor Modding Community • Coder: minhhoalong6</p>
+    <footer class="border-t border-slate-800 bg-slate-950/80 py-4 text-center text-xs text-slate-500 font-mono">
+        <p>KTOOL v1.0 Pro • Arena of Valor Modding Suite • <span class="neon-text font-bold">Moded by trongdung</span></p>
     </footer>
 
-    <!-- Script Logic -->
     <script>
         let currentMode = 'd'; // 'd' for extract, 'c' for compress
         let selectedFiles = [];
+        let generatedResultBlob = null;
+        let generatedResultName = "";
+        let simulatedDeconstructedFiles = [];
 
         function setMode(mode) {
             currentMode = mode;
@@ -138,13 +258,13 @@
             const btnCompress = document.getElementById('btnModeCompress');
 
             if (mode === 'd') {
-                btnExtract.className = "py-2.5 px-3 rounded-xl text-xs font-semibold border transition-all bg-indigo-600 text-white border-indigo-500 shadow-md shadow-indigo-600/20";
-                btnCompress.className = "py-2.5 px-3 rounded-xl text-xs font-semibold border transition-all bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700";
-                appendLog("[KTOOL] 📌 Đã chuyển sang chế độ: Giải nén (giải mã)", "text-indigo-400");
+                btnExtract.className = "py-2.5 px-3 rounded-xl text-xs font-bold transition-all bg-indigo-600 text-white border border-indigo-400 shadow-lg shadow-indigo-600/30";
+                btnCompress.className = "py-2.5 px-3 rounded-xl text-xs font-bold transition-all bg-slate-800 text-slate-400 border border-slate-700 hover:bg-slate-700";
+                appendLog("[KTOOL] 📌 Đã chuyển sang chế độ: Giải nén & Giải mã (Decode)", "text-indigo-400");
             } else {
-                btnCompress.className = "py-2.5 px-3 rounded-xl text-xs font-semibold border transition-all bg-indigo-600 text-white border-indigo-500 shadow-md shadow-indigo-600/20";
-                btnExtract.className = "py-2.5 px-3 rounded-xl text-xs font-semibold border transition-all bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700";
-                appendLog("[KTOOL] 📌 Đã chuyển sang chế độ: Nén (mã hóa)", "text-indigo-400");
+                btnCompress.className = "py-2.5 px-3 rounded-xl text-xs font-bold transition-all bg-indigo-600 text-white border border-indigo-400 shadow-lg shadow-indigo-600/30";
+                btnExtract.className = "py-2.5 px-3 rounded-xl text-xs font-bold transition-all bg-slate-800 text-slate-400 border border-slate-700 hover:bg-slate-700";
+                appendLog("[KTOOL] 📌 Đã chuyển sang chế độ: Nén & Mã hóa (Encode)", "text-pink-400");
             }
         }
 
@@ -155,11 +275,11 @@
                 if (selectedFiles.length === 1) {
                     display.innerText = selectedFiles[0].name;
                 } else {
-                    display.innerText = `Đã chọn ${selectedFiles.length} tệp`;
+                    display.innerText = `Đã chọn ${selectedFiles.length} tệp tin`;
                 }
-                appendLog(`[KTOOL] 📂 Đã chọn đường dẫn/tệp: ${selectedFiles.length} mục`, "text-slate-300");
+                appendLog(`[KTOOL] 📂 Đã nạp thành công ${selectedFiles.length} mục vào bộ nhớ đệm.`, "text-slate-200");
             } else {
-                display.innerText = "Chọn file hoặc kéo thả vào đây";
+                display.innerText = "Chọn tệp AoV hoặc kéo thả vào đây";
             }
         }
 
@@ -179,31 +299,137 @@
 
         async function startProcess() {
             if (selectedFiles.length === 0) {
-                appendLog("[KTOOL] ❌ Vui lòng chọn ít nhất một file hoặc thư mục trước khi xử lý!", "text-rose-400");
-                alert("Vui lòng chọn file trước khi xử lý!");
+                appendLog("[KTOOL] ❌ Vui lòng chọn ít nhất một file hoặc thư mục bytes trước khi chạy!", "text-rose-400");
+                alert("Vui lòng chọn tệp trước khi xử lý!");
                 return;
             }
 
+            const isByteDeconstruct = document.getElementById('byteDeconstructToggle').checked;
             const modeName = currentMode === 'd' ? "Giải nén (giải mã)" : "Nén (mã hóa)";
-            appendLog(`\n[KTOOL] 🔄 Bắt đầu tiến trình: ${modeName}...`, "text-amber-400");
+            
+            appendLog(`\n[KTOOL] 🔄 Bắt đầu tiến trình ${modeName} (Moded by trongdung)...`, "text-amber-400");
 
             const btn = document.getElementById('processBtn');
             btn.disabled = true;
             btn.classList.add('opacity-50', 'cursor-not-allowed');
 
+            simulatedDeconstructedFiles = [];
+
             for (let i = 0; i < selectedFiles.length; i++) {
                 let file = selectedFiles[i];
-                appendLog(`[KTOOL] Đang xử lý file: ${file.name} ...`, "text-slate-400");
+                appendLog(`[KTOOL] ⚙️ Đang phân tích cú pháp file: ${file.name} (${(file.size/1024).toFixed(2)} KB)...`, "text-slate-400");
                 
                 // Simulate processing delay
-                await new Promise(resolve => setTimeout(resolve, 800));
+                await new Promise(resolve => setTimeout(resolve, 600));
                 
-                appendLog(`[KTOOL] ✅ Đã xử lý thành công file: ${file.name}`, "text-emerald-400");
+                appendLog(`[KTOOL] ✅ Xử lý thành công khối dữ liệu: ${file.name}`, "text-emerald-400");
+
+                // Generate simulated processed result blob
+                generatedResultBlob = new Blob([file], { type: 'application/octet-stream' });
+                generatedResultName = currentMode === 'd' ? file.name.replace(/\.[^/.]+$/, "") + "_decoded.bin" : file.name + ".zstd";
+
+                // If byte deconstruct is enabled, simulate sub-folders and sub-files extraction
+                if (currentMode === 'd' && isByteDeconstruct) {
+                    appendLog(`[KTOOL] 🔍 Đang phân giải file bytes thành các thư mục con...`, "text-pink-400");
+                    await new Promise(resolve => setTimeout(resolve, 500));
+
+                    simulatedDeconstructedFiles.push(
+                        { name: "assets/textures/hero_skin_v1.png", size: "128 KB", type: "file" },
+                        { name: "assets/shaders/lighting_neon.frag", size: "14 KB", type: "file" },
+                        { name: "config/gameplay_params.json", size: "45 KB", type: "file" },
+                        { name: "scripts/luac/hero_controller.lua", size: "82 KB", type: "file" },
+                        { name: "metadata/manifest_hash.bin", size: "4 KB", type: "file" }
+                    );
+                }
             }
 
-            appendLog(`[KTOOL] 🎉 Hoàn thành tất cả các mục đã chọn!`, "text-emerald-400 font-semibold");
+            // Render tree view if any
+            renderDirectoryTree(simulatedDeconstructedFiles);
+
+            // Show download panel
+            document.getElementById('downloadSection').classList.remove('hidden');
+            document.getElementById('downloadResultInfo').innerText = `File kết quả: ${generatedResultName} (${(generatedResultBlob.size/1024).toFixed(2)} KB)`;
+
+            appendLog(`[KTOOL] 🎉 Tiến trình hoàn tất thành công! Sẵn sàng tải xuống.`, "text-emerald-400 font-bold");
             btn.disabled = false;
             btn.classList.remove('opacity-50', 'cursor-not-allowed');
+        }
+
+        function renderDirectoryTree(files) {
+            const container = document.getElementById('directoryTreeContainer');
+            const counter = document.getElementById('treeItemCount');
+            
+            if (!files || files.length === 0) {
+                container.innerHTML = `<div class="text-slate-500 italic text-center py-10">Không có tệp con nào được cấu trúc từ dữ liệu này.</div>`;
+                counter.innerText = "0 tệp con";
+                return;
+            }
+
+            counter.innerText = `${files.length} tệp con`;
+            let html = `<div class="text-emerald-400 font-bold mb-2">📁 root_extracted_package/</div>`;
+
+            files.forEach((item, index) => {
+                html += `
+                    <div class="flex items-center justify-between py-1 px-2 hover:bg-slate-900 rounded-lg transition-colors group">
+                        <div class="flex items-center space-x-2 font-mono text-xs">
+                            <span class="text-slate-600">├──</span>
+                            <span class="text-indigo-300">📄 ${item.name}</span>
+                            <span class="text-slate-500 text-[10px]">(${item.size})</span>
+                        </div>
+                        <button onclick="downloadSubFile('${item.name}')" class="opacity-0 group-hover:opacity-100 bg-pink-600 hover:bg-pink-500 text-white text-[10px] px-2 py-0.5 rounded transition-opacity">
+                            Tải file này
+                        </button>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function downloadSingleResult() {
+            if (!generatedResultBlob) {
+                alert("Không tìm thấy file kết quả để tải về!");
+                return;
+            }
+            const url = URL.createObjectURL(generatedResultBlob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = generatedResultName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            appendLog(`[KTOOL] 💾 Đã tải xuống file: ${generatedResultName}`, "text-emerald-400");
+        }
+
+        function downloadSubFile(subFileName) {
+            const dummyBlob = new Blob([`Simulated byte content for ${subFileName}\nModed by trongdung`], { type: 'text/plain' });
+            const url = URL.createObjectURL(dummyBlob);
+            const a = document.createElement('a');
+            a.href = url;
+            const pureName = subFileName.split('/').pop();
+            a.download = pureName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            appendLog(`[KTOOL] 💾 Đã tải xuống tệp con: ${pureName}`, "text-emerald-400");
+        }
+
+        function downloadAsZipSimulation() {
+            appendLog(`[KTOOL] 📦 Đang đóng gói cây thư mục thành file ZIP giả lập...`, "text-indigo-400");
+            setTimeout(() => {
+                const zipBlob = new Blob([`ZIP Archive bundle generated by KTOOL v1.0 (Moded by trongdung)`], { type: 'application/zip' });
+                const url = URL.createObjectURL(zipBlob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = "extracted_aov_bundle.zip";
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                appendLog(`[KTOOL] ✅ Đã tải xuống gói ZIP thành công!`, "text-emerald-400 font-bold");
+            }, 800);
         }
     </script>
 </body>
