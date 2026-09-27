@@ -1,196 +1,186 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#111827">
-<title>Byte Merger</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#111111">
+<title>TOOL GỘP</title>
 <style>
-:root{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#111827;background:#f3f4f6}
-body{margin:0;padding:20px 14px 40px}
-main{max-width:720px;margin:auto}
-.card{background:white;border-radius:18px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px #00000010}
-h1{font-size:26px;margin:0 0 6px}.muted{color:#6b7280;font-size:14px}
-button,input{font:inherit}button{border:0;border-radius:12px;padding:12px 15px;font-weight:600}
-.primary{background:#111827;color:white;width:100%}.secondary{background:#e5e7eb}
-input[type=text]{box-sizing:border-box;width:100%;padding:12px;border:1px solid #d1d5db;border-radius:10px;margin:8px 0 12px}
-#fileInput{display:none}
-.pick{display:block;text-align:center;background:#e5e7eb;cursor:pointer}
-ul{list-style:none;padding:0;margin:10px 0}.row{display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid #eee}
-.row:last-child{border-bottom:0}.name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.move{padding:7px 9px;background:#f3f4f6}.remove{padding:7px 9px;background:#fee2e2;color:#b91c1c}
-.status{white-space:pre-wrap;text-align:center;color:#4b5563;font-size:14px}
+*{box-sizing:border-box}
+body{
+  margin:0; min-height:100vh; background:#0d0d0d; color:#fff;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  display:flex; justify-content:center;
+}
+.app{width:100%;max-width:520px;padding:28px 18px 40px}
+header{text-align:center;margin-bottom:26px}
+h1{margin:0;font-size:34px;letter-spacing:2px;font-weight:800}
+.sub{margin-top:7px;color:#ff3030;font-size:15px;font-weight:700}
+.card{
+  background:#171717;border:1px solid #2b2b2b;border-radius:18px;
+  padding:18px;margin-bottom:14px;box-shadow:0 8px 30px rgba(0,0,0,.25)
+}
+.drop{
+  border:2px dashed #444;border-radius:14px;padding:22px 14px;text-align:center;
+  cursor:pointer;transition:.2s
+}
+.drop:active,.drop.over{border-color:#ff3030;background:#211010}
+.icon{font-size:34px;margin-bottom:7px}
+.small{font-size:13px;color:#aaa;line-height:1.5}
+.files{margin-top:14px;display:grid;gap:9px}
+.file{
+  display:flex;align-items:center;gap:10px;background:#101010;border-radius:11px;
+  padding:11px;border:1px solid #292929
+}
+.file .name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;font-size:13px}
+.file .size{font-size:11px;color:#888;white-space:nowrap}
+button{
+  width:100%;border:0;border-radius:13px;padding:14px;margin-top:12px;
+  font-size:16px;font-weight:800;cursor:pointer
+}
+.primary{background:#e92727;color:white}
+.primary:disabled{background:#3b2020;color:#777;cursor:not-allowed}
+.secondary{background:#282828;color:#fff}
+.row{display:flex;gap:9px}
+.row button{flex:1}
+.status{min-height:22px;margin-top:12px;text-align:center;font-size:13px;color:#aaa}
+.ok{color:#54d37b}.err{color:#ff6868}
+.info{font-size:12px;color:#999;line-height:1.6}
+.info b{color:#ddd}
+input{display:none}
+.progress{height:7px;background:#292929;border-radius:10px;overflow:hidden;margin-top:12px;display:none}
+.bar{height:100%;width:0;background:#ff3030;transition:width .15s}
 </style>
 </head>
 <body>
-<main>
+<div class="app">
+<header>
+  <h1>TOOL GỘP</h1>
+  <div class="sub">code by tdung</div>
+</header>
+
 <div class="card">
-<h1>Byte Merger</h1>
-<div class="muted">Gộp File Code By Tdung</div>
+  <div id="drop" class="drop">
+    <div class="icon">📦</div>
+    <b>Chọn 2 file .bytes</b>
+    <div class="small">Bạn có thể bấm để chọn hoặc kéo 2 file vào đây.</div>
+    <input id="picker" type="file" accept=".bytes,application/octet-stream" multiple>
+  </div>
+  <div id="files" class="files"></div>
 </div>
 
 <div class="card">
-<label class="pick button" for="fileInput">＋ Chọn file</label>
-<input id="fileInput" type="file" multiple>
-<ul id="list"></ul>
-<div class="muted">Thứ tự từ trên xuống dưới sẽ được giữ khi đóng gói.</div>
+  <div class="info">
+    <b>Thứ tự gộp:</b> file 1 → file 2<br>
+    Tool giữ nguyên từng byte và nối dữ liệu theo đúng thứ tự đã chọn.
+  </div>
+  <div class="progress" id="progress"><div class="bar" id="bar"></div></div>
+  <button class="primary" id="merge" disabled>GỘP 2 FILE</button>
+  <div class="row">
+    <button class="secondary" id="clear">XÓA</button>
+  </div>
+  <div id="status" class="status"></div>
 </div>
 
 <div class="card">
-<label>Tên file xuất</label>
-<input id="outputName" type="text" value="MergedBytes.bundle" autocomplete="off">
-<button id="mergeBtn" class="primary">Gộp thành một file</button>
+  <div class="info">
+    <b>Lưu ý:</b> nối 2 file nhị phân không tự biến chúng thành một
+    package game hợp lệ. Nếu định dạng .bytes của game có bảng index,
+    header, offset, checksum hoặc cấu trúc AssetBundle riêng thì cần
+    parser/packer đúng định dạng thay vì chỉ nối byte. Tool này là
+    bộ gộp nhị phân tổng quát và không phá mã hóa/chữ ký/bảo vệ của game.
+  </div>
 </div>
-
-<div class="card">
-<div id="status" class="status">Chưa chọn file.</div>
 </div>
-</main>
 
 <script>
-"use strict";
+const picker=document.getElementById('picker');
+const drop=document.getElementById('drop');
+const filesEl=document.getElementById('files');
+const mergeBtn=document.getElementById('merge');
+const clearBtn=document.getElementById('clear');
+const statusEl=document.getElementById('status');
+const progress=document.getElementById('progress');
+const bar=document.getElementById('bar');
+let selected=[];
 
-const input = document.getElementById("fileInput");
-const list = document.getElementById("list");
-const mergeBtn = document.getElementById("mergeBtn");
-const outputName = document.getElementById("outputName");
-const statusEl = document.getElementById("status");
-
-let files = [];
-
-input.addEventListener("change", () => {
-  for (const f of input.files) {
-    if (!files.some(x => x.name === f.name && x.size === f.size && x.lastModified === f.lastModified)) {
-      files.push(f);
-    }
-  }
-  input.value = "";
-  render();
-});
-
+function fmt(n){
+  const u=['B','KB','MB','GB']; let i=0;
+  while(n>=1024&&i<u.length-1){n/=1024;i++}
+  return n.toFixed(i?2:0)+' '+u[i];
+}
 function render(){
-  list.innerHTML = "";
-  files.forEach((file, i) => {
-    const li = document.createElement("li");
-    li.className = "row";
-
-    const num = document.createElement("span");
-    num.textContent = (i + 1) + ".";
-
-    const name = document.createElement("span");
-    name.className = "name";
-    name.textContent = file.name;
-
-    const up = document.createElement("button");
-    up.className = "move";
-    up.textContent = "↑";
-    up.disabled = i === 0;
-    up.onclick = () => { [files[i-1],files[i]]=[files[i],files[i-1]]; render(); };
-
-    const down = document.createElement("button");
-    down.className = "move";
-    down.textContent = "↓";
-    down.disabled = i === files.length-1;
-    down.onclick = () => { [files[i],files[i+1]]=[files[i+1],files[i]]; render(); };
-
-    const remove = document.createElement("button");
-    remove.className = "remove";
-    remove.textContent = "X";
-    remove.onclick = () => { files.splice(i,1); render(); };
-
-    li.append(num,name,up,down,remove);
-    list.appendChild(li);
+  filesEl.innerHTML='';
+  selected.forEach((f,i)=>{
+    const d=document.createElement('div'); d.className='file';
+    d.innerHTML=`<b>${i+1}</b><div class="name">${escapeHtml(f.name)}</div><div class="size">${fmt(f.size)}</div>`;
+    filesEl.appendChild(d);
   });
-  statusEl.textContent = files.length ? `Đã chọn ${files.length} file.` : "Chưa chọn file.";
+  mergeBtn.disabled=selected.length!==2;
 }
-
-function u16(v){ const a=new Uint8Array(2); new DataView(a.buffer).setUint16(0,v,true); return a; }
-function u32(v){ const a=new Uint8Array(4); new DataView(a.buffer).setUint32(0,v,true); return a; }
-function u64(v){
-  const a=new Uint8Array(8);
-  new DataView(a.buffer).setBigUint64(0,BigInt(v),true);
-  return a;
+function escapeHtml(s){
+  return s.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
 }
-function concat(parts){
-  let total=0; for(const p of parts) total+=p.byteLength;
-  const out=new Uint8Array(total); let off=0;
-  for(const p of parts){ out.set(new Uint8Array(p),off); off+=p.byteLength; }
-  return out;
-}
-
-async function buildBundle(){
-  if(!files.length){ statusEl.textContent="Hãy chọn ít nhất một file."; return; }
-
-  let name = outputName.value.trim() || "MergedBytes.bundle";
-  if(name.includes("/") || name.includes("\\") || name === "." || name === ".."){
-    statusEl.textContent="Tên file không hợp lệ."; return;
+function addFiles(list){
+  selected=Array.from(list).filter(f=>f.name.toLowerCase().endsWith('.bytes')).slice(0,2);
+  if(selected.length<2){
+    statusEl.textContent='Hãy chọn đúng 2 file có đuôi .bytes.';
+    statusEl.className='status err';
+  }else{
+    statusEl.textContent='Đã chọn đủ 2 file.';
+    statusEl.className='status ok';
   }
+  render();
+}
+drop.onclick=()=>picker.click();
+picker.onchange=e=>addFiles(e.target.files);
+['dragenter','dragover'].forEach(x=>drop.addEventListener(x,e=>{
+  e.preventDefault();drop.classList.add('over');
+}));
+['dragleave','drop'].forEach(x=>drop.addEventListener(x,e=>{
+  e.preventDefault();drop.classList.remove('over');
+}));
+drop.addEventListener('drop',e=>addFiles(e.dataTransfer.files));
 
-  mergeBtn.disabled=true;
-  statusEl.textContent="Đang đọc file...";
+clearBtn.onclick=()=>{
+  selected=[];picker.value='';render();
+  statusEl.textContent='';statusEl.className='status';
+};
+mergeBtn.onclick=async()=>{
+  if(selected.length!==2)return;
+  try{
+    mergeBtn.disabled=true;
+    progress.style.display='block';bar.style.width='5%';
+    statusEl.textContent='Đang đọc file...';statusEl.className='status';
+    const a=await selected[0].arrayBuffer();
+    bar.style.width='45%';
+    const b=await selected[1].arrayBuffer();
+    bar.style.width='80%';
 
-  try {
-    const entries=[];
-    for(let i=0;i<files.length;i++){
-      const f=files[i];
-      const data=await f.arrayBuffer();
-      entries.push({name:f.name,data});
-      statusEl.textContent=`Đang đọc ${i+1}/${files.length}: ${f.name}`;
-      await new Promise(r=>setTimeout(r,0));
-    }
+    const out=new Uint8Array(a.byteLength+b.byteLength);
+    out.set(new Uint8Array(a),0);
+    out.set(new Uint8Array(b),a.byteLength);
 
-    // BYTEBNDL1 + 0 padding = 16 bytes
-    const magic=new Uint8Array([66,89,84,69,66,78,68,76,49,0,0,0,0,0,0,0]);
-    const version=u32(1);
-    const count=u32(entries.length);
-
-    let indexSize=0;
-    const enc=new TextEncoder();
-    const names=[];
-    for(const e of entries){
-      const nb=enc.encode(e.name);
-      if(nb.length>65535) throw new Error("Tên file quá dài: "+e.name);
-      names.push(nb);
-      indexSize += 2 + nb.length + 8 + 8 + 4;
-    }
-
-    let offset=16+4+4+indexSize;
-    const indexParts=[];
-    for(let i=0;i<entries.length;i++){
-      const e=entries[i], nb=names[i];
-      indexParts.push(u16(nb.length),nb,u64(offset),u64(e.data.byteLength),u32(0));
-      offset += e.data.byteLength;
-    }
-
-    const output=concat([magic,version,count,...indexParts,...entries.map(e=>e.data)]);
-    const blob=new Blob([output],{type:"application/octet-stream"});
+    const blob=new Blob([out],{type:'application/octet-stream'});
     const url=URL.createObjectURL(blob);
+    const base=selected[0].name.replace(/\.bytes$/i,'');
+    const outName=base+'_merged.bytes';
 
-    const a=document.createElement("a");
-    a.href=url;
-    a.download=name;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    setTimeout(()=>URL.revokeObjectURL(url),30000);
+    const link=document.createElement('a');
+    link.href=url;link.download=outName;
+    document.body.appendChild(link);link.click();link.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
 
-    statusEl.textContent=`Đã gộp ${files.length} file.\nDung lượng: ${formatBytes(output.byteLength)}\nFile: ${name}`;
-  } catch(err){
-    statusEl.textContent="Lỗi: "+(err?.message || err);
-  } finally {
+    bar.style.width='100%';
+    statusEl.textContent=`Đã gộp xong: ${outName} (${fmt(out.byteLength)})`;
+    statusEl.className='status ok';
+  }catch(e){
+    statusEl.textContent='Lỗi: '+e.message;
+    statusEl.className='status err';
+  }finally{
     mergeBtn.disabled=false;
   }
-}
-
-function formatBytes(n){
-  if(n<1024) return n+" B";
-  if(n<1024**2) return (n/1024).toFixed(1)+" KB";
-  if(n<1024**3) return (n/1024**2).toFixed(1)+" MB";
-  return (n/1024**3).toFixed(2)+" GB";
-}
-
-mergeBtn.addEventListener("click",buildBundle);
-render();
+};
 </script>
 </body>
 </html>
