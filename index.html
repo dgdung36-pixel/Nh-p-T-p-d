@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <meta name="theme-color" content="#070810">
-<title>TOOL GỘP BYTES PRO V6 - SMART CODE PARSER</title>
+<title>TOOL GỘP BYTES PRO V7 - SMART MOD RECALL PARSER</title>
 <style>
 :root {
   --primary: #ff0055;
@@ -146,11 +146,11 @@ button.btn-main {
 
 <div class="app">
   <header>
-    <h1 class="logo-title">CYBER RE-PACKER V6</h1>
-    <div><span class="sub-tag">SMART CODE PARSER & MERGER</span></div>
+    <h1 class="logo-title">CYBER RE-PACKER V7</h1>
+    <div><span class="sub-tag">MOD RECALL & SKIN PROTECTOR</span></div>
     <div class="hud-panel">
       <div>PARSER: <span class="val" id="parserStatus">READY</span></div>
-      <div>MODE: <span class="val">AST / OBJECT MERGE</span></div>
+      <div>MODE: <span class="val">ARRAY RECALL PRESERVE</span></div>
       <div>TIME: <span class="val" id="clock">--:--:--</span></div>
     </div>
   </header>
@@ -163,7 +163,7 @@ button.btn-main {
     <div id="dropZone" class="drop-zone">
       <div class="icon">🧩</div>
       <b style="font-size:16px; color:#fff;">KÉO THẢ HOẶC BẤM ĐỂ CHỌN FILE .BYTES</b>
-      <div style="font-size:12px; color:#888; margin-top:6px;">Tự động phân tích cấu trúc Code, JSON Object, Lua & Protobuf</div>
+      <div style="font-size:12px; color:#888; margin-top:6px;">Bảo vệ hiệu ứng Biến về (Recall) không bị đè dữ liệu</div>
       <input id="picker" type="file" accept=".bytes" multiple style="display:none;">
     </div>
     <div id="filesList" class="files-list"></div>
@@ -175,13 +175,12 @@ button.btn-main {
     </div>
     <div class="form-grid">
       <div class="form-group">
-        <label>🛠️ Cơ chế hợp nhất mã nguồn (Tránh sai Code):</label>
+        <label>🛠️ Cơ chế hợp nhất mã nguồn (Khắc phục lỗi Biến về):</label>
         <select id="mergeAlgorithm">
-          <option value="smart_code_parse">1. Smart Code & Object Parser (Khuyên dùng - Đọc & Hợp nhất JSON/Lua/Script)</option>
-          <option value="json_deep_merge">2. JSON Deep Object Merge (Gộp phẳng các Keys/Tables tránh trùng lặp)</option>
-          <option value="protobuf_varint">3. Protobuf Varint Container (Tự tính lại Index độ dài Binary)</option>
-          <option value="header_preserve">4. Header Preservation (Giữ nguyên Cấu trúc Header File 1)</option>
-          <option value="clean_raw">5. Clean Text Append (Xóa UTF-8 BOM & Thêm dấu phân cách Script)</option>
+          <option value="smart_mod_recall">1. Smart Mod Recall Merger (Chuyên Mod Skin - Nối mảng Biến về & Scope Lua)</option>
+          <option value="protobuf_varint">2. Protobuf Varint Container (Tự tính lại Index độ dài Binary - Giữ Biến về Bin)</option>
+          <option value="header_preserve">3. Header Preservation (Ghép mảng Byte nguyên bản từ File 1)</option>
+          <option value="clean_raw">4. Clean Text Append (Nối dòng cách biệt Lua/Script)</option>
         </select>
       </div>
 
@@ -191,7 +190,7 @@ button.btn-main {
       </div>
     </div>
 
-    <button class="btn-main btn-primary" id="mergeBtn" disabled style="margin-top:20px;">XỬ LÝ CODE & GỘP FILE</button>
+    <button class="btn-main btn-primary" id="mergeBtn" disabled style="margin-top:20px;">XỬ LÝ CODE & GỘP FILE MOD</button>
     <div id="statusBox" class="status-box"></div>
   </div>
 </div>
@@ -261,7 +260,6 @@ function fmtSize(bytes){
 
 function escHTML(str){ return str.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m])); }
 
-// Nhận diện định dạng dữ liệu bên trong file .bytes
 async function detectFileFormat(file) {
   const slice = await file.slice(0, 512).arrayBuffer();
   const arr = new Uint8Array(slice);
@@ -376,63 +374,76 @@ function showStatus(msg, type){
   statusBox.className = 'status-box ' + type;
 }
 
-// Deep Merge Đối tượng JSON
-function deepMergeObjects(target, source) {
+// THUẬT TOÁN HỢP NHẤT MOD CHUYÊN DỤNG (Nối Mảng Biến Về & Tránh Đè Key)
+function mergeModObjects(target, source) {
   for (const key of Object.keys(source)) {
-    if (source[key] instanceof Object && key in target && target[key] instanceof Object) {
-      Object.assign(source[key], deepMergeObjects(target[key], source[key]));
+    if (Array.isArray(target[key]) && Array.isArray(source[key])) {
+      // Nối danh sách hiệu ứng biến về thay vì đè đè lên nhau
+      target[key] = target[key].concat(source[key]);
+    } else if (typeof target[key] === 'object' && target[key] !== null && typeof source[key] === 'object' && source[key] !== null) {
+      mergeModObjects(target[key], source[key]);
+    } else {
+      // Nếu là thuộc tính trùng tên thuộc dạng ID Biến về, tạo key mở rộng
+      if (target.hasOwnProperty(key) && (key.toLowerCase().includes('recall') || key.toLowerCase().includes('effect'))) {
+        target[key + "_mod2"] = source[key];
+      } else {
+        target[key] = source[key];
+      }
     }
   }
-  Object.assign(target || {}, source);
   return target;
 }
 
-// --- THUẬT TOÁN HỢP NHẤT MÃ NGUỒN ---
+// --- THUẬT TOÁN HỢP NHẤT MÃ NGUỒN V7 ---
 mergeBtn.onclick = async () => {
   if(selectedFiles.length < 2) return;
   
   try {
     mergeBtn.disabled = true;
     parserStatus.textContent = 'PARSING...';
-    showStatus('⚙️ Đang phân tích cú pháp Code & Hợp nhất cấu trúc...', 'ok');
+    showStatus('⚙️ Đang bảo vệ cấu trúc Biến Về & Hợp nhất Mod...', 'ok');
 
     const mode = mergeAlgorithm.value;
     let finalUint8Array = null;
 
-    if (mode === 'smart_code_parse' || mode === 'json_deep_merge') {
+    if (mode === 'smart_mod_recall') {
       let isAllJSON = true;
-      let jsonObjects = [];
-      let jsonArrays = [];
+      let parsedJSONs = [];
 
       for (let file of selectedFiles) {
         const text = await file.text();
-        // Loại bỏ BOM nếu có
         const cleanText = text.replace(/^\uFEFF/, '').trim();
         try {
-          const parsed = JSON.parse(cleanText);
-          if (Array.isArray(parsed)) jsonArrays.push(parsed);
-          else if (typeof parsed === 'object') jsonObjects.push(parsed);
+          parsedJSONs.push(JSON.parse(cleanText));
         } catch(e) {
           isAllJSON = false;
         }
       }
 
-      if (isAllJSON && (jsonObjects.length > 0 || jsonArrays.push.length > 0)) {
-        if (jsonObjects.length > 0) {
-          let mergedObj = {};
-          jsonObjects.forEach(obj => deepMergeObjects(mergedObj, obj));
-          finalUint8Array = new TextEncoder().encode(JSON.stringify(mergedObj, null, 2));
+      if (isAllJSON) {
+        // Nếu các file mod là dạng Array Root
+        if (Array.isArray(parsedJSONs[0])) {
+          let mergedArray = [];
+          parsedJSONs.forEach(arr => {
+            if(Array.isArray(arr)) mergedArray = mergedArray.concat(arr);
+            else mergedArray.push(arr);
+          });
+          finalUint8Array = new TextEncoder().encode(JSON.stringify(mergedArray, null, 2));
         } else {
-          let mergedArr = [].concat(...jsonArrays);
-          finalUint8Array = new TextEncoder().encode(JSON.stringify(mergedArr, null, 2));
+          // Dạng Object: thực hiện Smart Merge nối Mảng Recall
+          let baseObj = parsedJSONs[0];
+          for (let i = 1; i < parsedJSONs.length; i++) {
+            mergeModObjects(baseObj, parsedJSONs[i]);
+          }
+          finalUint8Array = new TextEncoder().encode(JSON.stringify(baseObj, null, 2));
         }
       } else {
-        // Fallback sang Script Merge nếu không phải JSON chuẩn
-        let scriptContent = "";
-        for (let file of selectedFiles) {
-          let txt = await file.text();
+        // Dạng Script/Lua: Bọc Scope độc lập để biến về 2 skin không cướp hàm của nhau
+        let scriptContent = "-- METADATA: COMBINED MOD RECALL SKINS\n";
+        for (let i = 0; i < selectedFiles.length; i++) {
+          let txt = await selectedFiles[i].text();
           txt = txt.replace(/^\uFEFF/, '').trim();
-          scriptContent += txt + "\n;\n"; // Chèn ; chống dính dòng code
+          scriptContent += `\n-- === MOD SKIN BLOCK ${i+1}: ${selectedFiles[i].name} ===\ndo\n` + txt + "\nend\n;";
         }
         finalUint8Array = new TextEncoder().encode(scriptContent);
       }
@@ -456,8 +467,8 @@ mergeBtn.onclick = async () => {
       let combinedStr = "";
       for (let file of selectedFiles) {
         let txt = await file.text();
-        txt = txt.replace(/^\uFEFF/, ''); // Xóa UTF-8 BOM
-        combinedStr += txt + "\n";
+        txt = txt.replace(/^\uFEFF/, '');
+        combinedStr += txt + "\n;\n";
       }
       finalUint8Array = new TextEncoder().encode(combinedStr);
     }
@@ -487,7 +498,7 @@ mergeBtn.onclick = async () => {
     setTimeout(() => URL.revokeObjectURL(url), 1000);
 
     parserStatus.textContent = 'SUCCESS';
-    showStatus(`🎉 ĐÃ PARSE VÀ GỘP CODE THÀNH CÔNG! (${fmtSize(finalUint8Array.length)})`, 'ok');
+    showStatus(`🎉 ĐÃ BẢO VỆ CẢ 2 BIẾN VỀ VÀ GỘP THÀNH CÔNG! (${fmtSize(finalUint8Array.length)})`, 'ok');
 
   } catch (err) {
     parserStatus.textContent = 'ERROR';
