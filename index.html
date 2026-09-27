@@ -16,6 +16,8 @@ body{
 header{text-align:center;margin-bottom:26px}
 h1{margin:0;font-size:34px;letter-spacing:2px;font-weight:800}
 .sub{margin-top:7px;color:#ff3030;font-size:15px;font-weight:700}
+.clock{margin:10px auto 0;display:inline-block;padding:7px 12px;border:1px solid #333;border-radius:10px;background:#151515;color:#ddd;font-size:13px;font-weight:700}
+.clock span{color:#ff3030}
 .card{
   background:#171717;border:1px solid #2b2b2b;border-radius:18px;
   padding:18px;margin-bottom:14px;box-shadow:0 8px 30px rgba(0,0,0,.25)
@@ -57,25 +59,26 @@ input{display:none}
 <header>
   <h1>TOOL GỘP</h1>
   <div class="sub">code by tdung</div>
+  <div class="clock">Hiện giờ: <span id="clock">--:--:--</span></div>
 </header>
 
 <div class="card">
   <div id="drop" class="drop">
     <div class="icon">📦</div>
-    <b>Chọn 2 file .bytes</b>
-    <div class="small">Bạn có thể bấm để chọn hoặc kéo 2 file vào đây.</div>
-    <input id="picker" type="file" accept=".bytes,application/octet-stream" multiple>
+    <b>Chọn nhiều file .bytes</b>
+    <div class="small">Có thể chọn hoặc kéo nhiều file vào đây. File trùng tên vẫn được giữ nguyên.</div>
+    <input id="picker" type="file" accept=".bytes" multiple>
   </div>
   <div id="files" class="files"></div>
 </div>
 
 <div class="card">
   <div class="info">
-    <b>Thứ tự gộp:</b> file 1 → file 2<br>
+    <b>Thứ tự gộp:</b> file 1 → file 2 → ... → file cuối<br>
     Tool giữ nguyên từng byte và nối dữ liệu theo đúng thứ tự đã chọn.
   </div>
   <div class="progress" id="progress"><div class="bar" id="bar"></div></div>
-  <button class="primary" id="merge" disabled>GỘP 2 FILE</button>
+  <button class="primary" id="merge" disabled>GỘP CÁC FILE</button>
   <div class="row">
     <button class="secondary" id="clear">XÓA</button>
   </div>
@@ -116,24 +119,41 @@ function render(){
     d.innerHTML=`<b>${i+1}</b><div class="name">${escapeHtml(f.name)}</div><div class="size">${fmt(f.size)}</div>`;
     filesEl.appendChild(d);
   });
-  mergeBtn.disabled=selected.length!==2;
+  mergeBtn.disabled=selected.length<2;
+  mergeBtn.textContent=selected.length>=2 ? `GỘP ${selected.length} FILE` : 'GỘP CÁC FILE';
 }
+
 function escapeHtml(s){
   return s.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
 }
+
 function addFiles(list){
-  selected=Array.from(list).filter(f=>f.name.toLowerCase().endsWith('.bytes')).slice(0,2);
-  if(selected.length<2){
-    statusEl.textContent='Hãy chọn đúng 2 file có đuôi .bytes.';
+  const incoming=Array.from(list).filter(f=>f.name.toLowerCase().endsWith('.bytes'));
+  const invalid=Array.from(list).filter(f=>!f.name.toLowerCase().endsWith('.bytes'));
+
+  // Không dùng tên làm khóa => file trùng tên vẫn được thêm bình thường.
+  selected.push(...incoming);
+
+  if(invalid.length){
+    statusEl.textContent=`Đã bỏ qua ${invalid.length} file không có đuôi .bytes.`;
+    statusEl.className='status err';
+  }else if(selected.length<2){
+    statusEl.textContent='Hãy chọn ít nhất 2 file có đuôi .bytes.';
     statusEl.className='status err';
   }else{
-    statusEl.textContent='Đã chọn đủ 2 file.';
+    statusEl.textContent=`Đã chọn ${selected.length} file .bytes.`;
     statusEl.className='status ok';
   }
   render();
 }
+
 drop.onclick=()=>picker.click();
-picker.onchange=e=>addFiles(e.target.files);
+picker.onchange=e=>{
+  addFiles(e.target.files);
+  // Cho phép chọn lại đúng cùng một file ở lần tiếp theo.
+  picker.value='';
+};
+
 ['dragenter','dragover'].forEach(x=>drop.addEventListener(x,e=>{
   e.preventDefault();drop.classList.add('over');
 }));
@@ -146,25 +166,46 @@ clearBtn.onclick=()=>{
   selected=[];picker.value='';render();
   statusEl.textContent='';statusEl.className='status';
 };
+
+function updateClock(){
+  const now=new Date();
+  const hh=String(now.getHours()).padStart(2,'0');
+  const mm=String(now.getMinutes()).padStart(2,'0');
+  const ss=String(now.getSeconds()).padStart(2,'0');
+  document.getElementById('clock').textContent=`${hh}:${mm}:${ss}`;
+}
+updateClock();
+setInterval(updateClock,1000);
+
 mergeBtn.onclick=async()=>{
-  if(selected.length!==2)return;
+  if(selected.length<2)return;
   try{
     mergeBtn.disabled=true;
-    progress.style.display='block';bar.style.width='5%';
-    statusEl.textContent='Đang đọc file...';statusEl.className='status';
-    const a=await selected[0].arrayBuffer();
-    bar.style.width='45%';
-    const b=await selected[1].arrayBuffer();
-    bar.style.width='80%';
+    progress.style.display='block';bar.style.width='2%';
+    statusEl.textContent=`Đang đọc ${selected.length} file...`;statusEl.className='status';
 
-    const out=new Uint8Array(a.byteLength+b.byteLength);
-    out.set(new Uint8Array(a),0);
-    out.set(new Uint8Array(b),a.byteLength);
+    const buffers=[];
+    let total=0;
+
+    for(let i=0;i<selected.length;i++){
+      const buffer=await selected[i].arrayBuffer();
+      buffers.push(buffer);
+      total+=buffer.byteLength;
+      bar.style.width=`${Math.round(((i+1)/selected.length)*75)}%`;
+    }
+
+    const out=new Uint8Array(total);
+    let offset=0;
+    for(const buffer of buffers){
+      out.set(new Uint8Array(buffer),offset);
+      offset+=buffer.byteLength;
+    }
 
     const blob=new Blob([out],{type:'application/octet-stream'});
     const url=URL.createObjectURL(blob);
+
     const base=selected[0].name.replace(/\.bytes$/i,'');
-    const outName=base+'_merged.bytes';
+    const outName=base+`_merged_${selected.length}files.bytes`;
 
     const link=document.createElement('a');
     link.href=url;link.download=outName;
@@ -172,13 +213,13 @@ mergeBtn.onclick=async()=>{
     setTimeout(()=>URL.revokeObjectURL(url),1000);
 
     bar.style.width='100%';
-    statusEl.textContent=`Đã gộp xong: ${outName} (${fmt(out.byteLength)})`;
+    statusEl.textContent=`Đã gộp xong ${selected.length} file: ${outName} (${fmt(out.byteLength)})`;
     statusEl.className='status ok';
   }catch(e){
     statusEl.textContent='Lỗi: '+e.message;
     statusEl.className='status err';
   }finally{
-    mergeBtn.disabled=false;
+    mergeBtn.disabled=selected.length<2;
   }
 };
 </script>
