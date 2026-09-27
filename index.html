@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <meta name="theme-color" content="#111111">
-<title>TOOL GỘP BYTES - TDUNG</title>
+<title>TOOL GỘP BYTES - TDUNG (FIXED)</title>
 <style>
 @keyframes bgShift {
   0% { background-color: #0d0d0d; }
@@ -91,7 +91,33 @@ button{
 .ok{color:#54d37b}.err{color:#ff6868}
 .info{font-size:12px;color:#999;line-height:1.6}
 .info b{color:#ddd}
-input{display:none}
+input[type="file"]{display:none}
+
+.mode-select {
+  margin-top: 10px;
+  padding: 10px;
+  background: #111;
+  border-radius: 10px;
+  border: 1px solid #333;
+}
+.mode-select label {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 6px;
+  color: #ff7676;
+  font-weight: bold;
+}
+.mode-select select {
+  width: 100%;
+  padding: 8px 10px;
+  background: #1a1a1a;
+  color: #fff;
+  border: 1px solid #444;
+  border-radius: 8px;
+  outline: none;
+  font-size: 13px;
+}
+
 .progress{height:7px;background:#292929;border-radius:10px;overflow:hidden;margin-top:12px;display:none}
 .bar{height:100%;width:0;background:#ff3030;transition:width .15s}
 
@@ -131,10 +157,15 @@ input{display:none}
 </div>
 
 <div class="card">
-  <div class="info">
-    <b>Thứ tự gộp:</b> file 1 → file 2 → ... → file cuối<br>
-    Tool giữ nguyên từng byte và nối dữ liệu chuẩn xác để game có thể đọc được.
+  <div class="mode-select">
+    <label for="mergeMode">⚙️ Chế độ gộp dữ liệu:</label>
+    <select id="mergeMode">
+      <option value="newline">1. Gộp thêm kí tự xuống dòng (Khuyên dùng cho Mod Skin / Text)</option>
+      <option value="raw">2. Gộp nối tiếp Binary thô (Raw Concatenation)</option>
+      <option value="length_header">3. Gộp thêm Header độ dài (4-byte Size Prefix)</option>
+    </select>
   </div>
+
   <div class="progress" id="progress"><div class="bar" id="bar"></div></div>
   <button class="primary" id="merge" disabled>GỘP CÁC FILE</button>
   <div class="row">
@@ -145,7 +176,10 @@ input{display:none}
 
 <div class="card">
   <div class="info">
-    <b>Lưu ý mod skin:</b> Dữ liệu nhị phân (.bytes) được nối tuần tự theo đúng cấu trúc byte gốc. Đảm bảo các file thành phần tương thích với cấu trúc mà game yêu cầu.
+    <b>Hướng dẫn chọn chế độ gộp:</b><br>
+    • <b>Chế độ 1 (Xuống dòng):</b> Dùng nếu file `.bytes` bên trong chứa văn bản, JSON, mã mod skin game. Việc chèn thêm kí tự xuống dòng giúp game parse dữ liệu từng file riêng biệt không bị dính liền.<br>
+    • <b>Chế độ 2 (Binary thô):</b> Nối trực tiếp từng byte. Dùng cho các file nén hoặc file dữ liệu thô liên tục.<br>
+    • <b>Chế độ 3 (Header 4-byte):</b> Thêm 4 byte ghi độ dài trước mỗi file. Dùng nếu engine game đọc dạng gói (packet/stream).
   </div>
 </div>
 </div>
@@ -160,6 +194,8 @@ const clearBtn = document.getElementById('clear');
 const statusEl = document.getElementById('status');
 const progress = document.getElementById('progress');
 const bar = document.getElementById('bar');
+const mergeModeSelect = document.getElementById('mergeMode');
+
 let selected = [];
 
 function fmt(n){
@@ -245,27 +281,74 @@ mergeBtn.onclick = async () => {
     statusEl.className = 'status';
 
     const buffers = [];
-    let total = 0;
+    const mode = mergeModeSelect.value;
 
     for(let i = 0; i < selected.length; i++){
       const buffer = await selected[i].arrayBuffer();
-      buffers.push(buffer);
-      total += buffer.byteLength;
-      bar.style.width = `${Math.round(((i + 1) / selected.length) * 75)}%`;
+      buffers.push(new Uint8Array(buffer));
+      bar.style.width = `${Math.round(((i + 1) / selected.length) * 50)}%`;
     }
 
-    const out = new Uint8Array(total);
-    let offset = 0;
-    for(const buffer of buffers){
-      out.set(new Uint8Array(buffer), offset);
-      offset += buffer.byteLength;
+    let finalData;
+
+    if (mode === 'newline') {
+      // Thêm ký tự xuống dòng (\n -> 0x0A) giữa các file nếu chưa có
+      const newline = new Uint8Array([0x0A]);
+      let totalSize = 0;
+      buffers.forEach((b, idx) => {
+        totalSize += b.length;
+        if (idx < buffers.length - 1) totalSize += newline.length;
+      });
+
+      finalData = new Uint8Array(totalSize);
+      let offset = 0;
+
+      buffers.forEach((b, idx) => {
+        finalData.set(b, offset);
+        offset += b.length;
+        if (idx < buffers.length - 1) {
+          finalData.set(newline, offset);
+          offset += newline.length;
+        }
+      });
+
+    } else if (mode === 'length_header') {
+      // Thêm 4 byte Little-Endian chứa độ dài file trước dữ liệu mỗi file
+      let totalSize = 0;
+      buffers.forEach(b => {
+        totalSize += 4 + b.length;
+      });
+
+      finalData = new Uint8Array(totalSize);
+      const view = new DataView(finalData.buffer);
+      let offset = 0;
+
+      buffers.forEach(b => {
+        view.setUint32(offset, b.length, true); // Little endian
+        offset += 4;
+        finalData.set(b, offset);
+        offset += b.length;
+      });
+
+    } else {
+      // Raw Concatenation
+      let totalSize = buffers.reduce((acc, b) => acc + b.length, 0);
+      finalData = new Uint8Array(totalSize);
+      let offset = 0;
+
+      buffers.forEach(b => {
+        finalData.set(b, offset);
+        offset += b.length;
+      });
     }
 
-    const blob = new Blob([out], {type: 'application/octet-stream'});
+    bar.style.width = '90%';
+
+    const blob = new Blob([finalData], {type: 'application/octet-stream'});
     const url = URL.createObjectURL(blob);
 
     const base = selected[0].name.replace(/\.bytes$/i, '');
-    const outName = base + `_merged_${selected.length}files.bytes`;
+    const outName = base + `_merged.bytes`;
 
     const link = document.createElement('a');
     link.href = url; 
@@ -276,7 +359,7 @@ mergeBtn.onclick = async () => {
     setTimeout(() => URL.revokeObjectURL(url), 1000);
 
     bar.style.width = '100%';
-    statusEl.textContent = `Đã gộp xong ${selected.length} file: ${outName} (${fmt(out.byteLength)})`;
+    statusEl.textContent = `Đã gộp thành công ${selected.length} file: ${outName} (${fmt(finalData.length)})`;
     statusEl.className = 'status ok';
   } catch(e) {
     statusEl.textContent = 'Lỗi: ' + e.message;
