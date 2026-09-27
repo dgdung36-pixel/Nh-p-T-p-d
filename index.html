@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>CYBER MERGE V22.3 | AURA GLOW EDITION</title>
+<title>CYBER MERGE V23 | KTOOL TERMINAL EDITION</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@500;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
 
 <style>
 :root {
@@ -26,6 +26,11 @@
     --drop-bg: rgba(0, 0, 0, 0.3);
     --item-bg: rgba(0, 0, 0, 0.5);
     
+    /* TERMINAL COLORS */
+    --term-bg: #0d1117;
+    --term-border: rgba(48, 54, 61, 0.8);
+    --term-text: #c9d1d9;
+
     /* NEON & OWNER VARIABLES */
     --owner-border: #ffffff;
     --owner-text: #ffffff;
@@ -54,6 +59,10 @@
     --btn-text: #ffffff;
     --drop-bg: rgba(255, 255, 255, 0.7);
     --item-bg: rgba(255, 255, 255, 0.9);
+
+    --term-bg: #161b22;
+    --term-border: rgba(200, 200, 200, 0.6);
+    --term-text: #24292e;
 
     --owner-border: #1a1a1a;
     --owner-text: #1a1a1a;
@@ -102,11 +111,9 @@ header {
     width: 100%; max-width: 1000px; display: flex; justify-content: space-between; align-items: center;
     margin-top: 15px; margin-bottom: 30px; flex-wrap: wrap; gap: 15px;
 }
-.header-left {
-    display: flex; align-items: center; gap: 15px; flex-wrap: wrap;
-}
+.header-left { display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
 
-/* APP LOGO VỚI HIỆU ỨNG AURA & HÀO QUANG */
+/* APP LOGO VỚI AURA */
 .app-logo {
     display: flex; align-items: center; gap: 12px;
     background: var(--glass-bg); padding: 8px 20px 8px 8px;
@@ -117,7 +124,6 @@ header {
 }
 .app-logo:hover { border-color: var(--accent); transform: translateY(-2px); }
 
-/* LỚP HÀO QUANG (AURA GLOW) BAO QUANH LOGO ICON */
 .logo-icon-wrapper {
     position: relative; width: 40px; height: 40px;
     display: flex; justify-content: center; align-items: center;
@@ -129,38 +135,27 @@ header {
     animation: auraSpin 4s linear infinite, auraPulse 2s ease-in-out infinite alternate;
     z-index: 1; filter: blur(6px); opacity: 0.8;
 }
-@keyframes auraSpin {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-@keyframes auraPulse {
-    0% { transform: scale(0.95); opacity: 0.6; }
-    100% { transform: scale(1.15); opacity: 1; }
-}
+@keyframes auraSpin { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+@keyframes auraPulse { 0% { transform: scale(0.95); opacity: 0.6; } 100% { transform: scale(1.15); opacity: 1; } }
 
 .logo-icon {
     position: relative; width: 40px; height: 40px;
     background: linear-gradient(135deg, var(--accent), #764ba2);
     border-radius: 50%; display: flex; justify-content: center; align-items: center;
-    font-size: 18px; color: #fff; z-index: 2;
-    box-shadow: inset 0 0 10px rgba(255,255,255,0.6);
+    font-size: 18px; color: #fff; z-index: 2; box-shadow: inset 0 0 10px rgba(255,255,255,0.6);
 }
-
 .logo-text {
     font-family: var(--font-mono); font-size: 14px; font-weight: 900;
     line-height: 1.1; color: var(--text-main); letter-spacing: 1px;
 }
 .logo-text span { color: var(--accent); text-shadow: 0 0 10px var(--accent-glow); }
 
-/* CLOCK PANEL */
 .clock-panel {
     background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-border);
     padding: 10px 20px; border-radius: 30px; font-family: var(--font-mono); font-size: 13px;
     box-shadow: 0 8px 20px var(--glass-shadow); display: flex; align-items: center; gap: 8px;
 }
 
-/* CONTROLS (Right side) */
 .control-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
 .icon-btn {
     background: var(--glass-bg); border: 1px solid var(--glass-border); color: var(--text-main);
@@ -170,7 +165,6 @@ header {
 .icon-btn:hover { border-color: var(--accent); transform: scale(1.1); box-shadow: 0 0 15px var(--accent-glow); }
 .icon-btn.lang { width: auto; padding: 0 15px; border-radius: 20px; font-size: 13px; font-weight: 700; font-family: var(--font-mono); }
 
-/* TRONG DUNG NEON */
 .owner-neon {
     padding: 10px 24px; border-radius: 30px; font-weight: 900; font-size: 14px; letter-spacing: 2px;
     border: 2px solid var(--owner-border); color: var(--owner-text); text-transform: uppercase;
@@ -234,9 +228,7 @@ header {
 .btn-remove:hover { transform: scale(1.2); }
 
 /* INPUTS & SELECTS */
-.input-label {
-    font-size: 13px; font-weight: 700; color: var(--text-main); margin-bottom: 8px; display: block;
-}
+.input-label { font-size: 13px; font-weight: 700; color: var(--text-main); margin-bottom: 8px; display: block; }
 .custom-control {
     width: 100%; padding: 16px; border-radius: 16px; background: var(--item-bg);
     border: 1px solid var(--glass-border); color: var(--text-main); font-size: 14px; font-family: var(--font-main);
@@ -254,19 +246,37 @@ header {
 .btn-merge:hover:not(:disabled) { transform: scale(1.02) translateY(-2px); box-shadow: 0 15px 30px var(--glass-shadow), 0 0 20px var(--glass-border); }
 .btn-merge:disabled { background: var(--glass-bg); color: var(--text-muted); box-shadow: none; cursor: not-allowed; }
 
-/* GUIDES & LOGS */
-.guide-box {
-    background: var(--drop-bg); border-radius: 16px; padding: 18px; margin-bottom: 15px;
-    border: 1px solid var(--glass-border); transition: 0.3s;
+/* KTOOL TERMINAL STYLES (Chuẩn hình ảnh mẫu) */
+.ktool-terminal {
+    background: var(--term-bg); border: 1px solid var(--term-border);
+    border-radius: 18px; padding: 16px; font-family: var(--font-mono);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5); margin-top: 15px; overflow: hidden;
 }
-.guide-box h4 { font-size: 14px; color: var(--accent); margin-bottom: 8px; }
-.guide-box p { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
-.ai-status {
-    padding: 12px; border-radius: 12px; background: rgba(50, 215, 75, 0.15);
-    border: 1px solid rgba(50, 215, 75, 0.3); color: #32d74b; font-size: 12px; font-weight: 700;
-    display: flex; flex-direction: column; gap: 5px; justify-content: center; margin-top: 15px;
+.term-header {
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid var(--term-border); padding-bottom: 10px; margin-bottom: 12px;
 }
-.log-line { font-family: var(--font-mono); font-size: 10px; color: var(--text-main); opacity: 0.8; }
+.term-dots { display: flex; gap: 6px; }
+.dot { width: 10px; height: 10px; border-radius: 50%; }
+.dot-red { background: #ff5f56; }
+.dot-yellow { background: #ffbd2e; }
+.dot-green { background: #27c93f; }
+
+.term-title { font-size: 12px; color: var(--text-muted); font-weight: 600; }
+.btn-clear-log {
+    background: rgba(255,255,255,0.08); border: 1px solid var(--term-border);
+    color: var(--text-main); font-size: 11px; padding: 4px 10px; border-radius: 8px;
+    cursor: pointer; font-family: var(--font-mono); transition: 0.2s;
+}
+.btn-clear-log:hover { background: rgba(255,255,255,0.15); border-color: var(--accent); }
+
+.term-body {
+    height: 160px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;
+    font-size: 11.5px; line-height: 1.4; color: var(--term-text);
+}
+.term-body::-webkit-scrollbar { width: 4px; }
+.term-body::-webkit-scrollbar-thumb { background: var(--term-border); border-radius: 4px; }
+.log-row { word-break: break-all; }
 
 /* POPUP MODAL */
 .modal-overlay {
@@ -305,7 +315,6 @@ footer { margin-top: auto; padding: 25px 0; text-align: center; width: 100%; }
 }
 
 </style>
-
 </head>
 <body>
 
@@ -322,7 +331,6 @@ footer { margin-top: auto; padding: 25px 0; text-align: center; width: 100%; }
 </div>
 
 <header>
-    <!-- CỘT TRÁI: LOGO VỚI HIỆU ỨNG HÀO QUANG (AURA) & CLOCK -->
     <div class="header-left">
         <div class="app-logo">
             <div class="logo-icon-wrapper">
@@ -332,61 +340,69 @@ footer { margin-top: auto; padding: 25px 0; text-align: center; width: 100%; }
         </div>
         <div class="clock-panel">🕒 <span id="sysClock">00:00:00</span></div>
     </div>
-
-<!-- CỘT PHẢI: CONTROLS & OWNER -->
-<div class="control-group">
-    <button class="icon-btn" id="themeBtn" onclick="toggleTheme()" title="Đổi Giao Diện Sáng/Tối">☀️</button>
-    <button class="icon-btn lang" id="langBtn" onclick="toggleLang()" title="Đổi Ngôn Ngữ">🇻🇳 VN</button>
-    <div class="owner-neon">TRONG DUNG</div>
-</div>
+    
+    <div class="control-group">
+        <button class="icon-btn" id="themeBtn" onclick="toggleTheme()" title="Đổi Giao Diện Sáng/Tối">☀️</button>
+        <button class="icon-btn lang" id="langBtn" onclick="toggleLang()" title="Đổi Ngôn Ngữ">🇻🇳 VN</button>
+        <div class="owner-neon">TRONG DUNG</div>
+    </div>
 </header>
 
 <div class="main-grid" id="appMain">
     <div class="glass-panel">
-        <h2 class="panel-title" id="lbl_title_main">CÔNG CỤ GỘP MOD SKIN V22.3</h2>
+        <h2 class="panel-title" id="lbl_title_main">CÔNG CỤ GỘP MOD SKIN V23</h2>
+        
+        <div class="drop-zone" id="mergeDrop" onclick="document.getElementById('filePicker').click()">
+            <div class="drop-image">📦</div>
+            <b style="font-size: 16px;" id="lbl_drop_main">Chạm hoặc kéo thả file .bytes</b>
+            <p style="font-size: 12px; color: var(--text-muted);" id="lbl_drop_sub">Hỗ trợ gộp 2 file, AI xử lý Header chống văng game.</p>
+            <input type="file" id="filePicker" multiple accept=".bytes" style="display:none;">
+        </div>
 
-    <div class="drop-zone" id="mergeDrop" onclick="document.getElementById('filePicker').click()">
-        <div class="drop-image">📦</div>
-        <b style="font-size: 16px;" id="lbl_drop_main">Chạm hoặc kéo thả file .bytes</b>
-        <p style="font-size: 12px; color: var(--text-muted);" id="lbl_drop_sub">Hỗ trợ gộp 2 file, AI sẽ tự động xử lý Header.</p>
-        <input type="file" id="filePicker" multiple accept=".bytes" style="display:none;">
+        <div class="file-list" id="fileList"></div>
+
+        <div>
+            <label class="input-label" id="lbl_filename_title">Tên File Xuất Ra (Để trống để giữ tên gốc):</label>
+            <input type="text" class="custom-control" id="customFileName" placeholder="Ví dụ: ModSkin_Zuka.bytes">
+        </div>
+
+        <select class="custom-control" id="mergeMode">
+            <option value="ai_patch" id="lbl_opt_ai">Khuyên Dùng: Smart AI Patch (Cắt Header + Fix Lỗi Game)</option>
+            <option value="raw" id="lbl_opt_raw">Cơ bản: Nối File Thô (Dành cho file đặc biệt)</option>
+        </select>
+
+        <button class="btn-merge" id="btnMerge" disabled onclick="executeSmartMerge()">
+            <span id="lbl_btn_merge">TIẾN HÀNH GỘP MOD</span>
+        </button>
     </div>
 
-    <div class="file-list" id="fileList"></div>
+    <!-- KTOOL TERMINAL PANEL (Theo yêu cầu hình ảnh tham khảo) -->
+    <div class="glass-panel">
+        <h3 class="sub-title" id="lbl_panel_title">KTOOL Terminal Logs</h3>
+        
+        <div class="ktool-terminal">
+            <div class="term-header">
+                <div class="term-dots">
+                    <div class="dot dot-red"></div>
+                    <div class="dot dot-yellow"></div>
+                    <div class="dot dot-green"></div>
+                </div>
+                <div class="term-title">trongdung@ktool-terminal ~ bash</div>
+                <button class="btn-clear-log" onclick="clearLogs()" id="lbl_clear_log">Xóa Log</button>
+            </div>
+            <div class="term-body" id="termBody">
+                <div class="log-row">[KTOOL v1.0] 🔄 Đang khởi tạo môi trường thực thi...</div>
+                <div class="log-row">[KTOOL] ✨ Custom Moded by trongdung loaded successfully.</div>
+                <div class="log-row">[KTOOL] ✔️ AoV_Zstd & aovt modules verified and mounted.</div>
+                <div class="log-row">[KTOOL] 🚀 Hệ thống sẵn sàng giải mã hóa tệp tin hoặc thư mục bytes.</div>
+            </div>
+        </div>
 
-    <div>
-        <label class="input-label" id="lbl_filename_title">Tên File Xuất Ra (Để trống để giữ tên gốc):</label>
-        <input type="text" class="custom-control" id="customFileName" placeholder="Ví dụ: ModSkin_Zuka.bytes">
+        <div class="guide-box" style="margin-top: 20px;">
+            <h4 id="lbl_guide1_title">🧠 Bảo mật Chống Reset</h4>
+            <p id="lbl_guide1_desc">Tool tự động vá chỉ số dung lượng (Int32) và xử lý chữ ký Header, giúp file mod skin không bị hệ thống game quét hay tự reset.</p>
+        </div>
     </div>
-
-    <select class="custom-control" id="mergeMode">
-        <option value="ai_patch" id="lbl_opt_ai">Khuyên Dùng: Smart AI Patch (Cắt Header + Fix Lỗi Game)</option>
-        <option value="raw" id="lbl_opt_raw">Cơ bản: Nối File Thô (Dành cho file đặc biệt)</option>
-    </select>
-
-    <button class="btn-merge" id="btnMerge" disabled onclick="executeSmartMerge()">
-        <span id="lbl_btn_merge">TIẾN HÀNH GỘP MOD</span>
-    </button>
-</div>
-
-<div class="glass-panel">
-    <h3 class="sub-title" id="lbl_panel_title">Bảng Điều Khiển AI</h3>
-    
-    <div class="guide-box">
-        <h4 id="lbl_guide1_title">🧠 Cấu trúc Engine V22</h4>
-        <p id="lbl_guide1_desc">Khi bạn gộp file, AI sẽ tự động dò tìm cấu trúc (Header/Magic Bytes) của file thứ 2 và cắt bỏ chúng. Việc này ngăn chặn lỗi "Trùng lặp Header" khiến game bị văng hoặc tự reset data.</p>
-    </div>
-    
-    <div class="guide-box">
-        <h4 id="lbl_guide2_title">⚙️ Tự động vá Size (Auto-Patch)</h4>
-        <p id="lbl_guide2_desc">Hệ thống sẽ cập nhật lại các chỉ số dung lượng (Int32) ở đầu file để đồng bộ với phần dữ liệu mới được nối vào. Đảm bảo file chuẩn 100% khi dán vào Game.</p>
-    </div>
-
-    <div class="ai-status" id="aiLogBox">
-        <span id="lbl_ai_status">✨ AI Engine: Đang chờ file...</span>
-        <span class="log-line" id="aiLogText"></span>
-    </div>
-</div>
 </div>
 
 <footer>
@@ -397,7 +413,7 @@ footer { margin-top: auto; padding: 25px 0; text-align: center; width: 100%; }
     <div class="modal-content">
         <div class="modal-icon">✓</div>
         <h3 class="modal-title" id="lbl_modal_title">Gộp Mod Thành Công!</h3>
-        <div class="modal-text" id="lbl_modal_desc">AI đã phân tích cấu trúc, loại bỏ Header thừa và dồn dữ liệu an toàn. File mới sẽ không gây lỗi Crash hay Reset khi chơi.</div>
+        <div class="modal-text" id="lbl_modal_desc">Quá trình hợp nhất hoàn tất. File mod mới đã được tối ưu hóa, không gây lỗi Crash hay Reset khi chơi.</div>
         <button class="modal-btn" onclick="document.getElementById('popupModal').classList.remove('active')" id="lbl_modal_btn">Xác Nhận</button>
     </div>
 </div>
@@ -412,32 +428,44 @@ setTimeout(() => {
     document.getElementById('appMain').classList.add('active');
 }, 3000);
 
+// --- TERMINAL LOG FUNCTION ---
+function pushTerminalLog(text) {
+    const termBody = document.getElementById('termBody');
+    const div = document.createElement('div');
+    div.className = 'log-row';
+    div.textContent = text;
+    termBody.appendChild(div);
+    termBody.scrollTop = termBody.scrollHeight;
+}
+function clearLogs() {
+    document.getElementById('termBody').innerHTML = '';
+    pushTerminalLog("[KTOOL] 🧹 Terminal logs cleared.");
+}
+
 // --- THEME & LANG ---
 let isLightMode = false, isEnglish = false;
 function toggleTheme() {
     isLightMode = !isLightMode;
     const btn = document.getElementById('themeBtn');
-    if (isLightMode) { document.body.setAttribute('data-theme', 'light'); btn.textContent = '🌙'; } 
-    else { document.body.removeAttribute('data-theme'); btn.textContent = '☀️'; }
+    if (isLightMode) { document.body.setAttribute('data-theme', 'light'); btn.textContent = '🌙'; pushTerminalLog("[SYSTEM] Switched to Light Theme."); } 
+    else { document.body.removeAttribute('data-theme'); btn.textContent = '☀️'; pushTerminalLog("[SYSTEM] Switched to Dark Theme."); }
 }
 
 const i18n = {
     "lbl_loading": { vi: "Đang tải...", en: "Loading..." },
-    "lbl_title_main": { vi: "CÔNG CỤ GỘP MOD SKIN V22.3", en: "SKIN MOD MERGER V22.3" },
+    "lbl_title_main": { vi: "CÔNG CỤ GỘP MOD SKIN V23", en: "SKIN MOD MERGER V23" },
     "lbl_drop_main": { vi: "Chạm hoặc kéo thả file .bytes", en: "Click or drag .bytes files" },
-    "lbl_drop_sub": { vi: "Hỗ trợ gộp 2 file, AI sẽ tự động xử lý Header.", en: "Merge 2 files, AI auto-handles Headers." },
+    "lbl_drop_sub": { vi: "Hỗ trợ gộp 2 file, AI xử lý Header chống văng game.", en: "Merge 2 files, AI handles Headers to prevent crashes." },
     "lbl_filename_title": { vi: "Tên File Xuất Ra (Để trống để giữ tên gốc):", en: "Output Name (Leave blank for original name):" },
     "lbl_opt_ai": { vi: "Khuyên Dùng: Smart AI Patch (Cắt Header + Fix Lỗi Game)", en: "Recommended: Smart AI Patch (Strip Header + Fix Game Errors)" },
     "lbl_opt_raw": { vi: "Cơ bản: Nối File Thô (Dành cho file đặc biệt)", en: "Basic: Raw Append (For special files)" },
     "lbl_btn_merge": { vi: "TIẾN HÀNH GỘP MOD", en: "PROCEED MERGE" },
-    "lbl_panel_title": { vi: "Bảng Điều Khiển AI", en: "AI Dashboard" },
-    "lbl_guide1_title": { vi: "🧠 Cấu trúc Engine V22", en: "🧠 V22 Engine Architecture" },
-    "lbl_guide1_desc": { vi: "Khi bạn gộp file, AI tự động dò tìm cấu trúc (Header/Magic Bytes) của file 2 và cắt bỏ chúng. Việc này ngăn chặn lỗi Trùng lặp Header khiến game bị văng hoặc tự reset data.", en: "AI detects and strips the Header/Magic Bytes of the 2nd file. This prevents 'Duplicate Header' errors that cause game crashes or data resets." },
-    "lbl_guide2_title": { vi: "⚙️ Tự động vá Size (Auto-Patch)", en: "⚙️ Auto-Patch Size" },
-    "lbl_guide2_desc": { vi: "Hệ thống sẽ cập nhật lại các chỉ số dung lượng (Int32) ở đầu file để đồng bộ với phần dữ liệu mới được nối vào. Đảm bảo file chuẩn 100% khi dán vào Game.", en: "Updates Int32 size indicators at the file start to sync with appended data. Ensures 100% validity in-game." },
-    "lbl_ai_status": { vi: "✨ AI Engine: Đang chờ file...", en: "✨ AI Engine: Awaiting files..." },
+    "lbl_panel_title": { vi: "KTOOL Terminal Logs", en: "KTOOL Terminal Logs" },
+    "lbl_clear_log": { vi: "Xóa Log", en: "Clear Log" },
+    "lbl_guide1_title": { vi: "🧠 Bảo mật Chống Reset", en: "🧠 Anti-Reset Security" },
+    "lbl_guide1_desc": { vi: "Tool tự động vá chỉ số dung lượng (Int32) và xử lý chữ ký Header, giúp file mod skin không bị hệ thống game quét hay tự reset.", en: "Auto-patches size indicators (Int32) and handles Header signatures to protect mod files from game resets." },
     "lbl_modal_title": { vi: "Gộp Mod Thành Công!", en: "Merge Successful!" },
-    "lbl_modal_desc": { vi: "AI đã phân tích cấu trúc, loại bỏ Header thừa và dồn dữ liệu an toàn. File mới không gây lỗi Crash hay Reset.", en: "AI parsed structures, stripped extra Headers and safely merged payloads. No crashes or resets." },
+    "lbl_modal_desc": { vi: "Quá trình hợp nhất hoàn tất. File mod mới đã được tối ưu hóa, không gây lỗi Crash hay Reset khi chơi.", en: "Merging complete. New mod file optimized, no crashes or resets." },
     "lbl_modal_btn": { vi: "Xác Nhận", en: "Confirm" }
 };
 
@@ -453,6 +481,7 @@ function toggleLang() {
         if (el) el.innerHTML = texts[langKey];
     }
     updateMergeButtonText();
+    pushTerminalLog(`[KTOOL] Language changed to ${isEnglish ? 'English' : 'Vietnamese'}.`);
 }
 
 // --- FILE DRAG/DROP ---
@@ -461,7 +490,6 @@ const filePicker = document.getElementById('filePicker');
 const fileList = document.getElementById('fileList');
 const btnMerge = document.getElementById('btnMerge');
 const mergeDrop = document.getElementById('mergeDrop');
-const aiLogText = document.getElementById('aiLogText');
 
 filePicker.onchange = (e) => handleFiles(e.target.files);
 mergeDrop.addEventListener('dragover', (e) => { e.preventDefault(); mergeDrop.style.borderColor = 'var(--accent)'; });
@@ -476,14 +504,12 @@ function handleFiles(files) {
 
 function updateMergeButtonText() {
     const btnText = document.getElementById('lbl_btn_merge');
-    if (mergeFilesArr.length = 2) {
+    if (mergeFilesArr.length === 2) {
         btnMerge.disabled = false;
         btnText.textContent = isEnglish ? "PROCEED MERGE" : "TIẾN HÀNH GỘP MOD";
-        aiLogText.textContent = "> Ready to analyze and patch.";
     } else {
         btnMerge.disabled = true;
-        btnText.textContent = isEnglish ? (mergeFilesArr.length = 0 ? "NO FILE SELECTED" : "SELECT 1 MORE FILE") : (mergeFilesArr.length = 0 ? "CHƯA CHỌN FILE" : "CHỌN THÊM 1 FILE NỮA");
-        aiLogText.textContent = "";
+        btnText.textContent = isEnglish ? (mergeFilesArr.length === 0 ? "NO FILE SELECTED" : "SELECT 1 MORE FILE") : (mergeFilesArr.length === 0 ? "CHƯA CHỌN FILE" : "CHỌN THÊM 1 FILE NỮA");
     }
 }
 
@@ -494,73 +520,70 @@ function renderFiles() {
         div.innerHTML = `<div class="file-info"><h4>${f.name}</h4><p>${(f.size/1024).toFixed(1)} KB</p></div><button class="btn-remove" onclick="removeFile(${idx})">×</button>`;
         fileList.appendChild(div);
     });
+    if(mergeFilesArr.length > 0) {
+        pushTerminalLog(`[LOAD] Added file: ${mergeFilesArr[mergeFilesArr.length-1].name}`);
+    }
     updateMergeButtonText();
 }
-window.removeFile = (idx) => { mergeFilesArr.splice(idx, 1); renderFiles(); };
+window.removeFile = (idx) => { 
+    pushTerminalLog(`[LOAD] Removed file: ${mergeFilesArr[idx].name}`);
+    mergeFilesArr.splice(idx, 1); 
+    renderFiles(); 
+};
 
-// --- V22 ULTIMATE AI ENGINE ---
-function logAI(msg) { aiLogText.textContent = "> " + msg; console.log("AI Log:", msg); }
-
+// --- MERGE ENGINE V23 ---
 async function executeSmartMerge() {
     btnMerge.disabled = true;
-    document.getElementById('lbl_btn_merge').textContent = isEnglish ? "AI PROCESSING..." : "AI ĐANG XỬ LÝ...";
-    
+    document.getElementById('lbl_btn_merge').textContent = isEnglish ? "PROCESSING..." : "ĐANG XỬ LÝ...";
+    pushTerminalLog("[EXEC] Starting smart merge pipeline...");
+
     try {
         let buf1 = new Uint8Array(await mergeFilesArr[0].arrayBuffer());
         let buf2 = new Uint8Array(await mergeFilesArr[1].arrayBuffer());
         let mode = document.getElementById('mergeMode').value;
         let finalBuf;
 
-        if (mode = 'raw') {
-            logAI("Running basic Raw Append...");
+        if (mode === 'raw') {
+            pushTerminalLog("[MODE] Executing Raw Append strategy...");
             finalBuf = new Uint8Array(buf1.length + buf2.length);
             finalBuf.set(buf1, 0);
             finalBuf.set(buf2, buf1.length);
         } else {
-            // AI PATCH MODE
-            logAI("Analyzing Header Signatures...");
-            
+            pushTerminalLog("[AI] Analyzing binary signatures & headers...");
             let hasSameHeader = true;
             for(let i=0; i<Math.min(16, buf1.length, buf2.length); i++) {
-                if(buf1[i] ! buf2[i]) { hasSameHeader = false; break; }
+                if(buf1[i] !== buf2[i]) { hasSameHeader = false; break; }
             }
 
             let offset2 = 0;
             if (hasSameHeader) {
-                logAI("Duplicate Header detected. Stripping File 2 header...");
+                pushTerminalLog("[AI] Duplicate Header identified. Stripping header bytes...");
                 offset2 = Math.min(32, buf2.length); 
             } else {
-                logAI("No duplicate header. Merging payloads safely.");
+                pushTerminalLog("[AI] Clean payload separation verified.");
             }
 
-            // Merge Payload
             let payload2Len = buf2.length - offset2;
             finalBuf = new Uint8Array(buf1.length + payload2Len);
             finalBuf.set(buf1, 0);
             finalBuf.set(buf2.subarray(offset2), buf1.length);
 
-            // Auto-Patch Size
             if(finalBuf.length >= 8) {
-                logAI("Patching File Size structure to prevent Reset...");
+                pushTerminalLog("[PATCH] Auto-patching size header for integrity check...");
                 let view = new DataView(finalBuf.buffer);
                 let oldSize = view.getUint32(4, true); 
-                if(oldSize = buf1.length || Math.abs(oldSize - buf1.length) < 100) {
+                if(oldSize === buf1.length || Math.abs(oldSize - buf1.length) < 100) {
                     view.setUint32(4, finalBuf.length, true);
-                    logAI("Header Size Patched successfully.");
+                    pushTerminalLog("[PATCH] Header size successfully synchronized.");
                 }
             }
         }
 
-        // XỬ LÝ TÊN FILE XUẤT RA
         let customName = document.getElementById('customFileName').value.trim();
-        let finalFileName = '';
-        if (customName) {
-            finalFileName = customName.endsWith('.bytes') ? customName : customName + '.bytes';
-        } else {
-            finalFileName = mergeFilesArr[0].name;
-        }
+        let finalFileName = customName ? (customName.endsWith('.bytes') ? customName : customName + '.bytes') : mergeFilesArr[0].name;
 
-        // Tải xuống
+        pushTerminalLog(`[EXPORT] Generating output file: ${finalFileName} (${(finalBuf.length/1024).toFixed(1)} KB)`);
+
         const blob = new Blob([finalBuf], { type: 'application/octet-stream' });
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
@@ -568,18 +591,17 @@ async function executeSmartMerge() {
         a.click();
         
         document.getElementById('popupModal').classList.add('active');
+        pushTerminalLog("[SUCCESS] File merged and downloaded successfully!");
         mergeFilesArr = []; renderFiles();
-        logAI("Merge & Patch Completed 100%.");
         
     } catch(e) {
         alert("Error: " + e.message);
-        logAI("Engine Error: " + e.message);
+        pushTerminalLog(`[ERROR] ${e.message}`);
     } finally {
         updateMergeButtonText();
     }
 }
 </script>
-
 
 </body>
 </html>
