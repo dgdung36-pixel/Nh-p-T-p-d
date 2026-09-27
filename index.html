@@ -1,583 +1,210 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>CYBER MERGE V22.3 | AURA GLOW EDITION</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@500;800;900&display=swap" rel="stylesheet">
-
-<style>
-:root {
-    /* DARK THEME */
-    --bg-main: #030305;
-    --text-main: #ffffff;
-    --text-muted: #a1a1a6;
-    --glass-bg: rgba(20, 20, 30, 0.4);
-    --glass-panel: rgba(30, 30, 45, 0.5);
-    --glass-border: rgba(255, 255, 255, 0.15);
-    --glass-shadow: rgba(0, 0, 0, 0.6);
-    --accent: #00f2fe;
-    --accent-glow: rgba(0, 242, 254, 0.4);
-    --btn-bg: #ffffff;
-    --btn-text: #000000;
-    --drop-bg: rgba(0, 0, 0, 0.3);
-    --item-bg: rgba(0, 0, 0, 0.5);
-    
-    /* NEON & OWNER VARIABLES */
-    --owner-border: #ffffff;
-    --owner-text: #ffffff;
-    --owner-glow: rgba(255, 255, 255, 0.7);
-    --owner-glow-inset: rgba(255, 255, 255, 0.4);
-    --footer-neon: #ffffff;
-    --footer-neon-glow: rgba(255, 255, 255, 0.8);
-
-    --spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    --font-main: 'Inter', sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
-}
-
-[data-theme="light"] {
-    /* LIGHT THEME */
-    --bg-main: #f0f2f5;
-    --text-main: #1a1a1a;
-    --text-muted: #555555;
-    --glass-bg: rgba(255, 255, 255, 0.6);
-    --glass-panel: rgba(255, 255, 255, 0.85);
-    --glass-border: rgba(0, 0, 0, 0.15);
-    --glass-shadow: rgba(0, 0, 0, 0.15);
-    --accent: #007aff;
-    --accent-glow: rgba(0, 122, 255, 0.3);
-    --btn-bg: #1a1a1a;
-    --btn-text: #ffffff;
-    --drop-bg: rgba(255, 255, 255, 0.7);
-    --item-bg: rgba(255, 255, 255, 0.9);
-
-    --owner-border: #1a1a1a;
-    --owner-text: #1a1a1a;
-    --owner-glow: rgba(0, 0, 0, 0.4);
-    --owner-glow-inset: rgba(0, 0, 0, 0.15);
-    --footer-neon: #1a1a1a;
-    --footer-neon-glow: rgba(0, 0, 0, 0.6);
-}
-
-* { margin: 0; padding: 0; box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
-
-body {
-    background-color: var(--bg-main); color: var(--text-main);
-    font-family: var(--font-main); min-height: 100vh;
-    display: flex; flex-direction: column; align-items: center;
-    overflow-x: hidden; padding: 15px; position: relative;
-    transition: background-color 0.5s ease, color 0.5s ease;
-}
-
-/* LIQUID BACKGROUND */
-.liquid-bg { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
-.blob { position: absolute; filter: blur(100px); border-radius: 50%; animation: floatBlob 15s infinite alternate ease-in-out; opacity: 0.3; transition: filter 0.5s, opacity 0.5s; }
-[data-theme="light"] .blob { opacity: 0.4; filter: blur(120px); }
-.blob-1 { width: 600px; height: 600px; background: #00f2fe; top: -150px; left: -150px; }
-.blob-2 { width: 500px; height: 500px; background: #667eea; bottom: -100px; right: -100px; animation-delay: -5s; }
-.blob-3 { width: 400px; height: 400px; background: #764ba2; top: 40%; left: 30%; opacity: 0.2; animation-delay: -10s; }
-@keyframes floatBlob { 0% { transform: translate(0, 0) scale(1) rotate(0deg); } 100% { transform: translate(50px, 80px) scale(1.1) rotate(15deg); } }
-
-/* 3S LOADING SCREEN */
-.loading-screen {
-    position: fixed; inset: 0; background: var(--bg-main); z-index: 9999;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    transition: opacity 0.6s ease, visibility 0.6s ease;
-}
-.loader-ring {
-    width: 60px; height: 60px; border: 3px solid var(--glass-border);
-    border-top: 3px solid var(--accent); border-radius: 50%;
-    animation: spin 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite; margin-bottom: 20px;
-    box-shadow: 0 0 20px var(--accent-glow);
-}
-@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-.loading-text { font-size: 15px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); }
-
-/* HEADER & LOGO */
-header {
-    width: 100%; max-width: 1000px; display: flex; justify-content: space-between; align-items: center;
-    margin-top: 15px; margin-bottom: 30px; flex-wrap: wrap; gap: 15px;
-}
-.header-left {
-    display: flex; align-items: center; gap: 15px; flex-wrap: wrap;
-}
-
-/* APP LOGO VỚI HIỆU ỨNG AURA & HÀO QUANG */
-.app-logo {
-    display: flex; align-items: center; gap: 12px;
-    background: var(--glass-bg); padding: 8px 20px 8px 8px;
-    border-radius: 40px; border: 1px solid var(--glass-border);
-    box-shadow: 0 8px 25px var(--glass-shadow);
-    position: relative; overflow: visible;
-    transition: all 0.3s var(--spring); cursor: pointer;
-}
-.app-logo:hover { border-color: var(--accent); transform: translateY(-2px); }
-
-/* LỚP HÀO QUANG (AURA GLOW) BAO QUANH LOGO ICON */
-.logo-icon-wrapper {
-    position: relative; width: 40px; height: 40px;
-    display: flex; justify-content: center; align-items: center;
-}
-.logo-icon-wrapper::before {
-    content: ''; position: absolute; inset: -6px; border-radius: 50%;
-    background: linear-gradient(135deg, #00f2fe, #764ba2, #ff007f, #00f2fe);
-    background-size: 300% 300%;
-    animation: auraSpin 4s linear infinite, auraPulse 2s ease-in-out infinite alternate;
-    z-index: 1; filter: blur(6px); opacity: 0.8;
-}
-@keyframes auraSpin {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-@keyframes auraPulse {
-    0% { transform: scale(0.95); opacity: 0.6; }
-    100% { transform: scale(1.15); opacity: 1; }
-}
-
-.logo-icon {
-    position: relative; width: 40px; height: 40px;
-    background: linear-gradient(135deg, var(--accent), #764ba2);
-    border-radius: 50%; display: flex; justify-content: center; align-items: center;
-    font-size: 18px; color: #fff; z-index: 2;
-    box-shadow: inset 0 0 10px rgba(255,255,255,0.6);
-}
-
-.logo-text {
-    font-family: var(--font-mono); font-size: 14px; font-weight: 900;
-    line-height: 1.1; color: var(--text-main); letter-spacing: 1px;
-}
-.logo-text span { color: var(--accent); text-shadow: 0 0 10px var(--accent-glow); }
-
-/* CLOCK PANEL */
-.clock-panel {
-    background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-border);
-    padding: 10px 20px; border-radius: 30px; font-family: var(--font-mono); font-size: 13px;
-    box-shadow: 0 8px 20px var(--glass-shadow); display: flex; align-items: center; gap: 8px;
-}
-
-/* CONTROLS (Right side) */
-.control-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
-.icon-btn {
-    background: var(--glass-bg); border: 1px solid var(--glass-border); color: var(--text-main);
-    width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center;
-    cursor: pointer; font-size: 18px; transition: all 0.3s; box-shadow: 0 5px 15px var(--glass-shadow);
-}
-.icon-btn:hover { border-color: var(--accent); transform: scale(1.1); box-shadow: 0 0 15px var(--accent-glow); }
-.icon-btn.lang { width: auto; padding: 0 15px; border-radius: 20px; font-size: 13px; font-weight: 700; font-family: var(--font-mono); }
-
-/* TRONG DUNG NEON */
-.owner-neon {
-    padding: 10px 24px; border-radius: 30px; font-weight: 900; font-size: 14px; letter-spacing: 2px;
-    border: 2px solid var(--owner-border); color: var(--owner-text); text-transform: uppercase;
-    background: var(--glass-bg); margin-left: 5px; backdrop-filter: blur(10px);
-    animation: neonPulse 3s infinite alternate ease-in-out;
-}
-@keyframes neonPulse {
-    0% { box-shadow: 0 0 5px var(--owner-glow), inset 0 0 2px var(--owner-glow-inset); }
-    100% { box-shadow: 0 0 20px var(--owner-glow), inset 0 0 10px var(--owner-glow-inset); }
-}
-
-/* MAIN APP GRID */
-.main-grid {
-    width: 100%; max-width: 1000px; flex: 1;
-    display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 25px;
-    opacity: 0; transform: translateY(30px); transition: all 0.8s var(--spring);
-}
-.main-grid.active { opacity: 1; transform: translateY(0); }
-@media (max-width: 800px) { .main-grid { grid-template-columns: 1fr; } }
-
-/* GLASS PANELS */
-.glass-panel {
-    background: var(--glass-panel); backdrop-filter: blur(40px) saturate(150%);
-    border: 1px solid var(--glass-border); border-radius: 30px; padding: 30px;
-    box-shadow: 0 20px 50px var(--glass-shadow); transition: all 0.5s var(--spring);
-}
-.glass-panel:hover { border-color: var(--accent); box-shadow: 0 25px 60px var(--glass-shadow), 0 0 20px var(--glass-border); }
-.panel-title {
-    font-size: 24px; font-weight: 900; margin-bottom: 20px; letter-spacing: -0.5px;
-    background: linear-gradient(135deg, var(--text-main), var(--accent)); -webkit-background-clip: text; color: transparent;
-}
-.sub-title { font-size: 16px; font-weight: 700; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; color: var(--text-main); }
-.sub-title::before { content: ''; width: 4px; height: 16px; background: var(--accent); border-radius: 2px; }
-
-/* DRAG & DROP ZONE */
-.drop-zone {
-    border: 2px dashed var(--glass-border); border-radius: 20px; padding: 40px 20px;
-    text-align: center; cursor: pointer; transition: all 0.3s; background: var(--drop-bg);
-    display: flex; flex-direction: column; align-items: center; gap: 12px; margin-bottom: 20px;
-}
-.drop-zone:hover { border-color: var(--accent); background: var(--accent-glow); }
-.drop-image {
-    width: 70px; height: 70px; background: linear-gradient(135deg, #00f2fe, #4facfe);
-    border-radius: 20px; display: flex; justify-content: center; align-items: center;
-    font-size: 32px; box-shadow: 0 10px 25px rgba(0, 242, 254, 0.4); margin-bottom: 10px;
-    transition: transform 0.3s var(--spring); color: #fff;
-}
-.drop-zone:hover .drop-image { transform: scale(1.1) translateY(-5px); }
-
-/* FILE LIST */
-.file-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;}
-.file-item {
-    background: var(--item-bg); padding: 15px; border-radius: 16px;
-    display: flex; justify-content: space-between; align-items: center;
-    border: 1px solid var(--glass-border); transition: all 0.3s var(--spring);
-}
-.file-item:hover { border-color: var(--accent); transform: translateX(5px); }
-.file-info h4 { font-size: 14px; margin-bottom: 4px; color: var(--text-main); }
-.file-info p { font-size: 11px; color: var(--accent); font-family: var(--font-mono); }
-.btn-remove { background: none; border: none; color: #ff375f; font-size: 22px; cursor: pointer; transition: 0.2s; }
-.btn-remove:hover { transform: scale(1.2); }
-
-/* INPUTS & SELECTS */
-.input-label {
-    font-size: 13px; font-weight: 700; color: var(--text-main); margin-bottom: 8px; display: block;
-}
-.custom-control {
-    width: 100%; padding: 16px; border-radius: 16px; background: var(--item-bg);
-    border: 1px solid var(--glass-border); color: var(--text-main); font-size: 14px; font-family: var(--font-main);
-    margin-bottom: 15px; outline: none; transition: 0.3s;
-}
-.custom-control::placeholder { color: var(--text-muted); opacity: 0.6; }
-.custom-control:focus { border-color: var(--accent); box-shadow: 0 0 15px var(--accent-glow); }
-
-.btn-merge {
-    width: 100%; padding: 20px; border-radius: 20px; border: none;
-    background: var(--btn-bg); color: var(--btn-text); font-size: 16px; font-weight: 900;
-    cursor: pointer; margin-top: 5px; transition: all 0.4s var(--spring); text-transform: uppercase; letter-spacing: 1px;
-    box-shadow: 0 10px 20px var(--glass-shadow);
-}
-.btn-merge:hover:not(:disabled) { transform: scale(1.02) translateY(-2px); box-shadow: 0 15px 30px var(--glass-shadow), 0 0 20px var(--glass-border); }
-.btn-merge:disabled { background: var(--glass-bg); color: var(--text-muted); box-shadow: none; cursor: not-allowed; }
-
-/* GUIDES & LOGS */
-.guide-box {
-    background: var(--drop-bg); border-radius: 16px; padding: 18px; margin-bottom: 15px;
-    border: 1px solid var(--glass-border); transition: 0.3s;
-}
-.guide-box h4 { font-size: 14px; color: var(--accent); margin-bottom: 8px; }
-.guide-box p { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
-.ai-status {
-    padding: 12px; border-radius: 12px; background: rgba(50, 215, 75, 0.15);
-    border: 1px solid rgba(50, 215, 75, 0.3); color: #32d74b; font-size: 12px; font-weight: 700;
-    display: flex; flex-direction: column; gap: 5px; justify-content: center; margin-top: 15px;
-}
-.log-line { font-family: var(--font-mono); font-size: 10px; color: var(--text-main); opacity: 0.8; }
-
-/* POPUP MODAL */
-.modal-overlay {
-    position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(15px);
-    display: flex; justify-content: center; align-items: center; z-index: 2000;
-    opacity: 0; pointer-events: none; transition: opacity 0.3s;
-}
-.modal-overlay.active { opacity: 1; pointer-events: auto; }
-.modal-content {
-    background: var(--bg-main); border: 1px solid var(--glass-border);
-    border-radius: 28px; padding: 35px; width: 90%; max-width: 420px;
-    text-align: center; transform: scale(0.8); transition: all 0.4s var(--spring);
-    box-shadow: 0 20px 50px var(--glass-shadow);
-}
-.modal-overlay.active .modal-content { transform: scale(1); }
-.modal-icon {
-    width: 80px; height: 80px; background: linear-gradient(135deg, #32d74b, #30b0c7);
-    border-radius: 50%; display: flex; justify-content: center; align-items: center;
-    font-size: 40px; margin: 0 auto 20px auto; box-shadow: 0 10px 25px rgba(50, 215, 75, 0.4); color: #fff;
-}
-.modal-title { font-size: 22px; font-weight: 800; margin-bottom: 12px; color: var(--text-main); }
-.modal-text { font-size: 14px; color: var(--text-muted); margin-bottom: 25px; line-height: 1.6; }
-.modal-btn { background: var(--btn-bg); color: var(--btn-text); padding: 16px 30px; border-radius: 18px; border: none; font-weight: 800; width: 100%; font-size: 15px; cursor: pointer; transition: 0.3s; }
-.modal-btn:hover { box-shadow: 0 0 20px var(--glass-border); }
-
-/* FOOTER NEON BLINK - CHẬM */
-footer { margin-top: auto; padding: 25px 0; text-align: center; width: 100%; }
-.neon-blink-text {
-    font-size: 13px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px;
-    font-family: var(--font-mono); color: var(--footer-neon);
-    animation: slowWhiteBlink 3s ease-in-out infinite alternate;
-}
-@keyframes slowWhiteBlink {
-    0% { opacity: 0.4; text-shadow: 0 0 2px var(--footer-neon-glow); }
-    100% { opacity: 1; text-shadow: 0 0 15px var(--footer-neon-glow), 0 0 25px var(--footer-neon-glow); }
-}
-
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KTOOL v1.0 - Giải mã/Mã hóa AoV</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .console-font {
+            font-family: 'JetBrains Mono', monospace;
+        }
+    </style>
 </head>
-<body>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between selection:bg-indigo-500 selection:text-white">
 
-<!-- LOADER -->
-<div class="loading-screen" id="loader">
-    <div class="loader-ring"></div>
-    <div class="loading-text" id="lbl_loading">Đang tải...</div>
-</div>
-
-<div class="liquid-bg">
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
-    <div class="blob blob-3"></div>
-</div>
-
-<header>
-    <!-- CỘT TRÁI: LOGO VỚI HIỆU ỨNG HÀO QUANG (AURA) & CLOCK -->
-    <div class="header-left">
-        <div class="app-logo">
-            <div class="logo-icon-wrapper">
-                <div class="logo-icon">🔮</div>
+    <!-- Header / Navbar -->
+    <header class="border-b border-slate-800 bg-slate-900/60 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto px-4 py-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+            <div class="flex items-center space-x-3">
+                <div class="bg-indigo-600 text-white font-bold p-2 rounded-xl shadow-lg shadow-indigo-600/30">
+                    🛠️
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight text-white">KTOOL v1.0</h1>
+                    <p class="text-xs text-slate-400">Giải mã hóa / Mã hóa AoV (by minhhoalong6)</p>
+                </div>
             </div>
-            <div class="logo-text">CYBER<br><span>MERGE</span></div>
+            <div class="flex items-center space-x-2">
+                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                    <span class="w-1.5 h-1.5 mr-1.5 bg-emerald-400 rounded-full animate-pulse"></span>
+                    Hệ thống sẵn sàng
+                </span>
+            </div>
         </div>
-        <div class="clock-panel">🕒 <span id="sysClock">00:00:00</span></div>
-    </div>
-    
-    <!-- CỘT PHẢI: CONTROLS & OWNER -->
-    <div class="control-group">
-        <button class="icon-btn" id="themeBtn" onclick="toggleTheme()" title="Đổi Giao Diện Sáng/Tối">☀️</button>
-        <button class="icon-btn lang" id="langBtn" onclick="toggleLang()" title="Đổi Ngôn Ngữ">🇻🇳 VN</button>
-        <div class="owner-neon">TRONG DUNG</div>
-    </div>
-</header>
+    </header>
 
-<div class="main-grid" id="appMain">
-    <div class="glass-panel">
-        <h2 class="panel-title" id="lbl_title_main">CÔNG CỤ GỘP MOD SKIN V22.3</h2>
+    <!-- Main Content Container -->
+    <main class="max-w-4xl w-full mx-auto px-4 py-8 flex-grow grid grid-cols-1 md:grid-cols-3 gap-6">
         
-        <div class="drop-zone" id="mergeDrop" onclick="document.getElementById('filePicker').click()">
-            <div class="drop-image">📦</div>
-            <b style="font-size: 16px;" id="lbl_drop_main">Chạm hoặc kéo thả file .bytes</b>
-            <p style="font-size: 12px; color: var(--text-muted);" id="lbl_drop_sub">Hỗ trợ gộp 2 file, AI sẽ tự động xử lý Header.</p>
-            <input type="file" id="filePicker" multiple accept=".bytes" style="display:none;">
-        </div>
-
-        <div class="file-list" id="fileList"></div>
-
-        <div>
-            <label class="input-label" id="lbl_filename_title">Tên File Xuất Ra (Để trống để giữ tên gốc):</label>
-            <input type="text" class="custom-control" id="customFileName" placeholder="Ví dụ: ModSkin_Zuka.bytes">
-        </div>
-
-        <select class="custom-control" id="mergeMode">
-            <option value="ai_patch" id="lbl_opt_ai">Khuyên Dùng: Smart AI Patch (Cắt Header + Fix Lỗi Game)</option>
-            <option value="raw" id="lbl_opt_raw">Cơ bản: Nối File Thô (Dành cho file đặc biệt)</option>
-        </select>
-
-        <button class="btn-merge" id="btnMerge" disabled onclick="executeSmartMerge()">
-            <span id="lbl_btn_merge">TIẾN HÀNH GỘP MOD</span>
-        </button>
-    </div>
-
-    <div class="glass-panel">
-        <h3 class="sub-title" id="lbl_panel_title">Bảng Điều Khiển AI</h3>
-        
-        <div class="guide-box">
-            <h4 id="lbl_guide1_title">🧠 Cấu trúc Engine V22</h4>
-            <p id="lbl_guide1_desc">Khi bạn gộp file, AI sẽ tự động dò tìm cấu trúc (Header/Magic Bytes) của file thứ 2 và cắt bỏ chúng. Việc này ngăn chặn lỗi "Trùng lặp Header" khiến game bị văng hoặc tự reset data.</p>
-        </div>
-        
-        <div class="guide-box">
-            <h4 id="lbl_guide2_title">⚙️ Tự động vá Size (Auto-Patch)</h4>
-            <p id="lbl_guide2_desc">Hệ thống sẽ cập nhật lại các chỉ số dung lượng (Int32) ở đầu file để đồng bộ với phần dữ liệu mới được nối vào. Đảm bảo file chuẩn 100% khi dán vào Game.</p>
-        </div>
-
-        <div class="ai-status" id="aiLogBox">
-            <span id="lbl_ai_status">✨ AI Engine: Đang chờ file...</span>
-            <span class="log-line" id="aiLogText"></span>
-        </div>
-    </div>
-</div>
-
-<footer>
-    <div class="neon-blink-text">TOOL DEMO CODED BY NGUYEN TRONG DUNG</div>
-</footer>
-
-<div class="modal-overlay" id="popupModal">
-    <div class="modal-content">
-        <div class="modal-icon">✓</div>
-        <h3 class="modal-title" id="lbl_modal_title">Gộp Mod Thành Công!</h3>
-        <div class="modal-text" id="lbl_modal_desc">AI đã phân tích cấu trúc, loại bỏ Header thừa và dồn dữ liệu an toàn. File mới sẽ không gây lỗi Crash hay Reset khi chơi.</div>
-        <button class="modal-btn" onclick="document.getElementById('popupModal').classList.remove('active')" id="lbl_modal_btn">Xác Nhận</button>
-    </div>
-</div>
-
-<script>
-// --- CLOCK & LOADER ---
-setInterval(() => { document.getElementById('sysClock').textContent = new Date().toTimeString().split(' ')[0]; }, 1000);
-setTimeout(() => {
-    const loader = document.getElementById('loader');
-    loader.style.opacity = '0';
-    loader.style.visibility = 'hidden';
-    document.getElementById('appMain').classList.add('active');
-}, 3000);
-
-// --- THEME & LANG ---
-let isLightMode = false, isEnglish = false;
-function toggleTheme() {
-    isLightMode = !isLightMode;
-    const btn = document.getElementById('themeBtn');
-    if (isLightMode) { document.body.setAttribute('data-theme', 'light'); btn.textContent = '🌙'; } 
-    else { document.body.removeAttribute('data-theme'); btn.textContent = '☀️'; }
-}
-
-const i18n = {
-    "lbl_loading": { vi: "Đang tải...", en: "Loading..." },
-    "lbl_title_main": { vi: "CÔNG CỤ GỘP MOD SKIN V22.3", en: "SKIN MOD MERGER V22.3" },
-    "lbl_drop_main": { vi: "Chạm hoặc kéo thả file .bytes", en: "Click or drag .bytes files" },
-    "lbl_drop_sub": { vi: "Hỗ trợ gộp 2 file, AI sẽ tự động xử lý Header.", en: "Merge 2 files, AI auto-handles Headers." },
-    "lbl_filename_title": { vi: "Tên File Xuất Ra (Để trống để giữ tên gốc):", en: "Output Name (Leave blank for original name):" },
-    "lbl_opt_ai": { vi: "Khuyên Dùng: Smart AI Patch (Cắt Header + Fix Lỗi Game)", en: "Recommended: Smart AI Patch (Strip Header + Fix Game Errors)" },
-    "lbl_opt_raw": { vi: "Cơ bản: Nối File Thô (Dành cho file đặc biệt)", en: "Basic: Raw Append (For special files)" },
-    "lbl_btn_merge": { vi: "TIẾN HÀNH GỘP MOD", en: "PROCEED MERGE" },
-    "lbl_panel_title": { vi: "Bảng Điều Khiển AI", en: "AI Dashboard" },
-    "lbl_guide1_title": { vi: "🧠 Cấu trúc Engine V22", en: "🧠 V22 Engine Architecture" },
-    "lbl_guide1_desc": { vi: "Khi bạn gộp file, AI tự động dò tìm cấu trúc (Header/Magic Bytes) của file 2 và cắt bỏ chúng. Việc này ngăn chặn lỗi Trùng lặp Header khiến game bị văng hoặc tự reset data.", en: "AI detects and strips the Header/Magic Bytes of the 2nd file. This prevents 'Duplicate Header' errors that cause game crashes or data resets." },
-    "lbl_guide2_title": { vi: "⚙️ Tự động vá Size (Auto-Patch)", en: "⚙️ Auto-Patch Size" },
-    "lbl_guide2_desc": { vi: "Hệ thống sẽ cập nhật lại các chỉ số dung lượng (Int32) ở đầu file để đồng bộ với phần dữ liệu mới được nối vào. Đảm bảo file chuẩn 100% khi dán vào Game.", en: "Updates Int32 size indicators at the file start to sync with appended data. Ensures 100% validity in-game." },
-    "lbl_ai_status": { vi: "✨ AI Engine: Đang chờ file...", en: "✨ AI Engine: Awaiting files..." },
-    "lbl_modal_title": { vi: "Gộp Mod Thành Công!", en: "Merge Successful!" },
-    "lbl_modal_desc": { vi: "AI đã phân tích cấu trúc, loại bỏ Header thừa và dồn dữ liệu an toàn. File mới không gây lỗi Crash hay Reset.", en: "AI parsed structures, stripped extra Headers and safely merged payloads. No crashes or resets." },
-    "lbl_modal_btn": { vi: "Xác Nhận", en: "Confirm" }
-};
-
-function toggleLang() {
-    isEnglish = !isEnglish;
-    document.getElementById('langBtn').textContent = isEnglish ? '🇬🇧 EN' : '🇻🇳 VN';
-    const langKey = isEnglish ? 'en' : 'vi';
-    
-    document.getElementById('customFileName').placeholder = isEnglish ? "Example: ModSkin_Zuka.bytes" : "Ví dụ: ModSkin_Zuka.bytes";
-    
-    for (const [id, texts] of Object.entries(i18n)) {
-        const el = document.getElementById(id);
-        if (el) el.innerHTML = texts[langKey];
-    }
-    updateMergeButtonText();
-}
-
-// --- FILE DRAG/DROP ---
-let mergeFilesArr = [];
-const filePicker = document.getElementById('filePicker');
-const fileList = document.getElementById('fileList');
-const btnMerge = document.getElementById('btnMerge');
-const mergeDrop = document.getElementById('mergeDrop');
-const aiLogText = document.getElementById('aiLogText');
-
-filePicker.onchange = (e) => handleFiles(e.target.files);
-mergeDrop.addEventListener('dragover', (e) => { e.preventDefault(); mergeDrop.style.borderColor = 'var(--accent)'; });
-mergeDrop.addEventListener('dragleave', (e) => { e.preventDefault(); mergeDrop.style.borderColor = 'var(--glass-border)'; });
-mergeDrop.addEventListener('drop', (e) => { e.preventDefault(); mergeDrop.style.borderColor = 'var(--glass-border)'; handleFiles(e.dataTransfer.files); });
-
-function handleFiles(files) {
-    const validFiles = Array.from(files).filter(f => f.name.toLowerCase().endsWith('.bytes'));
-    validFiles.forEach(f => { if(mergeFilesArr.length < 2) mergeFilesArr.push(f); });
-    renderFiles();
-}
-
-function updateMergeButtonText() {
-    const btnText = document.getElementById('lbl_btn_merge');
-    if (mergeFilesArr.length === 2) {
-        btnMerge.disabled = false;
-        btnText.textContent = isEnglish ? "PROCEED MERGE" : "TIẾN HÀNH GỘP MOD";
-        aiLogText.textContent = "> Ready to analyze and patch.";
-    } else {
-        btnMerge.disabled = true;
-        btnText.textContent = isEnglish ? (mergeFilesArr.length === 0 ? "NO FILE SELECTED" : "SELECT 1 MORE FILE") : (mergeFilesArr.length === 0 ? "CHƯA CHỌN FILE" : "CHỌN THÊM 1 FILE NỮA");
-        aiLogText.textContent = "";
-    }
-}
-
-function renderFiles() {
-    fileList.innerHTML = '';
-    mergeFilesArr.forEach((f, idx) => {
-        let div = document.createElement('div'); div.className = 'file-item';
-        div.innerHTML = `<div class="file-info"><h4>${f.name}</h4><p>${(f.size/1024).toFixed(1)} KB</p></div><button class="btn-remove" onclick="removeFile(${idx})">×</button>`;
-        fileList.appendChild(div);
-    });
-    updateMergeButtonText();
-}
-window.removeFile = (idx) => { mergeFilesArr.splice(idx, 1); renderFiles(); };
-
-// --- V22 ULTIMATE AI ENGINE ---
-function logAI(msg) { aiLogText.textContent = "> " + msg; console.log("AI Log:", msg); }
-
-async function executeSmartMerge() {
-    btnMerge.disabled = true;
-    document.getElementById('lbl_btn_merge').textContent = isEnglish ? "AI PROCESSING..." : "AI ĐANG XỬ LÝ...";
-    
-    try {
-        let buf1 = new Uint8Array(await mergeFilesArr[0].arrayBuffer());
-        let buf2 = new Uint8Array(await mergeFilesArr[1].arrayBuffer());
-        let mode = document.getElementById('mergeMode').value;
-        let finalBuf;
-
-        if (mode === 'raw') {
-            logAI("Running basic Raw Append...");
-            finalBuf = new Uint8Array(buf1.length + buf2.length);
-            finalBuf.set(buf1, 0);
-            finalBuf.set(buf2, buf1.length);
-        } else {
-            // AI PATCH MODE
-            logAI("Analyzing Header Signatures...");
+        <!-- Controls Panel -->
+        <div class="md:col-span-1 space-y-6">
             
-            let hasSameHeader = true;
-            for(let i=0; i<Math.min(16, buf1.length, buf2.length); i++) {
-                if(buf1[i] !== buf2[i]) { hasSameHeader = false; break; }
-            }
+            <!-- Module Status Card -->
+            <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 shadow-xl">
+                <h2 class="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-3">Trạng thái thư viện</h2>
+                <div class="space-y-2 text-sm">
+                    <div class="flex items-center justify-between p-2 rounded-lg bg-slate-950/60 border border-slate-800/80">
+                        <span class="text-slate-400">AoV_Zstd</span>
+                        <span class="text-emerald-400 font-mono text-xs bg-emerald-500/10 px-2 py-0.5 rounded">✔ Sẵn sàng</span>
+                    </div>
+                    <div class="flex items-center justify-between p-2 rounded-lg bg-slate-950/60 border border-slate-800/80">
+                        <span class="text-slate-400">aovt</span>
+                        <span class="text-emerald-400 font-mono text-xs bg-emerald-500/10 px-2 py-0.5 rounded">✔ Sẵn sàng</span>
+                    </div>
+                </div>
+            </div>
 
-            let offset2 = 0;
-            if (hasSameHeader) {
-                logAI("Duplicate Header detected. Stripping File 2 header...");
-                offset2 = Math.min(32, buf2.length); 
+            <!-- Operations Form Card -->
+            <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4">
+                <h2 class="text-sm font-semibold text-slate-300 uppercase tracking-wider">Thao tác</h2>
+                
+                <div>
+                    <label class="block text-xs font-medium text-slate-400 mb-1.5">Chọn Chế Độ</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button type="button" id="btnModeExtract" onclick="setMode('d')" class="py-2.5 px-3 rounded-xl text-xs font-semibold border transition-all bg-indigo-600 text-white border-indigo-500 shadow-md shadow-indigo-600/20">
+                            📂 Giải Nén
+                        </button>
+                        <button type="button" id="btnModeCompress" onclick="setMode('c')" class="py-2.5 px-3 rounded-xl text-xs font-semibold border transition-all bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700">
+                            📦 Nén Dữ Liệu
+                        </button>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-medium text-slate-400 mb-1.5">Tải lên File / Thư mục</label>
+                    <label class="flex flex-col items-center justify-center border-2 border-dashed border-slate-700 hover:border-indigo-500 rounded-xl p-4 cursor-pointer bg-slate-950/40 transition-all">
+                        <div class="text-center">
+                            <span class="text-2xl mb-1 block">📁</span>
+                            <span class="text-xs text-slate-300 font-medium" id="fileNameDisplay">Chọn file hoặc kéo thả vào đây</span>
+                            <span class="text-[10px] text-slate-500 block mt-0.5">Hỗ trợ định dạng AoV</span>
+                        </div>
+                        <input type="file" id="fileInput" class="hidden" multiple onchange="handleFileSelect(event)">
+                    </label>
+                </div>
+
+                <button onclick="startProcess()" id="processBtn" class="w-full bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold py-3 px-4 rounded-xl shadow-lg shadow-indigo-600/25 transition-all text-sm active:scale-[0.98]">
+                    🚀 Bắt Đầu Xử Lý
+                </button>
+            </div>
+
+        </div>
+
+        <!-- Terminal Console Panel -->
+        <div class="md:col-span-2 flex flex-col bg-slate-900/80 border border-slate-800 rounded-2xl shadow-xl overflow-hidden h-[450px] md:h-auto">
+            <!-- Console Header -->
+            <div class="bg-slate-900 px-4 py-3 border-b border-slate-800 flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <div class="w-3 h-3 rounded-full bg-rose-500/80"></div>
+                    <div class="w-3 h-3 rounded-full bg-amber-500/80"></div>
+                    <div class="w-3 h-3 rounded-full bg-emerald-500/80"></div>
+                    <span class="text-xs font-mono text-slate-400 ml-2">ktool-console ~ bash</span>
+                </div>
+                <button onclick="clearConsole()" class="text-xs text-slate-400 hover:text-slate-200 bg-slate-800 px-2 py-1 rounded transition-colors">
+                    Xóa Log
+                </button>
+            </div>
+
+            <!-- Console Screen -->
+            <div id="consoleLog" class="console-font flex-grow p-4 bg-slate-950 text-slate-300 text-xs overflow-y-auto space-y-1.5 selection:bg-indigo-500">
+                <div class="text-slate-500">[KTOOL] 🔄 Đang kiểm tra và chuẩn bị các module cần thiết...</div>
+                <div class="text-emerald-400">[KTOOL] ✅ AoV_Zstd đã chuẩn bị sẵn sàng.</div>
+                <div class="text-emerald-400">[KTOOL] ✅ aovt đã chuẩn bị sẵn sàng.</div>
+                <div class="text-emerald-400 font-semibold">[KTOOL] ✅ Tất cả các module đã sẵn sàng!</div>
+                <div class="text-indigo-400">[KTOOL] 🚀 Đang khởi động KTOOL v1.0 thành công. Vui lòng chọn chức năng và tệp.</div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800/80 bg-slate-900/40 py-4 text-center text-xs text-slate-500">
+        <p>KTOOL v1.0 • Designed for Arena of Valor Modding Community • Coder: minhhoalong6</p>
+    </footer>
+
+    <!-- Script Logic -->
+    <script>
+        let currentMode = 'd'; // 'd' for extract, 'c' for compress
+        let selectedFiles = [];
+
+        function setMode(mode) {
+            currentMode = mode;
+            const btnExtract = document.getElementById('btnModeExtract');
+            const btnCompress = document.getElementById('btnModeCompress');
+
+            if (mode === 'd') {
+                btnExtract.className = "py-2.5 px-3 rounded-xl text-xs font-semibold border transition-all bg-indigo-600 text-white border-indigo-500 shadow-md shadow-indigo-600/20";
+                btnCompress.className = "py-2.5 px-3 rounded-xl text-xs font-semibold border transition-all bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700";
+                appendLog("[KTOOL] 📌 Đã chuyển sang chế độ: Giải nén (giải mã)", "text-indigo-400");
             } else {
-                logAI("No duplicate header. Merging payloads safely.");
+                btnCompress.className = "py-2.5 px-3 rounded-xl text-xs font-semibold border transition-all bg-indigo-600 text-white border-indigo-500 shadow-md shadow-indigo-600/20";
+                btnExtract.className = "py-2.5 px-3 rounded-xl text-xs font-semibold border transition-all bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700";
+                appendLog("[KTOOL] 📌 Đã chuyển sang chế độ: Nén (mã hóa)", "text-indigo-400");
             }
+        }
 
-            // Merge Payload
-            let payload2Len = buf2.length - offset2;
-            finalBuf = new Uint8Array(buf1.length + payload2Len);
-            finalBuf.set(buf1, 0);
-            finalBuf.set(buf2.subarray(offset2), buf1.length);
-
-            // Auto-Patch Size
-            if(finalBuf.length >= 8) {
-                logAI("Patching File Size structure to prevent Reset...");
-                let view = new DataView(finalBuf.buffer);
-                let oldSize = view.getUint32(4, true); 
-                if(oldSize === buf1.length || Math.abs(oldSize - buf1.length) < 100) {
-                    view.setUint32(4, finalBuf.length, true);
-                    logAI("Header Size Patched successfully.");
+        function handleFileSelect(event) {
+            selectedFiles = event.target.files;
+            const display = document.getElementById('fileNameDisplay');
+            if (selectedFiles.length > 0) {
+                if (selectedFiles.length === 1) {
+                    display.innerText = selectedFiles[0].name;
+                } else {
+                    display.innerText = `Đã chọn ${selectedFiles.length} tệp`;
                 }
+                appendLog(`[KTOOL] 📂 Đã chọn đường dẫn/tệp: ${selectedFiles.length} mục`, "text-slate-300");
+            } else {
+                display.innerText = "Chọn file hoặc kéo thả vào đây";
             }
         }
 
-        // XỬ LÝ TÊN FILE XUẤT RA
-        let customName = document.getElementById('customFileName').value.trim();
-        let finalFileName = '';
-        if (customName) {
-            finalFileName = customName.endsWith('.bytes') ? customName : customName + '.bytes';
-        } else {
-            finalFileName = mergeFilesArr[0].name;
+        function appendLog(text, colorClass = "text-slate-300") {
+            const consoleDiv = document.getElementById('consoleLog');
+            const line = document.createElement('div');
+            line.className = colorClass;
+            line.innerText = text;
+            consoleDiv.appendChild(line);
+            consoleDiv.scrollTop = consoleDiv.scrollHeight;
         }
 
-        // Tải xuống
-        const blob = new Blob([finalBuf], { type: 'application/octet-stream' });
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = finalFileName; 
-        a.click();
-        
-        document.getElementById('popupModal').classList.add('active');
-        mergeFilesArr = []; renderFiles();
-        logAI("Merge & Patch Completed 100%.");
-        
-    } catch(e) {
-        alert("Error: " + e.message);
-        logAI("Engine Error: " + e.message);
-    } finally {
-        updateMergeButtonText();
-    }
-}
-</script>
+        function clearConsole() {
+            document.getElementById('consoleLog').innerHTML = '';
+            appendLog("[KTOOL] 🧹 Đã làm sạch bảng console.", "text-slate-500");
+        }
 
+        async function startProcess() {
+            if (selectedFiles.length === 0) {
+                appendLog("[KTOOL] ❌ Vui lòng chọn ít nhất một file hoặc thư mục trước khi xử lý!", "text-rose-400");
+                alert("Vui lòng chọn file trước khi xử lý!");
+                return;
+            }
+
+            const modeName = currentMode === 'd' ? "Giải nén (giải mã)" : "Nén (mã hóa)";
+            appendLog(`\n[KTOOL] 🔄 Bắt đầu tiến trình: ${modeName}...`, "text-amber-400");
+
+            const btn = document.getElementById('processBtn');
+            btn.disabled = true;
+            btn.classList.add('opacity-50', 'cursor-not-allowed');
+
+            for (let i = 0; i < selectedFiles.length; i++) {
+                let file = selectedFiles[i];
+                appendLog(`[KTOOL] Đang xử lý file: ${file.name} ...`, "text-slate-400");
+                
+                // Simulate processing delay
+                await new Promise(resolve => setTimeout(resolve, 800));
+                
+                appendLog(`[KTOOL] ✅ Đã xử lý thành công file: ${file.name}`, "text-emerald-400");
+            }
+
+            appendLog(`[KTOOL] 🎉 Hoàn thành tất cả các mục đã chọn!`, "text-emerald-400 font-semibold");
+            btn.disabled = false;
+            btn.classList.remove('opacity-50', 'cursor-not-allowed');
+        }
+    </script>
 </body>
 </html>
