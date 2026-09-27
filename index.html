@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>TOOL GỘP V22 | ULTIMATE AI ENGINE</title>
+<title>CYBER MERGE V22 | LIGHT/DARK NEON</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,40 +11,57 @@
 
 <style>
 :root {
+    /* DARK THEME */
     --bg-main: #030305;
     --text-main: #ffffff;
     --text-muted: #a1a1a6;
     --glass-bg: rgba(20, 20, 30, 0.4);
     --glass-panel: rgba(30, 30, 45, 0.5);
-    --glass-border: rgba(255, 255, 255, 0.1);
-    --glass-shadow: rgba(0, 0, 0, 0.4);
+    --glass-border: rgba(255, 255, 255, 0.15);
+    --glass-shadow: rgba(0, 0, 0, 0.6);
     --accent: #00f2fe;
     --accent-glow: rgba(0, 242, 254, 0.4);
-    --neon-white: rgba(255, 255, 255, 0.8);
     --btn-bg: #ffffff;
     --btn-text: #000000;
-    --drop-bg: rgba(0, 0, 0, 0.2);
-    --item-bg: rgba(0, 0, 0, 0.4);
+    --drop-bg: rgba(0, 0, 0, 0.3);
+    --item-bg: rgba(0, 0, 0, 0.5);
+    
+    /* NEON & OWNER VARIABLES */
+    --owner-border: #ffffff;
+    --owner-text: #ffffff;
+    --owner-glow: rgba(255, 255, 255, 0.7);
+    --owner-glow-inset: rgba(255, 255, 255, 0.4);
+    --footer-neon: #ffffff;
+    --footer-neon-glow: rgba(255, 255, 255, 0.8);
+
     --spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
     --font-main: 'Inter', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
 }
 
 [data-theme="light"] {
+    /* LIGHT THEME */
     --bg-main: #f0f2f5;
     --text-main: #1a1a1a;
-    --text-muted: #666666;
-    --glass-bg: rgba(255, 255, 255, 0.5);
-    --glass-panel: rgba(255, 255, 255, 0.7);
-    --glass-border: rgba(0, 0, 0, 0.1);
-    --glass-shadow: rgba(0, 0, 0, 0.1);
+    --text-muted: #555555;
+    --glass-bg: rgba(255, 255, 255, 0.6);
+    --glass-panel: rgba(255, 255, 255, 0.85);
+    --glass-border: rgba(0, 0, 0, 0.15);
+    --glass-shadow: rgba(0, 0, 0, 0.15);
     --accent: #007aff;
     --accent-glow: rgba(0, 122, 255, 0.3);
-    --neon-white: rgba(0, 0, 0, 0.2);
     --btn-bg: #1a1a1a;
     --btn-text: #ffffff;
-    --drop-bg: rgba(255, 255, 255, 0.5);
-    --item-bg: rgba(255, 255, 255, 0.6);
+    --drop-bg: rgba(255, 255, 255, 0.7);
+    --item-bg: rgba(255, 255, 255, 0.9);
+
+    /* NEON & OWNER VARIABLES - Đổi màu để nổi bật trên nền sáng */
+    --owner-border: #1a1a1a;
+    --owner-text: #1a1a1a;
+    --owner-glow: rgba(0, 0, 0, 0.4);
+    --owner-glow-inset: rgba(0, 0, 0, 0.15);
+    --footer-neon: #1a1a1a;
+    --footer-neon-glow: rgba(0, 0, 0, 0.6);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
@@ -59,8 +76,8 @@ body {
 
 /* LIQUID BACKGROUND */
 .liquid-bg { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
-.blob { position: absolute; filter: blur(100px); border-radius: 50%; animation: floatBlob 15s infinite alternate ease-in-out; opacity: 0.4; transition: filter 0.5s; }
-[data-theme="light"] .blob { opacity: 0.5; filter: blur(120px); }
+.blob { position: absolute; filter: blur(100px); border-radius: 50%; animation: floatBlob 15s infinite alternate ease-in-out; opacity: 0.3; transition: filter 0.5s, opacity 0.5s; }
+[data-theme="light"] .blob { opacity: 0.4; filter: blur(120px); }
 .blob-1 { width: 600px; height: 600px; background: #00f2fe; top: -150px; left: -150px; }
 .blob-2 { width: 500px; height: 500px; background: #667eea; bottom: -100px; right: -100px; animation-delay: -5s; }
 .blob-3 { width: 400px; height: 400px; background: #764ba2; top: 40%; left: 30%; opacity: 0.2; animation-delay: -10s; }
@@ -91,7 +108,7 @@ header {
     padding: 10px 20px; border-radius: 30px; font-family: var(--font-mono); font-size: 13px;
     box-shadow: 0 10px 20px var(--glass-shadow); display: flex; align-items: center; gap: 10px;
 }
-.control-group { display: flex; align-items: center; gap: 10px; }
+.control-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
 .icon-btn {
     background: var(--glass-bg); border: 1px solid var(--glass-border); color: var(--text-main);
     width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center;
@@ -99,11 +116,17 @@ header {
 }
 .icon-btn:hover { border-color: var(--accent); transform: scale(1.1); box-shadow: 0 0 15px var(--accent-glow); }
 .icon-btn.lang { width: auto; padding: 0 15px; border-radius: 20px; font-size: 13px; font-weight: 700; font-family: var(--font-mono); }
+
+/* TRONG DUNG NEON - FIXED FOR LIGHT/DARK MODE */
 .owner-neon {
     padding: 10px 24px; border-radius: 30px; font-weight: 900; font-size: 14px; letter-spacing: 2px;
-    border: 2px solid var(--text-main); color: var(--text-main); text-transform: uppercase;
-    box-shadow: 0 0 15px var(--neon-white), inset 0 0 10px var(--neon-white);
-    background: var(--glass-bg); margin-left: 5px;
+    border: 2px solid var(--owner-border); color: var(--owner-text); text-transform: uppercase;
+    background: var(--glass-bg); margin-left: 5px; backdrop-filter: blur(10px);
+    animation: neonPulse 3s infinite alternate ease-in-out;
+}
+@keyframes neonPulse {
+    0% { box-shadow: 0 0 5px var(--owner-glow), inset 0 0 2px var(--owner-glow-inset); }
+    100% { box-shadow: 0 0 20px var(--owner-glow), inset 0 0 10px var(--owner-glow-inset); }
 }
 
 /* MAIN APP GRID */
@@ -186,7 +209,7 @@ header {
     border: 1px solid rgba(50, 215, 75, 0.3); color: #32d74b; font-size: 12px; font-weight: 700;
     display: flex; flex-direction: column; gap: 5px; justify-content: center; margin-top: 15px;
 }
-.log-line { font-family: var(--font-mono); font-size: 10px; color: #fff; opacity: 0.8; }
+.log-line { font-family: var(--font-mono); font-size: 10px; color: var(--text-main); opacity: 0.8; }
 
 /* POPUP MODAL */
 .modal-overlay {
@@ -212,15 +235,17 @@ header {
 .modal-btn { background: var(--btn-bg); color: var(--btn-text); padding: 16px 30px; border-radius: 18px; border: none; font-weight: 800; width: 100%; font-size: 15px; cursor: pointer; transition: 0.3s; }
 .modal-btn:hover { box-shadow: 0 0 20px var(--glass-border); }
 
-/* RGB FOOTER */
+/* FOOTER NEON BLINK - CHẬM */
 footer { margin-top: auto; padding: 25px 0; text-align: center; width: 100%; }
-.rgb-text {
+.neon-blink-text {
     font-size: 13px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px;
-    background: linear-gradient(270deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3);
-    background-size: 400% 100%; -webkit-background-clip: text; color: transparent;
-    animation: rgbGlow 5s infinite linear; font-family: var(--font-mono);
+    font-family: var(--font-mono); color: var(--footer-neon);
+    animation: slowWhiteBlink 3s ease-in-out infinite alternate;
 }
-@keyframes rgbGlow { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } }
+@keyframes slowWhiteBlink {
+    0% { opacity: 0.4; text-shadow: 0 0 2px var(--footer-neon-glow); }
+    100% { opacity: 1; text-shadow: 0 0 15px var(--footer-neon-glow), 0 0 25px var(--footer-neon-glow); }
+}
 
 </style>
 </head>
@@ -291,7 +316,7 @@ footer { margin-top: auto; padding: 25px 0; text-align: center; width: 100%; }
 </div>
 
 <footer>
-    <div class="rgb-text">TOOL DEMO CODED BY NGUYEN TRONG DUNG</div>
+    <div class="neon-blink-text">TOOL DEMO CODED BY NGUYEN TRONG DUNG</div>
 </footer>
 
 <div class="modal-overlay" id="popupModal">
@@ -398,14 +423,6 @@ window.removeFile = (idx) => { mergeFilesArr.splice(idx, 1); renderFiles(); };
 // --- V22 ULTIMATE AI ENGINE (Fix Header & Anti-Crash) ---
 function logAI(msg) { aiLogText.textContent = "> " + msg; console.log("AI Log:", msg); }
 
-// Hàm tìm Header Size để cắt bỏ (Stripping)
-function findHeaderOffset(buffer) {
-    // Thông thường file Game (như Unity, LUA, Protobuf) có Magic Bytes ở đầu.
-    // Việc cắt an toàn nhất cho mod skin generic là cắt 16 bytes đầu của file thứ 2 nếu nó giống hệt file 1
-    // Hoặc bỏ qua nếu là Raw Append.
-    return 0; // Để an toàn trong JS, ta kết hợp kiểm tra Magic byte
-}
-
 async function executeSmartMerge() {
     btnMerge.disabled = true;
     document.getElementById('lbl_btn_merge').textContent = isEnglish ? "AI PROCESSING..." : "AI ĐANG XỬ LÝ...";
@@ -422,10 +439,9 @@ async function executeSmartMerge() {
             finalBuf.set(buf1, 0);
             finalBuf.set(buf2, buf1.length);
         } else {
-            // AI PATCH MODE (Tránh lỗi Crash/Reset)
+            // AI PATCH MODE
             logAI("Analyzing Header Signatures...");
             
-            // 1. So sánh Magic Bytes (16 bytes đầu)
             let hasSameHeader = true;
             for(let i=0; i<Math.min(16, buf1.length, buf2.length); i++) {
                 if(buf1[i] !== buf2[i]) { hasSameHeader = false; break; }
@@ -434,28 +450,23 @@ async function executeSmartMerge() {
             let offset2 = 0;
             if (hasSameHeader) {
                 logAI("Duplicate Header detected. Stripping File 2 header...");
-                // Giả định Header dài 32 bytes (Đa số file Config/Asset Bundle)
-                // Cắt phần Header của file 2 đi để không bị lỗi trùng lặp khi Game quét
                 offset2 = Math.min(32, buf2.length); 
             } else {
                 logAI("No duplicate header. Merging payloads safely.");
             }
 
-            // Gộp Payload (Dữ liệu thân file)
+            // Merge Payload
             let payload2Len = buf2.length - offset2;
             finalBuf = new Uint8Array(buf1.length + payload2Len);
             finalBuf.set(buf1, 0);
             finalBuf.set(buf2.subarray(offset2), buf1.length);
 
-            // 2. Tự động vá Size (Auto-Patch Size in Header)
-            // Nếu 4 byte đầu (0-3) hoặc (4-7) chứa kích thước file cũ, ta vá lại bằng kích thước mới.
+            // Auto-Patch Size
             if(finalBuf.length >= 8) {
                 logAI("Patching File Size structure to prevent Reset...");
                 let view = new DataView(finalBuf.buffer);
-                // Đọc thử xem byte 4-7 có phải là size của file 1 không
                 let oldSize = view.getUint32(4, true); 
                 if(oldSize === buf1.length || Math.abs(oldSize - buf1.length) < 100) {
-                    // Nếu đúng, vá lại size mới
                     view.setUint32(4, finalBuf.length, true);
                     logAI("Header Size Patched successfully.");
                 }
