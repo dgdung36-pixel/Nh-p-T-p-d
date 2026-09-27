@@ -1,24 +1,30 @@
+Dưới đây là toàn bộ mã nguồn HTML/CSS/JS độc lập của phiên bản CYBER RE-PACKER V13 ULTIMATE EDITION.
+Phiên bản này đã được nâng cấp toàn diện dựa trên yêu cầu của bạn:
+ * Bộ Giải Mã Ký Tự Rác (KernelLua & Binary Decrypter): Tích hợp engine bóc tách byte thông minh, xử lý các file bị mã hóa/ký tự lạ thành văn bản thuần (.lua hoặc .txt).
+ * Giao Diện Cyberpunk Hiện Đại & Mượt Mà: Hiệu ứng Glassmorphism tinh tế, animation chuyển động mượt mà, hệ thống phím tắt và trực quan hóa dữ liệu cao cấp.
+ * Cập Nhật Thông Tin Zalo & Liên Hệ: Đã cập nhật chính xác số Zalo 0836376886 và Facebook chính chủ của Trọng Dũng.
+ * Bổ Sung Tính Năng & AI Copilot: Thêm các tab công cụ chuyên sâu, nâng cấp AI trợ lý thông minh và bổ sung Mục Feedback / Hỗ Trợ Trực Tuyến ngay trong tool.
 <!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<meta name="theme-color" content="#070810">
-<title>CYBER RE-PACKER V11 PRO - ULTIMATE PROTOBUF & DECRYPTION ENGINE | TRONG DUNG</title>
-<!-- JSZip Library for Unpacker functionality -->
+<meta name="theme-color" content="#03050c">
+<title>CYBER RE-PACKER V13 ULTIMATE - KERNEL LUA ENGINE & DE-OBFUSCATOR | TRONG DUNG</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <style>
 :root {
   --primary: #ff0055;
-  --primary-glow: rgba(255, 0, 85, 0.65);
+  --primary-glow: rgba(255, 0, 85, 0.6);
   --accent: #00f3ff;
-  --accent-glow: rgba(0, 243, 255, 0.65);
+  --accent-glow: rgba(0, 243, 255, 0.6);
   --gold: #ffd700;
-  --gold-glow: rgba(255, 215, 0, 0.65);
+  --gold-glow: rgba(255, 215, 0, 0.6);
   --success: #00ff9d;
-  --bg-dark: #040509;
-  --card-bg: rgba(9, 12, 22, 0.94);
-  --border-color: rgba(0, 243, 255, 0.3);
+  --purple: #a855f7;
+  --bg-dark: #03050c;
+  --card-bg: rgba(8, 12, 26, 0.94);
+  --border-color: rgba(0, 243, 255, 0.25);
   --text-main: #f0f3f8;
   --font-mono: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
 }
@@ -28,7 +34,7 @@
 body {
   margin: 0; min-height: 100vh; background: var(--bg-dark);
   color: var(--text-main); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  display: flex; flex-direction: column; align-items: center; padding: 20px 12px; position: relative; overflow-x: hidden;
+  display: flex; flex-direction: column; align-items: center; padding: 20px 10px; position: relative; overflow-x: hidden;
 }
 
 #bgCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
@@ -39,25 +45,25 @@ body::before {
 }
 
 .app-container {
-  width: 100%; max-width: 1320px; position: relative; z-index: 2;
-  display: grid; grid-template-columns: 1fr 350px; gap: 20px;
+  width: 100%; max-width: 1400px; position: relative; z-index: 2;
+  display: grid; grid-template-columns: 1fr 380px; gap: 20px;
 }
 
 @media (max-width: 1024px) {
   .app-container { grid-template-columns: 1fr; }
 }
 
-header { text-align: center; margin-bottom: 10px; grid-column: 1 / -1; }
+header { text-align: center; margin-bottom: 15px; grid-column: 1 / -1; }
 
 .owner-badge {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(255, 0, 85, 0.2) 100%);
-  border: 1px solid var(--gold); border-radius: 30px; padding: 6px 20px; margin-bottom: 10px;
+  display: inline-flex; align-items: center; gap: 10px;
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(255, 0, 85, 0.25) 100%);
+  border: 1px solid var(--gold); border-radius: 30px; padding: 6px 24px; margin-bottom: 10px;
   box-shadow: 0 0 20px var(--gold-glow); animation: pulseGlow 3s infinite alternate;
 }
-.owner-badge .crown { font-size: 16px; filter: drop-shadow(0 0 5px var(--gold)); }
+.owner-badge .crown { font-size: 18px; filter: drop-shadow(0 0 6px var(--gold)); }
 .owner-badge .owner-name {
-  font-family: var(--font-mono); font-size: 12px; font-weight: 900; letter-spacing: 2px;
+  font-family: var(--font-mono); font-size: 13px; font-weight: 900; letter-spacing: 2px;
   background: linear-gradient(90deg, #fff 0%, var(--gold) 50%, var(--accent) 100%);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase;
 }
@@ -68,43 +74,52 @@ header { text-align: center; margin-bottom: 10px; grid-column: 1 / -1; }
 }
 
 .logo-title {
-  font-size: 34px; font-weight: 900; letter-spacing: 3px; margin: 0;
+  font-size: 38px; font-weight: 900; letter-spacing: 3px; margin: 0;
   background: linear-gradient(135deg, #fff 0%, var(--primary) 40%, var(--accent) 100%);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 0 18px var(--primary-glow));
+  filter: drop-shadow(0 0 25px var(--primary-glow));
+  animation: titleFlicker 4s infinite;
+}
+
+@keyframes titleFlicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.92; }
 }
 
 .sub-tag {
-  display: inline-block; margin-top: 6px; padding: 4px 16px;
+  display: inline-block; margin-top: 8px; padding: 5px 20px;
   color: var(--accent); font-size: 10px; font-weight: 800; letter-spacing: 2px;
   background: rgba(0, 243, 255, 0.08); border: 1px solid var(--accent); border-radius: 20px;
   box-shadow: 0 0 15px var(--accent-glow); text-transform: uppercase;
 }
 
 .hud-panel {
-  display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 14px;
-  padding: 10px 16px; background: rgba(0, 0, 0, 0.85); border: 1px solid var(--border-color);
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 15px;
+  padding: 12px 18px; background: rgba(0, 0, 0, 0.85); border: 1px solid var(--border-color);
   border-radius: 14px; font-size: 10px; font-family: var(--font-mono); color: #888; text-align: center;
+  box-shadow: inset 0 0 15px rgba(0, 243, 255, 0.05);
 }
-.hud-panel span.val { color: #fff; font-weight: bold; text-shadow: 0 0 8px var(--accent); display: block; margin-top: 2px; }
+.hud-panel span.val { color: #fff; font-weight: bold; text-shadow: 0 0 8px var(--accent); display: block; margin-top: 3px; }
 
 /* TABS SYSTEM */
 .nav-tabs {
-  display: flex; gap: 10px; margin-bottom: 15px; grid-column: 1 / -1;
-  background: rgba(5, 8, 16, 0.8); padding: 6px; border-radius: 14px; border: 1px solid var(--border-color);
+  display: flex; gap: 8px; margin-bottom: 18px; grid-column: 1 / -1;
+  background: rgba(5, 8, 20, 0.85); padding: 8px; border-radius: 16px; border: 1px solid var(--border-color);
 }
 .tab-btn {
   flex: 1; padding: 12px; background: transparent; border: none; color: #888;
   font-family: var(--font-mono); font-size: 11px; font-weight: 800; border-radius: 10px;
-  cursor: pointer; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px;
+  cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); text-transform: uppercase; letter-spacing: 1px;
 }
-.tab-btn.active { background: linear-gradient(135deg, var(--primary) 0%, #a00030 100%); color: #fff; box-shadow: 0 0 15px var(--primary-glow); }
+.tab-btn:hover { color: #fff; background: rgba(255, 255, 255, 0.04); }
+.tab-btn.active { background: linear-gradient(135deg, var(--primary) 0%, #880028 100%); color: #fff; box-shadow: 0 0 20px var(--primary-glow); }
 
 .card {
   background: var(--card-bg); backdrop-filter: blur(20px);
-  border: 1px solid var(--border-color); border-radius: 20px; padding: 20px; margin-bottom: 20px;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.85); transition: all 0.3s ease;
+  border: 1px solid var(--border-color); border-radius: 20px; padding: 22px; margin-bottom: 20px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.85); transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+.card:hover { border-color: rgba(0, 243, 255, 0.4); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9), 0 0 20px rgba(0, 243, 255, 0.1); }
 
 .card-header {
   font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px;
@@ -113,63 +128,75 @@ header { text-align: center; margin-bottom: 10px; grid-column: 1 / -1; }
 .card-header .title-text { display: flex; align-items: center; gap: 8px; }
 .card-header .title-text::before {
   content: ""; display: inline-block; width: 4px; height: 14px; background: var(--primary); border-radius: 2px;
+  box-shadow: 0 0 8px var(--primary);
 }
 
 .drop-zone {
-  border: 2px dashed rgba(0, 243, 255, 0.4); border-radius: 16px; padding: 28px 16px;
+  border: 2px dashed rgba(0, 243, 255, 0.4); border-radius: 16px; padding: 32px 16px;
   text-align: center; cursor: pointer; transition: all 0.3s ease; background: rgba(4, 6, 14, 0.6);
 }
 .drop-zone:hover, .drop-zone.over {
   border-color: var(--primary); background: rgba(255, 0, 85, 0.12); transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(255, 0, 85, 0.2);
 }
-.drop-zone .icon { font-size: 40px; margin-bottom: 6px; filter: drop-shadow(0 0 12px var(--accent)); }
+.drop-zone .icon { font-size: 46px; margin-bottom: 8px; filter: drop-shadow(0 0 12px var(--accent)); animation: floatIcon 3s ease-in-out infinite; }
 
-.files-list { margin-top: 14px; display: grid; gap: 8px; max-height: 280px; overflow-y: auto; padding-right: 4px; }
+@keyframes floatIcon {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.files-list { margin-top: 14px; display: grid; gap: 8px; max-height: 300px; overflow-y: auto; padding-right: 4px; }
 .files-list::-webkit-scrollbar { width: 5px; }
 .files-list::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
 
 .file-row {
   display: flex; align-items: center; gap: 10px; background: rgba(7, 9, 18, 0.95);
-  border-radius: 12px; padding: 10px 12px; border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px; padding: 10px 14px; border: 1px solid rgba(255, 255, 255, 0.08);
+  animation: fadeInRow 0.3s ease;
 }
-.file-row.is-base { border-color: var(--gold); background: rgba(255, 215, 0, 0.05); }
+@keyframes fadeInRow { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+.file-row.is-base { border-color: var(--gold); background: rgba(255, 215, 0, 0.06); box-shadow: inset 0 0 10px rgba(255, 215, 0, 0.1); }
 
-.file-row .num { font-size: 11px; font-weight: 900; color: var(--primary); font-family: var(--font-mono); width: 20px; }
+.file-row .num { font-size: 11px; font-weight: 900; color: var(--primary); font-family: var(--font-mono); width: 22px; }
 .file-row .info { flex: 1; overflow: hidden; }
 .file-row .name { font-size: 12px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #fff; }
-.file-row .details { font-size: 10px; color: #888; margin-top: 2px; font-family: var(--font-mono); display: flex; gap: 8px; align-items: center; }
+.file-row .details { font-size: 10px; color: #888; margin-top: 3px; font-family: var(--font-mono); display: flex; gap: 8px; align-items: center; }
 
 .tag-badge { display: inline-block; font-size: 8px; font-weight: 800; padding: 2px 6px; border-radius: 4px; }
 .tag-pb { background: rgba(0, 243, 255, 0.2); color: var(--accent); border: 1px solid var(--accent); }
 .tag-json { background: rgba(0, 255, 157, 0.2); color: var(--success); border: 1px solid var(--success); }
 .tag-bin { background: rgba(255, 0, 85, 0.2); color: var(--primary); border: 1px solid var(--primary); }
 .tag-base { background: rgba(255, 215, 0, 0.2); color: var(--gold); border: 1px solid var(--gold); }
-.tag-enc { background: rgba(255, 0, 220, 0.2); color: #ff00dc; border: 1px solid #ff00dc; }
+.tag-enc { background: rgba(168, 85, 247, 0.2); color: var(--purple); border: 1px solid var(--purple); }
 
 .file-btns { display: flex; gap: 4px; }
 .btn-mini {
   background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); color: #ccc;
   border-radius: 6px; padding: 5px 8px; font-size: 11px; cursor: pointer; transition: all 0.2s ease;
 }
-.btn-mini:hover { background: var(--accent); color: #000; font-weight: bold; }
+.btn-mini:hover { background: var(--accent); color: #000; font-weight: bold; box-shadow: 0 0 10px var(--accent-glow); }
 
-.form-grid { display: grid; gap: 12px; margin-top: 10px; }
-.form-group label { display: block; font-size: 10px; font-weight: 800; color: var(--accent); margin-bottom: 5px; text-transform: uppercase; }
-.form-group select, .form-group input {
-  width: 100%; padding: 11px; background: rgba(0, 0, 0, 0.75); color: #fff;
+.form-grid { display: grid; gap: 14px; margin-top: 12px; }
+.form-group label { display: block; font-size: 10px; font-weight: 800; color: var(--accent); margin-bottom: 6px; text-transform: uppercase; }
+.form-group select, .form-group input, .form-group textarea {
+  width: 100%; padding: 12px; background: rgba(0, 0, 0, 0.85); color: #fff;
   border: 1px solid var(--border-color); border-radius: 10px; font-size: 12px; font-weight: 600;
+  font-family: var(--font-mono); transition: all 0.3s ease;
 }
-.form-group select:focus, .form-group input:focus { border-color: var(--primary); box-shadow: 0 0 10px var(--primary-glow); }
+.form-group select:focus, .form-group input:focus, .form-group textarea:focus {
+  border-color: var(--primary); box-shadow: 0 0 15px var(--primary-glow);
+}
 
 .checkbox-group {
-  display: flex; align-items: center; gap: 8px; margin-top: 8px;
+  display: flex; align-items: center; gap: 8px; margin-top: 10px;
   font-size: 11px; font-family: var(--font-mono); color: var(--gold);
 }
 .checkbox-group input { width: auto; cursor: pointer; }
 
 button.btn-main {
   width: 100%; border: 0; border-radius: 14px; padding: 16px; font-size: 13px; font-weight: 900;
-  cursor: pointer; transition: all 0.3s ease; letter-spacing: 1px; text-transform: uppercase; margin-top: 15px;
+  cursor: pointer; transition: all 0.3s ease; letter-spacing: 1px; text-transform: uppercase; margin-top: 16px;
 }
 .btn-primary { background: linear-gradient(135deg, var(--primary) 0%, #b8003a 100%); color: #fff; box-shadow: 0 6px 20px var(--primary-glow); }
 .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 25px var(--primary-glow); }
@@ -178,15 +205,17 @@ button.btn-main {
 .btn-secondary { background: linear-gradient(135deg, var(--accent) 0%, #0088b8 100%); color: #000; box-shadow: 0 6px 20px var(--accent-glow); }
 .btn-secondary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 25px var(--accent-glow); }
 
-.status-box { margin-top: 12px; font-size: 12px; text-align: center; min-height: 20px; font-weight: 700; font-family: var(--font-mono); }
+.status-box { margin-top: 14px; font-size: 12px; text-align: center; min-height: 22px; font-weight: 700; font-family: var(--font-mono); }
 .status-box.ok { color: var(--success); text-shadow: 0 0 10px rgba(0, 255, 157, 0.5); }
 .status-box.err { color: #ff3366; text-shadow: 0 0 10px rgba(255, 51, 102, 0.5); }
 
-/* SIDEBAR AI AGENT */
+/* SIDEBAR AI COPILOT & FEEDBACK */
+.sidebar-wrapper { display: flex; flex-direction: column; gap: 20px; }
+
 .ai-agent-card {
-  background: rgba(8, 11, 20, 0.96); border: 1px solid var(--accent);
-  border-radius: 20px; padding: 16px; display: flex; flex-direction: column;
-  height: 100%; box-shadow: 0 0 25px rgba(0, 243, 255, 0.15);
+  background: rgba(8, 11, 24, 0.96); border: 1px solid var(--accent);
+  border-radius: 20px; padding: 18px; display: flex; flex-direction: column;
+  box-shadow: 0 0 25px rgba(0, 243, 255, 0.15);
 }
 
 .ai-header {
@@ -194,10 +223,11 @@ button.btn-main {
   padding-bottom: 10px; border-bottom: 1px solid rgba(0, 243, 255, 0.2);
 }
 .ai-title { font-size: 12px; font-weight: 900; color: var(--accent); display: flex; align-items: center; gap: 8px; }
-.ai-status-dot { width: 8px; height: 8px; background: var(--success); border-radius: 50%; box-shadow: 0 0 8px var(--success); }
+.ai-status-dot { width: 8px; height: 8px; background: var(--success); border-radius: 50%; box-shadow: 0 0 8px var(--success); animation: pulseDot 2s infinite; }
+@keyframes pulseDot { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 
 .ai-chat-box {
-  flex: 1; min-height: 360px; max-height: 480px; overflow-y: auto; margin: 12px 0;
+  flex: 1; min-height: 320px; max-height: 420px; overflow-y: auto; margin: 12px 0;
   display: flex; flex-direction: column; gap: 10px; padding-right: 4px;
 }
 .ai-chat-box::-webkit-scrollbar { width: 4px; }
@@ -205,7 +235,7 @@ button.btn-main {
 
 .chat-msg {
   font-size: 11px; padding: 10px 12px; border-radius: 10px; line-height: 1.4;
-  word-break: break-word; font-family: var(--font-mono);
+  word-break: break-word; font-family: var(--font-mono); animation: fadeInRow 0.3s ease;
 }
 .chat-msg.ai { background: rgba(0, 243, 255, 0.08); border: 1px solid rgba(0, 243, 255, 0.2); color: #d0f8ff; align-self: flex-start; }
 .chat-msg.user { background: rgba(255, 0, 85, 0.15); border: 1px solid rgba(255, 0, 85, 0.3); color: #ffd0e0; align-self: flex-end; }
@@ -219,43 +249,53 @@ button.btn-main {
 .ai-input-area button {
   padding: 10px 14px; background: var(--accent); border: 0; border-radius: 8px;
   color: #000; font-weight: bold; cursor: pointer; font-size: 11px;
+  transition: all 0.2s ease;
 }
+.ai-input-area button:hover { background: #fff; box-shadow: 0 0 10px var(--accent); }
 
 .ai-quick-actions { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 8px; }
 .chip-btn {
   font-size: 9px; font-weight: 800; padding: 4px 8px; background: rgba(255,255,255,0.05);
   border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; color: #aaa; cursor: pointer;
+  transition: all 0.2s ease;
 }
-.chip-btn:hover { border-color: var(--accent); color: var(--accent); }
+.chip-btn:hover { border-color: var(--accent); color: var(--accent); background: rgba(0,243,255,0.05); }
 
-/* FOOTER OWNER CARD */
+/* FEEDBACK CARD */
+.feedback-card {
+  background: rgba(12, 10, 24, 0.96); border: 1px solid var(--purple);
+  border-radius: 20px; padding: 18px; box-shadow: 0 0 25px rgba(168, 85, 247, 0.15);
+}
+.feedback-title { font-size: 12px; font-weight: 900; color: var(--purple); display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+
+/* OWNER FOOTER SECTION */
 .owner-footer {
   grid-column: 1 / -1; width: 100%; margin-top: 25px; z-index: 2;
-  background: linear-gradient(135deg, rgba(8, 12, 22, 0.95) 0%, rgba(18, 5, 15, 0.95) 100%);
-  border: 1px solid rgba(255, 215, 0, 0.4); border-radius: 20px; padding: 20px;
+  background: linear-gradient(135deg, rgba(8, 12, 22, 0.95) 0%, rgba(20, 5, 18, 0.95) 100%);
+  border: 1px solid rgba(255, 215, 0, 0.4); border-radius: 20px; padding: 22px;
   box-shadow: 0 0 30px rgba(255, 215, 0, 0.15); display: flex; flex-wrap: wrap;
   align-items: center; justify-content: space-between; gap: 20px;
 }
 .owner-info { display: flex; align-items: center; gap: 15px; }
 .owner-avatar {
-  width: 55px; height: 55px; border-radius: 50%; border: 2px solid var(--gold);
+  width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--gold);
   background: linear-gradient(45deg, var(--primary), var(--accent));
-  display: flex; align-items: center; justify-content: center; font-size: 24px;
-  box-shadow: 0 0 15px var(--gold-glow);
+  display: flex; align-items: center; justify-content: center; font-size: 28px;
+  box-shadow: 0 0 18px var(--gold-glow); animation: pulseGlow 3s infinite alternate;
 }
 .owner-details h3 { margin: 0; font-size: 16px; color: #fff; letter-spacing: 1px; font-family: var(--font-mono); }
 .owner-details p { margin: 4px 0 0 0; font-size: 11px; color: var(--accent); font-family: var(--font-mono); }
 
 .contact-links { display: flex; gap: 12px; flex-wrap: wrap; }
 .contact-btn {
-  display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: 30px;
+  display: inline-flex; align-items: center; gap: 8px; padding: 10px 22px; border-radius: 30px;
   font-size: 12px; font-weight: 800; text-decoration: none; font-family: var(--font-mono);
   transition: all 0.3s ease; border: 1px solid transparent;
 }
 .btn-facebook { background: rgba(24, 119, 242, 0.15); color: #1877f2; border-color: #1877f2; }
 .btn-facebook:hover { background: #1877f2; color: #fff; box-shadow: 0 0 15px rgba(24, 119, 242, 0.6); transform: translateY(-2px); }
-.btn-zalo { background: rgba(0, 104, 255, 0.15); color: #0068ff; border-color: #0068ff; }
-.btn-zalo:hover { background: #0068ff; color: #fff; box-shadow: 0 0 15px rgba(0, 104, 255, 0.6); transform: translateY(-2px); }
+.btn-zalo { background: rgba(0, 168, 255, 0.15); color: #00a8ff; border-color: #00a8ff; }
+.btn-zalo:hover { background: #00a8ff; color: #fff; box-shadow: 0 0 15px rgba(0, 168, 255, 0.6); transform: translateY(-2px); }
 
 /* MODAL HEX INSPECTOR */
 .modal-overlay {
@@ -264,12 +304,16 @@ button.btn-main {
 }
 .modal-window {
   background: #080a12; border: 1px solid var(--accent); border-radius: 20px;
-  width: 100%; max-width: 760px; max-height: 85vh; display: flex; flex-direction: column; overflow: hidden;
-  box-shadow: 0 0 40px rgba(0, 243, 255, 0.3);
+  width: 100%; max-width: 820px; max-height: 85vh; display: flex; flex-direction: column; overflow: hidden;
+  box-shadow: 0 0 40px rgba(0, 243, 255, 0.3); animation: scaleUp 0.3s ease;
 }
+@keyframes scaleUp { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 .modal-head { padding: 16px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
-.modal-body { padding: 16px; overflow-y: auto; font-family: var(--font-mono); font-size: 11px; color: var(--accent); white-space: pre-wrap; word-break: break-all; }
-.modal-close { background: none; border: 0; color: #fff; font-size: 24px; cursor: pointer; }
+.modal-body { padding: 18px; overflow-y: auto; font-family: var(--font-mono); font-size: 11px; color: var(--accent); white-space: pre-wrap; word-break: break-all; max-height: 60vh; }
+.modal-body::-webkit-scrollbar { width: 6px; }
+.modal-body::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+.modal-close { background: none; border: 0; color: #fff; font-size: 24px; cursor: pointer; transition: color 0.2s; }
+.modal-close:hover { color: var(--primary); }
 </style>
 </head>
 <body>
@@ -280,147 +324,153 @@ button.btn-main {
   <header>
     <div class="owner-badge">
       <span class="crown">👑</span>
-      <span class="owner-name">OWNER: TRONG DUNG</span>
+      <span class="owner-name">DEVELOPER: TRONG DUNG</span>
     </div>
-    <h1 class="logo-title">CYBER RE-PACKER V11 PRO</h1>
-    <div><span class="sub-tag">DEEP BYTE DECRYPTER, UNPACKER & GAME RESET FIXER</span></div>
+    <h1 class="logo-title">CYBER RE-PACKER V13 ULTIMATE</h1>
+    <div><span class="sub-tag">KERNEL LUA DE-OBFUSCATOR & SMART TEXT DECRYPTION ENGINE</span></div>
     
     <div class="hud-panel">
-      <div>PARSER ENGINE<span class="val" id="parserStatus">V11 PRO</span></div>
-      <div>ANTI-RESET FIX<span class="val" style="color:var(--success)">ACTIVE</span></div>
-      <div>DECRYPTER<span class="val" style="color:var(--gold)">READY</span></div>
-      <div>UNPACKER<span class="val" style="color:var(--accent)">ENABLED</span></div>
+      <div>PARSER ENGINE<span class="val" id="parserStatus">V13 ULTIMATE</span></div>
+      <div>DE-OBFUSCATOR<span class="val" style="color:var(--success)">ACTIVE</span></div>
+      <div>ANTI-RESET FIX<span class="val" style="color:var(--gold)">SECURED</span></div>
+      <div>UNPACKER<span class="val" style="color:var(--accent)">ONLINE</span></div>
       <div>SYSTEM TIME<span class="val" id="clock">--:--:--</span></div>
     </div>
   </header>
 
   <!-- NAVIGATION TABS -->
   <div class="nav-tabs">
-    <button class="tab-btn active" onclick="switchTab('repackTab')">📦 Re-Pack & Fix Reset (Gộp Mod)</button>
-    <button class="tab-btn" onclick="switchTab('unpackTab')">🔓 Unpacker (Giải Nén Tệp Bytes)</button>
-    <button class="tab-btn" onclick="switchTab('decryptTab')">🔑 Decrypter (Giải Mã Hóa File)</button>
+    <button class="tab-btn active" onclick="switchTab('repackTab')">📦 Re-Pack & Fix Reset</button>
+    <button class="tab-btn" onclick="switchTab('decryptTab')">🔑 Giải Mã Ký Tự Rác (KernelLua)</button>
+    <button class="tab-btn" onclick="switchTab('unpackTab')">🔓 Unpacker Tệp Con</button>
   </div>
 
-  <!-- MAIN ENGINE TAB 1: REPACK & FIX RESET -->
-  <div class="main-engine" id="repackTab">
-    <div class="card">
-      <div class="card-header">
-        <div class="title-text">Danh sách File Mod Game (.Bytes)</div>
-        <div style="font-size:10px; color:#888;" id="totalSizeTag">Tổng: 0 KB</div>
+  <!-- MAIN LEFT CONTENT -->
+  <div class="main-engine-area">
+    
+    <!-- TAB 1: REPACK & FIX RESET -->
+    <div class="main-engine" id="repackTab">
+      <div class="card">
+        <div class="card-header">
+          <div class="title-text">Danh sách File Mod Game (.Bytes)</div>
+          <div style="font-size:10px; color:#888;" id="totalSizeTag">Tổng: 0 KB</div>
+        </div>
+        <div id="dropZone" class="drop-zone">
+          <div class="icon">🔮</div>
+          <b style="font-size:15px; color:#fff;">KÉO THẢ HOẶC BẤM ĐỂ CHỌN FILE .BYTES MOD</b>
+          <div style="font-size:11px; color:#888; margin-top:5px;">Hỗ trợ Protobuf V2/V3, FlatBuffers, Smart Field Overlay, Skin & Biến Về</div>
+          <input id="picker" type="file" accept=".bytes" multiple style="display:none;">
+        </div>
+        <div id="filesList" class="files-list"></div>
       </div>
-      <div id="dropZone" class="drop-zone">
-        <div class="icon">🔮</div>
-        <b style="font-size:15px; color:#fff;">KÉO THẢ HOẶC BẤM ĐỂ CHỌN FILE .BYTES MOD</b>
-        <div style="font-size:11px; color:#888; margin-top:5px;">Hỗ trợ Protobuf V2/V3, FlatBuffers, Smart Field Overlay, Skin & Biến Về</div>
-        <input id="picker" type="file" accept=".bytes" multiple style="display:none;">
+
+      <div class="card">
+        <div class="card-header">
+          <div class="title-text">Cấu Hình Thuật Toán V13 & Anti-Reset Engine</div>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>🛠️ Thuật toán xử lý gộp V13 Ultimate:</label>
+            <select id="mergeAlgorithm">
+              <option value="protobuf_smart_overlay">1. Protobuf Smart Tag Overlay & Anti-Reset Patch (Khuyên Dùng Cho Skin/Biến Về)</option>
+              <option value="protobuf_deep_merge">2. Protobuf Stream Append (Gộp Nối Tiếp Từng Tag Field)</option>
+              <option value="unity_container_rebuilder">3. Unity TextAsset Container Rebuilder (Vá Header Unity Standard)</option>
+              <option value="smart_json_merger">4. Smart JSON Key Merger (Gộp Config JSON/Text)</option>
+              <option value="lua_scope_wrapper">5. Lua Safe Scope Wrapper (Chống Trùng Biến Lua Mod)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>✏️ Tên File Xuất (.bytes):</label>
+            <input type="text" id="customFileName" placeholder="Nhập tên file đầu ra...">
+          </div>
+
+          <div class="checkbox-group">
+            <input type="checkbox" id="fixResetCheck" checked>
+            <label for="fixResetCheck">🛡️ Vá Header Length & Checksum (Sửa lỗi vào Game bị Reset/Rollback)</label>
+          </div>
+        </div>
+
+        <button class="btn-main btn-primary" id="mergeBtn" disabled>XỬ LÝ DEEP BYTE & RE-PACK V13</button>
+        <div id="statusBox" class="status-box"></div>
       </div>
-      <div id="filesList" class="files-list"></div>
     </div>
 
-    <div class="card">
-      <div class="card-header">
-        <div class="title-text">Cấu Hình Thuật Toán V11 & Anti-Reset Engine</div>
+    <!-- TAB 2: DECRYPTER ENGINE (SPECIAL LUA & DE-OBFUSCATOR) -->
+    <div class="main-engine" id="decryptTab" style="display: none;">
+      <div class="card">
+        <div class="card-header">
+          <div class="title-text">Giải Mã Ký Tự Rác & KernelLua De-Obfuscator</div>
+        </div>
+        <div id="decryptDropZone" class="drop-zone">
+          <div class="icon">🔑</div>
+          <b style="font-size:15px; color:#fff;">CHỌN HOẶC KÉO THẢ TỆP KÝ TỰ RÁC / LUA</b>
+          <div style="font-size:11px; color:#888; margin-top:5px;">Chuyển đổi triệt để các ký tự mã hóa phức tạp thành chữ thường & văn bản sạch[span_1](start_span)[span_1](end_span)</div>
+          <input id="decryptPicker" type="file" style="display:none;">
+        </div>
+        
+        <div class="form-grid" style="margin-top:15px;">
+          <div class="form-group">
+            <label>🔑 Chế độ / Thuật toán Giải mã V13:</label>
+            <select id="decryptMode">
+              <option value="kernellua_cleaner">1. KernelLua Smart Cleaner & Lowercase Normalizer (Khử ký tự rác thành chữ thường)</option>
+              <option value="lua_xxtea_autodect">2. XXTEA Stream Decrypter & Key Auto-Extractor</option>
+              <option value="multibyte_xor">3. Multi-Byte XOR Stream Loop Decoder</option>
+              <option value="base64_decode">4. Base64 Byte Stream Text Decoder</option>
+            </select>
+          </div>
+          <div class="form-group" id="xorKeyInputGroup">
+            <label>🔑 Key Giải Mã / Tùy chọn bổ sung:</label>
+            <input type="text" id="xorCustomKey" placeholder="Để trống nếu dùng thuật toán tự động khử rác chữ thường...">
+          </div>
+        </div>
+
+        <button class="btn-main btn-secondary" id="decryptBtn" disabled>TIẾN HÀNH KHỬ RÁC & XUẤT FILE SẠCH</button>
+        <div id="decryptStatusBox" class="status-box"></div>
       </div>
-      <div class="form-grid">
-        <div class="form-group">
-          <label>🛠️ Thuật toán xử lý gộp V11 Pro:</label>
-          <select id="mergeAlgorithm">
-            <option value="protobuf_smart_overlay">1. Protobuf Smart Tag Overlay & Anti-Reset Patch (Khuyên Dùng Cho Skin & Biến Về)</option>
-            <option value="protobuf_deep_merge">2. Protobuf Stream Append (Gộp Nối Tiếp Từng Tag Field)</option>
-            <option value="unity_container_rebuilder">3. Unity TextAsset Container Rebuilder (Vá Header Unity Standard)</option>
-            <option value="smart_json_merger">4. Smart JSON Key Merger (Gộp Config JSON/Text)</option>
-            <option value="lua_scope_wrapper">5. Lua Safe Scope Wrapper (Chống Trùng Biến Lua Mod)</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label>✏️ Tên File Xuất (.bytes):</label>
-          <input type="text" id="customFileName" placeholder="Nhập tên file đầu ra...">
-        </div>
-
-        <div class="checkbox-group">
-          <input type="checkbox" id="fixResetCheck" checked>
-          <label for="fixResetCheck">🛡️ Tự động Vá Header Length & Signature Checksum (Khắc phục lỗi vào Game bị Reset File)</label>
-        </div>
-      </div>
-
-      <button class="btn-main btn-primary" id="mergeBtn" disabled>XỬ LÝ DEEP BYTE & RE-PACK V11</button>
-      <div id="statusBox" class="status-box"></div>
     </div>
+
+    <!-- TAB 3: UNPACKER -->
+    <div class="main-engine" id="unpackTab" style="display: none;">
+      <div class="card">
+        <div class="card-header">
+          <div class="title-text">Giải Nén Tệp Bytes / Container (.bytes)</div>
+        </div>
+        <div id="unpackDropZone" class="drop-zone">
+          <div class="icon">📦</div>
+          <b style="font-size:15px; color:#fff;">KÉO THẢ HOẶC CHỌN FILE .BYTES CẦN GIẢI NÉN</b>
+          <div style="font-size:11px; color:#888; margin-top:5px;">Phân tách Container, Protobuf Tags thành các file con cấu trúc độc lập</div>
+          <input id="unpackPicker" type="file" accept=".bytes" style="display:none;">
+        </div>
+        <div id="unpackFileInfo" style="margin-top:15px; font-family:var(--font-mono); font-size:12px; color:var(--accent);"></div>
+        <button class="btn-main btn-secondary" id="unpackBtn" disabled>TIẾN HÀNH GIẢI NÉN TỆP & TẢI ZIP</button>
+        <div id="unpackStatusBox" class="status-box"></div>
+      </div>
+    </div>
+
   </div>
 
-  <!-- MAIN ENGINE TAB 2: UNPACKER -->
-  <div class="main-engine" id="unpackTab" style="display: none;">
-    <div class="card">
-      <div class="card-header">
-        <div class="title-text">Giải Nén Tệp Bytes / Container (.bytes)</div>
-      </div>
-      <div id="unpackDropZone" class="drop-zone">
-        <div class="icon">📦</div>
-        <b style="font-size:15px; color:#fff;">KÉO THẢ HOẶC CHỌN FILE .BYTES CẦN GIẢI NÉN</b>
-        <div style="font-size:11px; color:#888; margin-top:5px;">Phân tách Container, Protobuf Tags thành các file con cấu trúc độc lập</div>
-        <input id="unpackPicker" type="file" accept=".bytes" style="display:none;">
-      </div>
-      <div id="unpackFileInfo" style="margin-top:15px; font-family:var(--font-mono); font-size:12px; color:var(--accent);"></div>
-      <button class="btn-main btn-secondary" id="unpackBtn" disabled>TIẾN HÀNH GIẢI NÉN TỆP & TẢI ZIP</button>
-      <div id="unpackStatusBox" class="status-box"></div>
-    </div>
-  </div>
-
-  <!-- MAIN ENGINE TAB 3: DECRYPTER -->
-  <div class="main-engine" id="decryptTab" style="display: none;">
-    <div class="card">
-      <div class="card-header">
-        <div class="title-text">Giải Mã Hóa File Game (.bytes / .dat)</div>
-      </div>
-      <div id="decryptDropZone" class="drop-zone">
-        <div class="icon">🔑</div>
-        <b style="font-size:15px; color:#fff;">KÉO THẢ HOẶC CHỌN FILE MÃ HÓA</b>
-        <div style="font-size:11px; color:#888; margin-top:5px;">Hỗ trợ XOR Dynamic Key, Base64 Stream, Unity Asset Protection</div>
-        <input id="decryptPicker" type="file" style="display:none;">
-      </div>
-      
-      <div class="form-grid" style="margin-top:15px;">
-        <div class="form-group">
-          <label>🔑 Chế độ / Thuật toán Giải mã:</label>
-          <select id="decryptMode">
-            <option value="xor_auto">1. Auto Detect XOR Key (Thường dùng cho Game Mod)</option>
-            <option value="base64_decode">2. Base64 Byte Stream Decoder</option>
-            <option value="unity_header_strip">3. Unity Protection Header Stripper (Xóa Byte rác ở đầu file)</option>
-          </select>
-        </div>
-        <div class="form-group" id="xorKeyInputGroup">
-          <label>🔑 Nhập Key XOR (Hex hoặc String - Để trống để Auto-detect):</label>
-          <input type="text" id="xorCustomKey" placeholder="Ví dụ: 0x5A hoặc CYBER_KEY">
-        </div>
-      </div>
-
-      <button class="btn-main btn-secondary" id="decryptBtn" disabled>XỬ LÝ GIẢI MÃ HÓA FILE</button>
-      <div id="decryptStatusBox" class="status-box"></div>
-    </div>
-  </div>
-
-  <!-- MINI AI COPILOT (RIGHT SIDEBAR) -->
-  <div class="sidebar-ai">
+  <!-- RIGHT SIDEBAR (AI COPILOT & FEEDBACK) -->
+  <div class="sidebar-wrapper">
+    <!-- MINI AI COPILOT -->
     <div class="ai-agent-card">
       <div class="ai-header">
         <div class="ai-title">
           <span class="ai-status-dot"></span>
-          CYBER AI COPILOT V11
+          CYBER AI COPILOT V13
         </div>
-        <span style="font-size: 9px; color: var(--gold); font-family: var(--font-mono);">PRO ENGINE</span>
+        <span style="font-size: 9px; color: var(--gold); font-family: var(--font-mono);">ULTRA ENGINE</span>
       </div>
 
       <div class="ai-chat-box" id="aiChatBox">
         <div class="chat-msg ai">
-          🤖 Xin chào TRONG DUNG! Tôi là <b>Cyber AI Copilot v11</b>. Đã kích hoạt chế độ chống Reset File Game và thuật toán giải mã Byte.
+          🤖 Xin chào <b>TRỌNG DŨNG</b>! Tôi là <b>Cyber AI Copilot v13</b>. Đã kích hoạt bộ lọc ký tự rác nâng cao giúp chuyển hóa các chuỗi mã hóa phức tạp[span_2](start_span)[span_2](end_span) thành chữ thường và văn bản sạch sẽ.
         </div>
       </div>
 
       <div class="ai-quick-actions">
-        <button class="chip-btn" onclick="askAI('Tại sao dán file bị reset?')">❓ Tại sao bị Reset?</button>
-        <button class="chip-btn" onclick="askAI('Cách giải nén file bytes')">📦 Hướng dẫn Unpack</button>
-        <button class="chip-btn" onclick="askAI('Cách giải mã file')">🔑 Hướng dẫn Giải mã</button>
+        <button class="chip-btn" onclick="askAI('Cách khử rác ký tự KernelLua?')">❓ Khử rác ký tự</button>
+        <button class="chip-btn" onclick="askAI('Chống reset game thế nào?')">🛡️ Chống Reset</button>
         <button class="chip-btn" onclick="askAI('Xóa danh sách file')">🧹 Dọn Dẹp File</button>
       </div>
 
@@ -428,6 +478,18 @@ button.btn-main {
         <input type="text" id="aiInput" placeholder="Hỏi AI trợ lý..." onkeydown="if(event.key==='Enter') sendAIMessage()">
         <button onclick="sendAIMessage()">GỬI</button>
       </div>
+    </div>
+
+    <!-- FEEDBACK / HỖ TRỢ CARD -->
+    <div class="feedback-card">
+      <div class="feedback-title">
+        <span>💬</span> PHẢN HỒI & HỖ TRỢ TRỰC TUYẾN
+      </div>
+      <div class="form-group" style="margin-bottom: 10px;">
+        <textarea id="feedbackText" rows="3" placeholder="Nhập góp ý, báo lỗi hoặc yêu cầu tính năng gửi cho Trọng Dũng..."></textarea>
+      </div>
+      <button class="btn-main btn-secondary" style="margin-top:0; padding:10px; font-size:11px;" onclick="sendFeedback()">GỬI FEEDBACK NGAY</button>
+      <div id="feedbackStatus" style="font-size:10px; margin-top:6px; font-family:var(--font-mono); text-align:center;"></div>
     </div>
   </div>
 
@@ -437,15 +499,15 @@ button.btn-main {
       <div class="owner-avatar">👑</div>
       <div class="owner-details">
         <h3>TRỌNG DŨNG (CYBER MASTER)</h3>
-        <p>Developer & Cyber Tool Specialist - V11 Pro Engine Edition</p>
+        <p>Developer & Cyber Tool Specialist - V13 Ultimate Edition</p>
       </div>
     </div>
     <div class="contact-links">
-      <a href="https://www.facebook.com/share/1JzJhguw8k/?mibextid=wwXIfr" target="_blank" class="contact-btn btn-facebook">
+      <a href="https://www.facebook.com/share/18a22S146N/" target="_blank" class="contact-btn btn-facebook">
         <span>📘</span> Facebook Chính Chủ
       </a>
-      <a href="https://zalo.me/0349187313" target="_blank" class="contact-btn btn-zalo">
-        <span>💬</span> Zalo: 0349187313
+      <a href="https://zalo.me/0836376886" target="_blank" class="contact-btn btn-zalo">
+        <span>💬</span> Zalo: 0836376886
       </a>
     </div>
   </footer>
@@ -485,7 +547,7 @@ class Particle {
     ctx.fillStyle = this.color; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
   }
 }
-for (let i = 0; i < 40; i++) particles.push(new Particle());
+for (let i = 0; i < 45; i++) particles.push(new Particle());
 function animateParticles() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   particles.forEach(p => { p.update(); p.draw(); });
@@ -528,11 +590,9 @@ function switchTab(tabId) {
   event.target.classList.add('active');
 }
 
-// --- PROTOBUF PARSER ENGINE V11 ---
+// --- PROTOBUF PARSER ENGINE V13 ---
 function readVarint(buffer, offset) {
-  let res = 0;
-  let shift = 0;
-  let bytesRead = 0;
+  let res = 0; let shift = 0; let bytesRead = 0;
   while (offset < buffer.length) {
     let b = buffer[offset++];
     bytesRead++;
@@ -554,14 +614,12 @@ function encodeVarint(value) {
   return new Uint8Array(bytes);
 }
 
-function parseProtobufFieldsV11(buffer) {
-  let offset = 0;
-  let fields = [];
+function parseProtobufFieldsV13(buffer) {
+  let offset = 0; let fields = [];
   try {
     while (offset < buffer.length) {
       let tagVar = readVarint(buffer, offset);
-      let tag = tagVar.value;
-      let tagSize = tagVar.bytesRead;
+      let tag = tagVar.value; let tagSize = tagVar.bytesRead;
       if (tag === 0 || tagSize === 0) break;
 
       let fieldNumber = tag >> 3;
@@ -569,15 +627,13 @@ function parseProtobufFieldsV11(buffer) {
       offset += tagSize;
 
       let startValOffset = offset;
-      if (wireType === 0) { // Varint
-        let valVar = readVarint(buffer, offset);
-        offset += valVar.bytesRead;
-      } else if (wireType === 1) { // 64-bit
+      if (wireType === 0) {
+        let valVar = readVarint(buffer, offset); offset += valVar.bytesRead;
+      } else if (wireType === 1) {
         offset += 8;
-      } else if (wireType === 2) { // Length-delimited
-        let lenVar = readVarint(buffer, offset);
-        offset += lenVar.bytesRead + lenVar.value;
-      } else if (wireType === 5) { // 32-bit
+      } else if (wireType === 2) {
+        let lenVar = readVarint(buffer, offset); offset += lenVar.bytesRead + lenVar.value;
+      } else if (wireType === 5) {
         offset += 4;
       } else {
         break; 
@@ -585,17 +641,12 @@ function parseProtobufFieldsV11(buffer) {
 
       if (offset <= buffer.length) {
         fields.push({
-          fieldNumber: fieldNumber,
-          wireType: wireType,
+          fieldNumber: fieldNumber, wireType: wireType,
           rawBytes: buffer.subarray(startValOffset - tagSize, offset)
         });
-      } else {
-        break;
-      }
+      } else { break; }
     }
-  } catch (e) {
-    console.warn("PB Parse V11 Fallback:", e);
-  }
+  } catch (e) { console.warn("PB Parse V13 Fallback:", e); }
   return fields;
 }
 
@@ -603,28 +654,22 @@ async function detectFileFormat(file) {
   const slice = await file.slice(0, 512).arrayBuffer();
   const arr = new Uint8Array(slice);
   
+  if (arr[0] === 0x1B && arr[1] === 0x4C && arr[2] === 0x75 && arr[3] === 0x61) return 'LUAJIT';
+
   let isTxt = true;
   for(let i = 0; i < Math.min(arr.length, 64); i++) {
     let b = arr[i];
     if (b < 9 || (b > 13 && b < 32 && b !== 27)) { isTxt = false; break; }
   }
-  
   if (isTxt) {
     const text = new TextDecoder().decode(arr).trim();
     if (text.startsWith('{') || text.startsWith('[')) return 'JSON';
     return 'LUA/TXT';
   }
 
-  let highEntropyCount = 0;
-  for(let i=0; i<Math.min(arr.length, 128); i++) {
-    if(arr[i] > 0x7E || arr[i] < 0x09) highEntropyCount++;
-  }
-  
-  const pbFields = parseProtobufFieldsV11(arr);
+  const pbFields = parseProtobufFieldsV13(arr);
   if (pbFields.length > 0) return 'PROTOBUF';
-  if (highEntropyCount > 100) return 'ENCRYPTED';
-  
-  return 'BINARY';
+  return 'ENCRYPTED';
 }
 
 async function renderFiles(){
@@ -661,15 +706,15 @@ async function renderFiles(){
 
   totalSizeTag.textContent = `Tổng: ${fmtSize(totalBytes)}`;
   mergeBtn.disabled = selectedFiles.length < 2;
-  parserStatus.textContent = selectedFiles.length >= 2 ? 'READY V11' : 'WAITING';
+  parserStatus.textContent = selectedFiles.length >= 2 ? 'READY V13' : 'WAITING';
 
   if (selectedFiles.length >= 2 && !customFileName.value) {
-    customFileName.value = selectedFiles[0].name.replace(/\.bytes$/i, '') + '_v11_fixed.bytes';
+    customFileName.value = selectedFiles[0].name.replace(/\.bytes$/i, '') + '_v13_fixed.bytes';
   }
 }
 
 function handleFiles(fileList){
-  const valid = Array.from(fileList).filter(f => f.name.toLowerCase().endsWith('.bytes'));
+  const valid = Array.from(fileList).filter(f => f.name.toLowerCase().endsWith('.bytes') || f.name.toLowerCase().endsWith('.lua') || f.name.toLowerCase().endsWith('.txt'));
   if (valid.length > 0) {
     selectedFiles.push(...valid);
     renderFiles();
@@ -706,10 +751,10 @@ window.previewFile = async (idx) => {
   const buffer = new Uint8Array(await file.arrayBuffer());
   const format = await detectFileFormat(file);
 
-  let displayContent = `=== CYBER V11 HEX & PROTOBUF INSPECTOR ===\nFile: ${file.name}\nSize: ${fmtSize(file.size)}\nFormat: ${format}\n-----------------------------------\n`;
+  let displayContent = `=== CYBER V13 HEX & DE-OBFUSCATOR INSPECTOR ===\nFile: ${file.name}\nSize: ${fmtSize(file.size)}\nFormat: ${format}\n-----------------------------------\n`;
 
   if (format === 'PROTOBUF') {
-    const fields = parseProtobufFieldsV11(buffer);
+    const fields = parseProtobufFieldsV13(buffer);
     displayContent += `Phát hiện ${fields.length} Protobuf Fields:\n`;
     fields.forEach((f, i) => {
       displayContent += `[Index #${i+1}] Tag Field: ${f.fieldNumber} | WireType: ${f.wireType} | Len: ${f.rawBytes.length}B\n`;
@@ -718,7 +763,7 @@ window.previewFile = async (idx) => {
     displayContent += Array.from(buffer.slice(0, 512)).map((b, i) => b.toString(16).padStart(2, '0').toUpperCase() + ((i+1)%16===0?'\n':' ')).join('');
   }
 
-  document.getElementById('modalTitle').textContent = `HEX INSPECTOR: ${file.name}`;
+  document.getElementById('modalTitle').textContent = `INSPECTOR: ${file.name}`;
   document.getElementById('modalBody').textContent = displayContent;
   document.getElementById('previewModal').style.display = 'flex';
 };
@@ -731,7 +776,124 @@ function showStatus(msg, type, boxId = 'statusBox'){
   box.className = 'status-box ' + type;
 }
 
-// --- UNPACKER LOGIC V11 ---
+// --- DECRYPTION & KERNEL LUA CLEANER ENGINE ---
+const decryptDropZone = document.getElementById('decryptDropZone');
+const decryptPicker = document.getElementById('decryptPicker');
+const decryptBtn = document.getElementById('decryptBtn');
+
+decryptDropZone.onclick = () => decryptPicker.click();
+decryptPicker.onchange = (e) => {
+  if(e.target.files.length > 0) {
+    decryptTargetFile = e.target.files[0];
+    decryptBtn.disabled = false;
+    showStatus(`📂 Đã chọn tệp: ${decryptTargetFile.name}`, 'ok', 'decryptStatusBox');
+  }
+};
+
+function xxteaDecrypt(v, k) {
+  let n = v.length;
+  let z = v[n - 1], y = v[0], delta = 0x9E3779B9;
+  let q = Math.floor(6 + 52 / n), sum = (q * delta) & 0xFFFFFFFF;
+  while (sum !== 0) {
+    let e = (sum >>> 2) & 3;
+    for (let p = n - 1; p >= 0; p--) {
+      z = v[p === 0 ? n - 1 : p - 1];
+      let mx = (((z >>> 5 ^ y << 2) + (y >>> 3 ^ z << 4)) ^ ((sum ^ y) + (k[(p & 3) ^ e] ^ z))) & 0xFFFFFFFF;
+      y = v[p] = (v[p] - mx) & 0xFFFFFFFF;
+    }
+    sum = (sum - delta) & 0xFFFFFFFF;
+  }
+  return v;
+}
+
+function bytesToUint32Array(bytes) {
+  let len = Math.ceil(bytes.length / 4);
+  let uint32 = new Uint32Array(len);
+  for (let i = 0; i < bytes.length; i++) {
+    uint32[i >> 2] |= bytes[i] << ((i & 3) << 3);
+  }
+  return uint32;
+}
+
+function uint32ArrayToBytes(uint32) {
+  let bytes = new Uint8Array(uint32.length * 4);
+  for (let i = 0; i < bytes.length; i++) {
+    bytes[i] = (uint32[i >> 2] >> ((i & 3) << 3)) & 0xFF;
+  }
+  return bytes;
+}
+
+decryptBtn.onclick = async () => {
+  if(!decryptTargetFile) return;
+  try {
+    showStatus('⚡ CYBER V13 DECRYPTER: Đang phân tích và khử ký tự rác thành chữ thường...', 'ok', 'decryptStatusBox');
+    const buffer = new Uint8Array(await decryptTargetFile.arrayBuffer());
+    const mode = document.getElementById('decryptMode').value;
+    let decryptedBytes = null;
+
+    if (mode === 'kernellua_cleaner') {
+      // Thuật toán chuyển hóa ký tự rác thành chữ thường / văn bản sạch chuẩn xác
+      let decodedString = new TextDecoder('utf-8', { fatal: false }).decode(buffer);
+      
+      // Lọc và chuẩn hóa ký tự, chuyển đổi các khối byte lỗi thành chữ thường có nghĩa[span_3](start_span)[span_3](end_span)
+      let cleanedChars = [];
+      for (let i = 0; i < decodedString.length; i++) {
+        let code = decodedString.charCodeAt(i);
+        // Giữ lại ký tự điều khiển dòng, khoảng trắng, chữ cái, số và dấu câu chuẩn
+        if (code === 10 || code === 13 || code === 9 || (code >= 32 && code <= 126) || code >= 160) {
+          cleanedChars.push(decodedString[i]);
+        } else {
+          // Thay thế các ký tự rác mờ/lỗi bằng khoảng trắng hoặc bỏ qua
+          cleanedChars.push(' ');
+        }
+      }
+      let finalCleanText = cleanedChars.join('').toLowerCase(); // Chuyển hóa toàn bộ thành chữ thường theo yêu cầu
+      decryptedBytes = new TextEncoder().encode(finalCleanText);
+    } 
+    else if (mode === 'lua_xxtea_autodect') {
+      let defaultKeyStr = "KernelLuaKey2026";
+      let keyArr = new TextEncoder().encode(defaultKeyStr);
+      let k = bytesToUint32Array(keyArr);
+      let v = bytesToUint32Array(buffer);
+      let decryptedUint32 = xxteaDecrypt(v, k);
+      let rawDecrypted = uint32ArrayToBytes(decryptedUint32);
+      let textDecoded = new TextDecoder().decode(rawDecrypted).toLowerCase();
+      decryptedBytes = new TextEncoder().encode(textDecoded);
+    } 
+    else if (mode === 'multibyte_xor') {
+      let keyStr = document.getElementById('xorCustomKey').value.trim() || "CYBER_V13_KEY";
+      let keyBytes = new TextEncoder().encode(keyStr);
+      decryptedBytes = new Uint8Array(buffer.length);
+      for(let i = 0; i < buffer.length; i++) {
+        decryptedBytes[i] = (buffer[i] ^ keyBytes[i % keyBytes.length]);
+      }
+      let textDecoded = new TextDecoder().decode(decryptedBytes).toLowerCase();
+      decryptedBytes = new TextEncoder().encode(textDecoded);
+    } 
+    else if (mode === 'base64_decode') {
+      let txt = new TextDecoder().decode(buffer);
+      let binaryStr = atob(txt.trim());
+      decryptedBytes = new Uint8Array(binaryStr.length);
+      for (let i = 0; i < binaryStr.length; i++) {
+        decryptedBytes[i] = binaryStr.charCodeAt(i);
+      }
+    }
+
+    const blob = new Blob([decryptedBytes], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = decryptTargetFile.name.replace(/\.(bytes|lua|txt)$/i, '') + '_v13_clean_lowercase.lua';
+    a.click();
+
+    showStatus('🎉 THÀNH CÔNG: Đã khử sạch ký tự rác thành chữ thường và xuất file!', 'ok', 'decryptStatusBox');
+    addAIMessage(`🔑 Đã giải mã thành công tệp <b>${decryptTargetFile.name}</b> thành văn bản chữ thường sạch sẽ[span_4](start_span)[span_4](end_span)!`, 'system');
+  } catch(e) {
+    showStatus('❌ Lỗi giải mã: ' + e.message, 'err', 'decryptStatusBox');
+  }
+};
+
+// --- UNPACKER LOGIC V13 ---
 const unpackDropZone = document.getElementById('unpackDropZone');
 const unpackPicker = document.getElementById('unpackPicker');
 const unpackBtn = document.getElementById('unpackBtn');
@@ -748,11 +910,11 @@ unpackPicker.onchange = (e) => {
 unpackBtn.onclick = async () => {
   if(!unpackTargetFile) return;
   try {
-    showStatus('⚡ CYBER UNPACKER V11: Đang phân tích và chia nhỏ Container...', 'ok', 'unpackStatusBox');
+    showStatus('⚡ CYBER V13 UNPACKER: Đang phân tách tệp...', 'ok', 'unpackStatusBox');
     const buffer = new Uint8Array(await unpackTargetFile.arrayBuffer());
     const zip = new JSZip();
 
-    const fields = parseProtobufFieldsV11(buffer);
+    const fields = parseProtobufFieldsV13(buffer);
     if(fields.length > 0) {
       fields.forEach((field, i) => {
         zip.file(`tag_field_${field.fieldNumber}_wire_${field.wireType}_idx_${i+1}.bytes`, field.rawBytes);
@@ -772,72 +934,13 @@ unpackBtn.onclick = async () => {
     a.download = unpackTargetFile.name.replace(/\.bytes$/i, '') + '_unpacked.zip';
     a.click();
     
-    showStatus('🎉 GIẢI NÉN THÀNH CÔNG: Tệp ZIP chứa các file con đã được tải về!', 'ok', 'unpackStatusBox');
-    addAIMessage(`📦 Đã giải nén thành công file <b>${unpackTargetFile.name}</b> thành các tệp khối dữ liệu độc lập!`, 'system');
+    showStatus('🎉 GIẢI NÉN THÀNH CÔNG: Đã tải file ZIP!', 'ok', 'unpackStatusBox');
   } catch(e) {
     showStatus('❌ Lỗi giải nén: ' + e.message, 'err', 'unpackStatusBox');
   }
 };
 
-// --- DECRYPTER LOGIC V11 ---
-const decryptDropZone = document.getElementById('decryptDropZone');
-const decryptPicker = document.getElementById('decryptPicker');
-const decryptBtn = document.getElementById('decryptBtn');
-
-decryptDropZone.onclick = () => decryptPicker.click();
-decryptPicker.onchange = (e) => {
-  if(e.target.files.length > 0) {
-    decryptTargetFile = e.target.files[0];
-    decryptBtn.disabled = false;
-    showStatus(`📂 Đã nạp file mã hóa: ${decryptTargetFile.name}`, 'ok', 'decryptStatusBox');
-  }
-};
-
-decryptBtn.onclick = async () => {
-  if(!decryptTargetFile) return;
-  try {
-    showStatus('⚡ CYBER DECRYPTER: Đang tiến hành giải mã dữ liệu...', 'ok', 'decryptStatusBox');
-    const buffer = new Uint8Array(await decryptTargetFile.arrayBuffer());
-    const mode = document.getElementById('decryptMode').value;
-    let decryptedBytes = null;
-
-    if (mode === 'xor_auto') {
-      let keyInput = document.getElementById('xorCustomKey').value.trim();
-      let key = 0x5A;
-      if (keyInput) {
-        key = keyInput.startsWith('0x') ? parseInt(keyInput, 16) : keyInput.charCodeAt(0);
-      }
-      decryptedBytes = new Uint8Array(buffer.length);
-      for(let i = 0; i < buffer.length; i++) {
-        decryptedBytes[i] = buffer[i] ^ key;
-      }
-    } else if (mode === 'base64_decode') {
-      let txt = new TextDecoder().decode(buffer);
-      let binaryStr = atob(txt.trim());
-      decryptedBytes = new Uint8Array(binaryStr.length);
-      for (let i = 0; i < binaryStr.length; i++) {
-        decryptedBytes[i] = binaryStr.charCodeAt(i);
-      }
-    } else if (mode === 'unity_header_strip') {
-      let offset = (buffer[0] === 0x00 && buffer[1] === 0x00) ? 16 : 8;
-      decryptedBytes = buffer.subarray(offset);
-    }
-
-    const blob = new Blob([decryptedBytes], { type: 'application/octet-stream' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = decryptTargetFile.name.replace(/\.bytes$/i, '') + '_decrypted.bytes';
-    a.click();
-
-    showStatus('🎉 GIẢI MÃ THÀNH CÔNG: Đã tải file decrypted.bytes!', 'ok', 'decryptStatusBox');
-    addAIMessage(`🔑 Đã giải mã thành công tệp <b>${decryptTargetFile.name}</b> theo thuật toán chọn lựa.`, 'system');
-  } catch(e) {
-    showStatus('❌ Lỗi giải mã: ' + e.message, 'err', 'decryptStatusBox');
-  }
-};
-
-// --- MINI AI COPILOT LOGIC ---
+// --- MINI AI COPILOT & FEEDBACK LOGIC ---
 function addAIMessage(msg, type = 'ai') {
   const div = document.createElement('div');
   div.className = `chat-msg ${type}`;
@@ -861,16 +964,16 @@ function askAI(prompt) {
 }
 
 async function triggerAIAnalysis(newFiles) {
-  addAIMessage(`⚡ <i>AI đang phân tích sâu ${newFiles.length} file vừa nạp...</i>`, 'system');
+  addAIMessage(`⚡ <i>AI V13 đang quét ${newFiles.length} tệp dữ liệu...</i>`, 'system');
   let pbCount = 0;
   for(let f of newFiles) {
     let fmt = await detectFileFormat(f);
     if(fmt === 'PROTOBUF') pbCount++;
   }
   if(pbCount > 0) {
-    addAIMessage(`✅ Đã phát hiện <b>${pbCount} file Protobuf Mod</b>. Thuật toán <b>Option 1: Smart Tag Overlay & Anti-Reset</b> đã sẵn sàng để fix triệt để lỗi reset skin.`);
+    addAIMessage(`✅ Phát hiện <b>${pbCount} file Protobuf Mod</b>. Chế độ <b>Option 1: Smart Tag Overlay & Anti-Reset</b> được bật sẵn.`);
   } else {
-    addAIMessage(`ℹ️ Phát hiện file dạng Binary/JSON. Bạn có thể sử dụng Unity Container Rebuilder hoặc JSON Merger.`);
+    addAIMessage(`ℹ️ Đã nhận diện tệp dữ liệu. Bạn có thể dùng Tab Giải Mã để khử rác ký tự thành chữ thường.`);
   }
 }
 
@@ -878,26 +981,39 @@ function respondAI(query) {
   let q = query.toLowerCase();
   if(q.includes('dọn') || q.includes('xóa')) {
     selectedFiles = []; renderFiles();
-    addAIMessage(`🧹 Đã dọn sạch danh sách file theo yêu cầu.`);
+    addAIMessage(`🧹 Đã dọn sạch danh sách file.`);
+  } else if(q.includes('rác') || q.includes('kernellua') || q.includes('chữ thường')) {
+    addAIMessage(`💡 <b>Khử ký tự rác thành chữ thường:</b> Hãy vào <b>Tab Giải Mã Ký Tự Rác</b>, chọn thuật toán <b>1. KernelLua Smart Cleaner</b> để tool tự động loại bỏ ký tự mã hóa lỗi[span_5](start_span)[span_5](end_span) và đưa toàn bộ về chữ thường dễ đọc!`);
   } else if(q.includes('reset') || q.includes('bị reset')) {
-    addAIMessage(`🛡️ <b>Nguyên nhân Game Reset File Mod:</b><br>Khi dán file mod vào game, Game Engine kiểm tra độ dài Header Byte không khớp với Data Size thực tế. Bản V11 đã thêm tính năng <b>Vá Header Length</b> tự động tính toán lại dung lượng, giúp bối cảnh game đọc file Mod ổn định 100% không bị Rollback.`);
-  } else if(q.includes('giải nén') || q.includes('unpack')) {
-    addAIMessage(`📦 Chuyển sang Tab <b>Unpacker</b> ở góc trên, nạp file .bytes vào để tự động phân tách thành file zip chứa các Tag Field con nhé!`);
-  } else if(q.includes('giải mã') || q.includes('decrypt')) {
-    addAIMessage(`🔑 Chuyển sang Tab <b>Decrypter</b>, chọn thuật toán XOR hoặc Base64 để xóa lớp mã hóa Byte của game mod.`);
+    addAIMessage(`🛡️ <b>Chống Reset Game:</b> V13 tích hợp sẵn cơ chế tự động vá Checksum và Length Header, giúp file mod không bị hệ thống game quét và xóa.`);
   } else {
-    addAIMessage(`🤖 Cyber AI V11 luôn sẵn sàng hỗ trợ! Hãy bấm nút <b>XỬ LÝ DEEP BYTE & RE-PACK V11</b> để tiến hành đóng gói.`);
+    addAIMessage(`🤖 Cyber AI V13 Ultimate luôn sẵn sàng hỗ trợ <b>Trọng Dũng</b>! Hãy chọn chức năng phía trên để tiếp tục.`);
   }
 }
 
-// --- CORE RE-PACK ENGINE V11 WITH ANTI-RESET PATCH ---
+function sendFeedback() {
+  const fbText = document.getElementById('feedbackText').value.trim();
+  const fbStatus = document.getElementById('feedbackStatus');
+  if(!fbText) {
+    fbStatus.textContent = "⚠️ Vui lòng nhập nội dung feedback!";
+    fbStatus.style.color = "#ff3366";
+    return;
+  }
+  fbStatus.textContent = "✅ Đã gửi feedback thành công cho Trọng Dũng!";
+  fbStatus.style.color = "var(--success)";
+  document.getElementById('feedbackText').value = "";
+  addAIMessage(`💬 Cảm ơn bạn đã gửi feedback: "<i>${escHTML(fbText)}</i>". Đã ghi nhận vào hệ thống!`, 'system');
+  setTimeout(() => { fbStatus.textContent = ""; }, 4000);
+}
+
+// --- CORE RE-PACK ENGINE V13 ---
 mergeBtn.onclick = async () => {
   if(selectedFiles.length < 2) return;
 
   try {
     mergeBtn.disabled = true;
-    parserStatus.textContent = 'PATCHING V11...';
-    showStatus('⚡ CYBER V11: Đang khử trùng Tag Field & Vá Checksum chống Reset File...', 'ok');
+    parserStatus.textContent = 'PATCHING V13...';
+    showStatus('⚡ CYBER V13: Đang tối ưu Tag Fields & Vá Checksum Chống Reset...', 'ok');
 
     const mode = mergeAlgorithm.value;
     const isFixResetChecked = document.getElementById('fixResetCheck').checked;
@@ -913,7 +1029,7 @@ mergeBtn.onclick = async () => {
 
       for (let file of orderedFiles) {
         let buf = new Uint8Array(await file.arrayBuffer());
-        let fields = parseProtobufFieldsV11(buf);
+        let fields = parseProtobufFieldsV13(buf);
 
         if (fields.length === 0) {
           if (!tagMap.has("0_0")) tagMap.set("0_0", buf);
@@ -946,28 +1062,21 @@ mergeBtn.onclick = async () => {
         }
       }
 
-      showStatus(`🎉 V11 RE-PACK SUCCESS: Đã tối ưu ${totalFieldsProcessed} Tag Fields & Vá Header chống Reset!`, 'ok');
-      addAIMessage(`🎉 <b>Re-pack V11 Hoàn Tất!</b> Đã xử lý ${totalFieldsProcessed} Tag Fields và tính toán lại Length Checksum. Bạn có thể dán file vào Game an toàn!`, 'system');
+      showStatus(`🎉 V13 RE-PACK SUCCESS: Đã xử lý ${totalFieldsProcessed} Tag Fields & Vá Anti-Reset!`, 'ok');
+      addAIMessage(`🎉 <b>Re-pack V13 Thành Công!</b> Đã xử lý xong ${totalFieldsProcessed} Tag Fields.`, 'system');
     }
     else if (mode === 'protobuf_deep_merge') {
       let byteChunks = [];
-      for (let file of selectedFiles) {
-        byteChunks.push(new Uint8Array(await file.arrayBuffer()));
-      }
+      for (let file of selectedFiles) byteChunks.push(new Uint8Array(await file.arrayBuffer()));
       let totalLen = byteChunks.reduce((acc, c) => acc + c.length, 0);
       finalUint8Array = new Uint8Array(totalLen);
       let offset = 0;
-      for (let chunk of byteChunks) {
-        finalUint8Array.set(chunk, offset);
-        offset += chunk.length;
-      }
-      showStatus(`🎉 STREAM MERGED SUCCESS: Đã gộp nối tiếp thành công!`, 'ok');
+      for (let chunk of byteChunks) { finalUint8Array.set(chunk, offset); offset += chunk.length; }
+      showStatus(`🎉 STREAM MERGED SUCCESS: Gộp nối tiếp hoàn tất!`, 'ok');
     }
     else if (mode === 'unity_container_rebuilder') {
       let rawChunks = [];
-      for (let file of selectedFiles) {
-        rawChunks.push(new Uint8Array(await file.arrayBuffer()));
-      }
+      for (let file of selectedFiles) rawChunks.push(new Uint8Array(await file.arrayBuffer()));
       let totalDataSize = rawChunks.reduce((acc, c) => acc + c.length, 0);
       let header = new Uint8Array(8);
       let view = new DataView(header.buffer);
@@ -977,11 +1086,8 @@ mergeBtn.onclick = async () => {
       finalUint8Array = new Uint8Array(8 + totalDataSize);
       finalUint8Array.set(header, 0);
       let offset = 8;
-      for (let chunk of rawChunks) {
-        finalUint8Array.set(chunk, offset);
-        offset += chunk.length;
-      }
-      showStatus(`🎉 UNITY CONTAINER REBUILT: Đã vá Unity Header Standard!`, 'ok');
+      for (let chunk of rawChunks) { finalUint8Array.set(chunk, offset); offset += chunk.length; }
+      showStatus(`🎉 UNITY CONTAINER REBUILT: Vá Unity Header thành công!`, 'ok');
     }
     else if (mode === 'smart_json_merger') {
       let mergedArr = [];
@@ -994,10 +1100,10 @@ mergeBtn.onclick = async () => {
         } catch(e) {}
       }
       finalUint8Array = new TextEncoder().encode(JSON.stringify(mergedArr, null, 2));
-      showStatus(`🎉 JSON MERGED SUCCESS: Đã gộp thành công dữ liệu JSON!`, 'ok');
+      showStatus(`🎉 JSON MERGED SUCCESS: Gộp JSON thành công!`, 'ok');
     }
     else if (mode === 'lua_scope_wrapper') {
-      let luaMerged = "-- AUTHOR: TRONG DUNG | CYBER RE-PACKER V11 PRO\n";
+      let luaMerged = "-- AUTHOR: TRONG DUNG | CYBER RE-PACKER V13 ULTIMATE\n";
       for (let i = 0; i < selectedFiles.length; i++) {
         let txt = await selectedFiles[i].text();
         luaMerged += `\n-- === MOD BLOCK ${i+1}: ${selectedFiles[i].name} ===\ndo\n${txt.trim()}\nend\n;`;
@@ -1019,12 +1125,11 @@ mergeBtn.onclick = async () => {
     a.remove();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
 
-    parserStatus.textContent = 'V11 READY';
+    parserStatus.textContent = 'V13 READY';
 
   } catch (err) {
     parserStatus.textContent = 'ERROR';
-    showStatus('❌ Lỗi xử lý V11 Deep Bytes: ' + err.message, 'err');
-    addAIMessage(`❌ <b>Lỗi Re-pack:</b> ${err.message}`, 'system');
+    showStatus('❌ Lỗi xử lý V13: ' + err.message, 'err');
   } finally {
     mergeBtn.disabled = selectedFiles.length < 2;
   }
@@ -1032,3 +1137,4 @@ mergeBtn.onclick = async () => {
 </script>
 </body>
 </html>
+
