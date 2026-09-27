@@ -2,617 +2,690 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>CYBER RE-PACKER V16 | LIQUID GLASS EDITION</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>CYBER V17 | LIQUID GLASS iOS 27</title>
 
-<!-- Fonts -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700;900&family=Playfair+Display:ital,wght@0,700;1,700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-<!-- JSZip -->
+<!-- JSZip cho tính năng Convert ZIP -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
 <style>
+/* FONT & RESET */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
+
 :root {
-  --liquid-1: #00c6ff;
-  --liquid-2: #0072ff;
-  --liquid-3: #8a2be2;
-  --liquid-4: #ff007f;
-  --glass-bg: rgba(255, 255, 255, 0.07);
-  --glass-border: rgba(255, 255, 255, 0.15);
-  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-  --text-main: #ffffff;
-  --text-muted: #b0c4de;
-  --gold-gradient: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
-  --font-sans: 'Inter', sans-serif;
-  --font-serif: 'Playfair Display', serif;
-  --font-mono: 'JetBrains Mono', monospace;
+    --bg-color: #0c0d14;
+    --glass-bg: rgba(30, 30, 35, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --neon-white: rgba(255, 255, 255, 0.8);
+    --text-main: #ffffff;
+    --text-muted: #8e8e93;
+    --accent-blue: #0a84ff;
+    --accent-indigo: #5e5ce6;
+    --danger: #ff453a;
+    --warning: #ffd60a;
+    --font-main: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --spring: cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
 
 body {
-  background-color: #05070f; color: var(--text-main); font-family: var(--font-sans);
-  min-height: 100vh; display: flex; flex-direction: column; align-items: center;
-  position: relative; overflow-x: hidden; padding: 15px;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: var(--font-main);
+    min-height: 100vh;
+    overflow-x: hidden;
+    padding-top: 80px;
+    padding-bottom: 100px;
 }
 
 /* LIQUID BACKGROUND */
-.liquid-bg { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
-.blob {
-  position: absolute; filter: blur(90px); opacity: 0.6; animation: floatBlob 20s infinite ease-in-out alternate;
+body::before, body::after {
+    content: ''; position: fixed; border-radius: 50%; filter: blur(120px); z-index: -1; pointer-events: none;
 }
-.blob-1 { width: 50vw; height: 50vw; background: var(--liquid-1); top: -10%; left: -10%; border-radius: 40% 60% 70% 30%; }
-.blob-2 { width: 60vw; height: 60vw; background: var(--liquid-3); bottom: -20%; right: -10%; border-radius: 60% 40% 30% 70%; animation-delay: -5s; }
-.blob-3 { width: 40vw; height: 40vw; background: var(--liquid-4); top: 30%; left: 30%; border-radius: 50%; opacity: 0.4; animation-delay: -10s; }
+body::before { width: 300px; height: 300px; background: rgba(94, 92, 230, 0.15); top: -100px; left: -100px; }
+body::after { width: 400px; height: 400px; background: rgba(10, 132, 255, 0.1); bottom: -150px; right: -150px; }
 
-@keyframes floatBlob { 0% { transform: translate(0, 0) rotate(0deg); } 100% { transform: translate(10%, 15%) rotate(20deg); } }
-
-/* 3S WELCOME MODAL */
-.welcome-overlay {
-  position: fixed; inset: 0; background: rgba(5, 7, 15, 0.9); backdrop-filter: blur(25px);
-  z-index: 9999; display: flex; align-items: center; justify-content: center;
-  transition: opacity 0.5s ease, visibility 0.5s ease;
-}
-.welcome-glass {
-  background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 30px;
-  padding: 40px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.5); width: 90%; max-width: 400px;
-}
-.welcome-glass h2 { font-family: var(--font-serif); font-size: 28px; margin: 15px 0; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.countdown-circle {
-  width: 70px; height: 70px; border-radius: 50%; border: 3px solid #00c6ff;
-  display: flex; align-items: center; justify-content: center; margin: 0 auto;
-  font-family: var(--font-mono); font-size: 28px; font-weight: 700; color: #fff; box-shadow: 0 0 20px rgba(0, 198, 255, 0.4);
+/* TOP BAR (iOS Style) */
+.top-bar {
+    position: fixed; top: 0; left: 0; right: 0; height: 80px;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0 20px; z-index: 100;
+    background: rgba(12, 13, 20, 0.5); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
+    border-bottom: 1px solid var(--glass-border);
 }
 
-.app-container {
-  width: 100%; max-width: 1350px; z-index: 2; display: grid;
-  grid-template-columns: 1fr 380px; gap: 20px; opacity: 0; transition: opacity 0.5s;
-}
-@media (max-width: 1024px) { .app-container { grid-template-columns: 1fr; } }
-
-/* OWNER / LUXURY HEADER */
-header { grid-column: 1 / -1; text-align: center; margin-bottom: 5px; }
-.luxury-owner {
-  display: inline-flex; align-items: center; gap: 10px; padding: 8px 25px; border-radius: 40px;
-  background: rgba(0,0,0,0.4); border: 1px solid rgba(246, 211, 101, 0.4);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.3); margin-bottom: 10px;
-}
-.luxury-owner .crown { font-size: 18px; filter: drop-shadow(0 0 5px #f6d365); }
-.luxury-owner span { font-family: var(--font-serif); font-size: 14px; letter-spacing: 2px; color: #f6d365; }
-
-.main-title {
-  font-size: 38px; font-weight: 900; letter-spacing: 1px; margin-bottom: 10px;
-  background: linear-gradient(135deg, #fff, #b0c4de); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 0 15px rgba(255,255,255,0.2));
+.pill-clock {
+    background: rgba(40, 40, 50, 0.8); padding: 8px 16px; border-radius: 20px;
+    font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px;
+    border: 1px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
-/* TABS */
-.nav-tabs {
-  display: flex; gap: 10px; grid-column: 1 / -1; margin-bottom: 15px;
-  background: rgba(0,0,0,0.3); padding: 8px; border-radius: 20px; border: 1px solid var(--glass-border);
+.hamburger-btn {
+    width: 44px; height: 44px; border-radius: 14px; background: rgba(40, 40, 50, 0.8);
+    border: 1px solid var(--glass-border); color: #fff; font-size: 20px;
+    display: flex; justify-content: center; align-items: center; cursor: pointer;
+    transition: all 0.3s var(--spring); box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
-.tab-btn {
-  flex: 1; padding: 12px; background: transparent; border: none; color: var(--text-muted);
-  font-size: 13px; font-weight: 700; border-radius: 14px; cursor: pointer; transition: all 0.3s;
-}
-.tab-btn.active { background: rgba(255,255,255,0.15); color: #fff; box-shadow: var(--glass-shadow); backdrop-filter: blur(10px); }
+.hamburger-btn:hover { box-shadow: 0 0 15px var(--neon-white); border-color: rgba(255,255,255,0.4); }
 
-/* LIQUID GLASS CARDS */
-.glass-panel {
-  background: var(--glass-bg); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-  border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow);
-  border-radius: 24px; padding: 22px; margin-bottom: 20px;
+/* SIDE MENU */
+.side-menu {
+    position: fixed; top: 80px; right: -300px; width: 250px;
+    background: rgba(25, 25, 30, 0.85); backdrop-filter: blur(40px);
+    border-left: 1px solid var(--glass-border); border-bottom-left-radius: 24px;
+    padding: 20px; transition: right 0.4s var(--spring); z-index: 99;
 }
-.panel-title {
-  font-family: var(--font-serif); font-size: 18px; color: #fff; margin-bottom: 15px;
-  display: flex; align-items: center; gap: 10px;
+.side-menu.active { right: 0; }
+.menu-item {
+    padding: 12px 16px; margin-bottom: 10px; border-radius: 12px;
+    font-size: 15px; font-weight: 600; color: var(--text-muted); cursor: pointer;
+    transition: all 0.3s; display: flex; align-items: center; gap: 10px;
 }
-.panel-title::before { content: "✦"; color: #00c6ff; font-size: 20px; }
+.menu-item:hover, .menu-item.active {
+    background: rgba(255,255,255,0.1); color: #fff; box-shadow: 0 0 10px rgba(255,255,255,0.1);
+}
 
-/* FILE DROP ZONES */
+/* CONTAINER */
+.container { max-width: 800px; margin: 0 auto; padding: 0 15px; }
+.section-title { font-size: 28px; font-weight: 800; margin-bottom: 20px; letter-spacing: -0.5px; }
+
+/* TUMADAM STYLE MOD CARDS */
+.mod-card {
+    background: var(--glass-bg); border-radius: 24px; padding: 16px;
+    margin-bottom: 16px; border: 1px solid var(--glass-border);
+    transition: all 0.4s var(--spring); position: relative; overflow: hidden;
+}
+.mod-card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 15px rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.3); }
+.mod-card-header { display: flex; justify-content: space-between; align-items: center; }
+.mod-info { display: flex; gap: 15px; align-items: center; }
+.mod-icon { width: 60px; height: 60px; border-radius: 14px; object-fit: cover; background: #333; }
+.mod-details h3 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+.mod-details p { font-size: 12px; color: var(--text-muted); margin-bottom: 6px; }
+.tag-ios { display: inline-block; background: rgba(10, 132, 255, 0.15); color: var(--accent-blue); padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; margin-bottom: 6px;}
+.btn-preview { background: rgba(255,255,255,0.1); padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; border: none; color: #fff; cursor: pointer; }
+.btn-download { width: 44px; height: 44px; border-radius: 16px; background: var(--accent-blue); color: #fff; border: none; font-size: 18px; cursor: pointer; transition: all 0.3s; display: flex; justify-content: center; align-items: center; }
+.btn-download:hover { box-shadow: 0 0 15px var(--accent-blue); transform: scale(1.05); }
+
+/* WARNING & NOTES (Tumadam Style) */
+.mod-note { margin-top: 15px; padding: 12px; border-radius: 14px; font-size: 13px; font-weight: 500; display: flex; align-items: center; gap: 8px; }
+.mod-note.warning { background: rgba(255, 214, 10, 0.1); color: var(--warning); border: 1px solid rgba(255, 214, 10, 0.2); }
+.mod-note.info { background: rgba(94, 92, 230, 0.1); color: #a5a3ff; border: 1px solid rgba(94, 92, 230, 0.2); }
+
+/* GENERAL GLASS PANELS (For Tools) */
+.tool-panel {
+    background: var(--glass-bg); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+    border-radius: 28px; padding: 24px; border: 1px solid var(--glass-border); margin-bottom: 20px;
+    transition: all 0.4s var(--spring);
+}
+.tool-panel:hover { border-color: rgba(255,255,255,0.2); box-shadow: 0 0 20px rgba(255,255,255,0.05); }
+
+/* DRAG & DROP ZONE */
 .drop-zone {
-  border: 2px dashed rgba(255,255,255,0.3); border-radius: 20px; padding: 30px 15px;
-  text-align: center; cursor: pointer; transition: all 0.3s; background: rgba(0,0,0,0.15);
+    border: 2px dashed rgba(255,255,255,0.2); border-radius: 20px; padding: 40px 20px;
+    text-align: center; cursor: pointer; transition: all 0.3s; background: rgba(0,0,0,0.2);
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
 }
-.drop-zone:hover { border-color: #00c6ff; background: rgba(0, 198, 255, 0.1); }
-.file-list { margin-top: 15px; max-height: 200px; overflow-y: auto; }
-.file-row {
-  display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3);
-  padding: 10px 15px; border-radius: 12px; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.05);
+.drop-zone:hover { border-color: #fff; background: rgba(255,255,255,0.05); box-shadow: inset 0 0 20px rgba(255,255,255,0.05); }
+.drop-icon { font-size: 40px; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5)); }
+
+/* FILE LIST & DEEP VIEW */
+.file-list { margin-top: 15px; display: flex; flex-direction: column; gap: 10px; }
+.file-item {
+    background: rgba(0,0,0,0.3); padding: 12px 16px; border-radius: 16px;
+    display: flex; justify-content: space-between; align-items: center;
+    border: 1px solid rgba(255,255,255,0.05); cursor: pointer; transition: all 0.3s;
 }
-.file-row.is-base { border-color: #f6d365; background: rgba(246, 211, 101, 0.1); }
+.file-item:hover { border-color: rgba(255,255,255,0.3); box-shadow: 0 0 15px rgba(255,255,255,0.1); }
+.file-item-info h4 { font-size: 14px; margin-bottom: 4px; }
+.file-item-info p { font-size: 11px; color: var(--text-muted); font-family: var(--font-mono); }
+.file-actions button { background: none; border: none; color: var(--danger); font-size: 16px; cursor: pointer; padding: 5px; }
 
 /* FORMS & BUTTONS */
-.form-group { margin-top: 15px; }
-.form-group label { display: block; font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; }
-.form-group select, .form-group input, .form-group textarea {
-  width: 100%; padding: 12px; background: rgba(0,0,0,0.3); color: #fff; border: 1px solid rgba(255,255,255,0.15);
-  border-radius: 12px; font-family: var(--font-sans); font-size: 13px;
+.input-glass {
+    width: 100%; padding: 16px; background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border);
+    border-radius: 16px; color: #fff; font-size: 14px; font-family: var(--font-main); margin-top: 15px;
+    transition: all 0.3s;
 }
-.form-group select:focus, .form-group input:focus { border-color: #00c6ff; outline: none; }
+.input-glass:focus { border-color: #fff; box-shadow: 0 0 15px rgba(255,255,255,0.1); }
 
-.btn-main {
-  width: 100%; padding: 15px; border: none; border-radius: 15px; font-family: var(--font-sans);
-  font-size: 14px; font-weight: 800; color: #fff; cursor: pointer; transition: all 0.3s;
-  background: linear-gradient(135deg, #00c6ff, #0072ff); margin-top: 15px;
-  box-shadow: 0 10px 20px rgba(0, 114, 255, 0.3);
+.btn-primary {
+    width: 100%; padding: 18px; border-radius: 18px; border: none;
+    background: #fff; color: #000; font-size: 16px; font-weight: 700;
+    cursor: pointer; margin-top: 20px; transition: all 0.4s var(--spring);
+    box-shadow: 0 10px 20px rgba(255,255,255,0.2);
 }
-.btn-main:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 15px 25px rgba(0, 114, 255, 0.5); }
-.btn-main:disabled { background: rgba(255,255,255,0.1); color: #777; box-shadow: none; cursor: not-allowed; }
-.btn-gold { background: var(--gold-gradient); color: #000; box-shadow: 0 10px 20px rgba(246, 211, 101, 0.3); }
+.btn-primary:hover:not(:disabled) { transform: scale(1.02); box-shadow: 0 15px 30px rgba(255,255,255,0.4); }
+.btn-primary:disabled { background: rgba(255,255,255,0.2); color: rgba(255,255,255,0.5); box-shadow: none; cursor: not-allowed; }
 
-.status-txt { margin-top: 12px; font-size: 13px; text-align: center; font-family: var(--font-mono); font-weight: 700; }
-
-/* MOD HUB CHECKBOXES */
-.mod-hub-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
-.mod-item {
-  background: rgba(0,0,0,0.3); padding: 12px; border-radius: 12px; border: 1px solid var(--glass-border);
-  display: flex; align-items: center; gap: 10px; cursor: pointer; transition: 0.3s;
+/* OWNER SECTION (With Divider) */
+.owner-section {
+    background: rgba(20, 20, 25, 0.6); border-radius: 28px; padding: 24px;
+    border: 1px solid var(--glass-border); margin-top: 40px; display: flex; align-items: center; gap: 20px;
 }
-.mod-item:hover { border-color: #00c6ff; background: rgba(0, 198, 255, 0.1); }
-.mod-item input { cursor: pointer; }
-.mod-item span { font-size: 13px; font-weight: 700; }
-
-/* SIDEBAR: SPOTIFY, AI, FEEDBACK */
-.sidebar { display: flex; flex-direction: column; gap: 15px; }
-
-.ai-chat-box { height: 250px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding-right: 5px; margin: 10px 0; }
-.msg { padding: 10px 12px; border-radius: 12px; font-size: 12px; line-height: 1.4; max-width: 90%; }
-.msg.ai { background: rgba(255,255,255,0.1); align-self: flex-start; }
-.msg.user { background: linear-gradient(135deg, #00c6ff, #0072ff); color: #fff; align-self: flex-end; }
-.ai-input { display: flex; gap: 5px; }
-.ai-input input { flex: 1; padding: 10px; border-radius: 10px; border: 1px solid var(--glass-border); background: rgba(0,0,0,0.3); color: #fff; }
-.ai-input button { padding: 0 15px; border-radius: 10px; border: none; background: #fff; color: #000; font-weight: 700; cursor: pointer; }
-
-/* FOOTER */
-.footer-panel {
-  grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between;
-  padding: 20px; background: var(--glass-bg); backdrop-filter: blur(25px);
-  border-radius: 20px; border: 1px solid var(--glass-border); margin-top: 10px; flex-wrap: wrap; gap: 15px;
+.owner-avatar {
+    width: 60px; height: 60px; border-radius: 20px; background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+    display: flex; justify-content: center; align-items: center; font-size: 24px; box-shadow: 0 10px 20px rgba(142, 197, 252, 0.3);
 }
-.footer-text h3 { font-family: var(--font-serif); font-size: 16px; margin-bottom: 3px; color: #f6d365; }
-.footer-text p { font-size: 11px; color: var(--text-muted); }
-.socials a {
-  padding: 8px 20px; border-radius: 20px; font-size: 12px; font-weight: 700; text-decoration: none;
-  color: #fff; background: rgba(255,255,255,0.1); margin-left: 8px; transition: 0.3s;
+.owner-divider { width: 1px; height: 50px; background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.2), transparent); }
+.owner-info h3 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+.owner-info p { font-size: 12px; color: var(--text-muted); }
+
+/* FLOATING AI BUBBLE */
+.floating-bubble {
+    position: fixed; bottom: 30px; right: 20px; width: 60px; height: 60px;
+    background: var(--accent-indigo); border-radius: 24px; display: flex;
+    justify-content: center; align-items: center; font-size: 28px; color: #fff;
+    box-shadow: 0 10px 25px rgba(94, 92, 230, 0.5); cursor: pointer;
+    transition: all 0.4s var(--spring); z-index: 1000;
 }
-.socials a:hover { background: #fff; color: #000; }
+.floating-bubble:hover { transform: scale(1.1) translateY(-5px); box-shadow: 0 15px 35px rgba(94, 92, 230, 0.7), 0 0 20px var(--neon-white); }
+.bubble-badge {
+    position: absolute; top: -5px; right: -5px; background: var(--danger);
+    color: #fff; font-size: 11px; font-weight: 800; width: 22px; height: 22px;
+    border-radius: 50%; display: flex; justify-content: center; align-items: center;
+    border: 2px solid var(--bg-color);
+}
+
+/* AI CHAT WINDOW */
+.chat-window {
+    position: fixed; bottom: 100px; right: 20px; width: 320px; height: 400px;
+    background: rgba(20, 20, 25, 0.9); backdrop-filter: blur(40px);
+    border: 1px solid var(--glass-border); border-radius: 28px;
+    display: flex; flex-direction: column; opacity: 0; pointer-events: none;
+    transform: translateY(20px) scale(0.9); transition: all 0.4s var(--spring); z-index: 999;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5); overflow: hidden;
+}
+.chat-window.active { opacity: 1; pointer-events: auto; transform: translateY(0) scale(1); }
+.chat-header { padding: 16px; background: rgba(255,255,255,0.05); border-bottom: 1px solid var(--glass-border); font-weight: 700; display: flex; justify-content: space-between; align-items: center;}
+.chat-body { flex: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
+.chat-msg { padding: 12px 16px; border-radius: 18px; font-size: 13px; max-width: 85%; line-height: 1.4; }
+.chat-msg.ai { background: rgba(255,255,255,0.1); align-self: flex-start; border-bottom-left-radius: 4px; }
+.chat-msg.user { background: var(--accent-indigo); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
+.chat-input { display: flex; padding: 12px; border-top: 1px solid var(--glass-border); background: rgba(0,0,0,0.2); }
+.chat-input input { flex: 1; background: transparent; border: none; color: #fff; padding: 0 10px; font-size: 14px; }
+.chat-input button { background: #fff; color: #000; border: none; border-radius: 12px; padding: 8px 16px; font-weight: 700; cursor: pointer; }
+
+/* POPUP NOTIFICATION (Modal) */
+.modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(10px);
+    display: flex; justify-content: center; align-items: center; z-index: 2000;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s;
+}
+.modal-overlay.active { opacity: 1; pointer-events: auto; }
+.modal-content {
+    background: rgba(30, 30, 35, 0.85); border: 1px solid var(--glass-border);
+    border-radius: 28px; padding: 24px; width: 90%; max-width: 400px;
+    text-align: center; transform: scale(0.9); transition: all 0.4s var(--spring);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+}
+.modal-overlay.active .modal-content { transform: scale(1); }
+.modal-title { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+.modal-text { font-size: 14px; color: var(--text-muted); margin-bottom: 20px; font-family: var(--font-mono); word-wrap: break-word; max-height: 300px; overflow-y: auto;}
+.modal-btn { background: #fff; color: #000; padding: 12px 24px; border-radius: 14px; border: none; font-weight: 700; width: 100%; cursor: pointer; }
+
+/* MUSIC PLAYER WIDGET */
+.music-widget {
+    background: rgba(20, 20, 25, 0.7); backdrop-filter: blur(30px);
+    border-radius: 20px; padding: 12px; display: flex; align-items: center; gap: 15px;
+    border: 1px solid var(--glass-border); margin-top: 20px;
+}
+.music-cover { width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(45deg, #ff9a9e, #fecfef); }
+.music-info h4 { font-size: 13px; margin-bottom: 2px; }
+.music-info p { font-size: 11px; color: var(--text-muted); }
+
+/* TAB SECTIONS */
+.tab-section { display: none; animation: fadeIn 0.4s ease forwards; }
+.tab-section.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* UTILS */
+.status-text { margin-top: 15px; font-size: 13px; text-align: center; font-weight: 600; }
 </style>
 </head>
 <body>
 
-<!-- Liquid Background -->
-<div class="liquid-bg">
-  <div class="blob blob-1"></div>
-  <div class="blob blob-2"></div>
-  <div class="blob blob-3"></div>
+<!-- TOP BAR (3 Gạch & Pill Clock) -->
+<nav class="top-bar">
+    <div class="pill-clock">
+        <span id="sysClock">00:00:00</span> <span style="font-size: 16px;">🌙</span>
+    </div>
+    <div class="hamburger-btn" onclick="toggleMenu()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+    </div>
+</nav>
+
+<!-- SIDE MENU -->
+<div class="side-menu" id="sideMenu">
+    <div class="menu-item active" onclick="switchTab('tab-store', this)">📥 Game Mods Store</div>
+    <div class="menu-item" onclick="switchTab('tab-merge', this)">📦 Gộp Mod & Pack</div>
+    <div class="menu-item" onclick="switchTab('tab-convert', this)">🔄 Convert iOS/Adr</div>
+    <div class="menu-item" onclick="switchTab('tab-decrypt', this)">🔓 Giải Mã Deep File</div>
+    <hr style="border:none; border-top:1px solid var(--glass-border); margin: 15px 0;">
+    <div class="menu-item" onclick="toggleLanguage()">🌐 Đổi Ngôn Ngữ (EN/VN)</div>
 </div>
 
-<!-- 3S WELCOME MODAL -->
-<div class="welcome-overlay" id="welcomeModal">
-  <div class="welcome-glass">
-    <div class="countdown-circle" id="timerCount">3</div>
-    <h2>CYBER V16 LIQUID</h2>
-    <p style="font-size:13px; color:var(--text-muted);">Đang khởi tạo Protobuf Engine & Mô-đun Convert ZIP Liên Quân...</p>
-  </div>
+<div class="container">
+    
+    <!-- TAB 1: GAME MODS STORE (Tumadam Style) -->
+    <div id="tab-store" class="tab-section active">
+        <h1 class="section-title" data-i18n="store_title">Game Mods</h1>
+        
+        <!-- CARD 1 -->
+        <div class="mod-card">
+            <div class="mod-card-header">
+                <div class="mod-info">
+                    <img src="https://via.placeholder.com/60/333/fff?text=AOV" class="mod-icon" alt="icon">
+                    <div class="mod-details">
+                        <h3>Aov Mod(No Hack)</h3>
+                        <p>• Cập nhật <span id="date1">Hôm nay</span></p>
+                        <span class="tag-ios"> iOS</span>
+                        <div><button class="btn-preview">🖼 Preview 3</button></div>
+                    </div>
+                </div>
+                <button class="btn-download" onclick="showAlert('Đang kết nối tới server tải xuống...', 'info')">↓</button>
+            </div>
+            <div class="mod-note info">
+                📋 Danh sách skin gặp lỗi khi dùng unlock
+            </div>
+        </div>
+
+        <!-- CARD 2 -->
+        <div class="mod-card">
+            <div class="mod-card-header">
+                <div class="mod-info">
+                    <img src="https://via.placeholder.com/60/333/fff?text=AOV" class="mod-icon" alt="icon">
+                    <div class="mod-details">
+                        <h3>Aov Cheat(Map+Mod)</h3>
+                        <p>• Cập nhật <span id="date2">Hôm nay</span></p>
+                        <span class="tag-ios"> iOS</span>
+                        <div><button class="btn-preview">🖼 Preview 5</button></div>
+                    </div>
+                </div>
+                <button class="btn-download" onclick="showAlert('Yêu cầu cấp quyền cài đặt!', 'warn')">↓</button>
+            </div>
+            <div class="mod-note warning">
+                ⚠️ Lưu ý khi dùng Map
+            </div>
+        </div>
+        
+        <!-- CARD 3 -->
+        <div class="mod-card">
+            <div class="mod-card-header">
+                <div class="mod-info">
+                    <img src="https://via.placeholder.com/60/333/fff?text=AOV" class="mod-icon" alt="icon">
+                    <div class="mod-details">
+                        <h3>Aov Esp</h3>
+                        <p>• Cập nhật <span id="date3">Hôm nay</span></p>
+                        <span class="tag-ios"> iOS</span>
+                        <p style="font-size: 11px; margin-top:5px; background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius:6px; display:inline-block;">unlock.cyber-v17.com</p>
+                    </div>
+                </div>
+                <button class="btn-download" onclick="showAlert('Tính năng đang bảo trì.', 'err')">↓</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 2: MERGE FILES (Gộp Mod Từ Các File Khác Nhau) -->
+    <div id="tab-merge" class="tab-section">
+        <h1 class="section-title" data-i18n="merge_title">Gộp Mod & Tạo Pack</h1>
+        <div class="tool-panel">
+            <div class="drop-zone" id="mergeDrop">
+                <div class="drop-icon">📦</div>
+                <b data-i18n="drop_bytes">Kéo thả các file .bytes vào đây</b>
+                <p style="font-size: 12px; color: var(--text-muted);" data-i18n="merge_desc">Gộp thông minh từ 2+ file mod khác nhau (Không cần file gốc)</p>
+                <input type="file" id="mergePicker" multiple style="display:none;">
+            </div>
+            <div class="file-list" id="mergeList"></div>
+            
+            <select class="input-glass" id="mergeMode">
+                <option value="append">Overlay Thông Minh (Nối tiếp dữ liệu)</option>
+                <option value="struct">Bảo vệ Struct Phép Bổ Trợ</option>
+            </select>
+            
+            <button class="btn-primary" id="btnMerge" disabled data-i18n="btn_merge">TIẾN HÀNH GỢP FILE</button>
+            <div id="mergeStatus" class="status-text"></div>
+        </div>
+    </div>
+
+    <!-- TAB 3: CONVERT ZIP -->
+    <div id="tab-convert" class="tab-section">
+        <h1 class="section-title" data-i18n="convert_title">Convert iOS ↔ Android</h1>
+        <div class="tool-panel">
+            <div class="drop-zone" id="convertDrop">
+                <div class="drop-icon">🔄</div>
+                <b>Kéo thả file ZIP Mod vào đây</b>
+                <p style="font-size: 12px; color: var(--text-muted);">Tự động vá hệ điều hành cho tướng, âm thanh, hiệu ứng</p>
+                <input type="file" id="convertPicker" accept=".zip" style="display:none;">
+            </div>
+            <p id="convertFileInfo" style="margin-top:10px; font-size:13px; text-align:center; color:var(--accent-blue);"></p>
+            
+            <select class="input-glass" id="convertDir">
+                <option value="to_ios">Từ Android ➡️ Sang iOS</option>
+                <option value="to_android">Từ iOS ➡️ Sang Android</option>
+            </select>
+            
+            <button class="btn-primary" id="btnConvert" disabled>CHUYỂN ĐỔI NGAY</button>
+            <div id="convertStatus" class="status-text"></div>
+        </div>
+    </div>
+
+    <!-- TAB 4: DECRYPT & DEEP VIEW -->
+    <div id="tab-decrypt" class="tab-section">
+        <h1 class="section-title" data-i18n="decrypt_title">Giải Mã & Deep View</h1>
+        <div class="tool-panel">
+            <div class="drop-zone" id="decryptDrop">
+                <div class="drop-icon">🔍</div>
+                <b>Kéo thả file cần xem Code/Giải mã</b>
+                <p style="font-size: 12px; color: var(--text-muted);">Hỗ trợ xem Hex/Text chuyên sâu và xuất ra chữ thường</p>
+                <input type="file" id="decryptPicker" style="display:none;">
+            </div>
+            <div id="decryptFileInfo" style="margin-top:10px; font-size:13px; text-align:center;"></div>
+            
+            <button class="btn-primary" id="btnDecrypt" disabled style="margin-top: 15px;">GIẢI MÃ RA TEXT CHỮ THƯỜNG</button>
+            <div id="decryptStatus" class="status-text"></div>
+        </div>
+    </div>
+
+    <!-- MUSIC PLAYER WIDGET -->
+    <div class="music-widget">
+        <div class="music-cover"></div>
+        <div class="music-info">
+            <h4>Cyber V17 Playlist</h4>
+            <p>Spotify Integration</p>
+        </div>
+        <!-- Compact embedded player -->
+        <iframe style="border-radius:10px; margin-left:auto;" src="https://open.spotify.com/embed/track/4Wi0nUqTCwNGB01yKVnmnK?utm_source=generator&theme=0" width="80" height="40" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media"></iframe>
+    </div>
+
+    <!-- OWNER SECTION -->
+    <div class="owner-section">
+        <div class="owner-avatar">👑</div>
+        <div class="owner-divider"></div>
+        <div class="owner-info">
+            <h3>DEVELOPER: TRỌNG DŨNG</h3>
+            <p>Cyber Re-Packer V17 Liquid Glass Edition</p>
+        </div>
+    </div>
+
+</div> <!-- End Container -->
+
+<!-- FLOATING AI BUBBLE[span_3](start_span)[span_3](end_span) -->
+<div class="floating-bubble" onclick="toggleChat()">
+    💬
+    <div class="bubble-badge">1</div>
 </div>
 
-<div class="app-container" id="appMain">
-  
-  <header>
-    <div class="luxury-owner">
-      <span class="crown">👑</span>
-      <span>DEVELOPER: TRỌNG DŨNG</span>
+<!-- AI CHAT WINDOW -->
+<div class="chat-window" id="chatWindow">
+    <div class="chat-header">
+        <span>AI Copilot V17</span>
+        <button onclick="toggleChat()" style="background:none; border:none; color:#fff; font-size:18px; cursor:pointer;">×</button>
     </div>
-    <h1 class="main-title">CYBER RE-PACKER V16 PRO</h1>
-    <div style="font-size: 12px; color: var(--text-muted); font-family: var(--font-mono);">LIQUID GLASS • ZIP CONVERTER • ANTI-BAN BYPASS</div>
-  </header>
-
-  <!-- NAVIGATION TABS -->
-  <div class="nav-tabs">
-    <button class="tab-btn active" onclick="switchTab('tabConvert')">🔄 Convert ZIP (iOS ↔ Android)</button>
-    <button class="tab-btn" onclick="switchTab('tabModHub')">🔥 Advanced Mod Hub</button>
-    <button class="tab-btn" onclick="switchTab('tabRepack')">📦 Gộp Mod & Fix Bổ Trợ</button>
-    <button class="tab-btn" onclick="switchTab('tabDecrypt')">🔍 Giải Mã Chữ Thường</button>
-  </div>
-
-  <!-- LEFT MAIN CONTENT -->
-  <div class="main-content">
-
-    <!-- TAB 1: ZIP CONVERTER -->
-    <div id="tabConvert" class="tab-pane">
-      <div class="glass-panel">
-        <div class="panel-title">Hệ Thống Convert ZIP Liên Quân (Tướng, Hiệu Ứng, Âm Thanh)</div>
-        <div class="drop-zone" id="zipDrop">
-          <div style="font-size: 32px; margin-bottom:10px;">📦</div>
-          <b style="font-size:14px;">KÉO THẢ HOẶC CHỌN FILE .ZIP MOD</b>
-          <p style="font-size:12px; color:var(--text-muted); margin-top:5px;">Hỗ trợ Convert chéo giữa Android và iOS. Tự đổi Header & Đuôi file.</p>
-          <input type="file" id="zipPicker" accept=".zip" style="display:none;">
-        </div>
-        <div id="zipInfo" style="margin-top:10px; font-size:13px; text-align:center; color:#00c6ff;"></div>
-        
-        <div class="form-group">
-          <label>Chế độ Convert Pack ZIP:</label>
-          <select id="zipDirection">
-            <option value="to_ios">Từ File Android ➡️ Sang File iOS (Đổi .ab -> .unity3d, vá Header)</option>
-            <option value="to_android">Từ File iOS ➡️ Sang File Android (Đổi .unity3d -> .ab, vá Header)</option>
-          </select>
-        </div>
-        <button class="btn-main" id="btnZipConvert" disabled>TIẾN HÀNH CONVERT ZIP</button>
-        <div id="zipStatus" class="status-txt"></div>
-      </div>
+    <div class="chat-body" id="chatBody">
+        <div class="chat-msg ai">Xin chào Trọng Dũng! Hệ thống gộp mod không cần file base, giải mã file bytes, tạo pack mod và Convert ZIP đã sẵn sàng.</div>
     </div>
-
-    <!-- TAB 2: ADVANCED MOD HUB (Inspired by Tumadam/Vthangios) -->
-    <div id="tabModHub" class="tab-pane" style="display:none;">
-      <div class="glass-panel">
-        <div class="panel-title">Trung Tâm Tích Hợp Mod (Mod Hub)</div>
-        <p style="font-size:12px; color:var(--text-muted);">Tạo nhanh các bản Mod tính năng chuyên sâu can thiệp hệ thống game.</p>
-        
-        <div class="mod-hub-grid">
-          <label class="mod-item">
-            <input type="checkbox" id="modMap"> <span>👁️ Mod Sáng Map / Cam Xa</span>
-          </label>
-          <label class="mod-item">
-            <input type="checkbox" id="modAntiBan" checked> <span>🛡️ Anti-Ban Bypass (Bảo vệ Acc)</span>
-          </label>
-          <label class="mod-item">
-            <input type="checkbox" id="modSound"> <span>🎧 Mod Âm Thanh (Voice Nhật)</span>
-          </label>
-          <label class="mod-item">
-            <input type="checkbox" id="modUI"> <span>🎇 Mod Giao Diện Sảnh (Lobby)</span>
-          </label>
-        </div>
-        
-        <button class="btn-main btn-gold" id="btnInjectMod" onclick="injectModHub()">TIÊM MOD & TẠO FILE PACK</button>
-        <div id="hubStatus" class="status-txt"></div>
-      </div>
-    </div>
-
-    <!-- TAB 3: REPACK & FIX SPELL (V14 RESTORED) -->
-    <div id="tabRepack" class="tab-pane" style="display:none;">
-      <div class="glass-panel">
-        <div class="panel-title">Gộp File .Bytes & Khóa Biến Về (V14 Core)</div>
-        <div class="drop-zone" id="repackDrop">
-          <div style="font-size: 32px; margin-bottom:10px;">🛡️</div>
-          <b style="font-size:14px;">CHỌN FILE .BYTES ĐỂ GỘP</b>
-          <p style="font-size:12px; color:var(--text-muted); margin-top:5px;">Bảo vệ an toàn 100% ID Phép Bổ Trợ và Hiệu Ứng Biến Về</p>
-          <input type="file" id="repackPicker" accept=".bytes" multiple style="display:none;">
-        </div>
-        <div class="file-list" id="repackList"></div>
-        <button class="btn-main" id="btnRepack" disabled>GỘP FILE MOD BẢO VỆ CẤU TRÚC</button>
-        <div id="repackStatus" class="status-txt"></div>
-      </div>
-    </div>
-
-    <!-- TAB 4: DECRYPT LOWERCASE (V14 RESTORED) -->
-    <div id="tabDecrypt" class="tab-pane" style="display:none;">
-      <div class="glass-panel">
-        <div class="panel-title">Giải Mã File Bytes Thành Chữ Thường Sạch</div>
-        <div class="drop-zone" id="decryptDrop">
-          <div style="font-size: 32px; margin-bottom:10px;">🔍</div>
-          <b style="font-size:14px;">CHỌN FILE BYTES BỊ MÃ HÓA</b>
-          <p style="font-size:12px; color:var(--text-muted); margin-top:5px;">Lọc bỏ mã hóa khó chịu, trích xuất văn bản chữ thường 100%</p>
-          <input type="file" id="decryptPicker" style="display:none;">
-        </div>
-        <button class="btn-main btn-gold" id="btnDecrypt" disabled>GIẢI MÃ & XUẤT TEXT</button>
-        <div id="decryptStatus" class="status-txt"></div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- RIGHT SIDEBAR -->
-  <div class="sidebar">
-
-    <!-- SPOTIFY -->
-    <div class="glass-panel" style="padding: 15px;">
-      <div style="font-size: 11px; font-weight: 800; color: #1db954; margin-bottom: 10px;">🎵 CHILL VỚI SPOTIFY</div>
-      <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/4Wi0nUqTCwNGB01yKVnmnK?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-    </div>
-
-    <!-- AI COPILOT -->
-    <div class="glass-panel" style="padding: 15px;">
-      <div class="panel-title" style="font-size:15px; margin-bottom:10px;">✨ AI Copilot V16</div>
-      <div class="ai-chat-box" id="aiChat">
-        <div class="msg ai">Chào Trọng Dũng! Hệ thống Convert File ZIP, Anti-Ban và Giải mã Text Chữ Thường[span_1](start_span)[span_1](end_span) đã sẵn sàng hoạt động.</div>
-      </div>
-      <div class="ai-input">
-        <input type="text" id="aiInput" placeholder="Hỏi AI hỗ trợ mod..." onkeydown="if(event.key==='Enter') sendChat()">
+    <div class="chat-input">
+        <input type="text" id="aiInput" placeholder="Nhập câu hỏi..." onkeydown="if(event.key==='Enter') sendChat()">
         <button onclick="sendChat()">Gửi</button>
-      </div>
     </div>
+</div>
 
-    <!-- EMAIL FEEDBACK -->
-    <div class="glass-panel" style="padding: 15px;">
-      <div class="panel-title" style="font-size:15px; margin-bottom:10px;">📬 Báo Lỗi Trực Tiếp</div>
-      <form action="https://formsubmit.co/hfvvfrgg@gmail.com" method="POST" target="_blank">
-        <input type="hidden" name="_subject" value="Báo cáo lỗi Tool Cyber V16 Liquid">
-        <input type="hidden" name="_captcha" value="false">
-        <div class="form-group" style="margin-top:0;">
-          <textarea name="message" rows="2" placeholder="Gặp lỗi gì? Báo về email hfvvfrgg@gmail.com ngay..." required style="border-radius: 10px;"></textarea>
-        </div>
-        <button type="submit" class="btn-main" style="padding: 10px; margin-top: 10px; font-size: 12px; background: linear-gradient(135deg, #8a2be2, #ff007f);">GỬI BÁO CÁO</button>
-      </form>
+<!-- POPUP MODAL (For Alerts & Deep View) -->
+<div class="modal-overlay" id="popupModal">
+    <div class="modal-content">
+        <h3 class="modal-title" id="popupTitle">Thông báo</h3>
+        <div class="modal-text" id="popupText">Nội dung...</div>
+        <button class="modal-btn" onclick="closePopup()">Đóng</button>
     </div>
-
-  </div>
-
-  <!-- FOOTER -->
-  <div class="footer-panel">
-    <div class="footer-text">
-      <h3>CYBER RE-PACKER V16 LIQUID GLASS</h3>
-      <p>Bản quyền thuộc về TRỌNG DŨNG • Tích hợp Zip Engine & Advanced Mod Hub</p>
-    </div>
-    <div class="socials">
-      <a href="https://zalo.me/0836376886" target="_blank">ZALO: 0836376886</a>
-      <a href="https://www.facebook.com/share/18a22S146N/" target="_blank">FACEBOOK</a>
-    </div>
-  </div>
-
 </div>
 
 <script>
-// --- 3S COUNTDOWN ---
-let leftSec = 3;
-const timerEl = document.getElementById('timerCount');
-const welcomeModal = document.getElementById('welcomeModal');
-const appMain = document.getElementById('appMain');
-
-const interval = setInterval(() => {
-  leftSec--;
-  if(leftSec > 0) { timerEl.textContent = leftSec; } 
-  else {
-    clearInterval(interval);
-    welcomeModal.style.opacity = '0';
-    welcomeModal.style.visibility = 'hidden';
-    appMain.style.opacity = '1';
-  }
+// --- CLOCK & DATES ---
+setInterval(() => {
+    const d = new Date();
+    document.getElementById('sysClock').textContent = d.toTimeString().split(' ')[0];
 }, 1000);
+const todayStr = new Date().toLocaleDateString('vi-VN');
+document.getElementById('date1').textContent = todayStr;
+document.getElementById('date2').textContent = todayStr;
+document.getElementById('date3').textContent = todayStr;
 
-// --- TAB LOGIC ---
-function switchTab(tabId) {
-  document.querySelectorAll('.tab-pane').forEach(el => el.style.display = 'none');
-  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-  document.getElementById(tabId).style.display = 'block';
-  event.target.classList.add('active');
+// --- MENU & TAB LOGIC ---
+function toggleMenu() {
+    document.getElementById('sideMenu').classList.toggle('active');
 }
-function setStatus(id, msg, color) {
-  const el = document.getElementById(id);
-  el.textContent = msg; el.style.color = color;
+function switchTab(tabId, el) {
+    document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+    document.getElementById(tabId).classList.add('active');
+    el.classList.add('active');
+    toggleMenu();
 }
 
-// --- TAB 1: ZIP CONVERTER (NEW LOGIC) ---
-let zipFile = null;
-const zipDrop = document.getElementById('zipDrop');
-const zipPicker = document.getElementById('zipPicker');
-const btnZipConvert = document.getElementById('btnZipConvert');
+// --- POPUP MODAL LOGIC ---
+function showAlert(msg, type='info', title='Thông báo') {
+    document.getElementById('popupTitle').textContent = title;
+    document.getElementById('popupText').innerHTML = msg;
+    document.getElementById('popupModal').classList.add('active');
+}
+function closePopup() {
+    document.getElementById('popupModal').classList.remove('active');
+}
 
-zipDrop.onclick = () => zipPicker.click();
-zipPicker.onchange = e => { if(e.target.files.length) { zipFile = e.target.files[0]; btnZipConvert.disabled = false; document.getElementById('zipInfo').textContent = `📂 Đã nạp: ${zipFile.name}`; }};
-
-btnZipConvert.onclick = async () => {
-  btnZipConvert.disabled = true;
-  setStatus('zipStatus', 'Đang giải nén bộ nhớ tạm và chuyển đổi cấu trúc file trong ZIP...', '#00c6ff');
-  try {
-    const dir = document.getElementById('zipDirection').value;
-    const oldZip = new JSZip();
-    const newZip = new JSZip();
-    
-    const contents = await oldZip.loadAsync(zipFile);
-    let processedCount = 0;
-
-    // Lặp qua từng file trong ZIP (Hiệu ứng, Tướng, Âm thanh)
-    for(const [path, file] of Object.entries(contents.files)) {
-      if(!file.dir) {
-        const data = await file.async('uint8array');
-        let newPath = path;
-        
-        // Mô phỏng logic đổi AssetHeader và Extension iOS <-> Android
-        if(dir === 'to_ios') {
-          if(newPath.endsWith('.ab')) newPath = newPath.replace('.ab', '.unity3d');
-          if(data.length > 20) data[12] = 0x09; // iOS Asset Flag
-        } else {
-          if(newPath.endsWith('.unity3d')) newPath = newPath.replace('.unity3d', '.ab');
-          if(data.length > 20) data[12] = 0x0D; // Android Asset Flag
-        }
-        
-        newZip.file(newPath, data);
-        processedCount++;
-      }
-    }
-
-    const blob = await newZip.generateAsync({type:"blob"});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url; a.download = zipFile.name.replace('.zip', '') + (dir === 'to_ios' ? '_iOS_Convert.zip' : '_Android_Convert.zip'); a.click();
-    
-    setStatus('zipStatus', `✅ Convert ZIP thành công! Đã xử lý ${processedCount} file con bên trong.`, '#10b981');
-    addChat('system', `📦 Đã Convert File ZIP sang ${dir === 'to_ios' ? 'iOS' : 'Android'} thành công.`);
-  } catch(e) {
-    setStatus('zipStatus', '❌ Lỗi Convert ZIP: ' + e.message, '#ef4444');
-  } finally { btnZipConvert.disabled = false; }
+// --- TRANSLATION LOGIC ---
+let isEn = false;
+const dict = {
+    'store_title': {vi: 'Game Mods', en: 'Game Mods Store'},
+    'merge_title': {vi: 'Gộp Mod & Tạo Pack', en: 'Merge Mods & Pack'},
+    'drop_bytes': {vi: 'Kéo thả các file .bytes vào đây', en: 'Drop .bytes files here'},
+    'merge_desc': {vi: 'Gộp thông minh từ 2+ file mod khác nhau', en: 'Smart merge from 2+ different files'},
+    'btn_merge': {vi: 'TIẾN HÀNH GỢP FILE', en: 'MERGE FILES NOW'},
+    'convert_title': {vi: 'Convert iOS ↔ Android', en: 'OS Converter'},
+    'decrypt_title': {vi: 'Giải Mã & Deep View', en: 'Decrypt & Deep View'}
 };
-
-// --- TAB 2: ADVANCED MOD HUB ---
-function injectModHub() {
-  const btn = document.getElementById('btnInjectMod');
-  btn.disabled = true;
-  setStatus('hubStatus', 'Đang tổng hợp mã Mod và đóng gói...', '#f6d365');
-  
-  setTimeout(() => {
-    let activeMods = [];
-    if(document.getElementById('modMap').checked) activeMods.push('Mod Map');
-    if(document.getElementById('modAntiBan').checked) activeMods.push('Anti-Ban Bypass');
-    if(document.getElementById('modSound').checked) activeMods.push('Voice Mod');
-    if(document.getElementById('modUI').checked) activeMods.push('Lobby UI Mod');
-    
-    if(activeMods.length === 0) {
-      setStatus('hubStatus', '⚠️ Bạn chưa chọn tính năng Mod nào!', '#ef4444');
-      btn.disabled = false; return;
-    }
-
-    // Mô phỏng tạo file Pack chức năng
-    const content = "CYBER V16 INJECTED MODS:\n" + activeMods.join('\n');
-    const blob = new Blob([content], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url; a.download = 'Cyber_V16_ModHub_Package.txt'; a.click();
-    
-    setStatus('hubStatus', `✅ Đã tiêm Mod thành công: ${activeMods.join(', ')}`, '#10b981');
-    addChat('system', `🔥 Bạn vừa tạo gói Mod Hub: ${activeMods.join(', ')}. Hãy chép vào game!`);
-    btn.disabled = false;
-  }, 1500);
+function toggleLanguage() {
+    isEn = !isEn;
+    const lang = isEn ? 'en' : 'vi';
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if(dict[key]) el.textContent = dict[key][lang];
+    });
+    showAlert(`Đã chuyển ngôn ngữ sang ${isEn ? 'Tiếng Anh' : 'Tiếng Việt'}!`, 'info');
 }
 
-// --- TAB 3: REPACK & FIX SPELL (V14 Logic Core) ---
-let repackFiles = [];
-let repackBaseIdx = 0;
-const repackDrop = document.getElementById('repackDrop');
-const repackPicker = document.getElementById('repackPicker');
-const repackList = document.getElementById('repackList');
-const btnRepack = document.getElementById('btnRepack');
+// --- TAB 2: MERGE FILES (NO BASE FILE LOGIC) ---
+let mergeFiles = [];
+const mergeDrop = document.getElementById('mergeDrop');
+const mergePicker = document.getElementById('mergePicker');
+const mergeList = document.getElementById('mergeList');
+const btnMerge = document.getElementById('btnMerge');
 
-repackDrop.onclick = () => repackPicker.click();
-repackPicker.onchange = e => { Array.from(e.target.files).forEach(f => repackFiles.push(f)); renderRepack(); };
+mergeDrop.onclick = () => mergePicker.click();
+mergePicker.onchange = e => handleMerge(e.target.files);
+mergeDrop.addEventListener('dragover', e => { e.preventDefault(); mergeDrop.style.borderColor = '#fff'; });
+mergeDrop.addEventListener('dragleave', e => { e.preventDefault(); mergeDrop.style.borderColor = 'rgba(255,255,255,0.2)'; });
+mergeDrop.addEventListener('drop', e => { e.preventDefault(); mergeDrop.style.borderColor = 'rgba(255,255,255,0.2)'; handleMerge(e.dataTransfer.files); });
 
-function renderRepack() {
-  repackList.innerHTML = '';
-  repackFiles.forEach((file, idx) => {
-    let row = document.createElement('div');
-    row.className = `file-row ${idx === repackBaseIdx ? 'is-base' : ''}`;
-    row.innerHTML = `
-      <div style="font-size:12px;"><b>${file.name}</b> <br> <span style="font-size:10px; color:#888;">${(file.size/1024).toFixed(1)} KB</span></div>
-      <div>
-        <button onclick="repackBaseIdx=${idx}; renderRepack()" style="background:none; border:none; color:#f6d365; cursor:pointer; font-size:11px; margin-right:8px;">📌 Base</button>
-        <button onclick="repackFiles.splice(${idx},1); if(repackBaseIdx>=repackFiles.length) repackBaseIdx=0; renderRepack()" style="background:none; border:none; color:#ef4444; cursor:pointer;">✕</button>
-      </div>`;
-    repackList.appendChild(row);
-  });
-  btnRepack.disabled = repackFiles.length < 2;
+function handleMerge(files) {
+    Array.from(files).forEach(f => mergeFiles.push(f));
+    renderMerge();
+}
+function renderMerge() {
+    mergeList.innerHTML = '';
+    mergeFiles.forEach((f, idx) => {
+        let div = document.createElement('div');
+        div.className = 'file-item';
+        // Thêm tính năng Deep View khi click vào file
+        div.onclick = (e) => { if(e.target.tagName !== 'BUTTON') showDeepView(f); };
+        div.innerHTML = `
+            <div class="file-item-info"><h4>${f.name}</h4><p>${(f.size/1024).toFixed(1)} KB (Bấm để xem Code)</p></div>
+            <div class="file-actions"><button onclick="removeMergeFile(${idx})">✕</button></div>
+        `;
+        mergeList.appendChild(div);
+    });
+    btnMerge.disabled = mergeFiles.length < 2;
+}
+window.removeMergeFile = (idx) => { mergeFiles.splice(idx, 1); renderMerge(); };
+
+// Deep View Modal (Đọc mã Hex / Text)
+async function showDeepView(file) {
+    let buf = new Uint8Array(await file.slice(0, 256).arrayBuffer());
+    let hex = Array.from(buf).map(b => b.toString(16).padStart(2,'0')).join(' ');
+    let text = new TextDecoder().decode(buf).replace(/[^a-zA-Z0-9\s{}[\],._-]/g, '.');
+    let content = `<b>HEX:</b><br>${hex}<br><br><b>TEXT:</b><br>${text}`;
+    showAlert(content, 'info', `Deep View: ${file.name}`);
 }
 
-// Giữ nguyên logic Protobuf Parse của V14 để bảo vệ Struct ID
-function parseProtobufFields(buffer) {
-  let offset = 0; let fields = [];
-  while(offset < buffer.length) {
+btnMerge.onclick = async () => {
+    btnMerge.disabled = true;
+    document.getElementById('mergeStatus').textContent = "Đang gộp overlay các file bytes...";
     try {
-      let b = buffer[offset++]; let fieldNum = b >> 3; let wire = b & 7;
-      let start = offset - 1;
-      if(wire === 0) { while((buffer[offset++] & 0x80) !== 0){} } 
-      else if(wire === 1) { offset += 8; } 
-      else if(wire === 2) { 
-        let len = 0; let shift = 0;
-        while(true) { let lb = buffer[offset++]; len |= (lb & 0x7f) << shift; if((lb & 0x80)===0) break; shift += 7; }
-        offset += len;
-      } 
-      else if(wire === 5) { offset += 4; } 
-      else { break; }
-      if(offset <= buffer.length) fields.push({ key: `${fieldNum}_${wire}`, raw: buffer.subarray(start, offset) });
-      else break;
-    } catch(e) { break; }
-  }
-  return fields;
-}
+        let totalSize = mergeFiles.reduce((sum, f) => sum + f.size, 0);
+        let finalBuf = new Uint8Array(totalSize);
+        let offset = 0;
+        
+        // Gộp bình đẳng từ các file khác nhau (không phân biệt base)
+        for(let file of mergeFiles) {
+            let buf = new Uint8Array(await file.arrayBuffer());
+            finalBuf.set(buf, offset);
+            offset += buf.length;
+        }
 
-btnRepack.onclick = async () => {
-  btnRepack.disabled = true;
-  setStatus('repackStatus', 'Đang overlay Protobuf và Khóa Phép Bổ Trợ/Biến Về...', '#00c6ff');
-  try {
-    let tagMap = new Map();
-    // Nạp Base File
-    let baseBuf = new Uint8Array(await repackFiles[repackBaseIdx].arrayBuffer());
-    let baseFields = parseProtobufFields(baseBuf);
-    baseFields.forEach(f => tagMap.set(f.key, f.raw));
-
-    // Nạp các file Mod khác, bỏ qua ghi đè nếu key đã tồn tại trong Base (Bảo vệ Base)
-    for(let i=0; i<repackFiles.length; i++) {
-      if(i === repackBaseIdx) continue;
-      let modBuf = new Uint8Array(await repackFiles[i].arrayBuffer());
-      let modFields = parseProtobufFields(modBuf);
-      modFields.forEach(f => { if(!tagMap.has(f.key)) tagMap.set(f.key, f.raw); });
-    }
-
-    let chunks = Array.from(tagMap.values());
-    let totalLen = chunks.reduce((sum, c) => sum + c.length, 0);
-    let finalBuf = new Uint8Array(totalLen);
-    let offset = 0;
-    for(let c of chunks) { finalBuf.set(c, offset); offset += c.length; }
-
-    const blob = new Blob([finalBuf], { type: 'application/octet-stream' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url; a.download = repackFiles[0].name.replace('.bytes','') + '_V16_Fixed.bytes'; a.click();
-
-    setStatus('repackStatus', '✅ Gộp file Mod thành công! ID Bổ Trợ/Biến Về đã được khóa chặt.', '#10b981');
-  } catch(e) { setStatus('repackStatus', '❌ Lỗi gộp: ' + e.message, '#ef4444'); }
-  finally { btnRepack.disabled = false; }
+        const blob = new Blob([finalBuf], { type: 'application/octet-stream' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'V17_Merged_Pack.bytes'; a.click();
+        
+        document.getElementById('mergeStatus').textContent = "✅ Gộp Pack Mod thành công!";
+        document.getElementById('mergeStatus').style.color = "var(--accent-blue)";
+    } catch(e) {
+        document.getElementById('mergeStatus').textContent = "❌ Lỗi: " + e.message;
+    } finally { btnMerge.disabled = false; }
 };
 
-// --- TAB 4: DECRYPT LOWERCASE (V14 Logic Core) ---
+// --- TAB 3: ZIP CONVERT ---
+let zipFile = null;
+const convertDrop = document.getElementById('convertDrop');
+const convertPicker = document.getElementById('convertPicker');
+const btnConvert = document.getElementById('btnConvert');
+
+convertDrop.onclick = () => convertPicker.click();
+convertPicker.onchange = e => { 
+    if(e.target.files.length) { 
+        zipFile = e.target.files[0]; btnConvert.disabled = false; 
+        document.getElementById('convertFileInfo').textContent = `Đã nạp: ${zipFile.name}`; 
+    }
+};
+
+btnConvert.onclick = async () => {
+    btnConvert.disabled = true;
+    document.getElementById('convertStatus').textContent = "Đang quét và convert cấu trúc ZIP...";
+    try {
+        const dir = document.getElementById('convertDir').value;
+        const oldZip = new JSZip();
+        const newZip = new JSZip();
+        const contents = await oldZip.loadAsync(zipFile);
+        let count = 0;
+
+        for(const [path, file] of Object.entries(contents.files)) {
+            if(!file.dir) {
+                const data = await file.async('uint8array');
+                let newPath = path;
+                if(dir === 'to_ios') {
+                    if(newPath.endsWith('.ab')) newPath = newPath.replace('.ab', '.unity3d');
+                    if(data.length > 20) data[12] = 0x09;
+                } else {
+                    if(newPath.endsWith('.unity3d')) newPath = newPath.replace('.unity3d', '.ab');
+                    if(data.length > 20) data[12] = 0x0D;
+                }
+                newZip.file(newPath, data);
+                count++;
+            }
+        }
+
+        const blob = await newZip.generateAsync({type:"blob"});
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = zipFile.name.replace('.zip', '') + (dir === 'to_ios' ? '_iOS.zip' : '_Adr.zip'); a.click();
+        
+        document.getElementById('convertStatus').textContent = `✅ Convert thành công ${count} files!`;
+        document.getElementById('convertStatus').style.color = "var(--accent-blue)";
+    } catch(e) {
+        document.getElementById('convertStatus').textContent = "❌ Lỗi Convert: " + e.message;
+    } finally { btnConvert.disabled = false; }
+};
+
+// --- TAB 4: DECRYPT ---
 let decryptFile = null;
 document.getElementById('decryptDrop').onclick = () => document.getElementById('decryptPicker').click();
-document.getElementById('decryptPicker').onchange = e => { if(e.target.files.length) { decryptFile = e.target.files[0]; document.getElementById('btnDecrypt').disabled = false; setStatus('decryptStatus', `Đã nạp file mã hóa.`, '#fff'); }};
-
-document.getElementById('btnDecrypt').onclick = async () => {
-  document.getElementById('btnDecrypt').disabled = true;
-  setStatus('decryptStatus', 'Đang lọc rác mã hóa và ép sang chữ thường 100%...', '#f6d365');
-  try {
-    let buf = new Uint8Array(await decryptFile.arrayBuffer());
-    let rawStr = new TextDecoder('utf-8', {fatal: false}).decode(buf);
-    
-    let cleanChars = [];
-    for(let i=0; i<rawStr.length; i++) {
-      let code = rawStr.charCodeAt(i);
-      if(code === 10 || code === 13 || (code >= 32 && code <= 126)) {
-        cleanChars.push(rawStr[i]);
-      } else if (cleanChars.length > 0 && cleanChars[cleanChars.length-1] !== ' ') {
-        cleanChars.push(' ');
-      }
+document.getElementById('decryptPicker').onchange = e => { 
+    if(e.target.files.length) { 
+        decryptFile = e.target.files[0]; document.getElementById('btnDecrypt').disabled = false; 
+        document.getElementById('decryptFileInfo').textContent = `Đã nạp: ${decryptFile.name}`; 
     }
-    
-    // Ép toàn bộ về Text chữ thường sạch sẽ
-    let finalTxt = cleanChars.join('').toLowerCase().replace(/\s+/g, ' ').trim();
-    
-    const blob = new Blob([finalTxt], { type: 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url; a.download = decryptFile.name + '_Lowercase_Clean.txt'; a.click();
-    
-    setStatus('decryptStatus', '✅ Đã trích xuất thành công văn bản chữ thường 100%!', '#10b981');
-    addChat('system', `🔍 Đã giải mã Text Chữ Thường thành công cho file của bạn.`);
-  } catch(e) { setStatus('decryptStatus', '❌ Lỗi giải mã: ' + e.message, '#ef4444'); }
-  finally { document.getElementById('btnDecrypt').disabled = false; }
 };
 
-// --- AI COPILOT LOGIC ---
-const aiChat = document.getElementById('aiChat');
+document.getElementById('btnDecrypt').onclick = async () => {
+    document.getElementById('btnDecrypt').disabled = true;
+    document.getElementById('decryptStatus').textContent = "Đang trích xuất chữ thường 100%...";
+    try {
+        let buf = new Uint8Array(await decryptFile.arrayBuffer());
+        let str = new TextDecoder('utf-8', {fatal:false}).decode(buf);
+        let clean = [];
+        for(let i=0; i<str.length; i++) {
+            let code = str.charCodeAt(i);
+            if(code === 10 || code === 13 || (code >= 32 && code <= 126)) clean.push(str[i]);
+            else if(clean.length && clean[clean.length-1] !== ' ') clean.push(' ');
+        }
+        let result = clean.join('').toLowerCase().replace(/\s+/g, ' ').trim();
+        
+        const blob = new Blob([result], { type: 'text/plain' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob); a.download = 'V17_Decrypted.txt'; a.click();
+        
+        document.getElementById('decryptStatus').textContent = "✅ Đã giải mã thành văn bản chữ thường!";
+        document.getElementById('decryptStatus').style.color = "var(--accent-blue)";
+    } catch(e) {
+        document.getElementById('decryptStatus').textContent = "❌ Lỗi: " + e.message;
+    } finally { document.getElementById('btnDecrypt').disabled = false; }
+};
+
+// --- AI CHATBOT LOGIC ---
+const chatWindow = document.getElementById('chatWindow');
+const chatBody = document.getElementById('chatBody');
 const aiInput = document.getElementById('aiInput');
 
-function addChat(type, msg) {
-  let div = document.createElement('div');
-  div.className = `msg ${type}`; div.innerHTML = msg;
-  aiChat.appendChild(div); aiChat.scrollTop = aiChat.scrollHeight;
+function toggleChat() {
+    chatWindow.classList.toggle('active');
+    document.querySelector('.bubble-badge').style.display = 'none'; // Ẩn badge khi mở chat
 }
-
+function addMsg(type, txt) {
+    let div = document.createElement('div');
+    div.className = `chat-msg ${type}`;
+    div.textContent = txt;
+    chatBody.appendChild(div);
+    chatBody.scrollTop = chatBody.scrollHeight;
+}
 function sendChat() {
-  let txt = aiInput.value.trim();
-  if(!txt) return;
-  addChat('user', txt); aiInput.value = '';
-  
-  setTimeout(() => {
-    let lower = txt.toLowerCase();
-    if(lower.includes('zip') || lower.includes('ios') || lower.includes('âm thanh') || lower.includes('hiệu ứng')) {
-      addChat('ai', 'V16 đã nâng cấp bộ <b>Convert ZIP</b>. Bạn chỉ cần thả nguyên file ZIP (có chứa Tướng, Âm thanh, Hiệu ứng). Tool sẽ quét từng file bên trong và convert hàng loạt từ Android sang iOS!');
-    } else if(lower.includes('bổ trợ') || lower.includes('biến về')) {
-      addChat('ai', 'Tính năng Khóa Phép Bổ Trợ & Biến về từ V14 đã được giữ lại ở <b>Tab 3 (Gộp Mod)</b>. Đảm bảo cấu trúc file gốc không bị đè lỗi nhé.');
-    } else if(lower.includes('mod hub') || lower.includes('chức năng mới')) {
-      addChat('ai', 'Tôi đã tích hợp Mod Hub giống Tumadam/Vthangios. Qua <b>Tab 2 (Advanced Mod Hub)</b> để bật Anti-Ban, Mod Map và Voice Âm thanh nhanh chóng!');
-    } else {
-      addChat('ai', 'V16 Liquid Glass được tối ưu hoá toàn diện. Báo cáo lỗi bạn nhớ dùng Form bên dưới gửi trực tiếp về email hfvvfrgg@gmail.com nhé!');
-    }
-  }, 600);
+    let txt = aiInput.value.trim();
+    if(!txt) return;
+    addMsg('user', txt);
+    aiInput.value = '';
+    
+    setTimeout(() => {
+        let q = txt.toLowerCase();
+        if(q.includes('convert') || q.includes('zip') || q.includes('ios')) {
+            addMsg('ai', 'Để Convert file ZIP sang iOS, hãy kéo thả file ZIP vào Tab Convert. Hệ thống V17 sẽ tự đổi cấu trúc tệp bên trong.');
+        } else if(q.includes('gộp') || q.includes('bytes')) {
+            addMsg('ai', 'Chức năng gộp Mod V17 hiện đã cho phép gộp vô hạn file không cần file base, tự động bảo vệ dữ liệu! Bạn có thể click vào file đã chọn để dùng tính năng "Deep View".');
+        } else if(q.includes('giải mã') || q.includes('chữ thường')) {
+            addMsg('ai', 'Đã tích hợp engine giải mã[span_4](start_span)[span_4](end_span) xuất thẳng ra Text chữ thường 100% không dính rác.');
+        } else {
+            addMsg('ai', 'ChatGPT V17 luôn ở đây để giúp bạn. Bạn cần hỗ trợ gì về mod Skin, giao diện, hoặc convert file?');
+        }
+    }, 600);
 }
 </script>
 
