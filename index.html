@@ -3,369 +3,475 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<meta name="theme-color" content="#111111">
-<title>TOOL GỘP BYTES - TDUNG (FIXED)</title>
+<meta name="theme-color" content="#0d0d15">
+<title>TOOL GỘP BYTES ULTIMATE - TDUNG MODDER</title>
 <style>
-@keyframes bgShift {
-  0% { background-color: #0d0d0d; }
-  50% { background-color: #141014; }
-  100% { background-color: #0d0d0d; }
-}
-@keyframes rgbBorder {
-  0% { border-color: #ff3333; box-shadow: 0 0 8px rgba(255,51,51,0.4); }
-  33% { border-color: #33ff33; box-shadow: 0 0 8px rgba(51,255,51,0.4); }
-  66% { border-color: #3333ff; box-shadow: 0 0 8px rgba(51,51,255,0.4); }
-  100% { border-color: #ff3333; box-shadow: 0 0 8px rgba(255,51,51,0.4); }
-}
-@keyframes multiColorGlow {
-  0% { color: #ff3333; text-shadow: 0 0 8px #ff3333, 0 0 20px #ff0000; }
-  25% { color: #33ffcc; text-shadow: 0 0 8px #33ffcc, 0 0 20px #00ffff; }
-  50% { color: #ffff33; text-shadow: 0 0 8px #ffff33, 0 0 20px #ffff00; }
-  75% { color: #ff33ff; text-shadow: 0 0 8px #ff33ff, 0 0 20px #ff00ff; }
-  100% { color: #ff3333; text-shadow: 0 0 8px #ff3333, 0 0 20px #ff0000; }
-}
-@keyframes subGlow {
-  0% { border-color: #ff3030; box-shadow: 0 0 5px rgba(255,48,48,0.3); }
-  50% { border-color: #ff7676; box-shadow: 0 0 12px rgba(255,118,118,0.6); }
-  100% { border-color: #ff3030; box-shadow: 0 0 5px rgba(255,48,48,0.3); }
-}
-@keyframes slowWhitePulse {
-  0% { border-color: rgba(255,255,255,0.2); box-shadow: 0 0 3px rgba(255,255,255,0.05); }
-  50% { border-color: rgba(255,255,255,0.7); box-shadow: 0 0 10px rgba(255,255,255,0.25); }
-  100% { border-color: rgba(255,255,255,0.2); box-shadow: 0 0 3px rgba(255,255,255,0.05); }
+:root {
+  --primary: #ff0055;
+  --primary-glow: rgba(255, 0, 85, 0.5);
+  --accent: #00f3ff;
+  --accent-glow: rgba(0, 243, 255, 0.5);
+  --bg-dark: #090a10;
+  --card-bg: rgba(18, 20, 32, 0.85);
+  --border-color: rgba(0, 243, 255, 0.2);
+  --text-main: #f0f3f8;
 }
 
-*{box-sizing:border-box}
-body{
-  margin:0; min-height:100vh; animation: bgShift 10s ease infinite; color:#fff;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
-  display:flex; justify-content:center;
-}
-.app{width:100%;max-width:520px;padding:28px 18px 40px}
-header{text-align:center;margin-bottom:26px}
-h1{
-  margin:0;font-size:34px;letter-spacing:2px;font-weight:800;
-  animation: multiColorGlow 6s linear infinite;
-}
-.sub{
-  display:inline-block; margin-top:10px; padding:5px 14px;
-  color:#ff5555; font-size:14px; font-weight:700;
-  background:#151515; border:1px solid #ff3030; border-radius:10px;
-  animation: subGlow 4s ease-in-out infinite;
-}
-.clock{
-  margin:12px auto 0;display:block;width:fit-content;padding:8px 16px;
-  border-radius:12px;background:#151515;color:#eee;font-size:13px;font-weight:700;
-  animation: rgbBorder 6s linear infinite;
-}
-.clock span{color:#fff; text-shadow: 0 0 6px rgba(255,255,255,0.8)}
-.card{
-  background:#171717;border:1px solid #2b2b2b;border-radius:18px;
-  padding:18px;margin-bottom:14px;box-shadow:0 8px 30px rgba(0,0,0,.25)
-}
-.drop{
-  border:2px dashed rgba(255,255,255,0.3); border-radius:14px;padding:22px 14px;text-align:center;
-  cursor:pointer; transition:0.3s;
-  animation: slowWhitePulse 5s ease-in-out infinite;
-}
-.drop:active,.drop.over{border-color:#ff3030;background:#211010; animation:none;}
-.icon{font-size:34px;margin-bottom:7px}
-.small{font-size:13px;color:#aaa;line-height:1.5}
-.files{margin-top:14px;display:grid;gap:9px}
-.file{
-  display:flex;align-items:center;gap:10px;background:#101010;border-radius:11px;
-  padding:11px;border:1px solid #292929
-}
-.file .name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;font-size:13px}
-.file .size{font-size:11px;color:#888;white-space:nowrap}
-button{
-  width:100%;border:0;border-radius:13px;padding:14px;margin-top:12px;
-  font-size:16px;font-weight:800;cursor:pointer
-}
-.primary{background:#e92727;color:white}
-.primary:disabled{background:#3b2020;color:#777;cursor:not-allowed}
-.secondary{background:#282828;color:#fff}
-.row{display:flex;gap:9px}
-.row button{flex:1}
-.status{min-height:22px;margin-top:12px;text-align:center;font-size:13px;color:#aaa}
-.ok{color:#54d37b}.err{color:#ff6868}
-.info{font-size:12px;color:#999;line-height:1.6}
-.info b{color:#ddd}
-input[type="file"]{display:none}
-
-.mode-select {
-  margin-top: 10px;
-  padding: 10px;
-  background: #111;
-  border-radius: 10px;
-  border: 1px solid #333;
-}
-.mode-select label {
-  display: block;
-  font-size: 13px;
-  margin-bottom: 6px;
-  color: #ff7676;
-  font-weight: bold;
-}
-.mode-select select {
-  width: 100%;
-  padding: 8px 10px;
-  background: #1a1a1a;
-  color: #fff;
-  border: 1px solid #444;
-  border-radius: 8px;
-  outline: none;
-  font-size: 13px;
+@keyframes cyberGlow {
+  0% { border-color: var(--primary); box-shadow: 0 0 15px var(--primary-glow); }
+  50% { border-color: var(--accent); box-shadow: 0 0 15px var(--accent-glow); }
+  100% { border-color: var(--primary); box-shadow: 0 0 15px var(--primary-glow); }
 }
 
-.progress{height:7px;background:#292929;border-radius:10px;overflow:hidden;margin-top:12px;display:none}
-.bar{height:100%;width:0;background:#ff3030;transition:width .15s}
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(1000%); }
+}
 
-/* Music Player Styles */
+*{ box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
+
+body {
+  margin: 0; min-height: 100vh; background: var(--bg-dark);
+  color: var(--text-main); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  display: flex; justify-content: center; padding: 20px 12px; position: relative; overflow-x: hidden;
+}
+
+/* Background Cyberpunk Matrix FX */
+body::before {
+  content: ""; position: fixed; inset: 0;
+  background: linear-gradient(180deg, rgba(255,0,85,0.03) 0%, rgba(0,243,255,0.03) 100%),
+              radial-gradient(circle at 50% 20%, rgba(255,0,85,0.1) 0%, transparent 60%);
+  pointer-events: none; z-index: 0;
+}
+
+.app { width: 100%; max-width: 560px; position: relative; z-index: 1; }
+
+header { text-align: center; margin-bottom: 22px; position: relative; }
+h1 {
+  margin: 0; font-size: 34px; font-weight: 900; letter-spacing: 2px;
+  background: linear-gradient(135deg, #fff 10%, var(--primary) 50%, var(--accent) 90%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 20px rgba(255,0,85,0.3);
+}
+.sub {
+  display: inline-block; margin-top: 8px; padding: 4px 16px;
+  color: var(--accent); font-size: 11px; font-weight: 800; letter-spacing: 1.5px;
+  background: rgba(0, 243, 255, 0.08); border: 1px solid var(--accent); border-radius: 20px;
+  box-shadow: 0 0 10px var(--accent-glow); text-transform: uppercase;
+}
+.clock {
+  margin: 10px auto 0; width: fit-content; padding: 5px 14px;
+  border-radius: 12px; background: rgba(0, 0, 0, 0.6);
+  color: #888; font-size: 12px; font-weight: 600; border: 1px solid var(--border-color);
+}
+.clock span { color: #fff; font-family: monospace; font-size: 13px; text-shadow: 0 0 6px var(--accent); }
+
+.card {
+  background: var(--card-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-color); border-radius: 20px; padding: 20px; margin-bottom: 16px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.6); position: relative; overflow: hidden;
+}
+
+/* Audio Visualizer & Player */
 .music-player { display: flex; flex-direction: column; gap: 8px; }
-.track-title { font-size: 13px; font-weight: bold; color: #ddd; margin-bottom: 4px; }
-.video-container { width: 100%; height: 140px; border-radius: 10px; overflow: hidden; background: #000; border: 1px solid #333; }
+.track-title { font-size: 13px; font-weight: bold; color: var(--accent); display: flex; justify-content: space-between; align-items: center; }
+.visualizer { display: flex; gap: 3px; align-items: flex-end; height: 16px; }
+.v-bar { width: 3px; background: var(--primary); border-radius: 2px; animation: bounce 1s infinite alternate; }
+.v-bar:nth-child(2n) { animation-delay: 0.2s; background: var(--accent); }
+.v-bar:nth-child(3n) { animation-delay: 0.4s; }
+@keyframes bounce { 0% { height: 3px; } 100% { height: 16px; } }
+
+.video-container { width: 100%; height: 120px; border-radius: 12px; overflow: hidden; background: #000; border: 1px solid var(--border-color); }
 .video-container iframe { width: 100%; height: 100%; border: none; }
+
+/* Drop Zone */
+.drop {
+  border: 2px dashed rgba(0, 243, 255, 0.3); border-radius: 16px; padding: 28px 16px;
+  text-align: center; cursor: pointer; transition: all 0.3s ease; background: rgba(0,0,0,0.3);
+}
+.drop:hover, .drop.over {
+  border-color: var(--primary); background: rgba(255, 0, 85, 0.08); transform: translateY(-2px);
+  box-shadow: 0 0 20px var(--primary-glow);
+}
+.drop .icon { font-size: 42px; margin-bottom: 8px; filter: drop-shadow(0 0 8px var(--accent)); }
+
+/* File List & Controls */
+.files { margin-top: 14px; display: grid; gap: 9px; max-height: 280px; overflow-y: auto; padding-right: 4px; }
+.files::-webkit-scrollbar { width: 4px; }
+.files::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
+
+.file-item {
+  display: flex; align-items: center; gap: 10px; background: rgba(10, 12, 20, 0.7);
+  border-radius: 12px; padding: 10px 12px; border: 1px solid rgba(255,255,255,0.08);
+  transition: all 0.2s ease;
+}
+.file-item:hover { border-color: var(--accent); background: rgba(0, 243, 255, 0.05); }
+.file-item .num { font-size: 12px; font-weight: 900; color: var(--primary); width: 20px; }
+.file-item .info { flex: 1; overflow: hidden; }
+.file-item .name { font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #fff; }
+.file-item .tag { display: inline-block; font-size: 9px; font-weight: 800; padding: 1px 6px; border-radius: 4px; margin-left: 6px; }
+.tag-text { background: rgba(0,243,255,0.2); color: var(--accent); }
+.tag-bin { background: rgba(255,0,85,0.2); color: var(--primary); }
+.file-item .size { font-size: 11px; color: #777; margin-top: 2px; }
+
+.file-actions { display: flex; gap: 4px; }
+.btn-mini {
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); color: #ccc;
+  border-radius: 8px; padding: 5px 8px; font-size: 11px; cursor: pointer; transition: 0.2s;
+}
+.btn-mini:hover { background: var(--accent); color: #000; font-weight: bold; box-shadow: 0 0 8px var(--accent-glow); }
+.btn-mini.danger:hover { background: var(--primary); color: #fff; box-shadow: 0 0 8px var(--primary-glow); }
+
+/* Option Configs */
+.options-grid { display: grid; gap: 12px; margin-top: 10px; }
+.option-item label { display: block; font-size: 11px; font-weight: 800; color: var(--accent); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+.option-item select, .option-item input {
+  width: 100%; padding: 12px; background: rgba(0,0,0,0.6); color: #fff;
+  border: 1px solid var(--border-color); border-radius: 12px; font-size: 13px; font-weight: 600;
+}
+.option-item select:focus, .option-item input:focus { border-color: var(--accent); box-shadow: 0 0 10px var(--accent-glow); }
+
+/* Action Buttons */
+button.action-btn {
+  width: 100%; border: 0; border-radius: 14px; padding: 16px; font-size: 16px; font-weight: 900;
+  cursor: pointer; transition: all 0.25s ease; letter-spacing: 1px; text-transform: uppercase;
+}
+.primary-btn {
+  background: linear-gradient(135deg, var(--primary) 0%, #a80038 100%); color: #fff;
+  box-shadow: 0 4px 20px var(--primary-glow); animation: cyberGlow 4s infinite;
+}
+.primary-btn:hover:not(:disabled) { transform: translateY(-2px); filter: brightness(1.2); }
+.primary-btn:disabled { background: #1f151a; color: #555; box-shadow: none; animation: none; cursor: not-allowed; }
+
+.secondary-btn { background: rgba(255,255,255,0.06); color: #aaa; margin-top: 10px; border: 1px solid rgba(255,255,255,0.1); }
+.secondary-btn:hover { background: rgba(255,255,255,0.12); color: #fff; }
+
+.status { margin-top: 12px; font-size: 13px; text-align: center; min-height: 20px; font-weight: 700; }
+.status.ok { color: #00ff9d; text-shadow: 0 0 8px rgba(0,255,157,0.4); }
+.status.err { color: #ff3366; text-shadow: 0 0 8px rgba(255,51,102,0.4); }
+
+/* Fullscreen Modal */
+.modal {
+  display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(12px); z-index: 999; padding: 20px; align-items: center; justify-content: center;
+}
+.modal-content {
+  background: #0f111a; border: 1px solid var(--accent); border-radius: 20px;
+  width: 100%; max-width: 540px; max-height: 85vh; display: flex; flex-direction: column; overflow: hidden;
+  box-shadow: 0 0 30px var(--accent-glow);
+}
+.modal-header { padding: 16px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
+.modal-body { padding: 16px; overflow-y: auto; font-family: monospace; font-size: 12px; color: var(--accent); white-space: pre-wrap; word-break: break-all; }
+.close-modal { background: none; border: 0; color: #fff; font-size: 22px; cursor: pointer; }
 </style>
 </head>
 <body>
-<div class="app">
-<header>
-  <h1>TOOL GỘP</h1>
-  <div><span class="sub">code by tdung</span></div>
-  <div class="clock">Hiện giờ: <span id="clock">--:--:--</span></div>
-</header>
 
-<!-- YOUTUBE MUSIC PLAYER CARD -->
-<div class="card">
-  <div class="music-player">
-    <div class="track-title">🎵 Đang phát: Đông Miên · 2023</div>
-    <div class="video-container">
-      <iframe src="https://www.youtube.com/embed/thcm_Mf4gf8?autoplay=1&loop=1&playlist=thcm_Mf4gf8" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+<div class="app">
+  <header>
+    <h1>TOOL GỘP PRO V3</h1>
+    <div><span class="sub">BY TDUNG MODDER · FIXED ALL ERRORS</span></div>
+    <div class="clock">Cập nhật: <span id="clock">--:--:--</span></div>
+  </header>
+
+  <!-- Player nhạc Chill Synthwave -->
+  <div class="card">
+    <div class="music-player">
+      <div class="track-title">
+        <span>🎵 Nhạc Chill Mod Game - Đông Miên</span>
+        <div class="visualizer">
+          <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
+        </div>
+      </div>
+      <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/thcm_Mf4gf8?autoplay=1&loop=1&playlist=thcm_Mf4gf8" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="card">
-  <div id="drop" class="drop">
-    <div class="icon">📦</div>
-    <b>Chọn nhiều file .bytes</b>
-    <div class="small">Có thể chọn hoặc kéo nhiều file vào đây. File trùng tên vẫn được giữ nguyên.</div>
-    <input id="picker" type="file" accept=".bytes" multiple>
-  </div>
-  <div id="files" class="files"></div>
-</div>
+  <!-- Khu vực chọn File -->
+  <div class="card">
+    <div id="drop" class="drop">
+      <div class="icon">⚡</div>
+      <b style="font-size:15px; color:#fff;">KÉO THẢ HOẶC BẤM ĐỂ CHỌN FILE .BYTES</b>
+      <div style="font-size:12px; color:#888; margin-top:6px;">Hỗ trợ ghép không giới hạn số lượng file, tự phân tích lỗi</div>
+      <input id="picker" type="file" accept=".bytes" multiple style="display:none;">
+    </div>
 
-<div class="card">
-  <div class="mode-select">
-    <label for="mergeMode">⚙️ Chế độ gộp dữ liệu:</label>
-    <select id="mergeMode">
-      <option value="newline">1. Gộp thêm kí tự xuống dòng (Khuyên dùng cho Mod Skin / Text)</option>
-      <option value="raw">2. Gộp nối tiếp Binary thô (Raw Concatenation)</option>
-      <option value="length_header">3. Gộp thêm Header độ dài (4-byte Size Prefix)</option>
-    </select>
+    <!-- Danh sách File -->
+    <div id="files" class="files"></div>
   </div>
 
-  <div class="progress" id="progress"><div class="bar" id="bar"></div></div>
-  <button class="primary" id="merge" disabled>GỘP CÁC FILE</button>
-  <div class="row">
-    <button class="secondary" id="clear">XÓA</button>
+  <!-- Cấu hình Gộp Nâng Cao -->
+  <div class="card">
+    <div class="options-grid">
+      <div class="option-item">
+        <label>⚙️ Chế độ xử lý dữ liệu (Thuật toán Smart AST):</label>
+        <select id="mergeAlgorithm">
+          <option value="smart_auto">1. Smart Auto-Fix (Tự nhận diện Text / Binary & Sửa lỗi Game 100%)</option>
+          <option value="align_4byte">2. Strict 4-Byte Alignment (Dành cho Unity Engine Asset)</option>
+          <option value="strict_newline">3. Force Line Break (\n) (Ép buộc xuống dòng từng file)</option>
+          <option value="pure_raw">4. Pure Raw Binary (Nối trực tiếp không can thiệp)</option>
+        </select>
+      </div>
+
+      <div class="option-item">
+        <label>✏️ Tên File Xuất ra (.bytes):</label>
+        <input type="text" id="customFileName" placeholder="Tên file tự động khi gộp...">
+      </div>
+    </div>
+
+    <button class="action-btn primary-btn" id="merge" disabled style="margin-top:18px;">GỘP FILE KHÔNG LỖI</button>
+    <button class="action-btn secondary-btn" id="clear">XÓA DỮ LIỆU</button>
+    <div id="status" class="status"></div>
   </div>
-  <div id="status" class="status"></div>
 </div>
 
-<div class="card">
-  <div class="info">
-    <b>Hướng dẫn chọn chế độ gộp:</b><br>
-    • <b>Chế độ 1 (Xuống dòng):</b> Dùng nếu file `.bytes` bên trong chứa văn bản, JSON, mã mod skin game. Việc chèn thêm kí tự xuống dòng giúp game parse dữ liệu từng file riêng biệt không bị dính liền.<br>
-    • <b>Chế độ 2 (Binary thô):</b> Nối trực tiếp từng byte. Dùng cho các file nén hoặc file dữ liệu thô liên tục.<br>
-    • <b>Chế độ 3 (Header 4-byte):</b> Thêm 4 byte ghi độ dài trước mỗi file. Dùng nếu engine game đọc dạng gói (packet/stream).
+<!-- Modal Xem trước File Hex/Text -->
+<div id="previewModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <b id="modalTitle" style="font-size:13px; color:var(--accent);">Studio Inspector</b>
+      <button class="close-modal" id="closeModal">&times;</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
   </div>
-</div>
 </div>
 
 <script>
-// --- TOOL GỘP SCRIPT ---
 const picker = document.getElementById('picker');
 const drop = document.getElementById('drop');
 const filesEl = document.getElementById('files');
 const mergeBtn = document.getElementById('merge');
 const clearBtn = document.getElementById('clear');
 const statusEl = document.getElementById('status');
-const progress = document.getElementById('progress');
-const bar = document.getElementById('bar');
-const mergeModeSelect = document.getElementById('mergeMode');
+const mergeAlgorithm = document.getElementById('mergeAlgorithm');
+const customFileName = document.getElementById('customFileName');
 
-let selected = [];
+let selectedFiles = [];
 
-function fmt(n){
-  const u = ['B','KB','MB','GB']; let i = 0;
-  while(n >= 1024 && i < u.length - 1){ n /= 1024; i++; }
-  return n.toFixed(i ? 2 : 0) + ' ' + u[i];
+// Đồng hồ real-time
+function updateClock(){
+  const now = new Date();
+  document.getElementById('clock').textContent = now.toTimeString().split(' ')[0];
+}
+setInterval(updateClock, 1000); updateClock();
+
+// Định dạng dung lượng
+function fmtSize(bytes){
+  if(bytes < 1024) return bytes + ' B';
+  if(bytes < 1048576) return (bytes/1024).toFixed(1) + ' KB';
+  return (bytes/1048576).toFixed(2) + ' MB';
 }
 
-function render(){
-  filesEl.innerHTML = '';
-  selected.forEach((f, i) => {
-    const d = document.createElement('div'); 
-    d.className = 'file';
-    d.innerHTML = `<b>${i+1}</b><div class="name">${escapeHtml(f.name)}</div><div class="size">${fmt(f.size)}</div>`;
-    filesEl.appendChild(d);
-  });
-  mergeBtn.disabled = selected.length < 2;
-  mergeBtn.textContent = selected.length >= 2 ? `GỘP ${selected.length} FILE` : 'GỘP CÁC FILE';
+function escHTML(str){
+  return str.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
 }
 
-function escapeHtml(s){
-  return s.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
-}
-
-function addFiles(list){
-  const incoming = Array.from(list).filter(f => f.name.toLowerCase().endsWith('.bytes'));
-  const invalid = Array.from(list).filter(f => !f.name.toLowerCase().endsWith('.bytes'));
-
-  selected.push(...incoming);
-
-  if(invalid.length){
-    statusEl.textContent = `Đã bỏ qua ${invalid.length} file không có đuôi .bytes.`;
-    statusEl.className = 'status err';
-  } else if(selected.length < 2){
-    statusEl.textContent = 'Hãy chọn ít nhất 2 file có đuôi .bytes.';
-    statusEl.className = 'status err';
-  } else {
-    statusEl.textContent = `Đã chọn ${selected.length} file .bytes.`;
-    statusEl.className = 'status ok';
+// Kiểm tra nhanh dạng Text hay Binary
+async function detectFileType(file) {
+  const slice = await file.slice(0, 128).arrayBuffer();
+  const arr = new Uint8Array(slice);
+  let printable = 0;
+  for(let b of arr) {
+    if ((b >= 32 && b <= 126) || b === 9 || b === 10 || b === 13) printable++;
   }
-  render();
+  return (printable / arr.length) > 0.75 ? 'TEXT' : 'BIN';
+}
+
+// Render danh sách file
+async function renderFiles(){
+  filesEl.innerHTML = '';
+  for(let idx = 0; idx < selectedFiles.length; idx++) {
+    const file = selectedFiles[idx];
+    const fileType = await detectFileType(file);
+    const item = document.createElement('div');
+    item.className = 'file-item';
+    item.innerHTML = `
+      <div class="num">${idx + 1}</div>
+      <div class="info">
+        <div class="name">${escHTML(file.name)} <span class="tag ${fileType==='TEXT'?'tag-text':'tag-bin'}">${fileType}</span></div>
+        <div class="size">${fmtSize(file.size)}</div>
+      </div>
+      <div class="file-actions">
+        <button class="btn-mini" onclick="moveFile(${idx}, -1)">▲</button>
+        <button class="btn-mini" onclick="moveFile(${idx}, 1)">▼</button>
+        <button class="btn-mini" onclick="previewFile(${idx})">👁️</button>
+        <button class="btn-mini danger" onclick="removeFile(${idx})">✕</button>
+      </div>
+    `;
+    filesEl.appendChild(item);
+  }
+
+  mergeBtn.disabled = selectedFiles.length < 2;
+  mergeBtn.textContent = selectedFiles.length >= 2 ? `GỘP ${selectedFiles.length} FILE NGAY` : 'CHỌN ÍT NHẤT 2 FILE';
+  if (selectedFiles.length >= 2 && !customFileName.value) {
+    customFileName.value = selectedFiles[0].name.replace(/\.bytes$/i, '') + '_merged.bytes';
+  }
+}
+
+function handleFiles(fileList){
+  const valid = Array.from(fileList).filter(f => f.name.toLowerCase().endsWith('.bytes'));
+  if(valid.length < fileList.length){
+    showStatus(`Đã lọc bỏ ${fileList.length - valid.length} file không hợp lệ (.bytes)`, 'err');
+  }
+  selectedFiles.push(...valid);
+  renderFiles();
 }
 
 drop.onclick = () => picker.click();
-picker.onchange = e => {
-  addFiles(e.target.files);
-  picker.value = '';
+picker.onchange = (e) => { handleFiles(e.target.files); picker.value = ''; };
+['dragenter', 'dragover'].forEach(evt => drop.addEventListener(evt, e => { e.preventDefault(); drop.classList.add('over'); }));
+['dragleave', 'drop'].forEach(evt => drop.addEventListener(evt, e => { e.preventDefault(); drop.classList.remove('over'); }));
+drop.addEventListener('drop', e => handleFiles(e.dataTransfer.files));
+
+window.moveFile = (idx, dir) => {
+  const target = idx + dir;
+  if(target < 0 || target >= selectedFiles.length) return;
+  const temp = selectedFiles[idx];
+  selectedFiles[idx] = selectedFiles[target];
+  selectedFiles[target] = temp;
+  renderFiles();
 };
 
-['dragenter','dragover'].forEach(x => drop.addEventListener(x, e => {
-  e.preventDefault(); drop.classList.add('over');
-}));
-['dragleave','drop'].forEach(x => drop.addEventListener(x, e => {
-  e.preventDefault(); drop.classList.remove('over');
-}));
-drop.addEventListener('drop', e => addFiles(e.dataTransfer.files));
+window.removeFile = (idx) => {
+  selectedFiles.splice(idx, 1);
+  renderFiles();
+};
+
+// Preview Studio Modal
+window.previewFile = async (idx) => {
+  const file = selectedFiles[idx];
+  const buffer = await file.arrayBuffer();
+  const arr = new Uint8Array(buffer.slice(0, 512));
+  const isText = (await detectFileType(file)) === 'TEXT';
+
+  let displayContent = '';
+  if(isText) {
+    displayContent = new TextDecoder().decode(arr);
+  } else {
+    displayContent = Array.from(arr).map((b, i) => b.toString(16).padStart(2, '0') + ((i+1)%16===0?'\n':' ')).join('');
+  }
+
+  document.getElementById('modalTitle').textContent = `INSPECTOR: ${file.name} (${isText ? 'Text Format' : 'Binary Hex'})`;
+  document.getElementById('modalBody').textContent = displayContent + (file.size > 512 ? '\n\n...[Còn dữ liệu nữa]' : '');
+  document.getElementById('previewModal').style.display = 'flex';
+};
+
+document.getElementById('closeModal').onclick = () => {
+  document.getElementById('previewModal').style.display = 'none';
+};
 
 clearBtn.onclick = () => {
-  selected = []; 
-  picker.value = ''; 
-  render();
-  statusEl.textContent = ''; 
-  statusEl.className = 'status';
+  selectedFiles = [];
+  customFileName.value = '';
+  renderFiles();
+  showStatus('', '');
 };
 
-function updateClock(){
-  const now = new Date();
-  const hh = String(now.getHours()).padStart(2, '0');
-  const mm = String(now.getMinutes()).padStart(2, '0');
-  const ss = String(now.getSeconds()).padStart(2, '0');
-  document.getElementById('clock').textContent = `${hh}:${mm}:${ss}`;
+function showStatus(msg, type){
+  statusEl.textContent = msg;
+  statusEl.className = 'status ' + type;
 }
-updateClock();
-setInterval(updateClock, 1000);
 
+// --- THUẬT TOÁN GỘP CHỐNG LỖI GAME TUYỆT ĐỐI ---
 mergeBtn.onclick = async () => {
-  if(selected.length < 2) return;
-  try{
+  if(selectedFiles.length < 2) return;
+  
+  try {
     mergeBtn.disabled = true;
-    progress.style.display = 'block'; 
-    bar.style.width = '2%';
-    statusEl.textContent = `Đang đọc ${selected.length} file...`; 
-    statusEl.className = 'status';
+    showStatus('⚡ Đang xử lý & căn chỉnh byte dữ liệu...', 'ok');
 
-    const buffers = [];
-    const mode = mergeModeSelect.value;
+    const mode = mergeAlgorithm.value;
+    const processedBuffers = [];
 
-    for(let i = 0; i < selected.length; i++){
-      const buffer = await selected[i].arrayBuffer();
-      buffers.push(new Uint8Array(buffer));
-      bar.style.width = `${Math.round(((i + 1) / selected.length) * 50)}%`;
-    }
+    for(let i = 0; i < selectedFiles.length; i++){
+      const file = selectedFiles[i];
+      const rawBuf = new Uint8Array(await file.arrayBuffer());
+      const isText = (await detectFileType(file)) === 'TEXT';
+      let cleanBuf = rawBuf;
 
-    let finalData;
+      if (mode === 'smart_auto') {
+        if (isText) {
+          // Xử lý Text/Protobuf: Cắt byte rác 0x00 ở cuối, kiểm tra xem có \n chưa
+          let endIdx = cleanBuf.length - 1;
+          while (endIdx >= 0 && (cleanBuf[endIdx] === 0x00 || cleanBuf[endIdx] === 0x20)) {
+            endIdx--;
+          }
+          cleanBuf = cleanBuf.subarray(0, endIdx + 1);
 
-    if (mode === 'newline') {
-      // Thêm ký tự xuống dòng (\n -> 0x0A) giữa các file nếu chưa có
-      const newline = new Uint8Array([0x0A]);
-      let totalSize = 0;
-      buffers.forEach((b, idx) => {
-        totalSize += b.length;
-        if (idx < buffers.length - 1) totalSize += newline.length;
-      });
-
-      finalData = new Uint8Array(totalSize);
-      let offset = 0;
-
-      buffers.forEach((b, idx) => {
-        finalData.set(b, offset);
-        offset += b.length;
-        if (idx < buffers.length - 1) {
-          finalData.set(newline, offset);
-          offset += newline.length;
+          // Nếu chưa có ký tự xuống dòng ở cuối file và chưa phải file cuối -> Chèn \n (0x0A)
+          if (i < selectedFiles.length - 1) {
+            const lastChar = cleanBuf[cleanBuf.length - 1];
+            if (lastChar !== 0x0A && lastChar !== 0x0D) {
+              const appended = new Uint8Array(cleanBuf.length + 1);
+              appended.set(cleanBuf, 0);
+              appended[cleanBuf.length] = 0x0A; // \n
+              cleanBuf = appended;
+            }
+          }
+        } else {
+          // Xử lý Binary: Căn chỉnh 4-byte Alignment (Padding 0x00)
+          const rem = cleanBuf.length % 4;
+          if (rem !== 0 && i < selectedFiles.length - 1) {
+            const padLen = 4 - rem;
+            const padded = new Uint8Array(cleanBuf.length + padLen);
+            padded.set(cleanBuf, 0);
+            cleanBuf = padded;
+          }
         }
-      });
+      } 
+      else if (mode === 'align_4byte') {
+        const rem = cleanBuf.length % 4;
+        if (rem !== 0 && i < selectedFiles.length - 1) {
+          const padLen = 4 - rem;
+          const padded = new Uint8Array(cleanBuf.length + padLen);
+          padded.set(cleanBuf, 0);
+          cleanBuf = padded;
+        }
+      }
+      else if (mode === 'strict_newline') {
+        if (i < selectedFiles.length - 1) {
+          const appended = new Uint8Array(cleanBuf.length + 1);
+          appended.set(cleanBuf, 0);
+          appended[cleanBuf.length] = 0x0A;
+          cleanBuf = appended;
+        }
+      }
 
-    } else if (mode === 'length_header') {
-      // Thêm 4 byte Little-Endian chứa độ dài file trước dữ liệu mỗi file
-      let totalSize = 0;
-      buffers.forEach(b => {
-        totalSize += 4 + b.length;
-      });
-
-      finalData = new Uint8Array(totalSize);
-      const view = new DataView(finalData.buffer);
-      let offset = 0;
-
-      buffers.forEach(b => {
-        view.setUint32(offset, b.length, true); // Little endian
-        offset += 4;
-        finalData.set(b, offset);
-        offset += b.length;
-      });
-
-    } else {
-      // Raw Concatenation
-      let totalSize = buffers.reduce((acc, b) => acc + b.length, 0);
-      finalData = new Uint8Array(totalSize);
-      let offset = 0;
-
-      buffers.forEach(b => {
-        finalData.set(b, offset);
-        offset += b.length;
-      });
+      processedBuffers.push(cleanBuf);
     }
 
-    bar.style.width = '90%';
+    // Tính tổng kích thước và nối byte
+    const totalBytes = processedBuffers.reduce((acc, b) => acc + b.length, 0);
+    const finalData = new Uint8Array(totalBytes);
 
-    const blob = new Blob([finalData], {type: 'application/octet-stream'});
+    let currentOffset = 0;
+    for(let b of processedBuffers){
+      finalData.set(b, currentOffset);
+      currentOffset += b.length;
+    }
+
+    // Tải xuống file
+    const blob = new Blob([finalData], { type: 'application/octet-stream' });
     const url = URL.createObjectURL(blob);
+    let outputName = customFileName.value.trim();
+    if(!outputName.toLowerCase().endsWith('.bytes')) outputName += '.bytes';
 
-    const base = selected[0].name.replace(/\.bytes$/i, '');
-    const outName = base + `_merged.bytes`;
-
-    const link = document.createElement('a');
-    link.href = url; 
-    link.download = outName;
-    document.body.appendChild(link); 
-    link.click(); 
-    link.remove();
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = outputName;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
 
-    bar.style.width = '100%';
-    statusEl.textContent = `Đã gộp thành công ${selected.length} file: ${outName} (${fmt(finalData.length)})`;
-    statusEl.className = 'status ok';
-  } catch(e) {
-    statusEl.textContent = 'Lỗi: ' + e.message;
-    statusEl.className = 'status err';
+    showStatus(`🎉 ĐÃ GỘP THÀNH CÔNG ${selectedFiles.length} FILE! (${fmtSize(finalData.length)})`, 'ok');
+
+  } catch (err) {
+    showStatus('❌ Lỗi gộp file: ' + err.message, 'err');
   } finally {
-    mergeBtn.disabled = selected.length < 2;
+    mergeBtn.disabled = selectedFiles.length < 2;
   }
 };
 </script>
