@@ -2,481 +2,314 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="theme-color" content="#050812">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="theme-color" content="#05070d">
 <title>KTOOL AI BINARY ENGINE V27</title>
 
 <style>
 :root{
-    --bg:#03050b;
-    --bg2:#070b14;
-    --panel:rgba(8,13,25,.78);
-    --panel2:rgba(10,16,30,.94);
-    --text:#f2f8ff;
-    --muted:#718097;
-    --line:rgba(255,255,255,.085);
-
+    --bg:#05070d;
+    --bg2:#090d18;
+    --panel:rgba(12,17,30,.78);
+    --panel2:rgba(18,25,43,.7);
+    --text:#edf7ff;
+    --muted:#71819b;
+    --line:rgba(125,170,220,.14);
     --cyan:#00eaff;
-    --blue:#277cff;
-    --violet:#925cff;
-    --green:#00ffa3;
-    --yellow:#ffd166;
-    --red:#ff416c;
-
-    --shadow:0 25px 80px rgba(0,0,0,.45);
+    --blue:#4f8cff;
+    --violet:#9b6cff;
+    --green:#27f59a;
+    --yellow:#ffd84d;
+    --red:#ff5577;
+    --radius:20px;
+    --shadow:0 20px 70px rgba(0,0,0,.42);
 }
 
 *{
     box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
 }
 
-html{
-    scroll-behavior:smooth;
+html,body{
+    margin:0;
+    min-height:100%;
+    background:var(--bg);
+    color:var(--text);
+    font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
 }
 
 body{
-    margin:0;
-    min-height:100vh;
     overflow-x:hidden;
-    color:var(--text);
     background:
-        radial-gradient(
-            circle at 10% 0%,
-            rgba(0,234,255,.12),
-            transparent 28%
-        ),
-        radial-gradient(
-            circle at 90% 90%,
-            rgba(146,92,255,.12),
-            transparent 30%
-        ),
-        linear-gradient(
-            135deg,
-            #02040a,
-            #070b14 50%,
-            #03050b
-        );
-    font-family:
-        Inter,
-        system-ui,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        sans-serif;
+        radial-gradient(circle at 15% 10%,rgba(0,234,255,.08),transparent 28%),
+        radial-gradient(circle at 85% 20%,rgba(155,108,255,.09),transparent 30%),
+        linear-gradient(135deg,#04060b,#080c16 50%,#04060b);
 }
 
+/* GRID */
 body::before{
     content:"";
     position:fixed;
     inset:0;
-    z-index:9998;
     pointer-events:none;
-    opacity:.045;
-    background:
-        repeating-linear-gradient(
-            to bottom,
-            transparent 0,
-            transparent 2px,
-            rgba(255,255,255,.8) 3px
-        );
+    opacity:.2;
+    background-image:
+        linear-gradient(rgba(0,234,255,.035) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(0,234,255,.035) 1px,transparent 1px);
+    background-size:42px 42px;
+    animation:gridMove 18s linear infinite;
+    z-index:-4;
 }
 
 body::after{
     content:"";
     position:fixed;
     inset:0;
-    z-index:-1;
     pointer-events:none;
-    opacity:.18;
-    background-image:
-        linear-gradient(
-            rgba(0,234,255,.035) 1px,
-            transparent 1px
-        ),
-        linear-gradient(
-            90deg,
-            rgba(0,234,255,.035) 1px,
-            transparent 1px
-        );
-    background-size:38px 38px;
-    mask-image:linear-gradient(
-        to bottom,
-        #000 0%,
-        rgba(0,0,0,.4) 70%,
-        transparent 100%
+    background:repeating-linear-gradient(
+        0deg,
+        transparent 0,
+        transparent 3px,
+        rgba(255,255,255,.012) 4px
     );
+    z-index:30;
 }
 
-button,
-input,
-select{
-    font:inherit;
+@keyframes gridMove{
+    from{background-position:0 0}
+    to{background-position:42px 42px}
 }
 
-button{
-    cursor:pointer;
-}
-
-/* =====================================================
-   PARTICLES
-===================================================== */
-
-.particle{
+/* AURORA */
+.aurora{
     position:fixed;
-    width:2px;
-    height:2px;
+    width:420px;
+    height:420px;
     border-radius:50%;
-    background:var(--cyan);
-    box-shadow:0 0 12px var(--cyan);
-    opacity:.35;
+    filter:blur(90px);
+    opacity:.12;
     pointer-events:none;
-    z-index:-1;
-    animation:particleFloat linear infinite;
+    z-index:-3;
 }
 
-@keyframes particleFloat{
-    from{
-        transform:translateY(110vh);
-        opacity:0;
-    }
-
-    15%{
-        opacity:.45;
-    }
-
-    85%{
-        opacity:.35;
-    }
-
-    to{
-        transform:translateY(-10vh);
-        opacity:0;
-    }
+.a1{
+    background:var(--cyan);
+    left:-160px;
+    top:10%;
+    animation:float1 12s ease-in-out infinite;
 }
 
-/* =====================================================
-   BOOT
-===================================================== */
+.a2{
+    background:var(--violet);
+    right:-160px;
+    top:45%;
+    animation:float2 15s ease-in-out infinite;
+}
 
+@keyframes float1{
+    0%,100%{transform:translate(0,0)}
+    50%{transform:translate(100px,80px)}
+}
+
+@keyframes float2{
+    0%,100%{transform:translate(0,0)}
+    50%{transform:translate(-90px,-60px)}
+}
+
+/* BOOT */
 #boot{
     position:fixed;
     inset:0;
-    z-index:10000;
+    z-index:1000;
     display:flex;
-    flex-direction:column;
-    justify-content:center;
     align-items:center;
+    justify-content:center;
     background:
-        radial-gradient(
-            circle at center,
-            #0a1424,
-            #02040a 65%
-        );
-    transition:
-        opacity .7s,
-        visibility .7s;
+        radial-gradient(circle at center,rgba(0,234,255,.09),transparent 35%),
+        #03050a;
+    transition:opacity .7s,visibility .7s;
 }
 
-#boot.hide{
+#boot.hidden{
     opacity:0;
     visibility:hidden;
+    pointer-events:none;
 }
 
-.boot-logo{
-    position:relative;
-    font-size:clamp(55px,13vw,120px);
-    line-height:1;
-    font-weight:1000;
-    letter-spacing:12px;
-    color:var(--cyan);
-    text-shadow:
-        0 0 10px var(--cyan),
-        0 0 35px rgba(0,234,255,.8),
-        0 0 100px rgba(0,234,255,.25);
-    animation:bootPulse 1s ease-in-out infinite alternate;
-}
-
-.boot-logo::after{
-    content:"";
-    position:absolute;
-    left:0;
-    right:0;
-    bottom:-10px;
-    height:2px;
-    background:linear-gradient(
-        90deg,
-        transparent,
-        var(--cyan),
-        transparent
-    );
-    box-shadow:0 0 20px var(--cyan);
-}
-
-.boot-sub{
-    margin-top:28px;
-    color:#7e8da5;
-    font-size:9px;
-    letter-spacing:5px;
+.boot-box{
+    width:min(430px,90vw);
     text-align:center;
 }
 
-.boot-progress{
-    width:min(360px,75vw);
-    height:4px;
-    margin-top:24px;
-    overflow:hidden;
-    border-radius:20px;
-    background:#111b2d;
+.boot-logo{
+    font-size:32px;
+    font-weight:1000;
+    letter-spacing:4px;
+    text-shadow:0 0 25px rgba(0,234,255,.7);
 }
 
-.boot-progress span{
+.boot-sub{
+    margin-top:8px;
+    color:var(--muted);
+    font-size:10px;
+    letter-spacing:3px;
+}
+
+.boot-ring{
+    width:100px;
+    height:100px;
+    margin:35px auto 25px;
+    border:2px solid rgba(0,234,255,.12);
+    border-top-color:var(--cyan);
+    border-right-color:var(--violet);
+    border-radius:50%;
+    animation:spin 1s linear infinite;
+    display:grid;
+    place-items:center;
+    box-shadow:0 0 40px rgba(0,234,255,.12);
+}
+
+.boot-ring span{
+    font-size:25px;
+    font-weight:900;
+}
+
+@keyframes spin{
+    to{transform:rotate(360deg)}
+}
+
+.boot-progress{
+    height:4px;
+    background:#111827;
+    border-radius:99px;
+    overflow:hidden;
+}
+
+.boot-progress i{
     display:block;
-    width:0;
+    width:0%;
     height:100%;
-    background:
-        linear-gradient(
-            90deg,
-            var(--blue),
-            var(--cyan),
-            var(--green)
-        );
-    box-shadow:
-        0 0 15px var(--cyan);
-    animation:bootProgress 3s linear forwards;
+    background:linear-gradient(90deg,var(--cyan),var(--violet));
+    box-shadow:0 0 15px var(--cyan);
+    transition:width .2s;
 }
 
 .boot-status{
     margin-top:12px;
-    color:#52617a;
-    font-family:monospace;
-    font-size:8px;
-    letter-spacing:1px;
+    font-size:9px;
+    color:var(--cyan);
+    letter-spacing:2px;
 }
 
-@keyframes bootProgress{
-    to{
-        width:100%;
-    }
-}
-
-@keyframes bootPulse{
-    from{
-        opacity:.65;
-        transform:scale(.98);
-    }
-
-    to{
-        opacity:1;
-        transform:scale(1.02);
-    }
-}
-
-/* =====================================================
-   LOCK SCREEN
-===================================================== */
-
-#lockScreen{
+/* PASSWORD */
+#lock{
     position:fixed;
     inset:0;
-    z-index:9999;
+    z-index:900;
     display:none;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
-    background:
-        radial-gradient(
-            circle at center,
-            rgba(0,234,255,.07),
-            transparent 30%
-        ),
-        #02040a;
-}
-
-#lockScreen.show{
-    display:flex;
-}
-
-.lock-box{
-    position:relative;
-    width:min(420px,100%);
-    padding:32px;
-    overflow:hidden;
-    text-align:center;
-    border:1px solid rgba(0,234,255,.2);
-    border-radius:28px;
-    background:
-        linear-gradient(
-            145deg,
-            rgba(0,234,255,.055),
-            rgba(146,92,255,.045)
-        ),
-        rgba(7,12,22,.9);
-    box-shadow:
-        0 0 80px rgba(0,234,255,.08),
-        var(--shadow);
+    place-items:center;
+    background:rgba(2,4,9,.96);
     backdrop-filter:blur(25px);
 }
 
-.lock-box::before{
-    content:"";
-    position:absolute;
-    left:-30%;
-    top:0;
-    width:160%;
-    height:1px;
-    background:linear-gradient(
-        90deg,
-        transparent,
-        var(--cyan),
-        transparent
-    );
-    animation:lockScan 3s linear infinite;
-}
-
-@keyframes lockScan{
-    from{
-        transform:translateX(-30%);
-    }
-
-    to{
-        transform:translateX(30%);
-    }
+.lock-card{
+    width:min(390px,90vw);
+    padding:28px;
+    border:1px solid rgba(0,234,255,.2);
+    border-radius:24px;
+    background:rgba(10,15,27,.9);
+    box-shadow:0 0 80px rgba(0,234,255,.08);
+    text-align:center;
 }
 
 .lock-icon{
-    width:70px;
-    height:70px;
-    margin:0 auto 20px;
-    display:grid;
-    place-items:center;
-    border:1px solid rgba(0,234,255,.25);
-    border-radius:22px;
-    color:var(--cyan);
-    font-size:30px;
-    background:rgba(0,234,255,.045);
-    box-shadow:
-        inset 0 0 25px rgba(0,234,255,.06),
-        0 0 35px rgba(0,234,255,.08);
+    font-size:38px;
+    margin-bottom:10px;
 }
 
-.lock-box h2{
-    margin:0;
-    font-size:20px;
-    letter-spacing:3px;
+.lock-title{
+    font-size:18px;
+    font-weight:1000;
+    letter-spacing:2px;
 }
 
-.lock-box p{
-    margin:10px 0 22px;
+.lock-sub{
     color:var(--muted);
-    font-size:9px;
-    line-height:1.7;
+    font-size:10px;
+    margin:8px 0 20px;
 }
 
-.code-input{
+#passwordInput{
     width:100%;
-    height:55px;
+    padding:14px;
+    border-radius:13px;
+    border:1px solid var(--line);
     outline:none;
+    color:var(--text);
+    background:#070b14;
     text-align:center;
-    letter-spacing:12px;
-    font-size:20px;
-    font-weight:900;
-    color:var(--cyan);
-    border:1px solid rgba(0,234,255,.18);
-    border-radius:15px;
-    background:rgba(0,0,0,.25);
-    box-shadow:
-        inset 0 0 20px rgba(0,234,255,.025);
+    font-size:18px;
+    letter-spacing:8px;
 }
 
-.code-input:focus{
-    border-color:rgba(0,234,255,.65);
-    box-shadow:
-        0 0 25px rgba(0,234,255,.1),
-        inset 0 0 20px rgba(0,234,255,.04);
+#passwordInput:focus{
+    border-color:var(--cyan);
+    box-shadow:0 0 25px rgba(0,234,255,.12);
 }
 
 .unlock-btn{
     width:100%;
-    height:48px;
     margin-top:12px;
+    padding:13px;
     border:0;
-    border-radius:14px;
-    color:#001015;
+    border-radius:13px;
+    cursor:pointer;
+    color:#001014;
     font-weight:1000;
-    letter-spacing:2px;
-    background:
-        linear-gradient(
-            100deg,
-            var(--cyan),
-            #72f8ff
-        );
-    box-shadow:
-        0 0 30px rgba(0,234,255,.2);
-    transition:.25s;
-}
-
-.unlock-btn:hover{
-    transform:translateY(-2px);
-    box-shadow:
-        0 0 45px rgba(0,234,255,.3);
+    background:linear-gradient(90deg,var(--cyan),#72f7ff);
+    box-shadow:0 0 25px rgba(0,234,255,.2);
 }
 
 .lock-error{
     min-height:16px;
     margin-top:10px;
     color:var(--red);
-    font-size:9px;
-    font-weight:900;
+    font-size:10px;
 }
 
-.lock-meta{
-    margin-top:22px;
-    color:#435169;
-    font-size:7px;
-    letter-spacing:2px;
-}
-
-/* =====================================================
-   APP
-===================================================== */
-
+/* APP */
 #app{
-    display:none;
+    opacity:0;
+    transform:translateY(8px);
+    transition:opacity .7s,transform .7s;
 }
 
-#app.active{
-    display:block;
-    animation:appIn .7s ease;
-}
-
-@keyframes appIn{
-    from{
-        opacity:0;
-        transform:translateY(15px);
-    }
-
-    to{
-        opacity:1;
-        transform:none;
-    }
+#app.ready{
+    opacity:1;
+    transform:none;
 }
 
 .container{
-    width:min(1450px,94%);
+    width:min(1450px,94vw);
     margin:auto;
-    padding:22px 0 45px;
 }
 
-/* =====================================================
-   HEADER
-===================================================== */
-
+/* HEADER */
 header{
+    position:sticky;
+    top:0;
+    z-index:50;
+    border-bottom:1px solid var(--line);
+    background:rgba(4,7,13,.72);
+    backdrop-filter:blur(20px);
+}
+
+.header-inner{
+    min-height:72px;
     display:flex;
     align-items:center;
     justify-content:space-between;
-    gap:20px;
-    margin-bottom:22px;
+    gap:15px;
 }
 
 .brand{
@@ -485,59 +318,35 @@ header{
     gap:12px;
 }
 
-.brand-icon{
-    position:relative;
-    width:46px;
-    height:46px;
+.logo{
+    width:42px;
+    height:42px;
     display:grid;
     place-items:center;
-    border-radius:15px;
-    color:#001016;
-    font-size:20px;
+    border:1px solid rgba(0,234,255,.3);
+    border-radius:13px;
+    background:linear-gradient(135deg,rgba(0,234,255,.12),rgba(155,108,255,.1));
+    color:var(--cyan);
     font-weight:1000;
-    background:
-        linear-gradient(
-            135deg,
-            var(--cyan),
-            #76f8ff
-        );
-    box-shadow:
-        0 0 30px rgba(0,234,255,.3);
-}
-
-.brand-icon::after{
-    content:"";
-    position:absolute;
-    inset:-5px;
-    border:1px solid rgba(0,234,255,.2);
-    border-radius:19px;
-    animation:iconRing 2s linear infinite;
-}
-
-@keyframes iconRing{
-    to{
-        transform:rotate(360deg);
-    }
+    box-shadow:0 0 25px rgba(0,234,255,.08);
 }
 
 .brand h1{
     margin:0;
-    font-size:15px;
+    font-size:14px;
     letter-spacing:2px;
 }
 
 .brand small{
-    display:block;
-    margin-top:4px;
     color:var(--muted);
-    font-size:7px;
+    font-size:8px;
     letter-spacing:2px;
 }
 
 .header-right{
     display:flex;
     align-items:center;
-    gap:12px;
+    gap:10px;
 }
 
 .clock{
@@ -546,221 +355,426 @@ header{
 
 .clock strong{
     display:block;
-    font-family:monospace;
     font-size:13px;
-    letter-spacing:2px;
 }
 
 .clock span{
     color:var(--muted);
-    font-size:7px;
+    font-size:8px;
 }
 
 .theme-btn{
-    width:42px;
-    height:42px;
+    width:38px;
+    height:38px;
     border:1px solid var(--line);
-    border-radius:13px;
-    color:var(--text);
+    border-radius:12px;
     background:var(--panel);
-    transition:.25s;
+    color:var(--text);
+    cursor:pointer;
 }
 
-.theme-btn:hover{
-    border-color:var(--cyan);
-    transform:rotate(15deg);
-}
-
-/* =====================================================
-   HERO
-===================================================== */
-
+/* HERO */
 .hero{
-    position:relative;
-    overflow:hidden;
-    padding:38px;
-    margin-bottom:14px;
-    border:1px solid var(--line);
-    border-radius:28px;
-    background:
-        linear-gradient(
-            135deg,
-            rgba(0,234,255,.065),
-            rgba(146,92,255,.055)
-        ),
-        var(--panel);
-    box-shadow:var(--shadow);
-    backdrop-filter:blur(25px);
-}
-
-.hero::before{
-    content:"";
-    position:absolute;
-    left:-40%;
-    top:0;
-    width:35%;
-    height:1px;
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            var(--cyan),
-            transparent
-        );
-    box-shadow:0 0 15px var(--cyan);
-    animation:heroScan 4s linear infinite;
-}
-
-@keyframes heroScan{
-    to{
-        left:140%;
-    }
+    padding:50px 0 25px;
 }
 
 .hero h2{
     margin:0;
-    font-size:clamp(30px,5vw,60px);
-    line-height:1;
-    letter-spacing:-3px;
-}
-
-.hero h2 span{
-    color:var(--cyan);
-    text-shadow:
-        0 0 15px rgba(0,234,255,.6),
-        0 0 45px rgba(0,234,255,.2);
+    font-size:clamp(28px,5vw,55px);
+    line-height:.95;
+    letter-spacing:-2px;
+    background:linear-gradient(90deg,#fff,var(--cyan),#a98aff);
+    -webkit-background-clip:text;
+    color:transparent;
 }
 
 .hero p{
     max-width:720px;
-    margin:18px 0 0;
     color:var(--muted);
-    font-size:11px;
     line-height:1.7;
+    font-size:12px;
 }
 
 .badges{
     display:flex;
     flex-wrap:wrap;
-    gap:7px;
-    margin-top:22px;
+    gap:8px;
 }
 
 .badge{
     padding:7px 10px;
     border:1px solid var(--line);
-    border-radius:999px;
-    color:#9caac0;
+    border-radius:99px;
     background:rgba(255,255,255,.025);
-    font-size:7px;
-    font-weight:1000;
+    color:#a9bad0;
+    font-size:8px;
+    font-weight:900;
     letter-spacing:1px;
 }
 
-.badge.green{
+.badge.live{
     color:var(--green);
-    border-color:rgba(0,255,163,.2);
+    border-color:rgba(39,245,154,.2);
 }
 
-.badge.cyan{
-    color:var(--cyan);
-    border-color:rgba(0,234,255,.2);
-}
-
-/* =====================================================
-   STATS
-===================================================== */
-
+/* STATS */
 .stats{
     display:grid;
     grid-template-columns:repeat(3,1fr);
-    gap:10px;
-    margin-bottom:14px;
+    gap:12px;
+    margin-bottom:15px;
 }
 
 .stat{
-    position:relative;
-    overflow:hidden;
-    padding:16px;
+    padding:17px;
     border:1px solid var(--line);
     border-radius:17px;
     background:var(--panel);
-    backdrop-filter:blur(18px);
-}
-
-.stat::after{
-    content:"";
-    position:absolute;
-    width:80px;
-    height:80px;
-    right:-50px;
-    bottom:-50px;
-    border-radius:50%;
-    background:var(--cyan);
-    filter:blur(25px);
-    opacity:.07;
+    box-shadow:var(--shadow);
 }
 
 .stat small{
     color:var(--muted);
-    font-size:7px;
-    font-weight:900;
-    letter-spacing:1.5px;
+    font-size:8px;
+    letter-spacing:1px;
 }
 
 .stat strong{
     display:block;
-    margin-top:7px;
-    font-size:21px;
+    margin-top:8px;
+    font-size:22px;
 }
 
-/* =====================================================
-   COMMON PANEL
-===================================================== */
-
+/* PANELS */
 .panel{
-    padding:19px;
+    position:relative;
+    overflow:hidden;
     border:1px solid var(--line);
-    border-radius:21px;
-    background:var(--panel);
+    border-radius:var(--radius);
+    background:linear-gradient(145deg,rgba(15,21,36,.82),rgba(7,11,20,.72));
     box-shadow:var(--shadow);
-    backdrop-filter:blur(20px);
+}
+
+.panel::before{
+    content:"";
+    position:absolute;
+    left:-30%;
+    top:0;
+    width:30%;
+    height:1px;
+    background:linear-gradient(90deg,transparent,var(--cyan),transparent);
+    animation:scanPanel 5s linear infinite;
+}
+
+@keyframes scanPanel{
+    to{left:130%}
 }
 
 .panel-title{
+    padding:17px 19px;
     display:flex;
     justify-content:space-between;
     align-items:center;
-    gap:10px;
-    margin-bottom:15px;
+    border-bottom:1px solid var(--line);
 }
 
 .panel-title h3{
     margin:0;
-    font-size:10px;
-    letter-spacing:2px;
+    font-size:11px;
+    letter-spacing:1.5px;
 }
 
 .panel-title span{
-    color:var(--muted);
-    font-size:7px;
+    color:var(--green);
+    font-size:8px;
     font-weight:900;
+}
+
+.main-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+/* FILE */
+.file-area{
+    padding:18px;
+}
+
+.drop-zone{
+    position:relative;
+    min-height:190px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    padding:25px;
+    border:1px dashed rgba(0,234,255,.25);
+    border-radius:17px;
+    background:rgba(0,234,255,.025);
+    cursor:pointer;
+    transition:.25s;
+}
+
+.drop-zone:hover,
+.drop-zone.drag{
+    border-color:var(--cyan);
+    background:rgba(0,234,255,.06);
+    box-shadow:inset 0 0 40px rgba(0,234,255,.04);
+}
+
+.drop-icon{
+    font-size:36px;
+    filter:drop-shadow(0 0 12px rgba(0,234,255,.5));
+}
+
+.drop-zone strong{
+    font-size:12px;
+}
+
+.drop-zone span{
+    color:var(--muted);
+    font-size:9px;
+}
+
+#fileInput{
+    display:none;
+}
+
+.file-list{
+    max-height:220px;
+    overflow:auto;
+    margin-top:12px;
+}
+
+.file-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:10px;
+    margin-bottom:7px;
+    border:1px solid var(--line);
+    border-radius:12px;
+    background:rgba(255,255,255,.018);
+}
+
+.file-num{
+    color:var(--cyan);
+    font-size:9px;
+    font-weight:900;
+}
+
+.file-name{
+    flex:1;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    font-size:10px;
+}
+
+.file-size{
+    color:var(--muted);
+    font-size:8px;
+}
+
+/* BUTTONS */
+.controls{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:12px;
+}
+
+.btn{
+    flex:1;
+    min-width:100px;
+    padding:11px 13px;
+    border:1px solid var(--line);
+    border-radius:12px;
+    background:rgba(255,255,255,.025);
+    color:var(--text);
+    font-size:9px;
+    font-weight:900;
+    cursor:pointer;
+    transition:.22s;
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+    border-color:rgba(0,234,255,.35);
+    box-shadow:0 8px 25px rgba(0,0,0,.25);
+}
+
+.btn.primary{
+    border-color:rgba(0,234,255,.3);
+    background:linear-gradient(135deg,rgba(0,234,255,.12),rgba(79,140,255,.1));
+}
+
+.btn.ai{
+    position:relative;
+    overflow:hidden;
+    border-color:rgba(155,108,255,.4);
+    background:linear-gradient(90deg,rgba(0,234,255,.1),rgba(155,108,255,.15));
+}
+
+.btn.ai::after{
+    content:"";
+    position:absolute;
+    top:0;
+    left:-80%;
+    width:60%;
+    height:100%;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);
+    transform:skewX(-20deg);
+    animation:shine 2.8s infinite;
+}
+
+@keyframes shine{
+    0%{left:-80%}
+    45%,100%{left:140%}
+}
+
+.btn.danger{
+    color:#ff7891;
+}
+
+/* AI */
+.ai-body{
+    padding:18px;
+}
+
+.ai-button{
+    width:100%;
+    padding:17px;
+    border:1px solid rgba(155,108,255,.3);
+    border-radius:15px;
+    background:linear-gradient(100deg,rgba(0,234,255,.1),rgba(155,108,255,.14));
+    color:#fff;
+    cursor:pointer;
+    font-size:11px;
+    font-weight:1000;
+    letter-spacing:1px;
+    box-shadow:0 0 30px rgba(155,108,255,.08);
+}
+
+.prediction{
+    position:relative;
+    margin-top:13px;
+    padding:16px;
+    min-height:125px;
+    border:1px solid var(--line);
+    border-radius:16px;
+    background:rgba(0,0,0,.15);
+    overflow:hidden;
+}
+
+.prediction::after{
+    content:"";
+    position:absolute;
+    width:130px;
+    height:130px;
+    right:-70px;
+    top:-70px;
+    border:1px solid rgba(0,234,255,.18);
+    border-radius:50%;
+    box-shadow:0 0 0 15px rgba(0,234,255,.02),
+               0 0 0 30px rgba(0,234,255,.015);
+}
+
+.pred-head{
+    display:flex;
+    justify-content:space-between;
+}
+
+.pred-head small{
+    color:var(--muted);
+    font-size:8px;
     letter-spacing:1px;
 }
 
-/* =====================================================
-   SYSTEM
-===================================================== */
-
-.system-panel{
-    margin-bottom:14px;
+.score{
+    font-size:27px;
+    font-weight:1000;
 }
 
-.system-panel .panel-title span{
-    color:var(--green);
+.pred-status{
+    margin-top:8px;
+    font-size:11px;
+    font-weight:900;
+}
+
+.pred-detail{
+    margin-top:7px;
+    color:var(--muted);
+    font-size:9px;
+    line-height:1.6;
+}
+
+/* FORM */
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    margin-top:12px;
+}
+
+.input{
+    width:100%;
+    padding:11px;
+    border:1px solid var(--line);
+    border-radius:11px;
+    outline:none;
+    background:#080d17;
+    color:var(--text);
+    font-size:9px;
+}
+
+.progress{
+    margin-top:15px;
+}
+
+.progress-top{
+    display:flex;
+    justify-content:space-between;
+    color:var(--muted);
+    font-size:8px;
+    margin-bottom:7px;
+}
+
+.progress-track{
+    height:7px;
+    overflow:hidden;
+    border-radius:99px;
+    background:#111827;
+}
+
+.progress-fill{
+    width:0%;
+    height:100%;
+    border-radius:99px;
+    background:linear-gradient(90deg,var(--cyan),var(--blue),var(--violet));
+    box-shadow:0 0 18px rgba(0,234,255,.55);
+    transition:width .3s;
+}
+
+.result{
+    margin-top:12px;
+    padding:12px;
+    min-height:43px;
+    border-radius:11px;
+    border:1px solid var(--line);
+    color:var(--muted);
+    font-size:9px;
+}
+
+/* SYSTEM */
+.system-panel{
+    margin-top:15px;
 }
 
 .system-grid{
+    padding:15px;
     display:grid;
     grid-template-columns:repeat(4,1fr);
     gap:9px;
@@ -773,41 +787,34 @@ header{
     padding:12px;
     border:1px solid var(--line);
     border-radius:14px;
-    background:
-        linear-gradient(
-            135deg,
-            rgba(0,234,255,.025),
-            rgba(146,92,255,.03)
-        );
+    background:linear-gradient(135deg,rgba(0,234,255,.025),rgba(155,108,255,.025));
     transition:.25s;
 }
 
 .system-item:hover{
     transform:translateY(-3px);
-    border-color:rgba(0,234,255,.35);
-    box-shadow:
-        0 10px 30px rgba(0,0,0,.18),
-        inset 0 0 25px rgba(0,234,255,.025);
+    border-color:rgba(0,234,255,.3);
+    box-shadow:0 10px 25px rgba(0,0,0,.2);
 }
 
 .system-item::after{
     content:"";
     position:absolute;
-    width:50px;
-    height:50px;
+    width:55px;
+    height:55px;
     right:-25px;
     bottom:-25px;
     border-radius:50%;
     background:var(--cyan);
-    filter:blur(25px);
+    filter:blur(22px);
     opacity:.08;
 }
 
 .system-item small{
     display:block;
     color:var(--muted);
-    font-size:6.5px;
-    font-weight:1000;
+    font-size:7px;
+    font-weight:900;
     letter-spacing:1px;
 }
 
@@ -818,549 +825,70 @@ header{
     text-overflow:ellipsis;
     white-space:nowrap;
     font-size:11px;
-    font-weight:900;
 }
 
-/* =====================================================
-   MAIN GRID
-===================================================== */
-
-.main-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:14px;
-}
-
-/* =====================================================
-   FILE INPUT
-===================================================== */
-
-.file-picker{
-    position:relative;
-    min-height:200px;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    text-align:center;
-    border:1px dashed rgba(0,234,255,.25);
-    border-radius:18px;
-    background:
-        radial-gradient(
-            circle at center,
-            rgba(0,234,255,.06),
-            transparent 65%
-        );
-    transition:.3s;
-}
-
-.file-picker.drag{
-    border-color:var(--cyan);
-    background:
-        radial-gradient(
-            circle at center,
-            rgba(0,234,255,.12),
-            transparent 65%
-        );
-    box-shadow:
-        0 0 40px rgba(0,234,255,.08),
-        inset 0 0 40px rgba(0,234,255,.04);
-    transform:scale(1.01);
-}
-
-.file-picker-icon{
-    font-size:42px;
-    margin-bottom:10px;
-    color:var(--cyan);
-    filter:drop-shadow(0 0 15px rgba(0,234,255,.6));
-}
-
-.file-picker strong{
-    font-size:11px;
-}
-
-.file-picker small{
-    margin-top:7px;
-    color:var(--muted);
-    font-size:8px;
-}
-
-.select-file-btn{
-    margin-top:16px;
-    padding:11px 18px;
-    border:1px solid rgba(0,234,255,.25);
-    border-radius:12px;
-    color:var(--cyan);
-    background:rgba(0,234,255,.045);
-    font-size:8px;
-    font-weight:1000;
-    letter-spacing:1px;
-    transition:.25s;
-}
-
-.select-file-btn:hover{
-    color:#001015;
-    background:var(--cyan);
-    box-shadow:0 0 25px rgba(0,234,255,.2);
-}
-
-#fileInput{
-    display:none;
-}
-
-/* =====================================================
-   FILE LIST
-===================================================== */
-
-.file-list{
-    display:flex;
-    flex-direction:column;
-    gap:7px;
-    max-height:275px;
-    overflow:auto;
-    margin-top:13px;
-    padding-right:3px;
-}
-
-.file{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:10px;
-    padding:10px 12px;
-    border:1px solid var(--line);
-    border-radius:12px;
-    background:rgba(255,255,255,.02);
-}
-
-.file-name{
-    min-width:0;
-}
-
-.file-name strong{
-    display:block;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap;
-    font-size:9px;
-}
-
-.file-name small{
-    display:block;
-    margin-top:3px;
-    color:var(--muted);
-    font-size:7px;
-}
-
-.file-index{
-    color:var(--cyan);
-    font-family:monospace;
-    font-size:8px;
-    font-weight:1000;
-}
-
-/* =====================================================
-   BUTTONS
-===================================================== */
-
-.actions{
-    display:flex;
-    flex-wrap:wrap;
-    gap:7px;
-    margin-top:12px;
-}
-
-.btn{
-    position:relative;
-    overflow:hidden;
-    padding:10px 13px;
-    border:1px solid var(--line);
-    border-radius:11px;
-    color:var(--text);
-    background:rgba(255,255,255,.03);
-    font-size:8px;
-    font-weight:1000;
-    letter-spacing:.8px;
-    transition:.25s;
-}
-
-.btn:hover{
-    transform:translateY(-2px);
-    border-color:rgba(0,234,255,.35);
-}
-
-.btn.primary{
-    color:#001014;
-    border:0;
-    background:
-        linear-gradient(
-            110deg,
-            var(--cyan),
-            #6ff7ff
-        );
-    box-shadow:0 0 25px rgba(0,234,255,.16);
-}
-
-.btn.success{
-    color:var(--green);
-}
-
-.btn.danger{
-    color:#ff6c89;
-}
-
-.btn.ai{
-    width:100%;
-    padding:14px;
-    color:white;
-    border-color:rgba(146,92,255,.4);
-    background:
-        linear-gradient(
-            110deg,
-            #211343,
-            #152d5a,
-            #32134e
-        );
-    box-shadow:
-        0 0 35px rgba(146,92,255,.1);
-}
-
-.btn.ai::before{
-    content:"";
-    position:absolute;
-    top:0;
-    left:-100%;
-    width:60%;
-    height:100%;
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            rgba(255,255,255,.2),
-            transparent
-        );
-    animation:buttonScan 2.3s linear infinite;
-}
-
-@keyframes buttonScan{
-    to{
-        left:150%;
-    }
-}
-
-/* =====================================================
-   AI PREDICTION
-===================================================== */
-
-.prediction{
-    position:relative;
-    overflow:hidden;
-    min-height:150px;
-    margin-top:13px;
-    padding:20px;
-    border:1px solid var(--line);
-    border-radius:17px;
-    background:
-        radial-gradient(
-            circle at 20% 30%,
-            rgba(0,234,255,.07),
-            transparent 40%
-        );
-}
-
-.prediction-head{
-    position:relative;
-    z-index:2;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-}
-
-.prediction-head small{
-    color:var(--muted);
-    font-size:7px;
-    font-weight:1000;
-    letter-spacing:1.5px;
-}
-
-.prediction-status{
-    margin-top:6px;
-    font-size:10px;
-    font-weight:1000;
-    letter-spacing:2px;
-}
-
-.prediction-status.high{
-    color:var(--green);
-}
-
-.prediction-status.likely{
-    color:var(--cyan);
-}
-
-.prediction-status.warning{
-    color:var(--yellow);
-}
-
-.prediction-status.blocked{
-    color:var(--red);
-}
-
-.score{
-    font-size:43px;
-    font-weight:1000;
-    letter-spacing:-3px;
-    color:var(--cyan);
-    text-shadow:
-        0 0 20px rgba(0,234,255,.45);
-}
-
-.radar{
-    position:absolute;
-    width:150px;
-    height:150px;
-    right:10px;
-    bottom:-60px;
-    border:1px solid rgba(0,234,255,.12);
-    border-radius:50%;
-    opacity:.65;
-}
-
-.radar::before,
-.radar::after{
-    content:"";
-    position:absolute;
-    border:1px solid rgba(0,234,255,.1);
-    border-radius:50%;
-}
-
-.radar::before{
-    inset:25px;
-}
-
-.radar::after{
-    inset:50px;
-}
-
-.radar-line{
-    position:absolute;
-    left:50%;
-    top:0;
-    width:1px;
-    height:50%;
-    transform-origin:bottom;
-    background:
-        linear-gradient(
-            var(--cyan),
-            transparent
-        );
-    box-shadow:0 0 10px var(--cyan);
-    animation:radarSpin 2.7s linear infinite;
-}
-
-@keyframes radarSpin{
-    to{
-        transform:rotate(360deg);
-    }
-}
-
-/* =====================================================
-   FORM
-===================================================== */
-
-.form-group{
-    margin-top:14px;
-}
-
-.form-group label{
-    display:block;
-    margin-bottom:6px;
-    color:var(--muted);
-    font-size:7px;
-    font-weight:1000;
-    letter-spacing:1px;
-}
-
-.text-input,
-.select{
-    width:100%;
-    height:42px;
-    padding:0 12px;
-    outline:none;
-    color:var(--text);
-    border:1px solid var(--line);
-    border-radius:11px;
-    background:rgba(0,0,0,.18);
-}
-
-.select option{
-    color:white;
-    background:#090e18;
-}
-
-/* =====================================================
-   PROGRESS
-===================================================== */
-
-.progress-box{
-    margin-top:14px;
-    padding:14px;
-    border:1px solid var(--line);
-    border-radius:15px;
-    background:rgba(255,255,255,.018);
-}
-
-.progress-top{
-    display:flex;
-    justify-content:space-between;
-    margin-bottom:8px;
-}
-
-.progress-top span{
-    color:var(--muted);
-    font-size:7px;
-    font-weight:1000;
-    letter-spacing:1px;
-}
-
-.progress-track{
-    height:7px;
-    overflow:hidden;
-    border-radius:99px;
-    background:#101827;
-}
-
-.progress-fill{
-    width:0;
-    height:100%;
-    border-radius:inherit;
-    background:
-        linear-gradient(
-            90deg,
-            var(--blue),
-            var(--cyan),
-            var(--green)
-        );
-    box-shadow:
-        0 0 15px rgba(0,234,255,.5);
-    transition:width .3s ease;
-}
-
-.progress-detail{
-    margin-top:7px;
-    color:var(--muted);
-    font-size:7px;
-}
-
-/* =====================================================
-   RESULT
-===================================================== */
-
-.result{
-    min-height:45px;
-    margin-top:12px;
-    padding:12px;
-    color:var(--muted);
-    border:1px solid var(--line);
-    border-radius:12px;
-    font-size:8px;
-    line-height:1.6;
-}
-
-/* =====================================================
-   TERMINAL
-===================================================== */
-
-.terminal-panel{
-    margin-top:14px;
-}
-
+/* TERMINAL */
 .terminal{
-    min-height:160px;
-    max-height:270px;
+    margin-top:15px;
+}
+
+.terminal-body{
+    height:210px;
+    padding:15px;
     overflow:auto;
-    padding:14px;
-    border:1px solid rgba(0,255,163,.08);
-    border-radius:15px;
-    background:#02050a;
-    color:#8ef7ce;
-    font-family:
-        "SFMono-Regular",
-        Consolas,
-        monospace;
-    font-size:8px;
+    font-family:"SFMono-Regular",Consolas,monospace;
+    font-size:9px;
     line-height:1.8;
+    background:#02040a;
 }
 
-.log-info{
-    color:#72ddff;
+.log{
+    color:#7f91a9;
 }
 
-.log-success{
-    color:#66f3a5;
-}
+.log.ok{color:var(--green)}
+.log.warn{color:var(--yellow)}
+.log.err{color:var(--red)}
+.log.ai{color:var(--cyan)}
 
-.log-warning{
-    color:#ffd166;
-}
-
-.log-error{
-    color:#ff6584;
-}
-
-/* =====================================================
-   FOOTER
-===================================================== */
-
+/* FOOTER */
 footer{
-    padding:35px 0 0;
+    padding:38px 0 45px;
     text-align:center;
 }
 
 .creator-label{
-    color:#52617a;
-    font-size:7px;
-    font-weight:1000;
+    color:var(--muted);
+    font-size:8px;
     letter-spacing:4px;
 }
 
 .creator-name{
     margin-top:8px;
-    color:var(--cyan);
-    font-size:16px;
+    font-size:18px;
     font-weight:1000;
     letter-spacing:3px;
-    text-shadow:
-        0 0 15px rgba(0,234,255,.55);
-    animation:creatorGlow 2s ease-in-out infinite alternate;
+    background:linear-gradient(90deg,var(--cyan),#fff,var(--violet),var(--cyan));
+    background-size:250% auto;
+    -webkit-background-clip:text;
+    color:transparent;
+    animation:nameShine 4s linear infinite;
+    text-shadow:0 0 25px rgba(0,234,255,.1);
 }
 
-.creator-version{
-    margin-top:8px;
-    color:#39465a;
-    font-size:6px;
+@keyframes nameShine{
+    to{background-position:250% center}
+}
+
+.version{
+    margin-top:7px;
+    color:var(--muted);
+    font-size:7px;
     letter-spacing:2px;
 }
 
-@keyframes creatorGlow{
-    from{
-        opacity:.65;
-    }
-
-    to{
-        opacity:1;
-        text-shadow:
-            0 0 20px rgba(0,234,255,.7),
-            0 0 45px rgba(0,234,255,.15);
-    }
-}
-
-/* =====================================================
-   RESPONSIVE
-===================================================== */
-
-@media(max-width:950px){
-
+/* RESPONSIVE */
+@media(max-width:900px){
     .main-grid{
         grid-template-columns:1fr;
     }
@@ -1370,55 +898,50 @@ footer{
     }
 }
 
-@media(max-width:650px){
-
+@media(max-width:600px){
     .container{
-        width:94%;
-        padding-top:15px;
+        width:min(94vw,500px);
     }
 
-    .hero{
-        padding:25px;
+    .header-inner{
+        min-height:62px;
     }
 
-    .hero h2{
-        font-size:32px;
-    }
-
-    .stats{
-        grid-template-columns:1fr;
-    }
-
-    .system-grid{
-        grid-template-columns:1fr 1fr;
-    }
-
-    .system-item{
-        min-height:70px;
-        padding:10px;
-    }
-
-    .system-item strong{
-        font-size:9px;
+    .brand h1{
+        font-size:11px;
     }
 
     .clock{
         display:none;
     }
 
-    .panel{
-        padding:15px;
+    .hero{
+        padding-top:32px;
     }
-}
 
-@media(max-width:430px){
-
-    .system-grid{
+    .stats{
         grid-template-columns:1fr;
     }
 
-    .lock-box{
-        padding:25px 20px;
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .system-grid{
+        grid-template-columns:1fr 1fr;
+        padding:10px;
+    }
+
+    .system-item{
+        min-height:68px;
+    }
+
+    .system-item strong{
+        font-size:9px;
+    }
+
+    .controls .btn{
+        min-width:calc(50% - 5px);
     }
 }
 </style>
@@ -1426,579 +949,428 @@ footer{
 
 <body>
 
-<!-- =====================================================
-     BOOT SCREEN
-===================================================== -->
+<div class="aurora a1"></div>
+<div class="aurora a2"></div>
 
+<!-- BOOT -->
 <div id="boot">
+    <div class="boot-box">
+        <div class="boot-logo">KTOOL V27</div>
+        <div class="boot-sub">AI BINARY ENGINE INITIALIZATION</div>
 
-    <div class="boot-logo">V27</div>
-
-    <div class="boot-sub">
-        KTOOL AI BINARY ENGINE
-    </div>
-
-    <div class="boot-progress">
-        <span></span>
-    </div>
-
-    <div
-        id="bootStatus"
-        class="boot-status"
-    >
-        INITIALIZING CORE...
-    </div>
-
-</div>
-
-<!-- =====================================================
-     ACCESS CODE
-===================================================== -->
-
-<div id="lockScreen">
-
-    <div class="lock-box">
-
-        <div class="lock-icon">
-            ◈
+        <div class="boot-ring">
+            <span id="bootCount">3</span>
         </div>
 
-        <h2>SECURE ACCESS</h2>
+        <div class="boot-progress">
+            <i id="bootFill"></i>
+        </div>
 
-        <p>
-            KTOOL AI BINARY ENGINE V27<br>
-            ENTER AUTHORIZATION CODE TO CONTINUE
-        </p>
+        <div class="boot-status" id="bootStatus">
+            INITIALIZING ENGINE...
+        </div>
+    </div>
+</div>
+
+<!-- PASSWORD -->
+<div id="lock">
+    <div class="lock-card">
+        <div class="lock-icon">🔐</div>
+        <div class="lock-title">KTOOL V27 LOCKED</div>
+        <div class="lock-sub">
+            ENTER ACCESS CODE TO INITIALIZE ENGINE
+        </div>
 
         <input
-            id="accessCode"
-            class="code-input"
+            id="passwordInput"
             type="password"
             inputmode="numeric"
             maxlength="4"
-            autocomplete="off"
             placeholder="••••"
+            autocomplete="off"
         >
 
-        <button
-            id="unlockBtn"
-            class="unlock-btn"
-        >
-            UNLOCK V27
+        <button class="unlock-btn" id="unlockBtn">
+            UNLOCK ENGINE
         </button>
 
-        <div
-            id="lockError"
-            class="lock-error"
-        ></div>
-
-        <div class="lock-meta">
-            LOCAL AUTHENTICATION • V27
-        </div>
-
+        <div class="lock-error" id="lockError"></div>
     </div>
-
 </div>
 
-<!-- =====================================================
-     APPLICATION
-===================================================== -->
-
+<!-- APP -->
 <div id="app">
 
-<div class="container">
-
 <header>
+    <div class="container header-inner">
 
-    <div class="brand">
-
-        <div class="brand-icon">
-            K
+        <div class="brand">
+            <div class="logo">K</div>
+            <div>
+                <h1>KTOOL AI BINARY ENGINE</h1>
+                <small>V27 • LOCAL PROCESSING</small>
+            </div>
         </div>
 
-        <div>
+        <div class="header-right">
+            <div class="clock">
+                <strong id="clock">--:--:--</strong>
+                <span id="date">--/--/----</span>
+            </div>
 
-            <h1>
-                KTOOL AI BINARY ENGINE
-            </h1>
-
-            <small>
-                LOCAL BYTE PROCESSOR / V27
-            </small>
-
+            <button class="theme-btn" id="themeBtn">◐</button>
         </div>
 
     </div>
-
-    <div class="header-right">
-
-        <div class="clock">
-
-            <strong id="clock">
-                00:00:00
-            </strong>
-
-            <span id="date">
-                --/--/----
-            </span>
-
-        </div>
-
-        <button
-            id="themeBtn"
-            class="theme-btn"
-        >
-            ◐
-        </button>
-
-    </div>
-
 </header>
 
-<!-- =====================================================
-     HERO
-===================================================== -->
+<main class="container">
 
-<section class="hero">
+    <section class="hero">
+        <h2>CYBER MERGE<br>V27</h2>
 
-    <h2>
-        AI BINARY
-        <span>MERGE ENGINE</span>
-    </h2>
+        <p>
+            Local browser-based binary analyzer and merge engine.
+            Files are processed directly in the browser.
+            Only <b>.bytes</b> files are accepted.
+        </p>
 
-    <p>
-        Advanced local binary analysis interface.
-        Files remain inside the browser during processing.
-    </p>
+        <div class="badges">
+            <div class="badge live">● ENGINE ONLINE</div>
+            <div class="badge">LOCAL PROCESSING</div>
+            <div class="badge">BYTE SAFE</div>
+            <div class="badge">AI GUARD</div>
+            <div class="badge">.BYTES ONLY</div>
+        </div>
+    </section>
 
-    <div class="badges">
-
-        <span class="badge green">
-            ● ENGINE ONLINE
-        </span>
-
-        <span class="badge cyan">
-            LOCAL PROCESSING
-        </span>
-
-        <span class="badge">
-            BYTE SAFE
-        </span>
-
-        <span class="badge">
-            AI GUARD
-        </span>
-
-        <span class="badge">
-            .BYTES ONLY
-        </span>
-
-    </div>
-
-</section>
-
-<!-- =====================================================
-     STATS
-===================================================== -->
-
-<div class="stats">
-
-    <div class="stat">
-        <small>FILES LOADED</small>
-        <strong id="fileCount">0</strong>
-    </div>
-
-    <div class="stat">
-        <small>TOTAL SIZE</small>
-        <strong id="totalSize">0 B</strong>
-    </div>
-
-    <div class="stat">
-        <small>AI STATUS</small>
-        <strong id="aiStatus">WAITING</strong>
-    </div>
-
-</div>
-
-<!-- =====================================================
-     SYSTEM INFORMATION
-===================================================== -->
-
-<section class="panel system-panel">
-
-    <div class="panel-title">
-
-        <h3>
-            ◉ DEEP SYSTEM INFORMATION
-        </h3>
-
-        <span id="systemStatus">
-            DETECTING...
-        </span>
-
-    </div>
-
-    <div class="system-grid">
-
-        <div class="system-item">
-            <small>OPERATING SYSTEM</small>
-            <strong id="sysOS">Detecting...</strong>
+    <section class="stats">
+        <div class="stat">
+            <small>FILES LOADED</small>
+            <strong id="fileCount">0</strong>
         </div>
 
-        <div class="system-item">
-            <small>BROWSER</small>
-            <strong id="sysBrowser">Detecting...</strong>
+        <div class="stat">
+            <small>TOTAL SIZE</small>
+            <strong id="totalSize">0 B</strong>
         </div>
 
-        <div class="system-item">
-            <small>PLATFORM</small>
-            <strong id="sysPlatform">Detecting...</strong>
+        <div class="stat">
+            <small>AI STATUS</small>
+            <strong id="aiStatus">WAITING</strong>
         </div>
+    </section>
 
-        <div class="system-item">
-            <small>CPU THREADS</small>
-            <strong id="sysCPU">Detecting...</strong>
-        </div>
+    <div class="main-grid">
 
-        <div class="system-item">
-            <small>MEMORY</small>
-            <strong id="sysMemory">Detecting...</strong>
-        </div>
+        <!-- FILE PANEL -->
+        <section class="panel">
 
-        <div class="system-item">
-            <small>GPU / WEBGL</small>
-            <strong id="sysGPU">Detecting...</strong>
-        </div>
+            <div class="panel-title">
+                <h3>◈ BYTE INPUT</h3>
+                <span>.BYTES ONLY</span>
+            </div>
 
-        <div class="system-item">
-            <small>DISPLAY</small>
-            <strong id="sysDisplay">Detecting...</strong>
-        </div>
+            <div class="file-area">
 
-        <div class="system-item">
-            <small>VIEWPORT</small>
-            <strong id="sysViewport">Detecting...</strong>
-        </div>
+                <label class="drop-zone" id="dropZone" for="fileInput">
 
-        <div class="system-item">
-            <small>PIXEL RATIO</small>
-            <strong id="sysDPR">Detecting...</strong>
-        </div>
+                    <div class="drop-icon">⬡</div>
 
-        <div class="system-item">
-            <small>TOUCH</small>
-            <strong id="sysTouch">Detecting...</strong>
-        </div>
+                    <strong>
+                        DROP .BYTES FILES HERE
+                    </strong>
 
-        <div class="system-item">
-            <small>LANGUAGE</small>
-            <strong id="sysLanguage">Detecting...</strong>
-        </div>
+                    <span>
+                        or tap to select files
+                    </span>
 
-        <div class="system-item">
-            <small>TIMEZONE</small>
-            <strong id="sysTimezone">Detecting...</strong>
-        </div>
+                    <input
+                        id="fileInput"
+                        type="file"
+                        accept=".bytes"
+                        multiple
+                    >
 
-        <div class="system-item">
-            <small>NETWORK</small>
-            <strong id="sysNetwork">Detecting...</strong>
-        </div>
+                </label>
 
-        <div class="system-item">
-            <small>CONNECTION</small>
-            <strong id="sysConnection">Detecting...</strong>
-        </div>
+                <div class="file-list" id="fileList"></div>
 
-        <div class="system-item">
-            <small>COOKIES</small>
-            <strong id="sysCookies">Detecting...</strong>
-        </div>
+                <div class="controls">
 
-        <div class="system-item">
-            <small>STORAGE</small>
-            <strong id="sysStorage">Detecting...</strong>
-        </div>
+                    <button class="btn" id="sortBtn">
+                        ↕ SORT
+                    </button>
 
-    </div>
+                    <button class="btn" id="reverseBtn">
+                        ⇄ REVERSE
+                    </button>
 
-</section>
+                    <button class="btn danger" id="clearBtn">
+                        × CLEAR
+                    </button>
 
-<!-- =====================================================
-     MAIN
-===================================================== -->
-
-<main class="main-grid">
-
-<!-- FILE PANEL -->
-
-<section class="panel">
-
-    <div class="panel-title">
-
-        <h3>
-            01 / INPUT FILES
-        </h3>
-
-        <span>
-            .BYTES ONLY
-        </span>
-
-    </div>
-
-    <div
-        id="filePicker"
-        class="file-picker"
-    >
-
-        <div class="file-picker-icon">
-            ⬡
-        </div>
-
-        <strong>
-            DROP .BYTES FILES HERE
-        </strong>
-
-        <small>
-            Drag & drop hoặc chọn file trực tiếp
-        </small>
-
-        <button
-            type="button"
-            id="selectFileBtn"
-            class="select-file-btn"
-        >
-            SELECT .BYTES FILES
-        </button>
-
-        <input
-            id="fileInput"
-            type="file"
-            accept=".bytes"
-            multiple
-        >
-
-    </div>
-
-    <div
-        id="fileList"
-        class="file-list"
-    ></div>
-
-    <div class="actions">
-
-        <button
-            id="sortBtn"
-            class="btn"
-        >
-            ↕ SORT
-        </button>
-
-        <button
-            id="reverseBtn"
-            class="btn"
-        >
-            ⇅ REVERSE
-        </button>
-
-        <button
-            id="clearBtn"
-            class="btn danger"
-        >
-            × CLEAR
-        </button>
-
-    </div>
-
-</section>
-
-<!-- AI PANEL -->
-
-<section class="panel">
-
-    <div class="panel-title">
-
-        <h3>
-            02 / AI ENGINE
-        </h3>
-
-        <span>
-            COMPATIBILITY
-        </span>
-
-    </div>
-
-    <button
-        id="aiMergeBtn"
-        class="btn ai"
-    >
-        🤖 AI GỘP FILE
-    </button>
-
-    <div class="prediction">
-
-        <div class="prediction-head">
-
-            <div>
-
-                <small>
-                    AI SUCCESS PREDICTION
-                </small>
-
-                <div
-                    id="predictionStatus"
-                    class="prediction-status"
-                >
-                    WAITING
                 </div>
 
             </div>
+        </section>
 
-            <div class="score">
-                <span id="predictionScore">0</span>%
+        <!-- AI PANEL -->
+        <section class="panel">
+
+            <div class="panel-title">
+                <h3>◉ AI MERGE ENGINE</h3>
+                <span id="predictionStatus">WAITING</span>
+            </div>
+
+            <div class="ai-body">
+
+                <button class="ai-button" id="aiMergeBtn">
+                    🤖 AI GỘP FILE
+                </button>
+
+                <div class="prediction">
+
+                    <div class="pred-head">
+                        <small>AI COMPATIBILITY ESTIMATE</small>
+                        <div class="score" id="predictionScore">
+                            --%
+                        </div>
+                    </div>
+
+                    <div
+                        class="pred-status"
+                        id="predictionText"
+                    >
+                        Waiting for files
+                    </div>
+
+                    <div
+                        class="pred-detail"
+                        id="predictionDetail"
+                    >
+                        Add at least 2 .bytes files to begin
+                        structural analysis.
+                    </div>
+
+                </div>
+
+                <div class="form-grid">
+
+                    <input
+                        class="input"
+                        id="outputName"
+                        value="KTOOL_V27_MERGED.bytes"
+                        placeholder="Output name"
+                    >
+
+                    <select class="input" id="mergeMode">
+                        <option value="concat">
+                            Binary Concatenation
+                        </option>
+                    </select>
+
+                </div>
+
+                <div class="progress">
+
+                    <div class="progress-top">
+                        <span>PROCESS PROGRESS</span>
+                        <span id="progressPercent">0%</span>
+                    </div>
+
+                    <div class="progress-track">
+                        <div
+                            class="progress-fill"
+                            id="progressFill"
+                        ></div>
+                    </div>
+
+                </div>
+
+                <div
+                    id="progressLabel"
+                    style="
+                        margin-top:8px;
+                        color:var(--cyan);
+                        font-size:9px;
+                    "
+                >
+                    READY
+                </div>
+
+                <div
+                    id="progressDetail"
+                    style="
+                        margin-top:5px;
+                        color:var(--muted);
+                        font-size:8px;
+                    "
+                >
+                    Waiting for operation...
+                </div>
+
+                <div class="controls">
+
+                    <button
+                        class="btn primary"
+                        id="mergeBtn"
+                    >
+                        ⚡ MERGE
+                    </button>
+
+                    <button
+                        class="btn"
+                        id="downloadBtn"
+                        disabled
+                    >
+                        ↓ DOWNLOAD
+                    </button>
+
+                </div>
+
+                <div class="result" id="resultBox">
+                    No result generated.
+                </div>
+
+            </div>
+        </section>
+
+    </div>
+
+    <!-- SYSTEM -->
+    <section class="panel system-panel">
+
+        <div class="panel-title">
+            <h3>◉ SYSTEM INFORMATION</h3>
+            <span id="systemStatus">DETECTING...</span>
+        </div>
+
+        <div class="system-grid">
+
+            <div class="system-item">
+                <small>OPERATING SYSTEM</small>
+                <strong id="sysOS">Detecting...</strong>
+            </div>
+
+            <div class="system-item">
+                <small>BROWSER</small>
+                <strong id="sysBrowser">Detecting...</strong>
+            </div>
+
+            <div class="system-item">
+                <small>ARCHITECTURE</small>
+                <strong id="sysPlatform">Detecting...</strong>
+            </div>
+
+            <div class="system-item">
+                <small>CPU THREADS</small>
+                <strong id="sysCPU">Detecting...</strong>
+            </div>
+
+            <div class="system-item">
+                <small>MEMORY</small>
+                <strong id="sysMemory">Detecting...</strong>
+            </div>
+
+            <div class="system-item">
+                <small>BATTERY</small>
+                <strong id="sysBattery">Detecting...</strong>
+            </div>
+
+            <div class="system-item">
+                <small>CHARGING</small>
+                <strong id="sysCharging">Detecting...</strong>
+            </div>
+
+            <div class="system-item">
+                <small>TEMPERATURE</small>
+                <strong id="sysTemp">Unavailable</strong>
+            </div>
+
+            <div class="system-item">
+                <small>LANGUAGE</small>
+                <strong id="sysLanguage">Detecting...</strong>
+            </div>
+
+            <div class="system-item">
+                <small>TIMEZONE</small>
+                <strong id="sysTimezone">Detecting...</strong>
+            </div>
+
+            <div class="system-item">
+                <small>DISPLAY</small>
+                <strong id="sysDisplay">Detecting...</strong>
+            </div>
+
+            <div class="system-item">
+                <small>PIXEL RATIO</small>
+                <strong id="sysDPR">Detecting...</strong>
+            </div>
+
+            <div class="system-item">
+                <small>NETWORK</small>
+                <strong id="sysNetwork">Detecting...</strong>
+            </div>
+
+            <div class="system-item">
+                <small>CONNECTION</small>
+                <strong id="sysConnection">Unavailable</strong>
+            </div>
+
+            <div class="system-item">
+                <small>TOUCH POINTS</small>
+                <strong id="sysTouch">Detecting...</strong>
+            </div>
+
+            <div class="system-item">
+                <small>COLOR SCHEME</small>
+                <strong id="sysColor">Detecting...</strong>
+            </div>
+
+            <div class="system-item">
+                <small>COOKIES</small>
+                <strong id="sysCookies">Detecting...</strong>
+            </div>
+
+            <div class="system-item">
+                <small>LOCAL STORAGE</small>
+                <strong id="sysStorage">Detecting...</strong>
+            </div>
+
+            <div class="system-item">
+                <small>PAGE STATUS</small>
+                <strong id="sysVisibility">Detecting...</strong>
+            </div>
+
+            <div class="system-item">
+                <small>REDUCED MOTION</small>
+                <strong id="sysMotion">Detecting...</strong>
             </div>
 
         </div>
+    </section>
 
-        <div class="radar">
-            <div class="radar-line"></div>
+    <!-- TERMINAL -->
+    <section class="panel terminal">
+
+        <div class="panel-title">
+            <h3>▣ SYSTEM TERMINAL</h3>
+
+            <button
+                class="btn"
+                id="copyLogBtn"
+                style="flex:none;min-width:80px;padding:7px"
+            >
+                COPY LOG
+            </button>
         </div>
 
-    </div>
+        <div class="terminal-body" id="terminal"></div>
 
-    <div class="form-group">
-
-        <label>
-            OUTPUT FILE NAME
-        </label>
-
-        <input
-            id="outputName"
-            class="text-input"
-            value="KTOOL_MERGED.bytes"
-        >
-
-    </div>
-
-    <div class="form-group">
-
-        <label>
-            MERGE MODE
-        </label>
-
-        <select
-            id="mergeMode"
-            class="select"
-        >
-
-            <option value="binary">
-                RAW BINARY CONCATENATION
-            </option>
-
-            <option value="sequence">
-                SEQUENTIAL MERGE
-            </option>
-
-        </select>
-
-    </div>
-
-    <div class="progress-box">
-
-        <div class="progress-top">
-
-            <span>
-                PROCESS PROGRESS
-            </span>
-
-            <span id="progressPercent">
-                0%
-            </span>
-
-        </div>
-
-        <div class="progress-track">
-
-            <div
-                id="progressFill"
-                class="progress-fill"
-            ></div>
-
-        </div>
-
-        <div
-            id="progressLabel"
-            class="progress-detail"
-        >
-            Waiting for files...
-        </div>
-
-        <div
-            id="progressDetail"
-            class="progress-detail"
-        >
-            AI engine idle.
-        </div>
-
-    </div>
-
-    <div class="actions">
-
-        <button
-            id="mergeBtn"
-            class="btn primary"
-        >
-            ⚡ MERGE
-        </button>
-
-        <button
-            id="downloadBtn"
-            class="btn success"
-            disabled
-        >
-            ↓ DOWNLOAD
-        </button>
-
-    </div>
-
-    <div
-        id="resultBox"
-        class="result"
-    >
-        No result generated.
-    </div>
-
-</section>
+    </section>
 
 </main>
-
-<!-- =====================================================
-     TERMINAL
-===================================================== -->
-
-<section class="panel terminal-panel">
-
-    <div class="panel-title">
-
-        <h3>
-            03 / SYSTEM TERMINAL
-        </h3>
-
-        <button
-            id="copyLogBtn"
-            class="btn"
-        >
-            COPY LOG
-        </button>
-
-    </div>
-
-    <div
-        id="terminal"
-        class="terminal"
-    ></div>
-
-</section>
 
 <footer>
 
@@ -2010,209 +1382,314 @@ footer{
         &lt; TRONG DUNG /&gt;
     </div>
 
-    <div class="creator-version">
-        KTOOL AI BINARY ENGINE V27 • LOCAL EDITION
+    <div class="version">
+        KTOOL AI BINARY ENGINE • V27 • LOCAL EDITION
     </div>
 
 </footer>
 
 </div>
-</div>
 
 <script>
 "use strict";
 
-/* =====================================================
-   PARTICLES
-===================================================== */
-
-for(let i=0;i<45;i++){
-
-    const p =
-        document.createElement("div");
-
-    p.className = "particle";
-
-    p.style.left =
-        Math.random()*100 + "%";
-
-    p.style.animationDuration =
-        (7 + Math.random()*12) + "s";
-
-    p.style.animationDelay =
-        (-Math.random()*15) + "s";
-
-    p.style.opacity =
-        (.1 + Math.random()*.4);
-
-    document.body.appendChild(p);
-}
-
-/* =====================================================
-   ELEMENT HELPER
-===================================================== */
-
-const $ = id =>
-    document.getElementById(id);
-
-/* =====================================================
+/* =========================
    STATE
-===================================================== */
+========================= */
 
 const state = {
-
-    files:[],
-
-    resultBlob:null,
-
-    resultName:"",
-
-    merging:false,
-
-    aiRunning:false,
-
-    logs:[],
-
-    analysis:[],
-
-    prediction:null,
-
-    blocked:false,
-
-    unlocked:false
-
+    files: [],
+    resultBlob: null,
+    resultName: "",
+    merging: false,
+    aiRunning: false,
+    logs: [],
+    analysis: [],
+    prediction: null,
+    blocked: false
 };
 
-/* =====================================================
-   BOOT
-===================================================== */
 
-setTimeout(()=>{
-
-    $("boot").classList.add("hide");
-
-    $("lockScreen").classList.add("show");
-
-    $("accessCode").focus();
-
-},3000);
-
-/* =====================================================
-   ACCESS CODE
-===================================================== */
-
-function unlock(){
-
-    const code =
-        $("accessCode").value.trim();
-
-    if(code === "2812"){
-
-        state.unlocked = true;
-
-        $("lockError").textContent =
-            "";
-
-        $("lockScreen").classList.remove(
-            "show"
-        );
-
-        $("app").classList.add(
-            "active"
-        );
-
-        log(
-            "Authorization accepted.",
-            "success"
-        );
-
-        log(
-            "KTOOL V27 access granted.",
-            "success"
-        );
-
-        detectSystemInfo();
-
-        return;
-    }
-
-    $("lockError").textContent =
-        "INVALID ACCESS CODE";
-
-    $("accessCode").value = "";
-
-    $("accessCode").focus();
-
-    $("lockScreen").querySelector(
-        ".lock-box"
-    ).animate(
-        [
-            {transform:"translateX(0)"},
-            {transform:"translateX(-7px)"},
-            {transform:"translateX(7px)"},
-            {transform:"translateX(0)"}
-        ],
-        {
-            duration:260
-        }
-    );
-}
-
-$("unlockBtn").addEventListener(
-    "click",
-    unlock
-);
-
-$("accessCode").addEventListener(
-    "keydown",
-    event => {
-
-        if(event.key === "Enter"){
-            unlock();
-        }
-
-    }
-);
-
-/* =====================================================
+/* =========================
    HELPERS
-===================================================== */
+========================= */
 
-function sleep(ms){
-    return new Promise(
-        resolve => setTimeout(resolve,ms)
-    );
+const $ = id => document.getElementById(id);
+
+function log(message,type=""){
+    const time = new Date().toLocaleTimeString();
+
+    state.logs.push(`[${time}] ${message}`);
+
+    const line = document.createElement("div");
+    line.className = "log " + type;
+    line.textContent = `> [${time}] ${message}`;
+
+    $("terminal").appendChild(line);
+    $("terminal").scrollTop = $("terminal").scrollHeight;
 }
 
 function formatBytes(bytes){
+    if(!Number.isFinite(bytes) || bytes <= 0) return "0 B";
 
-    if(bytes < 1024){
-        return bytes + " B";
+    const units = ["B","KB","MB","GB","TB"];
+    let i = 0;
+    let n = bytes;
+
+    while(n >= 1024 && i < units.length - 1){
+        n /= 1024;
+        i++;
     }
 
-    const units =
-        ["KB","MB","GB","TB"];
+    return `${n.toFixed(i ? 2 : 0)} ${units[i]}`;
+}
 
-    let value = bytes;
+function sleep(ms){
+    return new Promise(resolve => setTimeout(resolve,ms));
+}
 
-    for(const unit of units){
+function setProgress(percent,label,detail=""){
+    percent = Math.max(0,Math.min(100,percent));
 
-        value /= 1024;
+    $("progressFill").style.width = percent + "%";
+    $("progressPercent").textContent = Math.round(percent) + "%";
+    $("progressLabel").textContent = label;
+    $("progressDetail").textContent = detail;
+}
 
-        if(value < 1024){
 
-            return (
-                value.toFixed(2) +
-                " " +
-                unit
-            );
+/* =========================
+   PASSWORD / BOOT
+========================= */
+
+let bootFinished = false;
+
+function startBoot(){
+
+    let start = performance.now();
+
+    function animate(now){
+
+        const elapsed = now - start;
+        const percent = Math.min(100,(elapsed / 3000) * 100);
+
+        $("bootFill").style.width = percent + "%";
+
+        const remain = Math.max(
+            0,
+            Math.ceil((3000 - elapsed) / 1000)
+        );
+
+        $("bootCount").textContent = remain;
+
+        if(percent < 35){
+            $("bootStatus").textContent =
+                "INITIALIZING BINARY ENGINE...";
+        }else if(percent < 70){
+            $("bootStatus").textContent =
+                "LOADING AI GUARD...";
+        }else{
+            $("bootStatus").textContent =
+                "PREPARING SECURE SESSION...";
+        }
+
+        if(elapsed < 3000){
+            requestAnimationFrame(animate);
+        }else{
+            bootFinished = true;
+            $("boot").classList.add("hidden");
+            $("lock").style.display = "grid";
+            $("passwordInput").focus();
         }
     }
 
-    return (
-        value.toFixed(2) +
-        " PB"
+    requestAnimationFrame(animate);
+}
+
+function unlock(){
+
+    const code = $("passwordInput").value.trim();
+
+    if(code === "2812"){
+
+        $("lockError").textContent = "";
+
+        $("lock").style.opacity = "0";
+        $("lock").style.pointerEvents = "none";
+
+        setTimeout(()=>{
+            $("lock").style.display = "none";
+        },500);
+
+        $("app").classList.add("ready");
+
+        log("ACCESS CODE ACCEPTED","ok");
+        log("KTOOL V27 ENGINE ONLINE","ok");
+        log("LOCAL PROCESSING MODE ENABLED","ai");
+
+        detectSystemInfo();
+
+    }else{
+
+        $("lockError").textContent =
+            "INVALID ACCESS CODE";
+
+        $("passwordInput").value = "";
+
+        log("ACCESS DENIED","err");
+    }
+}
+
+$("unlockBtn").addEventListener("click",unlock);
+
+$("passwordInput").addEventListener("keydown",e=>{
+    if(e.key === "Enter") unlock();
+});
+
+
+/* =========================
+   FILE INPUT
+========================= */
+
+function isBytesFile(file){
+
+    return !!(
+        file &&
+        typeof file.name === "string" &&
+        file.name.toLowerCase().endsWith(".bytes")
     );
+}
+
+function addFiles(fileList){
+
+    const incoming = Array.from(fileList || []);
+
+    if(!incoming.length) return;
+
+    let accepted = 0;
+
+    for(const file of incoming){
+
+        if(!isBytesFile(file)){
+            log(`REJECTED: ${file.name} — .bytes required`,"err");
+            continue;
+        }
+
+        const duplicate = state.files.some(
+            f =>
+                f.name === file.name &&
+                f.size === file.size &&
+                f.lastModified === file.lastModified
+        );
+
+        if(duplicate){
+            log(`DUPLICATE SKIPPED: ${file.name}`,"warn");
+            continue;
+        }
+
+        state.files.push(file);
+        accepted++;
+
+        log(
+            `LOADED: ${file.name} (${formatBytes(file.size)})`,
+            "ok"
+        );
+    }
+
+    updateFileUI();
+
+    if(accepted){
+        resetAnalysis();
+    }
+}
+
+$("fileInput").addEventListener("change",e=>{
+
+    addFiles(e.target.files);
+
+    /*
+      Allows selecting the same file again later.
+    */
+    e.target.value = "";
+});
+
+
+const dropZone = $("dropZone");
+
+["dragenter","dragover"].forEach(eventName=>{
+    dropZone.addEventListener(eventName,e=>{
+        e.preventDefault();
+        e.stopPropagation();
+        dropZone.classList.add("drag");
+    });
+});
+
+["dragleave","drop"].forEach(eventName=>{
+    dropZone.addEventListener(eventName,e=>{
+        e.preventDefault();
+        e.stopPropagation();
+        dropZone.classList.remove("drag");
+    });
+});
+
+dropZone.addEventListener("drop",e=>{
+    addFiles(e.dataTransfer.files);
+});
+
+
+/* =========================
+   FILE UI
+========================= */
+
+function updateFileUI(){
+
+    $("fileCount").textContent = state.files.length;
+
+    const total = state.files.reduce(
+        (sum,file)=>sum + file.size,
+        0
+    );
+
+    $("totalSize").textContent = formatBytes(total);
+
+    const list = $("fileList");
+
+    list.innerHTML = "";
+
+    state.files.forEach((file,index)=>{
+
+        const row = document.createElement("div");
+        row.className = "file-row";
+
+        row.innerHTML = `
+            <div class="file-num">
+                ${String(index+1).padStart(2,"0")}
+            </div>
+
+            <div class="file-name">
+                ${escapeHTML(file.name)}
+            </div>
+
+            <div class="file-size">
+                ${formatBytes(file.size)}
+            </div>
+        `;
+
+        list.appendChild(row);
+    });
+
+    if(!state.files.length){
+        list.innerHTML = `
+            <div style="
+                padding:18px;
+                text-align:center;
+                color:var(--muted);
+                font-size:9px;
+            ">
+                NO .BYTES FILES LOADED
+            </div>
+        `;
+    }
 }
 
 function escapeHTML(text){
@@ -2225,297 +1702,78 @@ function escapeHTML(text){
         .replaceAll("'","&#039;");
 }
 
-/* =====================================================
-   TERMINAL
-===================================================== */
 
-function log(message,type="info"){
-
-    const time =
-        new Date().toLocaleTimeString();
-
-    const line =
-        `[${time}] ${message}`;
-
-    state.logs.push(line);
-
-    const div =
-        document.createElement("div");
-
-    div.className =
-        "log-" + type;
-
-    div.textContent =
-        line;
-
-    $("terminal").appendChild(div);
-
-    $("terminal").scrollTop =
-        $("terminal").scrollHeight;
-}
-
-/* =====================================================
-   PROGRESS
-===================================================== */
-
-function setProgress(
-    percent,
-    label,
-    detail=""
-){
-
-    percent =
-        Math.max(
-            0,
-            Math.min(100,percent)
-        );
-
-    $("progressFill").style.width =
-        percent + "%";
-
-    $("progressPercent").textContent =
-        Math.round(percent) + "%";
-
-    $("progressLabel").textContent =
-        label;
-
-    $("progressDetail").textContent =
-        detail;
-}
-
-/* =====================================================
-   FILE CHECK
-===================================================== */
-
-function isBytesFile(file){
-
-    return file &&
-        typeof file.name === "string" &&
-        file.name
-            .toLowerCase()
-            .endsWith(".bytes");
-}
-
-/* =====================================================
-   FILE ADD
-===================================================== */
-
-function addFiles(fileList){
-
-    const incoming =
-        [...fileList];
-
-    const valid =
-        incoming.filter(isBytesFile);
-
-    const invalid =
-        incoming.filter(
-            file => !isBytesFile(file)
-        );
-
-    if(invalid.length){
-
-        log(
-            `${invalid.length} file(s) rejected — only .bytes allowed.`,
-            "warning"
-        );
-    }
-
-    let added = 0;
-
-    for(const file of valid){
-
-        const duplicate =
-            state.files.some(
-                old =>
-                    old.name === file.name &&
-                    old.size === file.size &&
-                    old.lastModified ===
-                        file.lastModified
-            );
-
-        if(!duplicate){
-
-            state.files.push(file);
-
-            added++;
-        }
-    }
-
-    renderFiles();
-
-    resetPrediction();
-
-    log(
-        `${added} .bytes file(s) loaded.`,
-        "success"
-    );
-}
-
-/* =====================================================
-   FILE PICKER
-===================================================== */
-
-$("selectFileBtn").addEventListener(
-    "click",
-    event => {
-
-        event.preventDefault();
-        event.stopPropagation();
-
-        $("fileInput").click();
-    }
-);
-
-$("fileInput").addEventListener(
-    "change",
-    event => {
-
-        addFiles(
-            event.target.files
-        );
-
-        event.target.value = "";
-    }
-);
-
-const picker =
-    $("filePicker");
-
-picker.addEventListener(
-    "dragenter",
-    event => {
-
-        event.preventDefault();
-
-        picker.classList.add(
-            "drag"
-        );
-    }
-);
-
-picker.addEventListener(
-    "dragover",
-    event => {
-
-        event.preventDefault();
-
-        picker.classList.add(
-            "drag"
-        );
-    }
-);
-
-picker.addEventListener(
-    "dragleave",
-    event => {
-
-        event.preventDefault();
-
-        picker.classList.remove(
-            "drag"
-        );
-    }
-);
-
-picker.addEventListener(
-    "drop",
-    event => {
-
-        event.preventDefault();
-
-        picker.classList.remove(
-            "drag"
-        );
-
-        addFiles(
-            event.dataTransfer.files
-        );
-    }
-);
-
-/* =====================================================
-   RENDER FILES
-===================================================== */
-
-function renderFiles(){
-
-    $("fileList").innerHTML = "";
-
-    state.files.forEach(
-        (file,index) => {
-
-            const item =
-                document.createElement("div");
-
-            item.className =
-                "file";
-
-            item.innerHTML = `
-
-                <div class="file-name">
-
-                    <strong title="${escapeHTML(file.name)}">
-                        ${escapeHTML(file.name)}
-                    </strong>
-
-                    <small>
-                        ${formatBytes(file.size)}
-                    </small>
-
-                </div>
-
-                <div class="file-index">
-                    #${String(index+1).padStart(2,"0")}
-                </div>
-
-            `;
-
-            $("fileList").appendChild(
-                item
-            );
-        }
+/* =========================
+   SORT / REVERSE / CLEAR
+========================= */
+
+$("sortBtn").addEventListener("click",()=>{
+
+    state.files.sort((a,b)=>
+        a.name.localeCompare(
+            b.name,
+            undefined,
+            {numeric:true,sensitivity:"base"}
+        )
     );
 
-    $("fileCount").textContent =
-        state.files.length;
+    updateFileUI();
 
-    const total =
-        state.files.reduce(
-            (sum,file) =>
-                sum + file.size,
-            0
-        );
+    log("FILES SORTED","ok");
+});
 
-    $("totalSize").textContent =
-        formatBytes(total);
-}
+$("reverseBtn").addEventListener("click",()=>{
 
-/* =====================================================
+    state.files.reverse();
+
+    updateFileUI();
+
+    log("FILE ORDER REVERSED","ok");
+});
+
+$("clearBtn").addEventListener("click",()=>{
+
+    if(state.merging) return;
+
+    state.files = [];
+    state.resultBlob = null;
+    state.resultName = "";
+    state.analysis = [];
+    state.prediction = null;
+    state.blocked = false;
+
+    $("downloadBtn").disabled = true;
+
+    resetAnalysis();
+    updateFileUI();
+
+    $("aiStatus").textContent = "WAITING";
+
+    log("FILE QUEUE CLEARED","warn");
+});
+
+
+/* =========================
    BINARY ANALYSIS
-===================================================== */
+========================= */
 
-async function readPrefix(
-    file,
-    size=512
-){
+async function readPrefix(file,length=512){
 
-    const blob =
-        file.slice(0,size);
+    const blob = file.slice(
+        0,
+        Math.min(length,file.size)
+    );
 
-    const buffer =
-        await blob.arrayBuffer();
+    const buffer = await blob.arrayBuffer();
 
     return new Uint8Array(buffer);
 }
 
 function printableRatio(bytes){
 
-    if(!bytes.length){
-        return 0;
-    }
+    if(!bytes.length) return 0;
 
-    let printable = 0;
+    let count = 0;
 
     for(const byte of bytes){
 
@@ -2523,56 +1781,52 @@ function printableRatio(bytes){
             byte === 9 ||
             byte === 10 ||
             byte === 13 ||
-            (
-                byte >= 32 &&
-                byte <= 126
-            )
+            (byte >= 32 && byte <= 126)
         ){
-            printable++;
+            count++;
         }
     }
 
-    return printable / bytes.length;
+    return count / bytes.length;
 }
 
 function detectSignature(bytes){
 
-    if(
-        bytes[0] === 0x50 &&
-        bytes[1] === 0x4B &&
-        bytes[2] === 0x03 &&
-        bytes[3] === 0x04
-    ){
-        return "ZIP";
+    if(bytes.length >= 4){
+
+        if(
+            bytes[0] === 0x50 &&
+            bytes[1] === 0x4B &&
+            bytes[2] === 0x03 &&
+            bytes[3] === 0x04
+        ){
+            return "ZIP";
+        }
+
+        if(
+            bytes[0] === 0x89 &&
+            bytes[1] === 0x50 &&
+            bytes[2] === 0x4E &&
+            bytes[3] === 0x47
+        ){
+            return "PNG";
+        }
+
+        if(
+            bytes[0] === 0xFF &&
+            bytes[1] === 0xD8 &&
+            bytes[2] === 0xFF
+        ){
+            return "JPEG";
+        }
     }
 
-    if(
-        bytes[0] === 0x89 &&
-        bytes[1] === 0x50 &&
-        bytes[2] === 0x4E &&
-        bytes[3] === 0x47
-    ){
-        return "PNG";
-    }
+    const text = new TextDecoder(
+        "utf-8",
+        {fatal:false}
+    ).decode(bytes.slice(0,100));
 
-    if(
-        bytes[0] === 0xFF &&
-        bytes[1] === 0xD8 &&
-        bytes[2] === 0xFF
-    ){
-        return "JPEG";
-    }
-
-    const text =
-        new TextDecoder(
-            "utf-8",
-            {
-                fatal:false
-            }
-        ).decode(bytes);
-
-    const trimmed =
-        text.trimStart();
+    const trimmed = text.trim();
 
     if(
         trimmed.startsWith("{") ||
@@ -2581,15 +1835,11 @@ function detectSignature(bytes){
         return "JSON-LIKE";
     }
 
-    if(
-        trimmed.startsWith("<")
-    ){
+    if(trimmed.startsWith("<")){
         return "XML-LIKE";
     }
 
-    if(
-        printableRatio(bytes) > .82
-    ){
+    if(printableRatio(bytes) > .82){
         return "TEXT-LIKE";
     }
 
@@ -2598,30 +1848,23 @@ function detectSignature(bytes){
 
 function calculateEntropy(bytes){
 
-    if(!bytes.length){
-        return 0;
-    }
+    if(!bytes.length) return 0;
 
-    const freq =
-        new Array(256).fill(0);
+    const counts = new Uint32Array(256);
 
     for(const byte of bytes){
-        freq[byte]++;
+        counts[byte]++;
     }
 
     let entropy = 0;
 
-    for(const count of freq){
+    for(const count of counts){
 
-        if(!count){
-            continue;
-        }
+        if(!count) continue;
 
-        const p =
-            count / bytes.length;
+        const p = count / bytes.length;
 
-        entropy -=
-            p * Math.log2(p);
+        entropy -= p * Math.log2(p);
     }
 
     return entropy;
@@ -2629,52 +1872,30 @@ function calculateEntropy(bytes){
 
 async function analyzeFile(file){
 
-    const prefix =
-        await readPrefix(file);
+    const prefix = await readPrefix(file,512);
 
     return {
-
-        file,
-
-        prefix,
-
+        name:file.name,
         size:file.size,
-
-        signature:
-            detectSignature(prefix),
-
-        entropy:
-            calculateEntropy(prefix),
-
-        printable:
-            printableRatio(prefix)
-
+        signature:detectSignature(prefix),
+        entropy:calculateEntropy(prefix),
+        printable:printableRatio(prefix),
+        prefix
     };
 }
 
-/* =====================================================
-   COMPATIBILITY
-===================================================== */
-
 function prefixSimilarity(a,b){
 
-    const length =
-        Math.min(
-            a.length,
-            b.length
-        );
+    const length = Math.min(
+        a.length,
+        b.length
+    );
 
-    if(!length){
-        return 0;
-    }
+    if(!length) return 0;
 
     let same = 0;
 
-    for(
-        let i=0;
-        i<length;
-        i++
-    ){
+    for(let i=0;i<length;i++){
 
         if(a[i] === b[i]){
             same++;
@@ -2694,112 +1915,113 @@ function structureDistance(a,b){
             b.prefix
         );
 
-    if(
-        a.signature !==
-        b.signature
-    ){
+    if(a.signature !== b.signature){
         risk += 40;
     }
 
     if(similarity < .05){
         risk += 30;
-    }
-    else if(similarity < .15){
+    }else if(similarity < .15){
         risk += 20;
-    }
-    else if(similarity < .30){
+    }else if(similarity < .30){
         risk += 10;
     }
 
     const entropyDiff =
-        Math.abs(
-            a.entropy -
-            b.entropy
-        );
+        Math.abs(a.entropy - b.entropy);
 
     if(entropyDiff > 2){
         risk += 15;
-    }
-    else if(entropyDiff > 1){
+    }else if(entropyDiff > 1){
         risk += 8;
     }
 
     const printableDiff =
-        Math.abs(
-            a.printable -
-            b.printable
-        );
+        Math.abs(a.printable - b.printable);
 
     if(printableDiff > .6){
         risk += 10;
     }
 
-    return Math.min(
-        100,
-        risk
-    );
+    return Math.min(100,risk);
 }
 
-/* =====================================================
-   PREDICTION
-===================================================== */
 
-function resetPrediction(){
+/* =========================
+   AI PREDICTION
+========================= */
 
-    state.prediction = null;
-    state.blocked = false;
+function setPrediction(
+    score,
+    status,
+    detail,
+    blocked=false
+){
+
+    state.prediction = score;
+    state.blocked = blocked;
 
     $("predictionScore").textContent =
-        "0";
+        `${Math.round(score)}%`;
 
     $("predictionStatus").textContent =
-        "WAITING";
+        status;
 
-    $("predictionStatus").className =
-        "prediction-status";
+    $("predictionText").textContent =
+        status;
+
+    $("predictionDetail").textContent =
+        detail;
 
     $("aiStatus").textContent =
-        state.files.length >= 2
-            ? "READY"
-            : "WAITING";
+        blocked ? "BLOCKED" : status;
+}
+
+function resetAnalysis(){
+
+    setPrediction(
+        0,
+        "WAITING",
+        "Add at least 2 .bytes files to begin structural analysis.",
+        false
+    );
 
     setProgress(
         0,
-        "Waiting for AI analysis...",
-        "Add at least 2 .bytes files."
+        "READY",
+        "Waiting for operation..."
     );
 }
 
 async function runAIAnalysis(){
 
-    if(state.aiRunning){
-        return false;
-    }
+    if(state.aiRunning) return false;
 
     if(state.files.length < 2){
 
+        setPrediction(
+            0,
+            "WAITING",
+            "At least 2 .bytes files are required.",
+            true
+        );
+
         log(
-            "AI requires at least 2 .bytes files.",
-            "warning"
+            "AI ANALYSIS STOPPED: NEED 2+ FILES",
+            "err"
         );
 
         return false;
     }
 
     state.aiRunning = true;
-    state.blocked = false;
 
     try{
 
         setProgress(
             3,
-            "Initializing AI...",
-            "Preparing binary analysis."
-        );
-
-        log(
-            "AI compatibility engine started.",
-            "info"
+            "INITIALIZING AI",
+            "Preparing binary analysis..."
         );
 
         await sleep(180);
@@ -2812,52 +2034,46 @@ async function runAIAnalysis(){
             i++
         ){
 
-            const result =
-                await analyzeFile(
-                    state.files[i]
-                );
+            const file = state.files[i];
 
-            state.analysis.push(
-                result
-            );
+            const result =
+                await analyzeFile(file);
+
+            state.analysis.push(result);
 
             const progress =
                 10 +
-                (
-                    (i+1) /
-                    state.files.length
-                ) * 55;
+                ((i+1) /
+                state.files.length) *
+                55;
 
             setProgress(
                 progress,
-                "Scanning " +
-                    result.file.name,
-                `Signature ${result.signature} • Entropy ${result.entropy.toFixed(2)}`
+                "SCANNING FILES",
+                `${i+1}/${state.files.length} • ${file.name}`
             );
 
             log(
-                `${result.file.name} → ${result.signature}`,
-                "info"
+                `SCAN ${i+1}: ${file.name} | ${result.signature} | entropy ${result.entropy.toFixed(2)}`,
+                "ai"
             );
 
-            await sleep(70);
+            await sleep(40);
         }
 
         setProgress(
             72,
-            "Comparing structures...",
-            "Calculating compatibility."
+            "COMPARING STRUCTURES",
+            "Running compatibility heuristics..."
         );
+
+        await sleep(180);
 
         let totalRisk = 0;
         let pairs = 0;
         let hardConflict = false;
 
-        for(
-            let i=0;
-            i<state.analysis.length;
-            i++
-        ){
+        for(let i=0;i<state.analysis.length;i++){
 
             for(
                 let j=i+1;
@@ -2865,21 +2081,11 @@ async function runAIAnalysis(){
                 j++
             ){
 
-                const a =
-                    state.analysis[i];
-
-                const b =
-                    state.analysis[j];
+                const a = state.analysis[i];
+                const b = state.analysis[j];
 
                 const risk =
-                    structureDistance(
-                        a,
-                        b
-                    );
-
-                totalRisk += risk;
-
-                pairs++;
+                    structureDistance(a,b);
 
                 const similarity =
                     prefixSimilarity(
@@ -2894,27 +2100,27 @@ async function runAIAnalysis(){
                     );
 
                 if(
-                    a.signature !==
-                    b.signature &&
+                    a.signature !== b.signature &&
                     similarity < .05 &&
                     entropyDiff > 1.5
                 ){
                     hardConflict = true;
                 }
 
+                totalRisk += risk;
+                pairs++;
+
                 log(
-                    `PAIR ${i+1}/${j+1} → risk ${risk.toFixed(0)}%`,
-                    risk > 60
-                        ? "warning"
-                        : "info"
+                    `COMPARE: ${a.name} ↔ ${b.name} | risk ${risk.toFixed(0)}%`,
+                    risk > 60 ? "warn" : "ai"
                 );
             }
         }
 
         const averageRisk =
-            pairs
-                ? totalRisk / pairs
-                : 100;
+            pairs ?
+            totalRisk / pairs :
+            100;
 
         let score =
             Math.max(
@@ -2926,156 +2132,108 @@ async function runAIAnalysis(){
             );
 
         if(hardConflict){
-            score =
-                Math.min(
-                    score,
-                    15
-                );
+            score = Math.min(score,15);
         }
 
-        state.prediction =
-            score;
+        setProgress(
+            92,
+            "FINALIZING PREDICTION",
+            "Evaluating structural compatibility..."
+        );
 
-        if(
-            hardConflict ||
-            score < 35
-        ){
+        await sleep(180);
 
-            state.blocked = true;
+        if(hardConflict || score < 35){
 
-            updatePrediction(
+            setPrediction(
                 score,
-                "BLOCKED"
+                "BLOCKED",
+                "Files show a strong structural mismatch. Merge creation has been blocked by the AI guard.",
+                true
             );
 
             setProgress(
                 100,
-                "Merge blocked",
-                "Strong structural conflict detected."
+                "MERGE BLOCKED",
+                "Structural conflict detected."
             );
-
-            $("resultBox").innerHTML =
-                `<span style="color:var(--red)">
-                    ⛔ MERGE BLOCKED
-                </span><br>
-                Selected files have a strong structural conflict according to the binary heuristic.`;
 
             log(
-                "AI GUARD blocked the merge.",
-                "error"
+                "AI GUARD: MERGE BLOCKED",
+                "err"
             );
 
-        }
-        else if(score < 60){
+            return false;
 
-            updatePrediction(
+        }else if(score < 60){
+
+            setPrediction(
                 score,
-                "WARNING"
+                "WARNING",
+                "Compatibility is uncertain. The engine allows the operation but the result is not guaranteed.",
+                false
             );
 
-            setProgress(
-                92,
-                "Analysis complete",
-                "Compatibility is uncertain."
-            );
+        }else if(score < 80){
 
-            log(
-                `Prediction ${score.toFixed(0)}% — WARNING`,
-                "warning"
-            );
-
-        }
-        else if(score < 80){
-
-            updatePrediction(
+            setPrediction(
                 score,
-                "LIKELY"
+                "LIKELY",
+                "The files show moderate structural similarity.",
+                false
             );
 
-            setProgress(
-                92,
-                "Analysis complete",
-                "Files appear reasonably compatible."
-            );
+        }else{
 
-            log(
-                `Prediction ${score.toFixed(0)}% — LIKELY`,
-                "success"
-            );
-
-        }
-        else{
-
-            updatePrediction(
+            setPrediction(
                 score,
-                "HIGH"
-            );
-
-            setProgress(
-                92,
-                "Analysis complete",
-                "High binary similarity detected."
-            );
-
-            log(
-                `Prediction ${score.toFixed(0)}% — HIGH`,
-                "success"
+                "HIGH",
+                "The analyzed structures appear highly compatible.",
+                false
             );
         }
 
-        return !state.blocked;
-
-    }
-    catch(error){
-
-        state.blocked = true;
-
-        updatePrediction(
-            0,
-            "BLOCKED"
+        setProgress(
+            100,
+            "AI ANALYSIS COMPLETE",
+            `Compatibility estimate: ${Math.round(score)}%`
         );
 
         log(
-            "AI error: " +
-            error.message,
-            "error"
+            `AI RESULT: ${Math.round(score)}%`,
+            "ok"
+        );
+
+        return true;
+
+    }catch(error){
+
+        log(
+            `AI ERROR: ${error.message}`,
+            "err"
+        );
+
+        setPrediction(
+            0,
+            "ERROR",
+            "Binary analysis failed.",
+            true
         );
 
         return false;
 
-    }
-    finally{
+    }finally{
 
         state.aiRunning = false;
     }
 }
 
-function updatePrediction(
-    score,
-    status
-){
 
-    $("predictionScore").textContent =
-        Math.round(score);
-
-    $("predictionStatus").textContent =
-        status;
-
-    $("predictionStatus").className =
-        "prediction-status " +
-        status.toLowerCase();
-
-    $("aiStatus").textContent =
-        status;
-}
-
-/* =====================================================
+/* =========================
    MERGE
-===================================================== */
+========================= */
 
-async function mergeBlob(
-    skipAnalysis=false
-){
+async function mergeBlob(skipAnalysis=false){
 
     if(state.merging){
         return;
@@ -3084,22 +2242,14 @@ async function mergeBlob(
     if(state.files.length < 2){
 
         log(
-            "Select at least 2 .bytes files.",
-            "warning"
+            "MERGE REJECTED: NEED AT LEAST 2 FILES",
+            "err"
         );
 
-        return;
-    }
-
-    if(
-        state.files.some(
-            file => !isBytesFile(file)
-        )
-    ){
-
-        log(
-            "Only .bytes files are accepted.",
-            "error"
+        setProgress(
+            0,
+            "WAITING",
+            "Load at least 2 .bytes files."
         );
 
         return;
@@ -3107,144 +2257,162 @@ async function mergeBlob(
 
     state.merging = true;
 
+    $("mergeBtn").disabled = true;
+    $("aiMergeBtn").disabled = true;
+
     try{
 
         if(!skipAnalysis){
 
-            const allowed =
+            const ok =
                 await runAIAnalysis();
 
-            if(!allowed){
+            if(!ok){
                 return;
             }
+
         }
 
         if(state.blocked){
 
             log(
-                "Merge stopped by AI Guard.",
-                "error"
+                "MERGE STOPPED BY AI GUARD",
+                "err"
             );
 
             return;
         }
 
         setProgress(
-            94,
-            "Creating binary output...",
-            "Concatenating selected files."
+            10,
+            "PREPARING MERGE",
+            "Preparing binary chunks..."
         );
 
-        await sleep(250);
+        await sleep(150);
+
+        const chunks = [];
+
+        let processed = 0;
+
+        for(const file of state.files){
+
+            chunks.push(file);
+
+            processed += file.size;
+
+            const percent =
+                10 +
+                (
+                    processed /
+                    state.files.reduce(
+                        (s,f)=>s+f.size,
+                        0
+                    )
+                ) * 78;
+
+            setProgress(
+                percent,
+                "MERGING BINARY",
+                `${file.name} • ${formatBytes(file.size)}`
+            );
+
+            await sleep(50);
+        }
 
         const blob =
             new Blob(
-                state.files,
+                chunks,
                 {
-                    type:
-                        "application/octet-stream"
+                    type:"application/octet-stream"
                 }
             );
 
         let name =
-            $("outputName")
-                .value
-                .trim();
+            $("outputName").value.trim() ||
+            "KTOOL_V27_MERGED.bytes";
 
-        if(!name){
-            name =
-                "KTOOL_MERGED.bytes";
-        }
-
-        if(
-            !name
-                .toLowerCase()
-                .endsWith(".bytes")
-        ){
+        if(!name.toLowerCase().endsWith(".bytes")){
             name += ".bytes";
         }
 
-        state.resultBlob =
-            blob;
+        state.resultBlob = blob;
+        state.resultName = name;
 
-        state.resultName =
-            name;
-
-        $("downloadBtn").disabled =
-            false;
+        $("downloadBtn").disabled = false;
 
         setProgress(
             100,
-            "Merge complete",
-            `${formatBytes(blob.size)} output generated.`
+            "MERGE COMPLETE",
+            `${formatBytes(blob.size)} generated`
         );
 
         $("resultBox").innerHTML =
-            `<strong style="color:var(--green)">
-                ✓ OUTPUT READY
-            </strong><br>
-            ${escapeHTML(name)}
-            • ${formatBytes(blob.size)}`;
+            `✓ Generated <b>${escapeHTML(name)}</b> • ${formatBytes(blob.size)}`;
 
         log(
-            `Merge complete → ${name}`,
-            "success"
+            `MERGE COMPLETE: ${name} (${formatBytes(blob.size)})`,
+            "ok"
         );
 
-    }
-    catch(error){
+    }catch(error){
 
         log(
-            "Merge error: " +
-            error.message,
-            "error"
+            `MERGE ERROR: ${error.message}`,
+            "err"
         );
 
-    }
-    finally{
+        setProgress(
+            0,
+            "ERROR",
+            "Merge operation failed."
+        );
+
+    }finally{
 
         state.merging = false;
+
+        $("mergeBtn").disabled = false;
+        $("aiMergeBtn").disabled = false;
     }
 }
 
-/* =====================================================
-   AI MERGE
-===================================================== */
+
+/* =========================
+   BUTTON ACTIONS
+========================= */
 
 $("aiMergeBtn").addEventListener(
     "click",
-    async () => {
+    async()=>{
 
-        const allowed =
+        if(state.files.length < 2){
+
+            log(
+                "AI MERGE: LOAD 2+ .BYTES FILES",
+                "err"
+            );
+
+            return;
+        }
+
+        const ok =
             await runAIAnalysis();
 
-        if(allowed){
-
-            await mergeBlob(
-                true
-            );
+        if(ok){
+            await mergeBlob(true);
         }
     }
 );
 
-/* =====================================================
-   NORMAL MERGE
-===================================================== */
-
 $("mergeBtn").addEventListener(
     "click",
-    () => {
-        mergeBlob(false);
-    }
+    ()=>mergeBlob(false)
 );
-
-/* =====================================================
-   DOWNLOAD
-===================================================== */
 
 $("downloadBtn").addEventListener(
     "click",
-    () => {
+    ()=>{
 
         if(!state.resultBlob){
             return;
@@ -3259,9 +2427,7 @@ $("downloadBtn").addEventListener(
             document.createElement("a");
 
         a.href = url;
-
-        a.download =
-            state.resultName;
+        a.download = state.resultName;
 
         document.body.appendChild(a);
 
@@ -3270,98 +2436,25 @@ $("downloadBtn").addEventListener(
         a.remove();
 
         setTimeout(
-            () => URL.revokeObjectURL(url),
+            ()=>URL.revokeObjectURL(url),
             1000
         );
 
         log(
-            `Downloaded ${state.resultName}.`,
-            "success"
+            `DOWNLOAD STARTED: ${state.resultName}`,
+            "ok"
         );
     }
 );
 
-/* =====================================================
-   SORT
-===================================================== */
 
-$("sortBtn").addEventListener(
-    "click",
-    () => {
-
-        state.files.sort(
-            (a,b) =>
-                a.name.localeCompare(
-                    b.name
-                )
-        );
-
-        renderFiles();
-        resetPrediction();
-
-        log(
-            "Files sorted.",
-            "info"
-        );
-    }
-);
-
-/* =====================================================
-   REVERSE
-===================================================== */
-
-$("reverseBtn").addEventListener(
-    "click",
-    () => {
-
-        state.files.reverse();
-
-        renderFiles();
-        resetPrediction();
-
-        log(
-            "File order reversed.",
-            "info"
-        );
-    }
-);
-
-/* =====================================================
-   CLEAR
-===================================================== */
-
-$("clearBtn").addEventListener(
-    "click",
-    () => {
-
-        state.files = [];
-        state.analysis = [];
-        state.resultBlob = null;
-        state.resultName = "";
-
-        $("downloadBtn").disabled =
-            true;
-
-        $("resultBox").textContent =
-            "No result generated.";
-
-        renderFiles();
-        resetPrediction();
-
-        log(
-            "All files cleared.",
-            "info"
-        );
-    }
-);
-
-/* =====================================================
+/* =========================
    COPY LOG
-===================================================== */
+========================= */
 
 $("copyLogBtn").addEventListener(
     "click",
-    async () => {
+    async()=>{
 
         try{
 
@@ -3370,198 +2463,24 @@ $("copyLogBtn").addEventListener(
             );
 
             log(
-                "Terminal copied.",
-                "success"
+                "TERMINAL LOG COPIED",
+                "ok"
             );
 
-        }
-        catch{
+        }catch{
 
             log(
-                "Clipboard unavailable.",
-                "warning"
+                "CLIPBOARD ACCESS UNAVAILABLE",
+                "warn"
             );
         }
     }
 );
 
-/* =====================================================
-   CLOCK
-===================================================== */
 
-function updateClock(){
-
-    const now =
-        new Date();
-
-    $("clock").textContent =
-        now.toLocaleTimeString(
-            undefined,
-            {
-                hour12:false
-            }
-        );
-
-    $("date").textContent =
-        now.toLocaleDateString(
-            undefined,
-            {
-                day:"2-digit",
-                month:"2-digit",
-                year:"numeric"
-            }
-        );
-}
-
-updateClock();
-
-setInterval(
-    updateClock,
-    1000
-);
-
-/* =====================================================
-   THEME
-===================================================== */
-
-$("themeBtn").addEventListener(
-    "click",
-    () => {
-
-        /*
-         * Dark/light theme intentionally
-         * remains simple for V27.
-         */
-
-        document.body.classList.toggle(
-            "light"
-        );
-    }
-);
-
-/* =====================================================
-   GPU / WEBGL
-===================================================== */
-
-function detectGPU(){
-
-    try{
-
-        const canvas =
-            document.createElement("canvas");
-
-        const gl =
-            canvas.getContext(
-                "webgl"
-            ) ||
-            canvas.getContext(
-                "experimental-webgl"
-            );
-
-        if(!gl){
-            return "Unavailable";
-        }
-
-        const debug =
-            gl.getExtension(
-                "WEBGL_debug_renderer_info"
-            );
-
-        if(debug){
-
-            const renderer =
-                gl.getParameter(
-                    debug.UNMASKED_RENDERER_WEBGL
-                );
-
-            return renderer || "WebGL";
-        }
-
-        return "WebGL available";
-
-    }
-    catch{
-
-        return "Unavailable";
-    }
-}
-
-/* =====================================================
-   CONNECTION
-===================================================== */
-
-function detectConnection(){
-
-    const connection =
-        navigator.connection ||
-        navigator.mozConnection ||
-        navigator.webkitConnection;
-
-    if(!connection){
-        return "Unavailable";
-    }
-
-    const parts = [];
-
-    if(connection.effectiveType){
-        parts.push(
-            connection.effectiveType
-        );
-    }
-
-    if(connection.downlink){
-        parts.push(
-            `${connection.downlink} Mbps`
-        );
-    }
-
-    if(connection.rtt){
-        parts.push(
-            `${connection.rtt} ms`
-        );
-    }
-
-    return parts.length
-        ? parts.join(" • ")
-        : "Available";
-}
-
-/* =====================================================
-   STORAGE
-===================================================== */
-
-function detectStorage(){
-
-    try{
-
-        const local =
-            typeof localStorage !==
-            "undefined";
-
-        const session =
-            typeof sessionStorage !==
-            "undefined";
-
-        if(local && session){
-            return "LOCAL + SESSION";
-        }
-
-        if(local){
-            return "LOCAL";
-        }
-
-        return "Limited";
-
-    }
-    catch{
-
-        return "Unavailable";
-    }
-}
-
-/* =====================================================
-   SYSTEM INFORMATION
-===================================================== */
+/* =========================
+   SYSTEM DETECTION
+========================= */
 
 function detectOperatingSystem(){
 
@@ -3571,12 +2490,9 @@ function detectOperatingSystem(){
     const platform =
         navigator.platform || "";
 
-    if(
-        /iPhone|iPad|iPod/i.test(ua)
-    ){
-        return "iOS / iPadOS";
-    }
-
+    /*
+      iPadOS may identify itself as Mac.
+    */
     if(
         platform === "MacIntel" &&
         navigator.maxTouchPoints > 1
@@ -3584,27 +2500,19 @@ function detectOperatingSystem(){
         return "iPadOS";
     }
 
-    if(
-        /Windows NT 10.0/i.test(ua)
-    ){
+    if(/Windows NT 10.0/i.test(ua)){
         return "Windows 10/11";
     }
 
-    if(
-        /Windows NT 6.3/i.test(ua)
-    ){
+    if(/Windows NT 6.3/i.test(ua)){
         return "Windows 8.1";
     }
 
-    if(
-        /Windows NT 6.2/i.test(ua)
-    ){
+    if(/Windows NT 6.2/i.test(ua)){
         return "Windows 8";
     }
 
-    if(
-        /Windows NT 6.1/i.test(ua)
-    ){
+    if(/Windows NT 6.1/i.test(ua)){
         return "Windows 7";
     }
 
@@ -3612,12 +2520,16 @@ function detectOperatingSystem(){
         return "Android";
     }
 
-    if(/CrOS/i.test(ua)){
-        return "ChromeOS";
+    if(/iPhone|iPad|iPod/i.test(ua)){
+        return "iOS / iPadOS";
     }
 
     if(/Mac OS X/i.test(ua)){
         return "macOS";
+    }
+
+    if(/CrOS/i.test(ua)){
+        return "ChromeOS";
     }
 
     if(/Linux/i.test(ua)){
@@ -3663,7 +2575,7 @@ function detectBrowser(){
         return "Safari";
     }
 
-    return "Unknown";
+    return "Unknown Browser";
 }
 
 function detectArchitecture(){
@@ -3671,9 +2583,7 @@ function detectArchitecture(){
     const ua =
         navigator.userAgent || "";
 
-    if(
-        /arm64|aarch64/i.test(ua)
-    ){
+    if(/arm64|aarch64/i.test(ua)){
         return "ARM64";
     }
 
@@ -3687,25 +2597,80 @@ function detectArchitecture(){
         return "x64";
     }
 
-    if(
-        /x86|i[3-6]86/i.test(ua)
-    ){
+    if(/x86|i[3-6]86/i.test(ua)){
         return "x86";
-    }
-
-    if(
-        /iPhone|iPad|iPod/i.test(ua)
-    ){
-        return "Apple Mobile";
     }
 
     return "Unknown";
 }
 
+function detectConnection(){
+
+    const connection =
+        navigator.connection ||
+        navigator.mozConnection ||
+        navigator.webkitConnection;
+
+    if(!connection){
+        return "Unavailable";
+    }
+
+    const type =
+        connection.effectiveType ||
+        connection.type ||
+        "Unknown";
+
+    const downlink =
+        Number.isFinite(connection.downlink)
+        ? ` • ${connection.downlink} Mbps`
+        : "";
+
+    return `${type}${downlink}`;
+}
+
+function detectStorage(){
+
+    try{
+
+        const key =
+            "__ktool_storage_test__";
+
+        localStorage.setItem(
+            key,
+            "1"
+        );
+
+        localStorage.removeItem(key);
+
+        return "AVAILABLE";
+
+    }catch{
+
+        return "BLOCKED";
+    }
+}
+
+function detectColorScheme(){
+
+    return window.matchMedia(
+        "(prefers-color-scheme: light)"
+    ).matches
+        ? "LIGHT"
+        : "DARK";
+}
+
+function detectReducedMotion(){
+
+    return window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+    ).matches
+        ? "YES"
+        : "NO";
+}
+
 function detectSystemInfo(){
 
-    const nav =
-        navigator;
+    const nav = navigator;
 
     $("sysOS").textContent =
         detectOperatingSystem();
@@ -3718,142 +2683,306 @@ function detectSystemInfo(){
 
     $("sysCPU").textContent =
         nav.hardwareConcurrency
-            ? `${nav.hardwareConcurrency} threads`
-            : "Unavailable";
+        ? `${nav.hardwareConcurrency} threads`
+        : "Unavailable";
 
     $("sysMemory").textContent =
         nav.deviceMemory
-            ? `${nav.deviceMemory} GB approx.`
-            : "Unavailable";
+        ? `${nav.deviceMemory} GB approx.`
+        : "Unavailable";
 
-    $("sysGPU").textContent =
-        detectGPU();
+    $("sysLanguage").textContent =
+        nav.language || "Unknown";
+
+    $("sysTimezone").textContent =
+        Intl.DateTimeFormat()
+        .resolvedOptions()
+        .timeZone || "Unknown";
 
     $("sysDisplay").textContent =
         `${screen.width} × ${screen.height}`;
 
-    $("sysViewport").textContent =
-        `${window.innerWidth} × ${window.innerHeight}`;
-
     $("sysDPR").textContent =
-        window.devicePixelRatio
-            ? `${window.devicePixelRatio}x`
-            : "1x";
-
-    $("sysTouch").textContent =
-        nav.maxTouchPoints
-            ? `${nav.maxTouchPoints} points`
-            : "NO";
-
-    $("sysLanguage").textContent =
-        nav.language ||
-        "Unknown";
-
-    $("sysTimezone").textContent =
-        Intl.DateTimeFormat()
-            .resolvedOptions()
-            .timeZone ||
-        "Unknown";
+        `${window.devicePixelRatio || 1}×`;
 
     $("sysNetwork").textContent =
-        nav.onLine
-            ? "ONLINE"
-            : "OFFLINE";
+        nav.onLine ? "ONLINE" : "OFFLINE";
 
     $("sysConnection").textContent =
         detectConnection();
 
+    $("sysTouch").textContent =
+        `${nav.maxTouchPoints || 0}`;
+
+    $("sysColor").textContent =
+        detectColorScheme();
+
     $("sysCookies").textContent =
-        navigator.cookieEnabled
-            ? "ENABLED"
-            : "DISABLED";
+        nav.cookieEnabled
+        ? "ENABLED"
+        : "DISABLED";
 
     $("sysStorage").textContent =
         detectStorage();
+
+    $("sysVisibility").textContent =
+        document.visibilityState
+        .toUpperCase();
+
+    $("sysMotion").textContent =
+        detectReducedMotion();
 
     $("systemStatus").textContent =
         "SYSTEM DETECTED";
 }
 
+
+/* =========================
+   BATTERY
+========================= */
+
+async function detectBattery(){
+
+    /*
+      Battery API is not supported
+      by every browser, especially
+      some iOS browsers.
+    */
+
+    if(
+        typeof navigator.getBattery !==
+        "function"
+    ){
+
+        $("sysBattery").textContent =
+            "Unavailable";
+
+        $("sysCharging").textContent =
+            "Unavailable";
+
+        return;
+    }
+
+    try{
+
+        const battery =
+            await navigator.getBattery();
+
+        function update(){
+
+            $("sysBattery").textContent =
+                `${Math.round(
+                    battery.level * 100
+                )}%`;
+
+            $("sysCharging").textContent =
+                battery.charging
+                ? "CHARGING"
+                : "NOT CHARGING";
+        }
+
+        update();
+
+        battery.addEventListener(
+            "levelchange",
+            update
+        );
+
+        battery.addEventListener(
+            "chargingchange",
+            update
+        );
+
+    }catch{
+
+        $("sysBattery").textContent =
+            "Unavailable";
+
+        $("sysCharging").textContent =
+            "Unavailable";
+    }
+}
+
+
+/* =========================
+   TEMPERATURE
+========================= */
+
+function detectTemperature(){
+
+    /*
+      There is no standard browser API
+      that safely exposes actual CPU /
+      device temperature.
+
+      Do NOT fake a temperature.
+    */
+
+    $("sysTemp").textContent =
+        "UNAVAILABLE";
+
+    $("sysTemp").title =
+        "Browser does not expose reliable hardware temperature data.";
+}
+
+
+/* =========================
+   LIVE SYSTEM EVENTS
+========================= */
+
 window.addEventListener(
     "online",
-    () => {
-
+    ()=>{
         $("sysNetwork").textContent =
             "ONLINE";
+
+        log(
+            "NETWORK STATUS: ONLINE",
+            "ok"
+        );
     }
 );
 
 window.addEventListener(
     "offline",
-    () => {
-
+    ()=>{
         $("sysNetwork").textContent =
             "OFFLINE";
+
+        log(
+            "NETWORK STATUS: OFFLINE",
+            "warn"
+        );
     }
 );
 
 window.addEventListener(
     "resize",
-    () => {
-
-        $("sysViewport").textContent =
-            `${window.innerWidth} × ${window.innerHeight}`;
-
+    ()=>{
         $("sysDisplay").textContent =
             `${screen.width} × ${screen.height}`;
     }
 );
 
-/* =====================================================
-   KEYBOARD
-===================================================== */
-
 document.addEventListener(
-    "keydown",
-    event => {
-
-        if(
-            event.ctrlKey &&
-            event.key === "Enter" &&
-            state.unlocked
-        ){
-
-            event.preventDefault();
-
-            mergeBlob(false);
-        }
-
+    "visibilitychange",
+    ()=>{
+        $("sysVisibility").textContent =
+            document.visibilityState.toUpperCase();
     }
 );
 
-/* =====================================================
-   INITIAL
-===================================================== */
+const connection =
+    navigator.connection ||
+    navigator.mozConnection ||
+    navigator.webkitConnection;
 
-setTimeout(
-    () => {
+if(connection){
 
-        detectSystemInfo();
+    connection.addEventListener(
+        "change",
+        ()=>{
+            $("sysConnection").textContent =
+                detectConnection();
+        }
+    );
+}
 
-        log(
-            "V27 core initialized.",
-            "success"
+
+/* =========================
+   CLOCK
+========================= */
+
+function updateClock(){
+
+    const now = new Date();
+
+    $("clock").textContent =
+        now.toLocaleTimeString(
+            "vi-VN",
+            {hour12:false}
         );
 
-        log(
-            ".bytes input guard active.",
-            "info"
+    $("date").textContent =
+        now.toLocaleDateString(
+            "vi-VN"
         );
+}
 
-        log(
-            "System telemetry module ready.",
-            "success"
-        );
+updateClock();
 
-    },
-    3300
+setInterval(
+    updateClock,
+    1000
 );
+
+
+/* =========================
+   THEME
+========================= */
+
+$("themeBtn").addEventListener(
+    "click",
+    ()=>{
+        document.body.classList.toggle(
+            "light"
+        );
+
+        /*
+          Keep theme preference locally.
+        */
+        localStorage.setItem(
+            "ktool-theme",
+            document.body.classList.contains(
+                "light"
+            )
+            ? "light"
+            : "dark"
+        );
+    }
+);
+
+
+/* =========================
+   KEYBOARD SHORTCUT
+========================= */
+
+document.addEventListener(
+    "keydown",
+    e=>{
+
+        if(
+            e.ctrlKey &&
+            e.key === "Enter"
+        ){
+            e.preventDefault();
+            $("mergeBtn").click();
+        }
+    }
+);
+
+
+/* =========================
+   INITIALIZE
+========================= */
+
+updateFileUI();
+resetAnalysis();
+detectSystemInfo();
+detectBattery();
+detectTemperature();
+
+log(
+    "BOOT SEQUENCE READY",
+    "ok"
+);
+
+log(
+    "WAITING FOR ACCESS CODE",
+    "ai"
+);
+
+startBoot();
 
 </script>
 
