@@ -2,27 +2,39 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#070a12">
+<meta name="viewport"
+      content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+
 <title>KTOOL AI BINARY ENGINE V29</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
 <style>
 :root{
-  --bg:#060912;
-  --bg2:#0a1020;
-  --card:rgba(14,20,35,.82);
-  --card2:rgba(18,27,46,.72);
-  --text:#edf3ff;
-  --muted:#8d9ab5;
-  --line:rgba(255,255,255,.09);
-  --blue:#6c7cff;
+  --bg:#070910;
+  --bg2:#0b0f1c;
+  --card:rgba(17,22,37,.86);
+  --card2:#101626;
+  --text:#eef3ff;
+  --muted:#8792aa;
+  --line:rgba(255,255,255,.08);
+  --primary:#6c7cff;
   --cyan:#00e5ff;
-  --green:#39e58c;
-  --red:#ff5d73;
+  --green:#45e6a0;
+  --red:#ff6177;
   --yellow:#ffd166;
-  --shadow:0 18px 55px rgba(0,0,0,.28);
+  --shadow:0 20px 60px rgba(0,0,0,.28);
+}
+
+body.light{
+  --bg:#eef2f8;
+  --bg2:#f7f9fc;
+  --card:rgba(255,255,255,.9);
+  --card2:#fff;
+  --text:#111827;
+  --muted:#657086;
+  --line:rgba(20,30,50,.1);
+  --shadow:0 20px 50px rgba(20,30,60,.12);
 }
 
 *{
@@ -30,45 +42,22 @@
   -webkit-tap-highlight-color:transparent;
 }
 
-html{
-  scroll-behavior:smooth;
+html,body{
+  margin:0;
+  min-height:100%;
+  background:
+    radial-gradient(circle at 15% 10%,rgba(108,124,255,.09),transparent 28%),
+    radial-gradient(circle at 90% 80%,rgba(0,229,255,.055),transparent 25%),
+    var(--bg);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
 }
 
 body{
-  margin:0;
-  min-height:100vh;
-  color:var(--text);
-  font-family:
-    Inter,
-    -apple-system,
-    BlinkMacSystemFont,
-    "SF Pro Display",
-    "Segoe UI",
-    sans-serif;
-  background:
-    radial-gradient(circle at 10% 0%,rgba(108,124,255,.12),transparent 30%),
-    radial-gradient(circle at 90% 20%,rgba(0,229,255,.07),transparent 27%),
-    linear-gradient(145deg,var(--bg),var(--bg2));
   overflow-x:hidden;
-  transition:background .35s,color .35s;
 }
 
-body.light{
-  --bg:#eef3fb;
-  --bg2:#dfe7f4;
-  --card:rgba(255,255,255,.82);
-  --card2:rgba(255,255,255,.72);
-  --text:#111827;
-  --muted:#68758c;
-  --line:rgba(20,30,55,.1);
-  --shadow:0 18px 50px rgba(35,50,80,.12);
-  background:
-    radial-gradient(circle at 5% 0%,rgba(108,124,255,.12),transparent 30%),
-    linear-gradient(145deg,#f7faff,#e5ecf7);
-}
-
-button,
-input{
+button,input{
   font:inherit;
 }
 
@@ -77,20 +66,12 @@ button{
 }
 
 svg{
-  width:20px;
-  height:20px;
-  fill:none;
-  stroke:currentColor;
-  stroke-width:1.8;
-  stroke-linecap:round;
-  stroke-linejoin:round;
+  display:block;
 }
 
-.hidden{
-  display:none!important;
-}
-
-/* BOOT */
+/* =========================
+   BOOT
+========================= */
 
 #boot{
   position:fixed;
@@ -100,7 +81,7 @@ svg{
   align-items:center;
   justify-content:center;
   background:#05070d;
-  transition:opacity .7s,visibility .7s;
+  transition:opacity .45s ease,visibility .45s ease;
 }
 
 #boot.hide{
@@ -110,305 +91,183 @@ svg{
 }
 
 .boot-box{
-  width:min(440px,88vw);
+  width:min(90%,380px);
   text-align:center;
 }
 
 .boot-logo{
-  width:76px;
-  height:76px;
+  width:72px;
+  height:72px;
   margin:auto;
+  border-radius:22px;
   display:grid;
   place-items:center;
-  border-radius:24px;
   color:white;
+  font-weight:1000;
+  font-size:24px;
   background:
-    linear-gradient(145deg,#6c7cff,#00bcd4);
-  box-shadow:
-    0 0 45px rgba(108,124,255,.3),
-    inset 0 1px rgba(255,255,255,.25);
-  animation:bootLogo 1.6s ease-in-out infinite;
-}
-
-.boot-logo svg{
-  width:38px;
-  height:38px;
+    linear-gradient(135deg,#6c7cff,#00e5ff);
+  box-shadow:0 0 45px rgba(108,124,255,.3);
+  animation:bootPulse 1.5s ease-in-out infinite;
 }
 
 .boot-title{
-  margin:22px 0 7px;
-  font-size:19px;
-  font-weight:950;
-  letter-spacing:.12em;
-}
-
-.boot-sub{
-  color:#75829d;
-  font-size:12px;
+  margin-top:20px;
+  font-weight:1000;
   letter-spacing:.08em;
 }
 
-.boot-bar{
-  height:4px;
-  margin:25px auto 0;
-  width:100%;
-  overflow:hidden;
-  border-radius:99px;
-  background:#151c2d;
+.boot-sub{
+  margin-top:8px;
+  color:#77829a;
+  font-size:13px;
 }
 
-.boot-bar span{
+.boot-line{
+  width:100%;
+  height:4px;
+  margin-top:24px;
+  overflow:hidden;
+  border-radius:99px;
+  background:rgba(255,255,255,.07);
+}
+
+.boot-line span{
   display:block;
   width:40%;
   height:100%;
-  border-radius:inherit;
+  border-radius:99px;
   background:linear-gradient(90deg,#6c7cff,#00e5ff);
-  animation:bootBar 1.3s ease-in-out infinite;
+  animation:bootLoad 1.4s ease-in-out infinite;
 }
 
-@keyframes bootLogo{
-  50%{
-    transform:translateY(-5px) scale(1.04);
-    box-shadow:0 0 65px rgba(108,124,255,.42);
-  }
+@keyframes bootLoad{
+  0%{transform:translateX(-130%)}
+  100%{transform:translateX(350%)}
 }
 
-@keyframes bootBar{
-  0%{transform:translateX(-120%)}
-  100%{transform:translateX(280%)}
+@keyframes bootPulse{
+  50%{transform:scale(1.06)}
 }
 
-/* AUTH */
+/* =========================
+   AUTH
+========================= */
 
-.auth-screen{
-  position:fixed;
-  inset:0;
-  z-index:5000;
-  display:grid;
-  place-items:center;
-  padding:20px;
-  background:
-    radial-gradient(circle at 50% 15%,rgba(108,124,255,.15),transparent 40%),
-    var(--bg);
+#auth{
+  min-height:100vh;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:22px;
+}
+
+#auth.show{
+  display:flex;
 }
 
 .auth-card{
-  width:min(470px,100%);
+  width:min(100%,440px);
   padding:25px;
   border:1px solid var(--line);
   border-radius:25px;
   background:var(--card);
   box-shadow:var(--shadow);
-  animation:enterUp .55s cubic-bezier(.2,.8,.2,1);
-}
-
-.auth-brand{
-  text-align:center;
-  margin-bottom:25px;
+  animation:enter .55s ease;
 }
 
 .auth-logo{
-  width:64px;
-  height:64px;
-  margin:auto;
+  width:55px;
+  height:55px;
   display:grid;
   place-items:center;
-  border-radius:20px;
+  border-radius:17px;
+  margin-bottom:18px;
   color:white;
-  background:linear-gradient(145deg,#6c7cff,#00d5ee);
-  box-shadow:0 15px 40px rgba(108,124,255,.25);
-}
-
-.auth-logo svg{
-  width:32px;
-  height:32px;
+  font-weight:1000;
+  background:linear-gradient(135deg,#6c7cff,#00e5ff);
 }
 
 .auth-title{
-  margin:16px 0 5px;
-  font-size:20px;
-  font-weight:950;
+  font-size:24px;
+  font-weight:1000;
 }
 
 .auth-sub{
+  margin-top:7px;
   color:var(--muted);
-  font-size:12px;
+  font-size:13px;
 }
 
-.auth-tabs{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:6px;
-  margin-bottom:18px;
-  padding:5px;
-  border-radius:13px;
-  background:rgba(127,145,180,.07);
-}
-
-.auth-tab{
-  border:0;
-  border-radius:9px;
-  padding:10px;
-  color:var(--muted);
-  background:transparent;
-  font-weight:800;
-}
-
-.auth-tab.active{
-  color:var(--text);
-  background:rgba(108,124,255,.14);
-}
-
-.form{
-  display:grid;
-  gap:12px;
-}
-
-.field{
-  position:relative;
-}
-
-.field input{
+.input{
   width:100%;
-  padding:13px 14px;
-  color:var(--text);
+  height:48px;
+  margin-top:12px;
+  padding:0 15px;
   border:1px solid var(--line);
   outline:none;
-  border-radius:13px;
-  background:rgba(127,145,180,.06);
-  transition:.2s;
+  border-radius:14px;
+  color:var(--text);
+  background:rgba(255,255,255,.035);
+  transition:.2s ease;
 }
 
-.field input:focus{
+.input:focus{
   border-color:rgba(108,124,255,.55);
-  box-shadow:0 0 0 3px rgba(108,124,255,.08);
+  box-shadow:0 0 0 3px rgba(108,124,255,.09);
 }
 
-.key-status{
-  min-height:17px;
-  margin-top:8px;
+.auth-actions{
+  display:flex;
+  gap:9px;
+  margin-top:13px;
+}
+
+.auth-actions .btn{
+  flex:1;
+}
+
+.auth-message{
+  min-height:20px;
+  margin-top:11px;
   color:var(--muted);
-  font-size:11px;
-}
-
-.auth-error{
-  color:var(--red);
-}
-
-.auth-success{
-  color:var(--green);
-}
-
-/* BUTTONS */
-
-.btn{
-  position:relative;
-  overflow:hidden;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-  min-height:42px;
-  padding:10px 14px;
-  color:var(--text);
-  border:1px solid var(--line);
-  border-radius:12px;
-  background:rgba(127,145,180,.06);
   font-size:12px;
-  font-weight:850;
-  transition:
-    transform .2s,
-    border-color .2s,
-    background .2s,
-    box-shadow .2s;
 }
 
-.btn:hover{
-  transform:translateY(-2px);
-  border-color:rgba(108,124,255,.3);
-}
-
-.btn:active{
-  transform:scale(.97);
-}
-
-.btn.primary{
-  color:white;
-  border-color:transparent;
-  background:linear-gradient(135deg,#6878ff,#4e61e8);
-  box-shadow:0 9px 25px rgba(81,96,230,.22);
-}
-
-.btn.primary::after{
-  content:"";
-  position:absolute;
-  inset:0 auto 0 -120%;
-  width:65%;
-  transform:skewX(-20deg);
-  background:linear-gradient(
-    90deg,
-    transparent,
-    rgba(255,255,255,.22),
-    transparent
-  );
-}
-
-.btn.primary:hover::after{
-  animation:shine .65s ease;
-}
-
-.btn.danger{
-  color:#ff7183;
-}
-
-.btn.green{
-  color:#54eaa1;
-}
-
-.btn.full{
-  width:100%;
-}
-
-.icon-btn{
-  position:relative;
-  display:grid;
-  place-items:center;
-  width:40px;
-  height:40px;
+.key-note{
+  margin-top:18px;
+  padding:11px;
+  border-radius:13px;
   color:var(--muted);
-  border:1px solid var(--line);
-  border-radius:12px;
-  background:rgba(127,145,180,.06);
-  transition:.2s;
+  background:rgba(108,124,255,.05);
+  font-size:12px;
 }
 
-.icon-btn:hover{
-  color:var(--text);
-  transform:translateY(-2px);
-  border-color:rgba(108,124,255,.3);
-}
-
-/* MAIN */
+/* =========================
+   APP
+========================= */
 
 #app{
+  display:none;
   min-height:100vh;
-  padding-bottom:20px;
 }
 
-.shell{
-  width:min(1180px,calc(100% - 28px));
+#app.show{
+  display:block;
+}
+
+.container{
+  width:min(1160px,calc(100% - 28px));
   margin:auto;
 }
 
-/* HEADER */
-
 .topbar{
+  min-height:82px;
+  padding:13px 0;
   display:grid;
   grid-template-columns:minmax(0,1fr) auto;
   align-items:center;
   gap:18px;
-  min-height:82px;
-  padding:14px 0;
 }
 
 .brand{
@@ -419,41 +278,35 @@ svg{
 }
 
 .brand-logo{
-  flex:0 0 48px;
   width:48px;
   height:48px;
+  flex:0 0 48px;
   display:grid;
   place-items:center;
-  color:white;
   border-radius:15px;
-  background:linear-gradient(145deg,#697aff,#00cfe9);
-  box-shadow:0 10px 28px rgba(76,91,230,.2);
-}
-
-.brand-logo svg{
-  width:25px;
-  height:25px;
+  color:white;
+  font-weight:1000;
+  background:linear-gradient(135deg,#6c7cff,#00e5ff);
+  box-shadow:0 10px 30px rgba(108,124,255,.18);
 }
 
 .brand-text{
   min-width:0;
-  overflow:hidden;
 }
 
 .brand-title{
+  font-size:14px;
+  font-weight:1000;
+  letter-spacing:.055em;
+  white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
-  white-space:nowrap;
-  font-size:14px;
-  font-weight:950;
-  letter-spacing:.07em;
 }
 
 .brand-sub{
   margin-top:4px;
   color:var(--muted);
-  font-size:10px;
-  letter-spacing:.08em;
+  font-size:11px;
 }
 
 .header-right{
@@ -461,116 +314,134 @@ svg{
   align-items:center;
   justify-content:flex-end;
   gap:8px;
-  flex-shrink:0;
 }
 
 .clock{
-  width:118px;
-  min-width:118px;
-  padding:8px 10px;
+  width:120px;
+  padding:8px 9px;
   text-align:center;
   border:1px solid var(--line);
   border-radius:13px;
   background:var(--card);
-  box-shadow:0 8px 25px rgba(0,0,0,.08);
 }
 
 .clock-time{
-  font-size:13px;
+  font-size:14px;
   font-weight:900;
-  letter-spacing:.06em;
 }
 
 .clock-date{
-  margin-top:3px;
+  margin-top:2px;
   color:var(--muted);
-  font-size:8px;
-  white-space:nowrap;
-}
-
-/* HERO */
-
-.hero{
-  position:relative;
-  overflow:hidden;
-  margin:5px 0 18px;
-  padding:27px;
-  border:1px solid var(--line);
-  border-radius:24px;
-  background:
-    linear-gradient(
-      135deg,
-      rgba(108,124,255,.12),
-      rgba(0,229,255,.035) 50%,
-      transparent
-    ),
-    var(--card);
-  box-shadow:var(--shadow);
-  animation:enterUp .65s cubic-bezier(.2,.8,.2,1);
-}
-
-.hero::before{
-  content:"";
-  position:absolute;
-  width:240px;
-  height:240px;
-  right:-110px;
-  top:-140px;
-  border-radius:50%;
-  background:rgba(108,124,255,.12);
-}
-
-.hero-content{
-  position:relative;
-  z-index:1;
-}
-
-.hero-kicker{
-  color:var(--cyan);
-  font-size:10px;
-  font-weight:950;
-  letter-spacing:.18em;
-}
-
-.hero h1{
-  margin:9px 0 8px;
-  font-size:clamp(23px,5vw,40px);
-  line-height:1.05;
-  letter-spacing:-.035em;
-}
-
-.hero p{
-  max-width:720px;
-  margin:0;
-  color:var(--muted);
-  font-size:12px;
-  line-height:1.7;
-}
-
-.hero-badges{
-  display:flex;
-  flex-wrap:wrap;
-  gap:7px;
-  margin-top:17px;
-}
-
-.badge{
-  padding:6px 9px;
-  color:var(--muted);
-  border:1px solid var(--line);
-  border-radius:999px;
-  background:rgba(127,145,180,.055);
   font-size:9px;
+}
+
+.icon-btn,
+.btn{
+  min-height:42px;
+  border:1px solid var(--line);
+  border-radius:13px;
+  color:var(--text);
+  background:var(--card);
+  transition:
+    transform .18s ease,
+    border-color .18s ease,
+    background .18s ease;
+}
+
+.icon-btn{
+  width:42px;
+  display:grid;
+  place-items:center;
+}
+
+.icon-btn:hover,
+.btn:hover{
+  transform:translateY(-2px);
+  border-color:rgba(108,124,255,.35);
+}
+
+.icon-btn:active,
+.btn:active{
+  transform:scale(.97);
+}
+
+.btn{
+  padding:0 15px;
   font-weight:800;
 }
 
-/* TABS */
+.btn.primary{
+  color:white;
+  border-color:transparent;
+  background:linear-gradient(135deg,#6576ff,#00bfe0);
+  box-shadow:0 9px 25px rgba(76,114,255,.16);
+}
+
+.btn.green{
+  color:#071b13;
+  background:var(--green);
+  border-color:transparent;
+}
+
+.btn.red{
+  color:white;
+  background:#d84c64;
+  border-color:transparent;
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero{
+  margin-top:10px;
+  padding:28px;
+  border:1px solid var(--line);
+  border-radius:25px;
+  background:
+    linear-gradient(135deg,
+      rgba(108,124,255,.1),
+      rgba(0,229,255,.025)),
+    var(--card);
+  box-shadow:var(--shadow);
+  animation:enter .6s ease;
+}
+
+.hero-badge{
+  display:inline-flex;
+  padding:7px 10px;
+  border-radius:99px;
+  color:#9eefff;
+  background:rgba(0,229,255,.07);
+  border:1px solid rgba(0,229,255,.12);
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.08em;
+}
+
+.hero h1{
+  margin:15px 0 8px;
+  font-size:clamp(25px,5vw,43px);
+  line-height:1.05;
+}
+
+.hero p{
+  max-width:730px;
+  margin:0;
+  color:var(--muted);
+  line-height:1.6;
+  font-size:13px;
+}
+
+/* =========================
+   TABS
+========================= */
 
 .tabs{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:7px;
-  margin-bottom:14px;
+  display:flex;
+  gap:8px;
+  margin-top:17px;
   padding:5px;
   border:1px solid var(--line);
   border-radius:16px;
@@ -579,137 +450,120 @@ svg{
 
 .tab{
   position:relative;
-  overflow:hidden;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-  min-height:45px;
-  color:var(--muted);
+  flex:1;
+  min-height:43px;
   border:0;
-  border-radius:11px;
+  border-radius:12px;
+  color:var(--muted);
   background:transparent;
-  font-size:11px;
   font-weight:900;
-  transition:.25s;
+  transition:.2s ease;
 }
 
 .tab.active{
   color:var(--text);
-  background:rgba(108,124,255,.12);
+  background:rgba(108,124,255,.1);
 }
 
-.tab.active::after{
+.tab.active:after{
   content:"";
   position:absolute;
-  left:15%;
-  right:15%;
+  left:20%;
+  right:20%;
   bottom:0;
   height:2px;
   border-radius:99px;
   background:linear-gradient(90deg,transparent,#00e5ff,transparent);
-  animation:tabLine .7s ease;
+  animation:tabLine .4s ease;
 }
 
-/* PANELS */
+@keyframes tabLine{
+  from{transform:scaleX(.2);opacity:0}
+  to{transform:scaleX(1);opacity:1}
+}
+
+/* =========================
+   PANELS
+========================= */
 
 .panel{
   display:none;
+  margin-top:16px;
 }
 
 .panel.active{
   display:block;
-  animation:panelIn .35s ease;
+  animation:panelEnter .35s ease;
 }
 
-@keyframes panelIn{
-  from{
-    opacity:0;
-    transform:translateY(5px);
-  }
-  to{
-    opacity:1;
-    transform:none;
-  }
+@keyframes panelEnter{
+  from{opacity:0;transform:translateY(7px)}
+  to{opacity:1;transform:none}
 }
 
-/* CARD */
+.grid{
+  display:grid;
+  grid-template-columns:1.25fr .75fr;
+  gap:16px;
+}
 
 .card{
-  margin-bottom:14px;
-  padding:17px;
   border:1px solid var(--line);
-  border-radius:19px;
+  border-radius:21px;
+  padding:18px;
   background:var(--card);
-  box-shadow:0 12px 35px rgba(0,0,0,.09);
-  transition:
-    transform .25s,
-    border-color .25s,
-    box-shadow .25s;
+  box-shadow:0 14px 40px rgba(0,0,0,.08);
+  transition:.22s ease;
 }
 
 .card:hover{
-  transform:translateY(-2px);
-  border-color:rgba(108,124,255,.16);
+  border-color:rgba(108,124,255,.17);
 }
 
 .card-head{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:12px;
-  margin-bottom:13px;
+  gap:10px;
+  margin-bottom:15px;
 }
 
 .card-title{
   display:flex;
   align-items:center;
   gap:10px;
-  font-size:12px;
-  font-weight:900;
+  font-size:14px;
+  font-weight:950;
 }
 
 .card-icon{
-  width:34px;
-  height:34px;
+  width:35px;
+  height:35px;
   display:grid;
   place-items:center;
-  border-radius:10px;
-  color:#9ba8ff;
-  background:rgba(108,124,255,.1);
+  border-radius:11px;
+  color:#aab5ff;
+  background:rgba(108,124,255,.08);
 }
-
-.card-desc{
-  margin:4px 0 0;
-  color:var(--muted);
-  font-size:10px;
-}
-
-/* DROP */
 
 .drop{
-  position:relative;
-  overflow:hidden;
-  display:grid;
-  place-items:center;
-  min-height:185px;
-  padding:22px;
+  min-height:210px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
   text-align:center;
-  border:1px dashed rgba(108,124,255,.3);
-  border-radius:17px;
-  background:
-    linear-gradient(
-      135deg,
-      rgba(108,124,255,.05),
-      rgba(0,229,255,.018)
-    );
-  transition:.25s;
+  padding:22px;
+  border:1px dashed rgba(108,124,255,.32);
+  border-radius:19px;
+  background:rgba(108,124,255,.025);
+  transition:.25s ease;
 }
 
 .drop.drag{
-  border-color:var(--cyan);
-  background:rgba(0,229,255,.055);
   transform:scale(1.01);
+  border-color:#00e5ff;
+  background:rgba(0,229,255,.045);
 }
 
 .drop-img{
@@ -717,71 +571,72 @@ svg{
   height:58px;
   display:grid;
   place-items:center;
-  margin-bottom:11px;
-  color:#9ba8ff;
-  border-radius:17px;
-  background:rgba(108,124,255,.1);
-  transition:.3s;
-}
-
-.drop-img svg{
-  width:28px;
-  height:28px;
+  border-radius:18px;
+  margin-bottom:13px;
+  color:#aeb9ff;
+  background:rgba(108,124,255,.08);
+  transition:.25s ease;
 }
 
 .drop:hover .drop-img{
   transform:translateY(-3px) scale(1.04);
-  box-shadow:0 12px 30px rgba(108,124,255,.15);
 }
 
 .drop-title{
-  font-size:12px;
   font-weight:900;
 }
 
 .drop-sub{
+  max-width:430px;
   margin-top:6px;
   color:var(--muted);
-  font-size:10px;
+  font-size:12px;
+  line-height:1.5;
 }
 
-/* FILE LIST */
+.hidden{
+  display:none!important;
+}
+
+/* =========================
+   FILE LIST
+========================= */
 
 .file-list{
-  display:grid;
+  display:flex;
+  flex-direction:column;
   gap:8px;
-  max-height:370px;
-  margin-top:12px;
+  max-height:310px;
+  margin-top:13px;
   overflow:auto;
-  padding-right:2px;
 }
 
 .file{
   display:flex;
   align-items:center;
   gap:10px;
-  padding:10px;
+  min-height:51px;
+  padding:9px 11px;
   border:1px solid var(--line);
   border-radius:13px;
-  background:rgba(127,145,180,.035);
-  transition:.2s;
+  background:rgba(255,255,255,.018);
+  transition:.18s ease;
 }
 
 .file:hover{
   transform:translateX(3px);
   border-color:rgba(0,229,255,.18);
-  background:rgba(0,229,255,.025);
 }
 
 .file-icon{
-  width:34px;
-  height:34px;
-  flex:0 0 34px;
+  width:32px;
+  height:32px;
+  flex:0 0 32px;
   display:grid;
   place-items:center;
   border-radius:9px;
-  color:#8e9dff;
-  background:rgba(108,124,255,.1);
+  background:rgba(0,229,255,.06);
+  color:#91efff;
 }
 
 .file-info{
@@ -790,220 +645,168 @@ svg{
 }
 
 .file-name{
+  font-size:12px;
+  font-weight:800;
+  white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
-  white-space:nowrap;
-  font-size:11px;
-  font-weight:800;
 }
 
-.file-meta{
+.file-size{
   margin-top:3px;
   color:var(--muted);
-  font-size:9px;
+  font-size:10px;
 }
 
-.file-remove{
-  flex:0 0 auto;
+.empty{
+  padding:25px;
+  text-align:center;
+  color:var(--muted);
+  font-size:12px;
 }
 
-/* ACTIONS */
+/* =========================
+   ACTIONS
+========================= */
 
 .actions{
   display:flex;
   flex-wrap:wrap;
-  gap:7px;
-  margin-top:12px;
-}
-
-.actions .btn{
-  flex:1 1 120px;
-}
-
-/* PROGRESS */
-
-.progress-box{
-  display:none;
+  gap:8px;
   margin-top:13px;
 }
 
-.progress-box.show{
-  display:block;
-  animation:fadeIn .25s ease;
+.actions .btn{
+  flex:1;
+  min-width:105px;
+}
+
+/* =========================
+   PROGRESS
+========================= */
+
+.progress-box{
+  margin-top:15px;
 }
 
 .progress-top{
   display:flex;
   justify-content:space-between;
-  margin-bottom:7px;
   color:var(--muted);
-  font-size:9px;
-  font-weight:800;
+  font-size:10px;
+  margin-bottom:6px;
 }
 
 .progress{
-  position:relative;
   height:7px;
   overflow:hidden;
   border-radius:99px;
-  background:rgba(127,145,180,.1);
+  background:rgba(255,255,255,.07);
 }
 
 .progress span{
   display:block;
-  width:0;
+  width:0%;
   height:100%;
-  border-radius:inherit;
-  background:linear-gradient(90deg,#6878ff,#00e5ff);
-  transition:width .2s;
+  border-radius:99px;
+  background:linear-gradient(90deg,#6c7cff,#00e5ff);
+  transition:width .2s ease;
 }
 
-.progress span::after{
-  content:"";
-  position:absolute;
-  top:0;
-  left:-40%;
-  width:35%;
-  height:100%;
-  background:linear-gradient(
-    90deg,
-    transparent,
-    rgba(255,255,255,.3),
-    transparent
-  );
-  animation:progressShine 1.3s linear infinite;
-}
-
-/* STATS */
+/* =========================
+   STATS
+========================= */
 
 .stats{
   display:grid;
-  grid-template-columns:repeat(4,1fr);
+  grid-template-columns:repeat(2,1fr);
   gap:8px;
 }
 
 .stat{
-  min-width:0;
-  padding:13px 10px;
+  padding:13px;
   border:1px solid var(--line);
-  border-radius:13px;
-  background:rgba(127,145,180,.035);
-  transition:.22s;
+  border-radius:14px;
+  background:rgba(255,255,255,.018);
+  transition:.2s ease;
 }
 
 .stat:hover{
   transform:translateY(-2px);
-  border-color:rgba(108,124,255,.18);
 }
 
 .stat-label{
   color:var(--muted);
-  font-size:8px;
-  font-weight:800;
-  text-transform:uppercase;
+  font-size:9px;
 }
 
 .stat-value{
   margin-top:5px;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-  font-size:16px;
+  font-size:18px;
   font-weight:950;
 }
 
-/* TERMINAL */
+/* =========================
+   TERMINAL
+========================= */
 
 .terminal{
-  max-height:220px;
+  height:180px;
   overflow:auto;
-  padding:13px;
-  color:#8e9bb8;
+  margin-top:13px;
+  padding:12px;
   border:1px solid var(--line);
   border-radius:14px;
-  background:#050810;
-  font-family:
-    ui-monospace,
-    SFMono-Regular,
-    Menlo,
-    Monaco,
-    Consolas,
-    monospace;
-  font-size:9px;
-  line-height:1.75;
+  color:#9ca9c2;
+  background:#05070d;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:10px;
+  line-height:1.7;
 }
 
-.terminal .ok{
-  color:#54eaa1;
-}
+.term-ok{color:#57e6a5}
+.term-info{color:#72dfff}
+.term-warn{color:#ffd166}
+.term-error{color:#ff7084}
 
-.terminal .warn{
-  color:#ffd166;
-}
-
-.terminal .err{
-  color:#ff7083;
-}
-
-/* ZIP TARGETS */
-
-.target-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:7px;
-}
-
-.target{
-  padding:9px;
-  color:var(--muted);
-  border:1px solid var(--line);
-  border-radius:11px;
-  background:rgba(127,145,180,.03);
-  font-size:9px;
-  font-family:ui-monospace,monospace;
-}
-
-.target.found{
-  color:#5ee9a3;
-  border-color:rgba(57,229,140,.2);
-  background:rgba(57,229,140,.035);
-}
-
-/* SELECT */
+/* =========================
+   SELECT
+========================= */
 
 .select{
   width:100%;
-  padding:10px 12px;
+  height:43px;
+  padding:0 12px;
   color:var(--text);
   border:1px solid var(--line);
   border-radius:12px;
   outline:none;
   background:var(--card2);
-  font-size:11px;
 }
 
-/* PREVIEW */
+/* =========================
+   ZIP TARGETS
+========================= */
 
-.preview{
-  max-height:260px;
-  overflow:auto;
+.targets{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:7px;
+  margin-top:12px;
+}
+
+.target{
+  padding:9px;
   border:1px solid var(--line);
-  border-radius:13px;
-}
-
-.preview-row{
-  padding:8px 10px;
-  border-bottom:1px solid var(--line);
+  border-radius:11px;
   color:var(--muted);
-  font-family:ui-monospace,monospace;
-  font-size:9px;
+  font-size:10px;
+  background:rgba(255,255,255,.018);
 }
 
-.preview-row:last-child{
-  border-bottom:0;
-}
-
-/* SYSTEM */
+/* =========================
+   SYSTEM
+========================= */
 
 .system-grid{
   display:grid;
@@ -1012,310 +815,184 @@ svg{
 }
 
 .system-item{
-  min-width:0;
   padding:10px;
   border:1px solid var(--line);
   border-radius:12px;
-  background:rgba(127,145,180,.035);
+  background:rgba(255,255,255,.015);
 }
 
-.system-label{
+.system-key{
   color:var(--muted);
-  font-size:8px;
+  font-size:9px;
 }
 
 .system-value{
   margin-top:4px;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-  font-size:10px;
+  font-size:11px;
   font-weight:800;
+  word-break:break-word;
 }
 
-/* FOOTER */
+/* =========================
+   FOOTER
+========================= */
 
 .footer{
-  position:relative;
-  overflow:hidden;
-  margin-top:18px;
-  padding:25px 15px 12px;
+  margin:35px 0 25px;
+  padding:24px;
   text-align:center;
   border:1px solid var(--line);
-  border-radius:20px;
+  border-radius:21px;
   background:var(--card);
-  animation:footerEnter .7s .15s both cubic-bezier(.2,.8,.2,1);
-}
-
-.footer::before{
-  content:"";
-  position:absolute;
-  left:-30%;
-  top:0;
-  width:35%;
-  height:1px;
-  background:linear-gradient(90deg,transparent,#00e5ff,transparent);
-  animation:footerLine 4s linear infinite;
 }
 
 .footer-main{
-  font-size:13px;
-  font-weight:950;
-  letter-spacing:.14em;
-}
-
-.footer-main span{
-  background:linear-gradient(90deg,#8b96ff,#00e5ff);
+  font-size:14px;
+  font-weight:1000;
+  letter-spacing:.1em;
+  background:linear-gradient(90deg,#6c7cff,#00e5ff,#6c7cff);
+  background-size:200% auto;
   -webkit-background-clip:text;
   background-clip:text;
   color:transparent;
+  animation:footerShine 5s linear infinite;
 }
 
 .footer-sub{
   margin-top:7px;
   color:var(--muted);
-  font-size:9px;
-  letter-spacing:.08em;
+  font-size:10px;
 }
 
-.footer-copy{
-  margin-top:14px;
-  color:var(--muted);
-  opacity:.65;
-  font-size:8px;
+@keyframes footerShine{
+  to{background-position:200% center}
 }
 
-/* HIDDEN CREATOR */
+/* =========================
+   HIDDEN CREATOR
+========================= */
 
 .creator-watermark{
   position:fixed;
+  z-index:0;
   left:50%;
   top:50%;
-  z-index:0;
   pointer-events:none;
   user-select:none;
   white-space:nowrap;
-  transform:
-    translate(-50%,-50%)
-    rotate(-13deg)
-    scale(.96);
-  font-size:clamp(38px,9vw,125px);
-  font-weight:950;
-  letter-spacing:.16em;
+  transform:translate(-50%,-50%) rotate(-13deg) scale(.93);
+  font-size:clamp(35px,9vw,115px);
+  font-weight:1000;
+  letter-spacing:.15em;
   color:rgba(255,255,255,.018);
   opacity:0;
-  filter:blur(.2px);
 }
 
 .creator-watermark.show{
-  animation:creatorBreath 3.2s ease-in-out;
+  animation:creatorFlash 3s ease-in-out;
 }
 
-body.light .creator-watermark{
-  color:rgba(20,30,55,.022);
-}
-
-@keyframes creatorBreath{
+@keyframes creatorFlash{
   0%{
     opacity:0;
-    transform:translate(-50%,-50%) rotate(-13deg) scale(.92);
+    transform:translate(-50%,-50%) rotate(-13deg) scale(.93);
   }
-  30%{
-    opacity:1;
-  }
-  70%{
-    opacity:.65;
-  }
+  30%{opacity:1}
+  65%{opacity:.55}
   100%{
     opacity:0;
     transform:translate(-50%,-50%) rotate(-13deg) scale(1.04);
   }
 }
 
-/* PROCESSING */
+/* =========================
+   WELCOME POPUP
+========================= */
 
-.card.processing{
-  border-color:rgba(108,124,255,.35);
-  box-shadow:
-    0 0 0 1px rgba(108,124,255,.05),
-    0 0 45px rgba(108,124,255,.1);
+#popupLayer{
+  position:fixed;
+  inset:0;
+  z-index:5000;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:rgba(0,0,0,.55);
 }
 
-.card.processing .card-icon{
-  animation:iconProcessing 1.1s ease-in-out infinite;
+#popupLayer.show{
+  display:flex;
 }
 
-@keyframes iconProcessing{
+.popup{
+  width:min(100%,390px);
+  padding:24px;
+  border:1px solid var(--line);
+  border-radius:22px;
+  background:var(--card2);
+  box-shadow:var(--shadow);
+  animation:popupIn .35s ease;
+}
+
+.popup-title{
+  font-size:21px;
+  font-weight:1000;
+}
+
+.popup-text{
+  margin-top:8px;
+  color:var(--muted);
+  line-height:1.55;
+  font-size:13px;
+}
+
+.popup .btn{
+  width:100%;
+  margin-top:17px;
+}
+
+@keyframes popupIn{
+  from{opacity:0;transform:translateY(12px) scale(.97)}
+  to{opacity:1;transform:none}
+}
+
+/* =========================
+   ANIMATIONS
+========================= */
+
+@keyframes enter{
+  from{
+    opacity:0;
+    transform:translateY(10px);
+  }
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+
+.processing{
+  border-color:rgba(108,124,255,.35)!important;
+  box-shadow:0 0 35px rgba(108,124,255,.08);
+}
+
+.processing .card-icon{
+  animation:processingIcon 1s ease-in-out infinite;
+}
+
+@keyframes processingIcon{
   50%{
     transform:scale(1.08) rotate(2deg);
   }
 }
 
-/* TOAST */
+/* =========================
+   RESPONSIVE
+========================= */
 
-.toast{
-  position:fixed;
-  z-index:7000;
-  left:50%;
-  bottom:22px;
-  max-width:calc(100% - 28px);
-  padding:11px 15px;
-  color:var(--text);
-  border:1px solid var(--line);
-  border-radius:13px;
-  background:rgba(10,15,27,.94);
-  box-shadow:var(--shadow);
-  transform:translate(-50%,20px);
-  opacity:0;
-  pointer-events:none;
-  transition:.3s;
-  font-size:10px;
-  font-weight:800;
-}
-
-body.light .toast{
-  background:rgba(255,255,255,.95);
-}
-
-.toast.show{
-  opacity:1;
-  transform:translate(-50%,0);
-}
-
-/* POPUP */
-
-.popup-layer{
-  position:fixed;
-  inset:0;
-  z-index:6000;
-  display:grid;
-  place-items:center;
-  padding:20px;
-  background:rgba(0,0,0,.42);
-  opacity:0;
-  visibility:hidden;
-  pointer-events:none;
-  transition:.3s;
-}
-
-.popup-layer.show{
-  opacity:1;
-  visibility:visible;
-  pointer-events:auto;
-}
-
-.popup{
-  width:min(390px,100%);
-  padding:23px;
-  text-align:center;
-  border:1px solid var(--line);
-  border-radius:22px;
-  background:var(--card);
-  box-shadow:var(--shadow);
-  transform:translateY(12px) scale(.97);
-  transition:.35s cubic-bezier(.2,.8,.2,1);
-}
-
-.popup-layer.show .popup{
-  transform:none;
-}
-
-.popup-icon{
-  width:52px;
-  height:52px;
-  display:grid;
-  place-items:center;
-  margin:auto;
-  color:#8e9dff;
-  border-radius:16px;
-  background:rgba(108,124,255,.1);
-}
-
-.popup-title{
-  margin-top:13px;
-  font-size:16px;
-  font-weight:950;
-}
-
-.popup-text{
-  margin:7px 0 17px;
-  color:var(--muted);
-  font-size:10px;
-  line-height:1.6;
-}
-
-/* ANIMATION */
-
-@keyframes enterUp{
-  from{
-    opacity:0;
-    transform:translateY(12px);
-  }
-  to{
-    opacity:1;
-    transform:none;
-  }
-}
-
-@keyframes footerEnter{
-  from{
-    opacity:0;
-    transform:translateY(12px);
-  }
-  to{
-    opacity:1;
-    transform:none;
-  }
-}
-
-@keyframes fadeIn{
-  from{opacity:0}
-  to{opacity:1}
-}
-
-@keyframes shine{
-  from{left:-120%}
-  to{left:140%}
-}
-
-@keyframes tabLine{
-  from{
-    opacity:0;
-    transform:scaleX(.2);
-  }
-  to{
-    opacity:1;
-    transform:scaleX(1);
-  }
-}
-
-@keyframes progressShine{
-  from{left:-40%}
-  to{left:120%}
-}
-
-@keyframes footerLine{
-  from{left:-35%}
-  to{left:120%}
-}
-
-/* RESPONSIVE */
-
-@media(max-width:760px){
-  .shell{
-    width:min(100% - 20px,1180px);
-  }
-
-  .hero{
-    padding:22px;
-  }
-
-  .stats{
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .target-grid{
-    grid-template-columns:repeat(2,1fr);
+@media(max-width:800px){
+  .grid{
+    grid-template-columns:1fr;
   }
 }
 
@@ -1323,11 +1000,6 @@ body.light .toast{
   .topbar{
     grid-template-columns:1fr;
     gap:10px;
-    padding-top:12px;
-  }
-
-  .brand{
-    width:100%;
   }
 
   .header-right{
@@ -1338,21 +1010,15 @@ body.light .toast{
   .clock{
     margin-left:auto;
   }
+
+  .hero{
+    padding:22px;
+  }
 }
 
 @media(max-width:500px){
-  .shell{
-    width:calc(100% - 14px);
-  }
-
-  .hero{
-    border-radius:20px;
-    padding:19px;
-  }
-
-  .card{
-    padding:13px;
-    border-radius:17px;
+  .container{
+    width:min(100% - 18px,1160px);
   }
 
   .brand-logo{
@@ -1363,56 +1029,38 @@ body.light .toast{
 
   .brand-title{
     font-size:11px;
-    letter-spacing:.045em;
   }
 
   .brand-sub{
-    font-size:8px;
-  }
-
-  .header-right{
-    justify-content:space-between;
+    font-size:9px;
   }
 
   .clock{
     flex:1;
-    width:auto;
     min-width:0;
-    max-width:none;
+    width:auto;
   }
 
-  .clock-time{
-    font-size:12px;
+  .tabs{
+    position:sticky;
+    top:5px;
+    z-index:20;
+  }
+
+  .card{
+    padding:14px;
+    border-radius:18px;
+  }
+
+  .drop{
+    min-height:190px;
   }
 
   .actions .btn{
-    flex:1 1 calc(50% - 7px);
+    min-width:calc(50% - 4px);
   }
 
-  .target-grid{
-    grid-template-columns:1fr 1fr;
-  }
-
-  .system-grid{
-    grid-template-columns:1fr 1fr;
-  }
-
-  .footer-main{
-    font-size:11px;
-    letter-spacing:.1em;
-  }
-}
-
-@media(max-width:350px){
-  .actions .btn{
-    flex-basis:100%;
-  }
-
-  .stats{
-    grid-template-columns:1fr 1fr;
-  }
-
-  .target-grid{
+  .targets{
     grid-template-columns:1fr;
   }
 }
@@ -1421,10 +1069,9 @@ body.light .toast{
   *,
   *::before,
   *::after{
-    animation-duration:.01ms!important;
+    animation-duration:.001ms!important;
     animation-iteration-count:1!important;
-    scroll-behavior:auto!important;
-    transition-duration:.01ms!important;
+    transition-duration:.001ms!important;
   }
 }
 </style>
@@ -1434,564 +1081,654 @@ body.light .toast{
 
 <!-- SVG ICONS -->
 <svg width="0" height="0" style="position:absolute">
-  <symbol id="i-cpu" viewBox="0 0 24 24">
-    <rect x="6" y="6" width="12" height="12" rx="2"/>
-    <path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"/>
-    <path d="M9 9h6v6H9z"/>
+  <symbol id="i-box" viewBox="0 0 24 24">
+    <rect x="3" y="5" width="18" height="14" rx="3"
+          fill="none" stroke="currentColor" stroke-width="1.8"/>
+    <path d="M7 9h10M7 13h6" fill="none"
+          stroke="currentColor" stroke-width="1.8"
+          stroke-linecap="round"/>
   </symbol>
 
   <symbol id="i-file" viewBox="0 0 24 24">
-    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-    <path d="M14 2v6h6M8 13h8M8 17h6"/>
-  </symbol>
-
-  <symbol id="i-upload" viewBox="0 0 24 24">
-    <path d="M12 16V4"/>
-    <path d="m7 9 5-5 5 5"/>
-    <path d="M4 20h16"/>
-  </symbol>
-
-  <symbol id="i-download" viewBox="0 0 24 24">
-    <path d="M12 4v12"/>
-    <path d="m7 11 5 5 5-5"/>
-    <path d="M4 20h16"/>
+    <path d="M6 3h8l4 4v14H6z" fill="none"
+          stroke="currentColor" stroke-width="1.7"/>
+    <path d="M14 3v5h5" fill="none"
+          stroke="currentColor" stroke-width="1.7"/>
   </symbol>
 
   <symbol id="i-zip" viewBox="0 0 24 24">
-    <path d="M5 3h14v18H5z"/>
-    <path d="M9 3v3h6V3M10 9h4M10 13h4M10 17h4"/>
-  </symbol>
-
-  <symbol id="i-scan" viewBox="0 0 24 24">
-    <path d="M4 7V4h3M17 4h3v3M20 17v3h-3M7 20H4v-3"/>
-    <path d="M7 12h10M12 7v10"/>
-  </symbol>
-
-  <symbol id="i-trash" viewBox="0 0 24 24">
-    <path d="M4 7h16M10 11v6M14 11v6"/>
-    <path d="M6 7l1 14h10l1-14M9 7V4h6v3"/>
-  </symbol>
-
-  <symbol id="i-sun" viewBox="0 0 24 24">
-    <circle cx="12" cy="12" r="4"/>
-    <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+    <path d="M6 3h9l4 4v14H6z" fill="none"
+          stroke="currentColor" stroke-width="1.7"/>
+    <path d="M10 3v3M10 8v3M10 13v3"
+          stroke="currentColor" stroke-width="1.7"/>
   </symbol>
 
   <symbol id="i-moon" viewBox="0 0 24 24">
-    <path d="M20 15.5A8.5 8.5 0 0 1 8.5 4 8.5 8.5 0 1 0 20 15.5z"/>
+    <path d="M20 15.2A8 8 0 0 1 8.8 4
+             8.5 8.5 0 1 0 20 15.2z"
+          fill="none" stroke="currentColor"
+          stroke-width="1.7"/>
+  </symbol>
+
+  <symbol id="i-sun" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="4"
+            fill="none" stroke="currentColor"
+            stroke-width="1.7"/>
+    <path d="M12 2v2M12 20v2M2 12h2M20 12h2
+             M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4
+             M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"
+          stroke="currentColor" stroke-width="1.7"
+          stroke-linecap="round"/>
+  </symbol>
+
+  <symbol id="i-upload" viewBox="0 0 24 24">
+    <path d="M12 16V4M7 9l5-5 5 5"
+          fill="none" stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"/>
+    <path d="M5 14v5h14v-5"
+          fill="none" stroke="currentColor"
+          stroke-width="1.8"/>
+  </symbol>
+
+  <symbol id="i-download" viewBox="0 0 24 24">
+    <path d="M12 4v12M7 12l5 5 5-5"
+          fill="none" stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"/>
+    <path d="M5 20h14"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"/>
+  </symbol>
+
+  <symbol id="i-moon2" viewBox="0 0 24 24">
+    <path d="M20 15.2A8 8 0 0 1 8.8 4
+             8.5 8.5 0 1 0 20 15.2z"
+          fill="none" stroke="currentColor"
+          stroke-width="1.7"/>
   </symbol>
 
   <symbol id="i-log" viewBox="0 0 24 24">
-    <path d="M9 4H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h4"/>
-    <path d="M14 8l4 4-4 4M18 12H8"/>
-  </symbol>
-
-  <symbol id="i-check" viewBox="0 0 24 24">
-    <path d="m5 12 4 4L19 6"/>
-  </symbol>
-
-  <symbol id="i-chart" viewBox="0 0 24 24">
-    <path d="M4 19V5M4 19h16"/>
-    <path d="M8 16v-4M12 16V8M16 16v-7"/>
-  </symbol>
-
-  <symbol id="i-info" viewBox="0 0 24 24">
-    <circle cx="12" cy="12" r="9"/>
-    <path d="M12 11v5M12 8h.01"/>
-  </symbol>
-
-  <symbol id="i-folder" viewBox="0 0 24 24">
-    <path d="M3 6a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+    <rect x="4" y="3" width="16" height="18"
+          rx="3" fill="none"
+          stroke="currentColor" stroke-width="1.7"/>
+    <path d="M8 8h8M8 12h8M8 16h5"
+          stroke="currentColor"
+          stroke-width="1.7"
+          stroke-linecap="round"/>
   </symbol>
 </svg>
 
 <!-- BOOT -->
 <div id="boot">
   <div class="boot-box">
-    <div class="boot-logo">
-      <svg><use href="#i-cpu"/></svg>
-    </div>
+    <div class="boot-logo">KT</div>
     <div class="boot-title">KTOOL V29</div>
-    <div class="boot-sub">AI BINARY ENGINE • CYBER MERGE</div>
-    <div class="boot-bar"><span></span></div>
+    <div class="boot-sub">INITIALIZING BINARY ENGINE...</div>
+    <div class="boot-line"><span></span></div>
   </div>
 </div>
 
 <!-- AUTH -->
-<section id="auth" class="auth-screen hidden">
+<section id="auth">
   <div class="auth-card">
 
-    <div class="auth-brand">
-      <div class="auth-logo">
-        <svg><use href="#i-cpu"/></svg>
-      </div>
-      <div class="auth-title">KTOOL AI BINARY ENGINE</div>
-      <div class="auth-sub">VERSION 29 • LOCAL WORKSPACE</div>
+    <div class="auth-logo">KT</div>
+
+    <div class="auth-title">KTOOL AI BINARY ENGINE</div>
+
+    <div class="auth-sub">
+      V29 • Local Access System
     </div>
 
-    <div class="auth-tabs">
-      <button class="auth-tab active" id="loginTab">Đăng nhập</button>
-      <button class="auth-tab" id="registerTab">Đăng ký</button>
+    <input
+      id="accessKey"
+      class="input"
+      type="password"
+      placeholder="Nhập access key"
+      autocomplete="off"
+    >
+
+    <button id="keyBtn" class="btn primary"
+            style="width:100%;margin-top:12px">
+      MỞ KTOOL
+    </button>
+
+    <div class="key-note">
+      Access key: <b>2812</b>
     </div>
 
-    <div id="loginForm" class="form">
-      <div class="field">
-        <input id="loginUser" autocomplete="username" placeholder="Tên tài khoản">
-      </div>
+    <div style="
+      height:1px;
+      background:var(--line);
+      margin:20px 0;
+    "></div>
 
-      <div class="field">
-        <input id="loginPass" type="password" autocomplete="current-password" placeholder="Mật khẩu">
-      </div>
+    <input
+      id="username"
+      class="input"
+      type="text"
+      placeholder="Tên tài khoản"
+      autocomplete="off"
+    >
 
-      <button class="btn primary full" id="loginBtn">
-        <svg><use href="#i-log"/></svg>
-        ĐĂNG NHẬP
+    <input
+      id="password"
+      class="input"
+      type="password"
+      placeholder="Mật khẩu"
+      autocomplete="off"
+    >
+
+    <div class="auth-actions">
+      <button id="registerBtn" class="btn">
+        Đăng ký
+      </button>
+
+      <button id="loginBtn" class="btn green">
+        Đăng nhập
       </button>
     </div>
 
-    <div id="registerForm" class="form hidden">
-      <div class="field">
-        <input id="regUser" autocomplete="username" placeholder="Tên tài khoản">
-      </div>
-
-      <div class="field">
-        <input id="regPass" type="password" autocomplete="new-password" placeholder="Mật khẩu">
-      </div>
-
-      <div class="field">
-        <input id="regPass2" type="password" autocomplete="new-password" placeholder="Nhập lại mật khẩu">
-      </div>
-
-      <button class="btn primary full" id="registerBtn">
-        <svg><use href="#i-check"/></svg>
-        TẠO TÀI KHOẢN
-      </button>
-    </div>
-
-    <div id="authMessage" class="key-status"></div>
-
-    <div style="margin-top:18px;padding-top:15px;border-top:1px solid var(--line)">
-      <div style="color:var(--muted);font-size:9px;margin-bottom:7px">
-        ACCESS KEY
-      </div>
-
-      <div class="field">
-        <input id="accessKey" type="password" placeholder="Nhập access key">
-      </div>
-
-      <button class="btn full" style="margin-top:8px" id="keyBtn">
-        XÁC THỰC KEY
-      </button>
-
-      <div id="keyStatus" class="key-status"></div>
-    </div>
+    <div id="authMessage" class="auth-message"></div>
 
   </div>
 </section>
 
-<!-- HIDDEN CREATOR -->
-<div class="creator-watermark">codedbytdung</div>
+<!-- APP -->
+<div id="app">
 
-<!-- MAIN -->
-<main id="app" class="hidden">
-
-  <div class="shell">
+  <div class="container">
 
     <!-- HEADER -->
     <header class="topbar">
 
       <div class="brand">
+
         <div class="brand-logo">
-          <svg><use href="#i-cpu"/></svg>
+          KT
         </div>
 
         <div class="brand-text">
-          <div class="brand-title">KTOOL AI BINARY ENGINE V29</div>
+          <div class="brand-title">
+            KTOOL AI BINARY ENGINE V29
+          </div>
+
           <div class="brand-sub">
-            CYBER MERGE • <span id="currentUser">LOCAL USER</span>
+            CYBER MERGE • READY
           </div>
         </div>
+
       </div>
 
       <div class="header-right">
 
         <div class="clock">
-          <div class="clock-time" id="clockTime">00:00:00</div>
-          <div class="clock-date" id="clockDate">--/--/----</div>
+          <div id="clockTime" class="clock-time">
+            --:--:--
+          </div>
+
+          <div id="clockDate" class="clock-date">
+            --/--/----
+          </div>
         </div>
 
-        <button class="icon-btn" id="themeBtn" title="Đổi giao diện">
-          <svg id="themeIcon"><use href="#i-moon"/></svg>
+        <button id="themeBtn"
+                class="icon-btn"
+                title="Đổi giao diện">
+          <svg width="18" height="18">
+            <use id="themeIcon" href="#i-moon"></use>
+          </svg>
         </button>
 
-        <button class="icon-btn" id="logoutBtn" title="Đăng xuất">
-          <svg><use href="#i-log"/></svg>
+        <button id="logoutBtn"
+                class="icon-btn"
+                title="Đăng xuất">
+          ↪
         </button>
 
       </div>
+
     </header>
 
     <!-- HERO -->
     <section class="hero">
-      <div class="hero-content">
-        <div class="hero-kicker">KTOOL // V29</div>
 
-        <h1>
-          Binary Engine
-          <br>
-          <span style="color:#8190ff">Cyber Merge</span>
-        </h1>
-
-        <p>
-          Công cụ xử lý và hợp nhất file cục bộ với giao diện tối ưu
-          cho desktop và iPhone. Hỗ trợ phân tích heuristic cho
-          <b>.bytes</b> và đóng gói lại <b>.zip</b>.
-        </p>
-
-        <div class="hero-badges">
-          <span class="badge">LOCAL PROCESSING</span>
-          <span class="badge">BYTES ANALYZER</span>
-          <span class="badge">ZIP MERGER</span>
-          <span class="badge">V29 ENGINE</span>
-        </div>
+      <div class="hero-badge">
+        V29 • STABLE BUILD
       </div>
+
+      <h1>
+        Binary & ZIP<br>
+        Processing Suite
+      </h1>
+
+      <p>
+        Công cụ xử lý file cục bộ với giao diện tối ưu cho
+        điện thoại. Hỗ trợ phân tích và ghép file .bytes,
+        cùng module ghép ZIP theo đường dẫn.
+      </p>
+
     </section>
 
     <!-- TABS -->
     <div class="tabs">
-      <button class="tab active" data-tab="bytes">
-        <svg><use href="#i-file"/></svg>
+
+      <button
+        class="tab active"
+        data-tab="bytes">
         BYTES ENGINE
       </button>
 
-      <button class="tab" data-tab="zip">
-        <svg><use href="#i-zip"/></svg>
+      <button
+        class="tab"
+        data-tab="zip">
         ZIP MERGER
       </button>
+
     </div>
 
-    <!-- BYTES PANEL -->
-    <section id="bytesPanel" class="panel active">
+    <!-- =====================
+         BYTES
+    ====================== -->
 
-      <div class="card" id="bytesCard">
+    <section id="bytesPanel"
+             class="panel active">
 
-        <div class="card-head">
-          <div>
+      <div class="grid">
+
+        <div class="card" id="bytesCard">
+
+          <div class="card-head">
+
             <div class="card-title">
+
               <div class="card-icon">
-                <svg><use href="#i-file"/></svg>
+                <svg width="18" height="18">
+                  <use href="#i-file"></use>
+                </svg>
               </div>
+
               BYTES INPUT
+
             </div>
 
-            <div class="card-desc">
-              Chọn hoặc kéo nhiều file .bytes vào engine
-            </div>
+            <span id="bytesCount"
+                  style="color:var(--muted);font-size:10px">
+              0 FILE
+            </span>
+
           </div>
 
-          <div class="badge" id="bytesCount">0 FILE</div>
-        </div>
+          <div id="bytesDrop"
+               class="drop">
 
-        <div class="drop" id="bytesDrop">
-
-          <div>
             <div class="drop-img">
-              <svg><use href="#i-upload"/></svg>
+              <svg width="27" height="27">
+                <use href="#i-upload"></use>
+              </svg>
             </div>
 
             <div class="drop-title">
-              Kéo & thả file .bytes
+              Chọn file .bytes
             </div>
 
             <div class="drop-sub">
-              hoặc chọn file từ thiết bị
+              Chạm để chọn file hoặc kéo thả
+              nhiều file .bytes vào khu vực này.
             </div>
 
-            <button class="btn primary" id="bytesBrowse" style="margin-top:14px">
+            <button id="bytesPick"
+                    class="btn primary"
+                    style="margin-top:14px">
               CHỌN FILE
             </button>
 
-            <input
-              id="bytesInput"
-              type="file"
-              multiple
-              accept=".bytes"
-              hidden
-            >
+          </div>
+
+          <input
+            id="bytesInput"
+            class="hidden"
+            type="file"
+            accept=".bytes"
+            multiple
+          >
+
+          <div id="bytesList"
+               class="file-list">
+          </div>
+
+          <div class="actions">
+
+            <button id="bytesSort"
+                    class="btn">
+              SẮP XẾP
+            </button>
+
+            <button id="bytesReverse"
+                    class="btn">
+              ĐẢO
+            </button>
+
+            <button id="bytesClear"
+                    class="btn red">
+              XÓA
+            </button>
+
+          </div>
+
+          <div class="actions">
+
+            <button id="bytesAnalyze"
+                    class="btn">
+              PHÂN TÍCH
+            </button>
+
+            <button id="bytesMerge"
+                    class="btn primary">
+              GHÉP BYTES
+            </button>
+
+          </div>
+
+          <div class="progress-box">
+
+            <div class="progress-top">
+              <span id="bytesProgressText">
+                READY
+              </span>
+
+              <span id="bytesProgressPercent">
+                0%
+              </span>
+            </div>
+
+            <div class="progress">
+              <span id="bytesProgress"></span>
+            </div>
+
           </div>
 
         </div>
 
-        <div id="bytesList" class="file-list"></div>
+        <div class="card"
+             id="bytesInfoCard">
 
-        <div class="actions">
-          <button class="btn" id="sortBytes">
-            SẮP XẾP
-          </button>
+          <div class="card-head">
 
-          <button class="btn" id="reverseBytes">
-            ĐẢO THỨ TỰ
-          </button>
-
-          <button class="btn danger" id="clearBytes">
-            <svg><use href="#i-trash"/></svg>
-            XÓA
-          </button>
-
-          <button class="btn green" id="analyzeBytes">
-            <svg><use href="#i-chart"/></svg>
-            AI ANALYZE
-          </button>
-
-          <button class="btn primary" id="mergeBytes">
-            <svg><use href="#i-download"/></svg>
-            MERGE BYTES
-          </button>
-        </div>
-
-        <div class="progress-box" id="bytesProgressBox">
-          <div class="progress-top">
-            <span id="bytesProgressText">Đang xử lý...</span>
-            <span id="bytesProgressPercent">0%</span>
-          </div>
-
-          <div class="progress">
-            <span id="bytesProgress"></span>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- BYTES STATS -->
-      <div class="card">
-        <div class="card-head">
-          <div>
             <div class="card-title">
+
               <div class="card-icon">
-                <svg><use href="#i-chart"/></svg>
+                AI
               </div>
-              ENGINE STATS
+
+              FILE ANALYSIS
+
+            </div>
+
+          </div>
+
+          <div class="stats">
+
+            <div class="stat">
+              <div class="stat-label">
+                FILES
+              </div>
+              <div id="statFiles"
+                   class="stat-value">
+                0
+              </div>
+            </div>
+
+            <div class="stat">
+              <div class="stat-label">
+                TOTAL SIZE
+              </div>
+              <div id="statSize"
+                   class="stat-value">
+                0 B
+              </div>
+            </div>
+
+            <div class="stat">
+              <div class="stat-label">
+                AVG ENTROPY
+              </div>
+              <div id="statEntropy"
+                   class="stat-value">
+                --
+              </div>
+            </div>
+
+            <div class="stat">
+              <div class="stat-label">
+                AI SCORE
+              </div>
+              <div id="statScore"
+                   class="stat-value">
+                --
+              </div>
+            </div>
+
+          </div>
+
+          <div id="bytesTerminal"
+               class="terminal">
+            <div class="term-info">
+              [SYSTEM] Waiting for input...
             </div>
           </div>
+
         </div>
 
-        <div class="stats">
-          <div class="stat">
-            <div class="stat-label">Files</div>
-            <div class="stat-value" id="statFiles">0</div>
-          </div>
-
-          <div class="stat">
-            <div class="stat-label">Total</div>
-            <div class="stat-value" id="statSize">0 B</div>
-          </div>
-
-          <div class="stat">
-            <div class="stat-label">Avg Entropy</div>
-            <div class="stat-value" id="statEntropy">--</div>
-          </div>
-
-          <div class="stat">
-            <div class="stat-label">AI Score</div>
-            <div class="stat-value" id="statScore">--</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- TERMINAL -->
-      <div class="card">
-        <div class="card-head">
-          <div>
-            <div class="card-title">
-              <div class="card-icon">
-                <svg><use href="#i-cpu"/></svg>
-              </div>
-              ENGINE TERMINAL
-            </div>
-          </div>
-        </div>
-
-        <div class="terminal" id="bytesTerminal">
-          <div class="ok">[SYSTEM] KTOOL V29 initialized.</div>
-          <div>[READY] Waiting for .bytes files...</div>
-        </div>
       </div>
 
     </section>
 
-    <!-- ZIP PANEL -->
-    <section id="zipPanel" class="panel">
+    <!-- =====================
+         ZIP
+    ====================== -->
 
-      <div class="card" id="zipCard">
+    <section id="zipPanel"
+             class="panel">
 
-        <div class="card-head">
-          <div>
+      <div class="grid">
+
+        <div class="card" id="zipCard">
+
+          <div class="card-head">
+
             <div class="card-title">
+
               <div class="card-icon">
-                <svg><use href="#i-zip"/></svg>
+                <svg width="18" height="18">
+                  <use href="#i-zip"></use>
+                </svg>
               </div>
+
               ZIP MERGER
+
             </div>
 
-            <div class="card-desc">
-              Đọc cấu trúc ZIP và đóng gói lại thành một ZIP duy nhất
-            </div>
+            <span id="zipCount"
+                  style="color:var(--muted);font-size:10px">
+              0 FILE
+            </span>
+
           </div>
 
-          <div class="badge" id="zipCount">0 FILE</div>
-        </div>
+          <div id="zipDrop"
+               class="drop">
 
-        <div class="drop" id="zipDrop">
-
-          <div>
             <div class="drop-img">
-              <svg><use href="#i-zip"/></svg>
+              <svg width="27" height="27">
+                <use href="#i-zip"></use>
+              </svg>
             </div>
 
             <div class="drop-title">
-              Kéo & thả file .zip
+              Chọn file .zip
             </div>
 
             <div class="drop-sub">
-              Có thể chọn nhiều ZIP
+              Có thể chọn nhiều ZIP. File sau sẽ ghi đè
+              file trước nếu chọn chế độ Last Wins.
             </div>
 
-            <button class="btn primary" id="zipBrowse" style="margin-top:14px">
+            <button id="zipPick"
+                    class="btn primary"
+                    style="margin-top:14px">
               CHỌN ZIP
             </button>
 
-            <input
-              id="zipInput"
-              type="file"
-              multiple
-              accept=".zip,application/zip"
-              hidden
-            >
+          </div>
+
+          <input
+            id="zipInput"
+            class="hidden"
+            type="file"
+            accept=".zip"
+            multiple
+          >
+
+          <div id="zipList"
+               class="file-list">
+          </div>
+
+          <div style="margin-top:14px">
+
+            <div style="
+              color:var(--muted);
+              font-size:10px;
+              margin-bottom:6px;
+            ">
+              DUPLICATE MODE
+            </div>
+
+            <select id="duplicateMode"
+                    class="select">
+              <option value="last">
+                Last ZIP overwrites earlier ZIP
+              </option>
+
+              <option value="first">
+                Keep first ZIP
+              </option>
+            </select>
+
+          </div>
+
+          <div class="actions">
+
+            <button id="zipScan"
+                    class="btn">
+              SCAN ZIP
+            </button>
+
+            <button id="zipMerge"
+                    class="btn primary">
+              MERGE ZIP
+            </button>
+
+          </div>
+
+          <div class="progress-box">
+
+            <div class="progress-top">
+              <span id="zipProgressText">
+                READY
+              </span>
+
+              <span id="zipProgressPercent">
+                0%
+              </span>
+            </div>
+
+            <div class="progress">
+              <span id="zipProgress"></span>
+            </div>
+
           </div>
 
         </div>
 
-        <div id="zipList" class="file-list"></div>
+        <div class="card">
 
-        <div style="margin-top:13px">
-          <div style="color:var(--muted);font-size:9px;font-weight:800;margin-bottom:6px">
-            XỬ LÝ FILE TRÙNG
-          </div>
+          <div class="card-head">
 
-          <select id="duplicateMode" class="select">
-            <option value="last">Last wins — ZIP sau ghi đè ZIP trước</option>
-            <option value="first">First wins — giữ file đầu tiên</option>
-          </select>
-        </div>
-
-        <div class="actions">
-          <button class="btn" id="scanZip">
-            <svg><use href="#i-scan"/></svg>
-            SCAN
-          </button>
-
-          <button class="btn danger" id="clearZip">
-            <svg><use href="#i-trash"/></svg>
-            XÓA
-          </button>
-
-          <button class="btn primary" id="mergeZip">
-            <svg><use href="#i-download"/></svg>
-            MERGE ZIP
-          </button>
-        </div>
-
-        <div class="progress-box" id="zipProgressBox">
-          <div class="progress-top">
-            <span id="zipProgressText">Đang xử lý...</span>
-            <span id="zipProgressPercent">0%</span>
-          </div>
-
-          <div class="progress">
-            <span id="zipProgress"></span>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- TARGET FOLDERS -->
-      <div class="card">
-        <div class="card-head">
-          <div>
             <div class="card-title">
-              <div class="card-icon">
-                <svg><use href="#i-folder"/></svg>
-              </div>
               TARGET FOLDERS
             </div>
 
-            <div class="card-desc">
-              Các thư mục được kiểm tra khi scan
-            </div>
           </div>
-        </div>
 
-        <div id="targetGrid" class="target-grid"></div>
-      </div>
+          <div id="targetFolders"
+               class="targets">
+          </div>
 
-      <!-- ZIP STATS -->
-      <div class="card">
+          <div class="card-head"
+               style="margin-top:20px">
 
-        <div class="card-head">
-          <div>
             <div class="card-title">
-              <div class="card-icon">
-                <svg><use href="#i-chart"/></svg>
+              ZIP INFO
+            </div>
+
+          </div>
+
+          <div class="stats">
+
+            <div class="stat">
+              <div class="stat-label">
+                ENTRIES
               </div>
-              ZIP STATS
+              <div id="zipEntries"
+                   class="stat-value">
+                0
+              </div>
+            </div>
+
+            <div class="stat">
+              <div class="stat-label">
+                UNIQUE
+              </div>
+              <div id="zipUnique"
+                   class="stat-value">
+                0
+              </div>
+            </div>
+
+            <div class="stat">
+              <div class="stat-label">
+                DUPLICATES
+              </div>
+              <div id="zipDuplicates"
+                   class="stat-value">
+                0
+              </div>
+            </div>
+
+            <div class="stat">
+              <div class="stat-label">
+                TARGETS
+              </div>
+              <div id="zipTargets"
+                   class="stat-value">
+                0
+              </div>
+            </div>
+
+          </div>
+
+          <div id="zipTerminal"
+               class="terminal">
+            <div class="term-info">
+              [ZIP] Waiting for ZIP files...
             </div>
           </div>
-        </div>
 
-        <div class="stats">
-
-          <div class="stat">
-            <div class="stat-label">ZIP Files</div>
-            <div class="stat-value" id="zipStatFiles">0</div>
-          </div>
-
-          <div class="stat">
-            <div class="stat-label">Entries</div>
-            <div class="stat-value" id="zipStatEntries">0</div>
-          </div>
-
-          <div class="stat">
-            <div class="stat-label">Unique</div>
-            <div class="stat-value" id="zipStatUnique">0</div>
-          </div>
-
-          <div class="stat">
-            <div class="stat-label">Duplicate</div>
-            <div class="stat-value" id="zipStatDuplicate">0</div>
-          </div>
-
-        </div>
-
-      </div>
-
-      <!-- ZIP PREVIEW -->
-      <div class="card">
-
-        <div class="card-head">
-          <div>
-            <div class="card-title">
-              <div class="card-icon">
-                <svg><use href="#i-file"/></svg>
-              </div>
-              ZIP PREVIEW
-            </div>
-          </div>
-        </div>
-
-        <div id="zipPreview" class="preview">
-          <div class="preview-row">
-            Chưa scan ZIP.
-          </div>
         </div>
 
       </div>
@@ -1999,139 +1736,75 @@ body.light .toast{
     </section>
 
     <!-- SYSTEM -->
-    <div class="card">
+    <section class="card"
+             style="margin-top:16px">
 
       <div class="card-head">
-        <div>
-          <div class="card-title">
-            <div class="card-icon">
-              <svg><use href="#i-info"/></svg>
-            </div>
-            SYSTEM INFO
+
+        <div class="card-title">
+
+          <div class="card-icon">
+            SYS
           </div>
 
-          <div class="card-desc">
-            Thông tin môi trường trình duyệt hiện tại
-          </div>
-        </div>
-      </div>
+          SYSTEM INFO
 
-      <div class="system-grid">
-
-        <div class="system-item">
-          <div class="system-label">Browser</div>
-          <div class="system-value" id="sysBrowser">--</div>
-        </div>
-
-        <div class="system-item">
-          <div class="system-label">Language</div>
-          <div class="system-value" id="sysLanguage">--</div>
-        </div>
-
-        <div class="system-item">
-          <div class="system-label">Timezone</div>
-          <div class="system-value" id="sysTimezone">--</div>
-        </div>
-
-        <div class="system-item">
-          <div class="system-label">Display</div>
-          <div class="system-value" id="sysDisplay">--</div>
-        </div>
-
-        <div class="system-item">
-          <div class="system-label">Pixel Ratio</div>
-          <div class="system-value" id="sysPixel">--</div>
-        </div>
-
-        <div class="system-item">
-          <div class="system-label">CPU Cores</div>
-          <div class="system-value" id="sysCPU">--</div>
-        </div>
-
-        <div class="system-item">
-          <div class="system-label">Memory</div>
-          <div class="system-value" id="sysMemory">--</div>
-        </div>
-
-        <div class="system-item">
-          <div class="system-label">Online</div>
-          <div class="system-value" id="sysOnline">--</div>
-        </div>
-
-        <div class="system-item">
-          <div class="system-label">Touch</div>
-          <div class="system-value" id="sysTouch">--</div>
-        </div>
-
-        <div class="system-item">
-          <div class="system-label">Battery</div>
-          <div class="system-value" id="sysBattery">Browser dependent</div>
-        </div>
-
-        <div class="system-item">
-          <div class="system-label">Temperature</div>
-          <div class="system-value">Browser restricted</div>
-        </div>
-
-        <div class="system-item">
-          <div class="system-label">Storage</div>
-          <div class="system-value">Local browser</div>
         </div>
 
       </div>
 
-    </div>
+      <div id="systemGrid"
+           class="system-grid">
+      </div>
+
+    </section>
 
     <!-- FOOTER -->
     <footer class="footer">
+
       <div class="footer-main">
-        CREATED &amp; CODED BY
-        <span>TRONG DUNG</span>
+        CREATED & CODED BY TRONG DUNG
       </div>
 
       <div class="footer-sub">
-        KTOOL AI BINARY ENGINE V29 • CYBER MERGE
+        KTOOL AI BINARY ENGINE V29 • LOCAL PROCESSING
       </div>
 
-      <div class="footer-copy">
-        Local processing • No server upload
-      </div>
     </footer>
-
-  </div>
-</main>
-
-<!-- WELCOME POPUP -->
-<div id="popupLayer" class="popup-layer">
-  <div class="popup">
-
-    <div class="popup-icon">
-      <svg><use href="#i-check"/></svg>
-    </div>
-
-    <div class="popup-title" id="popupTitle">
-      Chào người dùng 👋
-    </div>
-
-    <div class="popup-text" id="popupText">
-      KTOOL V29 đã sẵn sàng.
-    </div>
-
-    <button class="btn primary full" id="popupClose">
-      BẮT ĐẦU
-    </button>
 
   </div>
 </div>
 
-<div id="toast" class="toast"></div>
+<!-- WELCOME -->
+<div id="popupLayer">
+
+  <div class="popup">
+
+    <div id="popupTitle"
+         class="popup-title">
+      Chào người dùng 👋
+    </div>
+
+    <div id="popupText"
+         class="popup-text">
+      KTOOL V29 đã sẵn sàng.
+    </div>
+
+    <button id="popupClose"
+            class="btn primary">
+      VÀO MENU
+    </button>
+
+  </div>
+
+</div>
 
 <script>
 "use strict";
 
-/* =========================
+/* =========================================================
    CONFIG
-========================= */
+========================================================= */
 
 const ACCESS_KEY = "2812";
 
@@ -2147,26 +1820,12 @@ const TARGET_FOLDERS = [
   "hero/"
 ];
 
-const STORAGE_ACCOUNTS = "ktool_v29_accounts";
-const STORAGE_USER = "ktool_v29_current_user";
-const STORAGE_THEME = "ktool_v29_theme";
-
-/* =========================
+/* =========================================================
    HELPERS
-========================= */
+========================================================= */
 
-const $ = id => document.getElementById(id);
-
-const sleep = ms =>
-  new Promise(resolve => setTimeout(resolve,ms));
-
-function escapeHTML(value){
-  return String(value)
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
+function $(id){
+  return document.getElementById(id);
 }
 
 function formatBytes(bytes){
@@ -2182,73 +1841,60 @@ function formatBytes(bytes){
 
   return (
     bytes / Math.pow(1024,index)
-  ).toFixed(index === 0 ? 0 : 2) +
-  " " +
-  units[index];
+  ).toFixed(index === 0 ? 0 : 2)
+  + " " + units[index];
 }
 
-function toast(message){
-  const el = $("toast");
-
-  el.textContent = message;
-  el.classList.add("show");
-
-  clearTimeout(toast.timer);
-
-  toast.timer = setTimeout(() => {
-    el.classList.remove("show");
-  },2200);
+function escapeHTML(value){
+  return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
 }
 
-function logBytes(message,type=""){
-  const terminal = $("bytesTerminal");
+function logTerminal(id,text,type="info"){
+  const box = $(id);
+  if(!box) return;
 
-  const line = document.createElement("div");
+  const div = document.createElement("div");
+  div.className = "term-" + type;
+  div.textContent = "[" + new Date().toLocaleTimeString("vi-VN") + "] " + text;
 
-  if(type){
-    line.className = type;
+  box.appendChild(div);
+
+  while(box.children.length > 120){
+    box.removeChild(box.firstChild);
   }
 
-  line.textContent =
-    "[" +
-    new Date().toLocaleTimeString("vi-VN") +
-    "] " +
-    message;
+  box.scrollTop = box.scrollHeight;
+}
 
-  terminal.appendChild(line);
+function setProgress(prefix,value,text){
+  const pct = Math.max(0,Math.min(100,value));
 
-  while(terminal.children.length > 120){
-    terminal.removeChild(terminal.firstChild);
+  const bar = $(prefix + "Progress");
+  const pctEl = $(prefix + "ProgressPercent");
+  const textEl = $(prefix + "ProgressText");
+
+  if(bar) bar.style.width = pct + "%";
+  if(pctEl) pctEl.textContent = Math.round(pct) + "%";
+  if(textEl) textEl.textContent = text || "PROCESSING";
+
+  const card = $(prefix + "Card");
+
+  if(card){
+    if(pct > 0 && pct < 100){
+      card.classList.add("processing");
+    }else{
+      card.classList.remove("processing");
+    }
   }
-
-  terminal.scrollTop = terminal.scrollHeight;
-}
-
-function setProgress(prefix,percent,text){
-  const value = Math.max(0,Math.min(100,percent));
-
-  $(prefix + "Progress").style.width = value + "%";
-  $(prefix + "ProgressPercent").textContent =
-    Math.round(value) + "%";
-
-  $(prefix + "ProgressText").textContent =
-    text || "Đang xử lý...";
-
-  $(prefix + "ProgressBox").classList.add("show");
-}
-
-function hideProgress(prefix){
-  $(prefix + "ProgressBox").classList.remove("show");
-}
-
-function setProcessing(card,on){
-  if(!card) return;
-  card.classList.toggle("processing",on);
 }
 
 function downloadBlob(blob,name){
   const url = URL.createObjectURL(blob);
-
   const a = document.createElement("a");
 
   a.href = url;
@@ -2258,30 +1904,60 @@ function downloadBlob(blob,name){
   a.click();
   a.remove();
 
-  setTimeout(() => URL.revokeObjectURL(url),1000);
+  setTimeout(function(){
+    URL.revokeObjectURL(url);
+  },1500);
 }
 
-/* =========================
-   AUTH / HASH
-========================= */
+/* =========================================================
+   AUTH STORAGE
+========================================================= */
+
+const ACCOUNT_KEY = "ktool_v29_accounts";
+const CURRENT_USER_KEY = "ktool_v29_current_user";
+const THEME_KEY = "ktool_v29_theme";
+
+let accounts = [];
+
+try{
+  accounts = JSON.parse(
+    localStorage.getItem(ACCOUNT_KEY) || "[]"
+  );
+
+  if(!Array.isArray(accounts)){
+    accounts = [];
+  }
+}catch(e){
+  accounts = [];
+}
+
+function saveAccounts(){
+  try{
+    localStorage.setItem(
+      ACCOUNT_KEY,
+      JSON.stringify(accounts)
+    );
+  }catch(e){}
+}
 
 async function hashPassword(password){
-
   if(
     window.crypto &&
     crypto.subtle &&
     window.TextEncoder
   ){
+    const data = new TextEncoder().encode(password);
 
-    const data =
-      new TextEncoder().encode(password);
+    const buffer = await crypto.subtle.digest(
+      "SHA-256",
+      data
+    );
 
-    const buffer =
-      await crypto.subtle.digest("SHA-256",data);
-
-    return [...new Uint8Array(buffer)]
-      .map(x => x.toString(16).padStart(2,"0"))
-      .join("");
+    return Array.from(
+      new Uint8Array(buffer)
+    ).map(function(x){
+      return x.toString(16).padStart(2,"0");
+    }).join("");
   }
 
   let hash = 2166136261;
@@ -2299,221 +1975,189 @@ async function hashPassword(password){
   return String(hash >>> 0);
 }
 
-function getAccounts(){
-  try{
-    return JSON.parse(
-      localStorage.getItem(STORAGE_ACCOUNTS) || "{}"
-    );
-  }catch{
-    return {};
+/* =========================================================
+   AUTH
+========================================================= */
+
+function showAuth(){
+  $("auth").classList.add("show");
+  $("app").classList.remove("show");
+}
+
+function showApp(){
+  $("auth").classList.remove("show");
+  $("app").classList.add("show");
+
+  renderSystem();
+
+  setTimeout(function(){
+    showWelcome();
+  },180);
+}
+
+function authMessage(text,type){
+  const box = $("authMessage");
+
+  box.textContent = text;
+
+  if(type === "error"){
+    box.style.color = "var(--red)";
+  }else if(type === "ok"){
+    box.style.color = "var(--green)";
+  }else{
+    box.style.color = "var(--muted)";
   }
 }
 
-function saveAccounts(accounts){
-  localStorage.setItem(
-    STORAGE_ACCOUNTS,
-    JSON.stringify(accounts)
+$("keyBtn").addEventListener("click",function(){
+
+  const value = $("accessKey").value.trim();
+
+  if(value !== ACCESS_KEY){
+    authMessage("Access key không đúng.","error");
+    $("accessKey").animate(
+      [
+        {transform:"translateX(0)"},
+        {transform:"translateX(-5px)"},
+        {transform:"translateX(5px)"},
+        {transform:"translateX(0)"}
+      ],
+      {duration:220}
+    );
+    return;
+  }
+
+  authMessage(
+    "Key hợp lệ. Bạn có thể đăng nhập hoặc đăng ký.",
+    "ok"
   );
-}
+});
 
-async function register(){
+$("accessKey").addEventListener("keydown",function(e){
+  if(e.key === "Enter"){
+    $("keyBtn").click();
+  }
+});
 
-  const username =
-    $("regUser").value.trim();
+$("registerBtn").addEventListener("click",async function(){
 
-  const password =
-    $("regPass").value;
+  if($("accessKey").value.trim() !== ACCESS_KEY){
+    authMessage("Hãy nhập access key 2812 trước.","error");
+    return;
+  }
 
-  const confirm =
-    $("regPass2").value;
+  const username = $("username").value.trim();
+  const password = $("password").value;
 
   if(username.length < 3){
-    setAuthMessage(
-      "Tên tài khoản phải có ít nhất 3 ký tự.",
-      "error"
-    );
+    authMessage("Tên tài khoản cần ít nhất 3 ký tự.","error");
     return;
   }
 
   if(password.length < 4){
-    setAuthMessage(
-      "Mật khẩu phải có ít nhất 4 ký tự.",
-      "error"
-    );
+    authMessage("Mật khẩu cần ít nhất 4 ký tự.","error");
     return;
   }
 
-  if(password !== confirm){
-    setAuthMessage(
-      "Mật khẩu nhập lại không khớp.",
-      "error"
-    );
+  if(accounts.some(function(a){
+    return a.username.toLowerCase() === username.toLowerCase();
+  })){
+    authMessage("Tài khoản đã tồn tại.","error");
     return;
   }
 
-  const accounts = getAccounts();
+  const passwordHash = await hashPassword(password);
 
-  if(accounts[username]){
-    setAuthMessage(
-      "Tài khoản đã tồn tại.",
-      "error"
+  accounts.push({
+    username:username,
+    passwordHash:passwordHash,
+    createdAt:Date.now()
+  });
+
+  saveAccounts();
+
+  try{
+    localStorage.setItem(
+      CURRENT_USER_KEY,
+      username
     );
-    return;
-  }
+  }catch(e){}
 
-  accounts[username] = {
-    password:await hashPassword(password),
-    createdAt:new Date().toISOString()
-  };
-
-  saveAccounts(accounts);
-
-  $("loginUser").value = username;
-  $("loginPass").value = "";
-
-  showLogin();
-
-  setAuthMessage(
-    "Đăng ký thành công. Hãy đăng nhập.",
-    "success"
-  );
-}
-
-async function login(){
-
-  const username =
-    $("loginUser").value.trim();
-
-  const password =
-    $("loginPass").value;
-
-  const accounts = getAccounts();
-
-  if(!accounts[username]){
-    setAuthMessage(
-      "Không tìm thấy tài khoản.",
-      "error"
-    );
-    return;
-  }
-
-  const hash =
-    await hashPassword(password);
-
-  if(hash !== accounts[username].password){
-    setAuthMessage(
-      "Sai mật khẩu.",
-      "error"
-    );
-    return;
-  }
-
-  localStorage.setItem(
-    STORAGE_USER,
-    username
+  authMessage(
+    "Đăng ký thành công. Đang vào menu...",
+    "ok"
   );
 
-  enterApp(username);
-}
+  setTimeout(showApp,350);
+});
 
-function setAuthMessage(message,type=""){
-  const el = $("authMessage");
+$("loginBtn").addEventListener("click",async function(){
 
-  el.textContent = message;
-  el.className =
-    "key-status " +
-    (type === "error"
-      ? "auth-error"
-      : type === "success"
-        ? "auth-success"
-        : "");
-}
-
-function showLogin(){
-  $("loginTab").classList.add("active");
-  $("registerTab").classList.remove("active");
-
-  $("loginForm").classList.remove("hidden");
-  $("registerForm").classList.add("hidden");
-
-  setAuthMessage("");
-}
-
-function showRegister(){
-  $("registerTab").classList.add("active");
-  $("loginTab").classList.remove("active");
-
-  $("registerForm").classList.remove("hidden");
-  $("loginForm").classList.add("hidden");
-
-  setAuthMessage("");
-}
-
-function checkAccessKey(){
-
-  const value =
-    $("accessKey").value.trim();
-
-  if(value !== ACCESS_KEY){
-    $("keyStatus").textContent =
-      "Access key không chính xác.";
-
-    $("keyStatus").className =
-      "key-status auth-error";
-
-    return false;
+  if($("accessKey").value.trim() !== ACCESS_KEY){
+    authMessage("Access key chưa hợp lệ.","error");
+    return;
   }
 
-  localStorage.setItem(
-    "ktool_v29_key_verified",
-    "1"
+  const username = $("username").value.trim();
+  const password = $("password").value;
+
+  const user = accounts.find(function(a){
+    return a.username.toLowerCase() === username.toLowerCase();
+  });
+
+  if(!user){
+    authMessage("Không tìm thấy tài khoản.","error");
+    return;
+  }
+
+  const passwordHash = await hashPassword(password);
+
+  if(passwordHash !== user.passwordHash){
+    authMessage("Mật khẩu không đúng.","error");
+    return;
+  }
+
+  try{
+    localStorage.setItem(
+      CURRENT_USER_KEY,
+      user.username
+    );
+  }catch(e){}
+
+  authMessage(
+    "Đăng nhập thành công.",
+    "ok"
   );
 
-  $("keyStatus").textContent =
-    "✓ Key hợp lệ.";
+  setTimeout(showApp,250);
+});
 
-  $("keyStatus").className =
-    "key-status auth-success";
+$("logoutBtn").addEventListener("click",function(){
 
-  return true;
-}
+  try{
+    localStorage.removeItem(CURRENT_USER_KEY);
+  }catch(e){}
 
-/* =========================
-   APP ENTRY
-========================= */
+  $("popupLayer").classList.remove("show");
 
-function enterApp(username){
+  $("accessKey").value = "";
+  $("username").value = "";
+  $("password").value = "";
 
-  $("auth").classList.add("hidden");
-  $("app").classList.remove("hidden");
+  authMessage("");
 
-  $("currentUser").textContent =
-    username || "LOCAL USER";
+  showAuth();
 
-  updateSystem();
+  window.scrollTo(0,0);
+});
 
-  showWelcome(
-    "Chào " +
-    (username || "người dùng") +
-    " 👋"
-  );
-}
+/* =========================================================
+   WELCOME
+========================================================= */
 
-function logout(){
-
-  localStorage.removeItem(STORAGE_USER);
-
-  $("app").classList.add("hidden");
-  $("auth").classList.remove("hidden");
-
-  $("loginPass").value = "";
-
-  toast("Đã đăng xuất.");
-}
-
-function showWelcome(title="Chào người dùng 👋"){
-
-  $("popupTitle").textContent = title;
+function showWelcome(){
+  $("popupTitle").textContent =
+    "Chào người dùng 👋";
 
   $("popupText").textContent =
     "KTOOL V29 đã sẵn sàng. Các module đang hoạt động.";
@@ -2521,50 +2165,65 @@ function showWelcome(title="Chào người dùng 👋"){
   $("popupLayer").classList.add("show");
 }
 
-/* =========================
+$("popupClose").addEventListener("click",function(){
+  $("popupLayer").classList.remove("show");
+});
+
+$("popupLayer").addEventListener("click",function(e){
+  if(e.target === $("popupLayer")){
+    $("popupLayer").classList.remove("show");
+  }
+});
+
+/* =========================================================
    THEME
-========================= */
+========================================================= */
 
-function updateThemeIcon(){
-
-  const isLight =
-    document.body.classList.contains("light");
-
-  $("themeIcon").innerHTML =
-    isLight
-      ? '<use href="#i-sun"></use>'
-      : '<use href="#i-moon"></use>';
-}
-
-function toggleTheme(){
-
-  document.body.classList.toggle("light");
-
-  localStorage.setItem(
-    STORAGE_THEME,
-    document.body.classList.contains("light")
-      ? "light"
-      : "dark"
-  );
-
-  updateThemeIcon();
-}
-
-function loadTheme(){
-
-  const theme =
-    localStorage.getItem(STORAGE_THEME);
+function applyTheme(theme){
 
   if(theme === "light"){
     document.body.classList.add("light");
+
+    $("themeIcon").setAttribute(
+      "href",
+      "#i-sun"
+    );
+  }else{
+    document.body.classList.remove("light");
+
+    $("themeIcon").setAttribute(
+      "href",
+      "#i-moon"
+    );
   }
 
-  updateThemeIcon();
+  try{
+    localStorage.setItem(THEME_KEY,theme);
+  }catch(e){}
 }
 
-/* =========================
+let savedTheme = "dark";
+
+try{
+  savedTheme =
+    localStorage.getItem(THEME_KEY) || "dark";
+}catch(e){}
+
+applyTheme(savedTheme);
+
+$("themeBtn").addEventListener("click",function(){
+
+  const next =
+    document.body.classList.contains("light")
+      ? "dark"
+      : "light";
+
+  applyTheme(next);
+});
+
+/* =========================================================
    CLOCK
-========================= */
+========================================================= */
 
 function updateClock(){
 
@@ -2573,12 +2232,7 @@ function updateClock(){
   $("clockTime").textContent =
     now.toLocaleTimeString(
       "vi-VN",
-      {
-        hour12:false,
-        hour:"2-digit",
-        minute:"2-digit",
-        second:"2-digit"
-      }
+      {hour12:false}
     );
 
   $("clockDate").textContent =
@@ -2597,120 +2251,52 @@ updateClock();
 
 setInterval(updateClock,1000);
 
-/* =========================
-   HIDDEN CREATOR
-========================= */
-
-const creatorWatermark =
-  document.querySelector(".creator-watermark");
-
-function showHiddenCreator(){
-
-  if(
-    !creatorWatermark ||
-    document.hidden ||
-    $("popupLayer").classList.contains("show")
-  ){
-    return;
-  }
-
-  creatorWatermark.classList.remove("show");
-
-  void creatorWatermark.offsetWidth;
-
-  creatorWatermark.classList.add("show");
-
-  setTimeout(() => {
-    creatorWatermark.classList.remove("show");
-  },3200);
-}
-
-setTimeout(showHiddenCreator,12000);
-setInterval(showHiddenCreator,28000);
-
-/* =========================
+/* =========================================================
    TABS
-========================= */
+========================================================= */
 
-document.querySelectorAll(".tab")
-.forEach(tab => {
+document.querySelectorAll(".tab").forEach(function(tab){
 
-  tab.addEventListener("click",() => {
+  tab.addEventListener("click",function(){
 
-    const target =
-      tab.dataset.tab;
+    const target = tab.dataset.tab;
 
-    document.querySelectorAll(".tab")
-      .forEach(x =>
-        x.classList.toggle(
-          "active",
-          x === tab
-        )
-      );
+    document.querySelectorAll(".tab").forEach(function(x){
+      x.classList.remove("active");
+    });
 
-    $("bytesPanel")
-      .classList.toggle(
-        "active",
-        target === "bytes"
-      );
+    document.querySelectorAll(".panel").forEach(function(x){
+      x.classList.remove("active");
+    });
 
-    $("zipPanel")
-      .classList.toggle(
-        "active",
-        target === "zip"
-      );
+    tab.classList.add("active");
+
+    if(target === "bytes"){
+      $("bytesPanel").classList.add("active");
+    }else{
+      $("zipPanel").classList.add("active");
+    }
   });
 
 });
 
-/* =========================
+/* =========================================================
    BYTES ENGINE
-========================= */
+========================================================= */
 
 let bytesFiles = [];
+let bytesSortAsc = true;
 
 function addBytesFiles(files){
 
-  const incoming =
-    [...files].filter(
-      file =>
-        file.name.toLowerCase().endsWith(".bytes")
-    );
+  const incoming = Array.from(files).filter(function(file){
+    return /\.bytes$/i.test(file.name);
+  });
 
-  const existing =
-    new Set(
-      bytesFiles.map(file =>
-        file.name +
-        ":" +
-        file.size +
-        ":" +
-        file.lastModified
-      )
-    );
-
-  for(const file of incoming){
-
-    const key =
-      file.name +
-      ":" +
-      file.size +
-      ":" +
-      file.lastModified;
-
-    if(!existing.has(key)){
-      bytesFiles.push(file);
-      existing.add(key);
-    }
-  }
+  bytesFiles = bytesFiles.concat(incoming);
 
   renderBytes();
-
-  logBytes(
-    "Added " +
-    incoming.length +
-    " .bytes file(s).",
-    "ok"
-  );
+  updateBytesStats();
 }
 
 function renderBytes(){
@@ -2719,81 +2305,1177 @@ function renderBytes(){
 
   list.innerHTML = "";
 
-  bytesFiles.forEach((file,index) => {
+  if(bytesFiles.length === 0){
+    list.innerHTML =
+      '<div class="empty">Chưa có file .bytes</div>';
+
+    $("bytesCount").textContent = "0 FILE";
+    return;
+  }
+
+  $("bytesCount").textContent =
+    bytesFiles.length + " FILE";
+
+  bytesFiles.forEach(function(file,index){
+
+    const row = document.createElement("div");
+    row.className = "file";
+
+    row.innerHTML =
+      '<div class="file-icon">' +
+        '<svg width="16" height="16">' +
+          '<use href="#i-file"></use>' +
+        '</svg>' +
+      '</div>' +
+
+      '<div class="file-info">' +
+        '<div class="file-name">' +
+          escapeHTML(file.name) +
+        '</div>' +
+
+        '<div class="file-size">' +
+          formatBytes(file.size) +
+          " • #" + (index + 1) +
+        '</div>' +
+      '</div>';
+
+    list.appendChild(row);
+  });
+}
+
+function updateBytesStats(){
+
+  const total = bytesFiles.reduce(
+    function(sum,file){
+      return sum + file.size;
+    },
+    0
+  );
+
+  $("statFiles").textContent =
+    bytesFiles.length;
+
+  $("statSize").textContent =
+    formatBytes(total);
+}
+
+$("bytesPick").addEventListener("click",function(){
+  $("bytesInput").click();
+});
+
+$("bytesInput").addEventListener("change",function(e){
+  addBytesFiles(e.target.files);
+  e.target.value = "";
+});
+
+function setupDrop(drop,input,callback){
+
+  ["dragenter","dragover"].forEach(function(eventName){
+
+    drop.addEventListener(eventName,function(e){
+      e.preventDefault();
+      drop.classList.add("drag");
+    });
+
+  });
+
+  ["dragleave","drop"].forEach(function(eventName){
+
+    drop.addEventListener(eventName,function(e){
+      e.preventDefault();
+      drop.classList.remove("drag");
+    });
+
+  });
+
+  drop.addEventListener("drop",function(e){
+    callback(e.dataTransfer.files);
+  });
+}
+
+setupDrop(
+  $("bytesDrop"),
+  $("bytesInput"),
+  addBytesFiles
+);
+
+$("bytesSort").addEventListener("click",function(){
+
+  bytesFiles.sort(function(a,b){
+
+    const result =
+      a.name.localeCompare(
+        b.name,
+        undefined,
+        {numeric:true,sensitivity:"base"}
+      );
+
+    return bytesSortAsc ? result : -result;
+  });
+
+  bytesSortAsc = !bytesSortAsc;
+
+  renderBytes();
+});
+
+$("bytesReverse").addEventListener("click",function(){
+
+  bytesFiles.reverse();
+
+  renderBytes();
+});
+
+$("bytesClear").addEventListener("click",function(){
+
+  bytesFiles = [];
+
+  renderBytes();
+  updateBytesStats();
+
+  $("statEntropy").textContent = "--";
+  $("statScore").textContent = "--";
+
+  setProgress(
+    "bytes",
+    0,
+    "READY"
+  );
+
+  logTerminal(
+    "bytesTerminal",
+    "Danh sách .bytes đã được xóa."
+  );
+});
+
+/* =========================================================
+   BYTES ANALYSIS
+========================================================= */
+
+async function analyzeFile(file){
+
+  const size = Math.min(
+    file.size,
+    65536
+  );
+
+  const buffer =
+    new Uint8Array(
+      await file.slice(0,size).arrayBuffer()
+    );
+
+  if(buffer.length === 0){
+    return {
+      entropy:0,
+      printable:0,
+      signature:""
+    };
+  }
+
+  const freq = new Array(256).fill(0);
+
+  let printable = 0;
+
+  for(let i=0;i<buffer.length;i++){
+
+    const value = buffer[i];
+
+    freq[value]++;
+
+    if(
+      value >= 32 &&
+      value <= 126
+    ){
+      printable++;
+    }
+  }
+
+  let entropy = 0;
+
+  for(let i=0;i<256;i++){
+
+    if(freq[i] === 0) continue;
+
+    const p = freq[i] / buffer.length;
+
+    entropy -= p * Math.log2(p);
+  }
+
+  const signature =
+    Array.from(buffer.slice(0,16))
+      .map(function(x){
+        return x
+          .toString(16)
+          .padStart(2,"0");
+      })
+      .join(" ");
+
+  return {
+    entropy:entropy,
+    printable:
+      printable / buffer.length,
+    signature:signature
+  };
+}
+
+function scoreFromEntropy(entropy){
+
+  if(entropy >= 7.2){
+    return 96;
+  }
+
+  if(entropy >= 6.7){
+    return 88;
+  }
+
+  if(entropy >= 6.0){
+    return 76;
+  }
+
+  if(entropy >= 5.0){
+    return 62;
+  }
+
+  return 45;
+}
+
+$("bytesAnalyze").addEventListener("click",async function(){
+
+  if(bytesFiles.length === 0){
+    logTerminal(
+      "bytesTerminal",
+      "Không có file để phân tích.",
+      "warn"
+    );
+    return;
+  }
+
+  $("bytesAnalyze").disabled = true;
+
+  let entropyTotal = 0;
+  let scoreTotal = 0;
+
+  logTerminal(
+    "bytesTerminal",
+    "Bắt đầu heuristic analysis..."
+  );
+
+  for(let i=0;i<bytesFiles.length;i++){
+
+    const file = bytesFiles[i];
+
+    setProgress(
+      "bytes",
+      ((i) / bytesFiles.length) * 100,
+      "ANALYZING"
+    );
+
+    try{
+
+      const result =
+        await analyzeFile(file);
+
+      entropyTotal += result.entropy;
+
+      const score =
+        scoreFromEntropy(result.entropy);
+
+      scoreTotal += score;
+
+      logTerminal(
+        "bytesTerminal",
+        file.name +
+        " | entropy=" +
+        result.entropy.toFixed(2) +
+        " | score=" +
+        score +
+        " | " +
+        result.signature
+      );
+
+    }catch(error){
+
+      logTerminal(
+        "bytesTerminal",
+        "Không thể đọc " + file.name,
+        "error"
+      );
+    }
+
+    await new Promise(function(resolve){
+      setTimeout(resolve,0);
+    });
+  }
+
+  const count = bytesFiles.length;
+
+  const avgEntropy =
+    entropyTotal / count;
+
+  const avgScore =
+    Math.round(scoreTotal / count);
+
+  $("statEntropy").textContent =
+    avgEntropy.toFixed(2);
+
+  $("statScore").textContent =
+    avgScore + "%";
+
+  setProgress(
+    "bytes",
+    100,
+    "ANALYSIS DONE"
+  );
+
+  $("bytesAnalyze").disabled = false;
+
+});
+
+/* =========================================================
+   BYTES MERGE
+========================================================= */
+
+$("bytesMerge").addEventListener("click",async function(){
+
+  if(bytesFiles.length === 0){
+    logTerminal(
+      "bytesTerminal",
+      "Chưa có file .bytes.",
+      "warn"
+    );
+    return;
+  }
+
+  $("bytesMerge").disabled = true;
+
+  try{
+
+    logTerminal(
+      "bytesTerminal",
+      "Bắt đầu raw binary concatenation..."
+    );
+
+    const chunks = [];
+
+    let total = 0;
+
+    for(let i=0;i<bytesFiles.length;i++){
+
+      const file = bytesFiles[i];
+
+      setProgress(
+        "bytes",
+        ((i) / bytesFiles.length) * 85,
+        "READING " + (i + 1) + "/" + bytesFiles.length
+      );
+
+      const buffer =
+        await file.arrayBuffer();
+
+      chunks.push(buffer);
+
+      total += buffer.byteLength;
+
+      await new Promise(function(resolve){
+        setTimeout(resolve,0);
+      });
+    }
+
+    setProgress(
+      "bytes",
+      92,
+      "BUILDING OUTPUT"
+    );
+
+    const output =
+      new Blob(
+        chunks,
+        {
+          type:"application/octet-stream"
+        }
+      );
+
+    setProgress(
+      "bytes",
+      100,
+      "MERGE DONE"
+    );
+
+    downloadBlob(
+      output,
+      "KTOOL_V29_MERGED.bytes"
+    );
+
+    logTerminal(
+      "bytesTerminal",
+      "Hoàn tất: " +
+      formatBytes(total) +
+      " → KTOOL_V29_MERGED.bytes",
+      "ok"
+    );
+
+  }catch(error){
+
+    console.error(error);
+
+    logTerminal(
+      "bytesTerminal",
+      "Merge lỗi: " + error.message,
+      "error"
+    );
+
+    setProgress(
+      "bytes",
+      0,
+      "ERROR"
+    );
+
+  }finally{
+
+    $("bytesMerge").disabled = false;
+
+  }
+});
+
+/* =========================================================
+   ZIP ENGINE
+========================================================= */
+
+let zipFiles = [];
+
+function normalizePath(path){
+
+  return String(path || "")
+    .replace(/\\/g,"/")
+    .replace(/^\/+/,"")
+    .replace(/\/+/g,"/");
+}
+
+function getRootFolder(path){
+
+  const clean = normalizePath(path);
+
+  const index = clean.indexOf("/");
+
+  if(index === -1){
+    return "";
+  }
+
+  return clean.slice(
+    0,
+    index + 1
+  );
+}
+
+function addZipFiles(files){
+
+  const incoming =
+    Array.from(files).filter(function(file){
+      return /\.zip$/i.test(file.name);
+    });
+
+  zipFiles =
+    zipFiles.concat(incoming);
+
+  renderZip();
+}
+
+function renderZip(){
+
+  const list = $("zipList");
+
+  list.innerHTML = "";
+
+  if(zipFiles.length === 0){
+
+    list.innerHTML =
+      '<div class="empty">Chưa có file ZIP</div>';
+
+    $("zipCount").textContent = "0 FILE";
+
+    return;
+  }
+
+  $("zipCount").textContent =
+    zipFiles.length + " FILE";
+
+  zipFiles.forEach(function(file,index){
 
     const row =
       document.createElement("div");
 
     row.className = "file";
 
-    row.innerHTML = `
-      <div class="file-icon">
-        <svg><use href="#i-file"></use></svg>
-      </div>
+    row.innerHTML =
+      '<div class="file-icon">' +
+        '<svg width="16" height="16">' +
+          '<use href="#i-zip"></use>' +
+        '</svg>' +
+      '</div>' +
 
-      <div class="file-info">
-        <div class="file-name">
-          ${escapeHTML(file.name)}
-        </div>
+      '<div class="file-info">' +
 
-        <div class="file-meta">
-          ${formatBytes(file.size)}
-        </div>
-      </div>
+        '<div class="file-name">' +
+          escapeHTML(file.name) +
+        '</div>' +
 
-      <button
-        class="icon-btn file-remove"
-        title="Xóa"
-        data-index="${index}"
-      >
-        <svg><use href="#i-trash"></use></svg>
-      </button>
-    `;
+        '<div class="file-size">' +
+          formatBytes(file.size) +
+          " • #" + (index + 1) +
+        '</div>' +
 
-    row
-      .querySelector(".file-remove")
-      .addEventListener("click",() => {
-
-        bytesFiles.splice(index,1);
-
-        renderBytes();
-
-        logBytes(
-          "Removed " + file.name,
-          "warn"
-        );
-      });
+      '</div>';
 
     list.appendChild(row);
   });
-
-  $("bytesCount").textContent =
-    bytesFiles.length + " FILE";
-
-  $("statFiles").textContent =
-    bytesFiles.length;
-
-  const total =
-    bytesFiles.reduce(
-      (sum,file) => sum + file.size,
-      0
-    );
-
-  $("statSize").textContent =
-    formatBytes(total);
 }
 
-async function analyzeFile(file){
+$("zipPick").addEventListener("click",function(){
+  $("zipInput").click();
+});
 
-  const maxRead =
-    Math.min(file.size,65536);
+$("zipInput").addEventListener("change",function(e){
 
-  const buffer =
-    await file.slice(0,maxRead).arrayBuffer();
+  addZipFiles(e.target.files);
 
-  const data =
-    new Uint8Array(buffer);
+  e.target.value = "";
+});
 
-  if(!data.length){
-    return {
-      entropy:0,
+setupDrop(
+  $("zipDrop"),
+  $("zipInput"),
+  addZipFiles
+);
+
+/* =========================================================
+   TARGETS
+========================================================= */
+
+function renderTargets(){
+
+  const box = $("targetFolders");
+
+  box.innerHTML = "";
+
+  TARGET_FOLDERS.forEach(function(folder){
+
+    const div =
+      document.createElement("div");
+
+    div.className = "target";
+
+    div.textContent = "✓ " + folder;
+
+    box.appendChild(div);
+  });
+}
+
+renderTargets();
+
+/* =========================================================
+   ZIP SCAN
+========================================================= */
+
+async function scanZips(){
+
+  if(zipFiles.length === 0){
+
+    logTerminal(
+      "zipTerminal",
+      "Chưa có ZIP để scan.",
+      "warn"
+    );
+
+    return;
+  }
+
+  $("zipScan").disabled = true;
+
+  const map = new Map();
+
+  let totalEntries = 0;
+  let duplicates = 0;
+
+  const mode =
+    $("duplicateMode").value;
+
+  try{
+
+    for(let i=0;i<zipFiles.length;i++){
+
+      const file = zipFiles[i];
+
+      setProgress(
+        "zip",
+        (i / zipFiles.length) * 80,
+        "SCANNING " +
+        (i + 1) +
+        "/" +
+        zipFiles.length
+      );
+
+      const zip =
+        await JSZip.loadAsync(file);
+
+      for(const name of Object.keys(zip.files)){
+
+        const entry = zip.files[name];
+
+        if(entry.dir){
+          continue;
+        }
+
+        const path =
+          normalizePath(name);
+
+        totalEntries++;
+
+        if(map.has(path)){
+
+          duplicates++;
+
+          if(mode === "last"){
+            map.set(path,{
+              zip:file,
+              entry:entry
+            });
+          }
+
+        }else{
+
+          map.set(path,{
+            zip:file,
+            entry:entry
+          });
+
+        }
+      }
+
+      logTerminal(
+        "zipTerminal",
+        file.name +
+        " → " +
+        Object.keys(zip.files).length +
+        " entries"
+      );
+
+      await new Promise(function(resolve){
+        setTimeout(resolve,0);
+      });
+    }
+
+    let targetCount = 0;
+
+    const roots = new Set();
+
+    map.forEach(function(value,path){
+
+      const root =
+        getRootFolder(path);
+
+      if(
+        TARGET_FOLDERS.indexOf(root) !== -1
+      ){
+        roots.add(root);
+      }
+    });
+
+    targetCount = roots.size;
+
+    $("zipEntries").textContent =
+      totalEntries;
+
+    $("zipUnique").textContent =
+      map.size;
+
+    $("zipDuplicates").textContent =
+      duplicates;
+
+    $("zipTargets").textContent =
+      targetCount;
+
+    setProgress(
+      "zip",
+      100,
+      "SCAN DONE"
+    );
+
+    logTerminal(
+      "zipTerminal",
+      "Scan hoàn tất • " +
+      map.size +
+      " unique / " +
+      duplicates +
+      " duplicates",
+      "ok"
+    );
+
+  }catch(error){
+
+    console.error(error);
+
+    logTerminal(
+      "zipTerminal",
+      "Scan lỗi: " + error.message,
+      "error"
+    );
+
+    setProgress(
+      "zip",
+      0,
+      "ERROR"
+    );
+
+  }finally{
+
+    $("zipScan").disabled = false;
+
+  }
+}
+
+$("zipScan").addEventListener(
+  "click",
+  scanZips
+);
+
+/* =========================================================
+   ZIP MERGE
+========================================================= */
+
+$("zipMerge").addEventListener("click",async function(){
+
+  if(zipFiles.length === 0){
+
+    logTerminal(
+      "zipTerminal",
+      "Chưa có ZIP để merge.",
+      "warn"
+    );
+
+    return;
+  }
+
+  if(typeof JSZip === "undefined"){
+
+    logTerminal(
+      "zipTerminal",
+      "JSZip chưa được tải. Kiểm tra kết nối mạng.",
+      "error"
+    );
+
+    return;
+  }
+
+  $("zipMerge").disabled = true;
+
+  const mode =
+    $("duplicateMode").value;
+
+  try{
+
+    const output =
+      new JSZip();
+
+    const entries = new Map();
+
+    let totalFiles = 0;
+
+    logTerminal(
+      "zipTerminal",
+      "Đang đọc ZIP..."
+    );
+
+    for(let i=0;i<zipFiles.length;i++){
+
+      const file = zipFiles[i];
+
+      setProgress(
+        "zip",
+        (i / zipFiles.length) * 35,
+        "READING ZIP " +
+        (i + 1) +
+        "/" +
+        zipFiles.length
+      );
+
+      const zip =
+        await JSZip.loadAsync(file);
+
+      for(const name of Object.keys(zip.files)){
+
+        const entry =
+          zip.files[name];
+
+        if(entry.dir){
+          continue;
+        }
+
+        const path =
+          normalizePath(name);
+
+        if(
+          mode === "first" &&
+          entries.has(path)
+        ){
+          continue;
+        }
+
+        entries.set(
+          path,
+          {
+            zip:zip,
+            entry:entry,
+            source:file.name
+          }
+        );
+
+        totalFiles++;
+      }
+
+      await new Promise(function(resolve){
+        setTimeout(resolve,0);
+      });
+    }
+
+    const list =
+      Array.from(entries.entries());
+
+    logTerminal(
+      "zipTerminal",
+      "Unique entries: " + list.length
+    );
+
+    for(let i=0;i<list.length;i++){
+
+      const pair = list[i];
+
+      const path = pair[0];
+      const data = pair[1];
+
+      const content =
+        await data.entry.async("uint8array");
+
+      output.file(
+        path,
+        content
+      );
+
+      if(i % 20 === 0){
+
+        setProgress(
+          "zip",
+          35 +
+          ((i + 1) / list.length) * 55,
+          "PACKING " +
+          (i + 1) +
+          "/" +
+          list.length
+        );
+
+        await new Promise(function(resolve){
+          setTimeout(resolve,0);
+        });
+      }
+    }
+
+    setProgress(
+      "zip",
+      92,
+      "COMPRESSING"
+    );
+
+    const blob =
+      await output.generateAsync(
+        {
+          type:"blob",
+          compression:"DEFLATE",
+          compressionOptions:{
+            level:6
+          }
+        },
+        function(metadata){
+
+          const value =
+            92 +
+            metadata.percent * .08;
+
+          setProgress(
+            "zip",
+            value,
+            "FINALIZING"
+          );
+        }
+      );
+
+    setProgress(
+      "zip",
+      100,
+      "MERGE DONE"
+    );
+
+    downloadBlob(
+      blob,
+      "KTOOL_V29_MERGED.zip"
+    );
+
+    logTerminal(
+      "zipTerminal",
+      "Hoàn tất → KTOOL_V29_MERGED.zip",
+      "ok"
+    );
+
+  }catch(error){
+
+    console.error(error);
+
+    logTerminal(
+      "zipTerminal",
+      "ZIP merge lỗi: " +
+      error.message,
+      "error"
+    );
+
+    setProgress(
+      "zip",
+      0,
+      "ERROR"
+    );
+
+  }finally{
+
+    $("zipMerge").disabled = false;
+
+  }
+});
+
+/* =========================================================
+   SYSTEM INFO
+========================================================= */
+
+function renderSystem(){
+
+  const grid = $("systemGrid");
+
+  const nav =
+    navigator;
+
+  const connection =
+    nav.connection ||
+    nav.mozConnection ||
+    nav.webkitConnection;
+
+  const values = [
+
+    [
+      "BROWSER",
+      nav.userAgent
+    ],
+
+    [
+      "LANGUAGE",
+      nav.language || "--"
+    ],
+
+    [
+      "TIMEZONE",
+      Intl.DateTimeFormat().resolvedOptions().timeZone || "--"
+    ],
+
+    [
+      "DISPLAY",
+      window.innerWidth +
+      " × " +
+      window.innerHeight
+    ],
+
+    [
+      "PIXEL RATIO",
+      window.devicePixelRatio || 1
+    ],
+
+    [
+      "TOUCH",
+      nav.maxTouchPoints > 0
+        ? "YES"
+        : "NO"
+    ],
+
+    [
+      "CPU CORES",
+      nav.hardwareConcurrency || "Restricted"
+    ],
+
+    [
+      "MEMORY",
+      nav.deviceMemory
+        ? nav.deviceMemory + " GB"
+        : "Restricted"
+    ],
+
+    [
+      "ONLINE",
+      navigator.onLine
+        ? "ONLINE"
+        : "OFFLINE"
+    ],
+
+    [
+      "NETWORK",
+      connection &&
+      connection.effectiveType
+        ? connection.effectiveType
+        : "Browser dependent"
+    ],
+
+    [
+      "BATTERY",
+      "Browser dependent"
+    ],
+
+    [
+      "TEMPERATURE",
+      "Browser restricted"
+    ],
+
+    [
+      "USER",
+      localStorage.getItem(
+        CURRENT_USER_KEY
+      ) || "Guest"
+    ]
+
+  ];
+
+  grid.innerHTML = "";
+
+  values.forEach(function(pair){
+
+    const item =
+      document.createElement("div");
+
+    item.className =
+      "system-item";
+
+    item.innerHTML =
+      '<div class="system-key">' +
+        escapeHTML(pair[0]) +
+      '</div>' +
+
+      '<div class="system-value">' +
+        escapeHTML(pair[1]) +
+      '</div>';
+
+    grid.appendChild(item);
+  });
+}
+
+/* =========================================================
+   HIDDEN CREATOR
+========================================================= */
+
+function showHiddenCreator(){
+
+  if(
+    document.hidden ||
+    !$("app").classList.contains("show") ||
+    $("popupLayer").classList.contains("show")
+  ){
+    return;
+  }
+
+  const watermark =
+    document.querySelector(
+      ".creator-watermark"
+    );
+
+  if(!watermark){
+    return;
+  }
+
+  watermark.classList.remove("show");
+
+  void watermark.offsetWidth;
+
+  watermark.classList.add("show");
+
+  setTimeout(function(){
+
+    watermark.classList.remove("show");
+
+  },3200);
+}
+
+setInterval(
+  showHiddenCreator,
+  28000
+);
+
+/* =========================================================
+   KEYBOARD
+========================================================= */
+
+document.addEventListener("keydown",function(e){
+
+  if(
+    (e.ctrlKey || e.metaKey) &&
+    e.key === "Enter"
+  ){
+
+    if(
+      $("bytesPanel").classList.contains("active")
+    ){
+      $("bytesMerge").click();
+    }else{
+      $("zipMerge").click();
+    }
+
+  }
+
+  if(e.key === "Escape"){
+    $("popupLayer").classList.remove("show");
+  }
+
+});
+
+/* =========================================================
+   STARTUP
+========================================================= */
+
+function startApp(){
+
+  setTimeout(function(){
+
+    $("boot").classList.add("hide");
+
+    let currentUser = null;
+
+    try{
+      currentUser =
+        localStorage.getItem(
+          CURRENT_USER_KEY
+        );
+    }catch(e){}
+
+    if(currentUser){
+
+      showApp();
+
+    }else{
+
+      showAuth();
+
+    }
+
+  },900);
+}
+
+startApp();
+
+</script>
+
+<!-- Hidden creator layer -->
+<div class="creator-watermark">
+  codedbytdung
+</div>
+
+</body>
+</html>
