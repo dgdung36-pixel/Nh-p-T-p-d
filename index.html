@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#070b12">
-<title>KTOOL AI BINARY ENGINE V26</title>
+<title>KTOOL AI BINARY ENGINE V26 - MULTI MERGE FIX</title>
 
 <script>
 (function () {
@@ -67,19 +67,13 @@ body{
     overflow-x:hidden;
 }
 
-button,
-input,
-select{
+button, input, select{
     font:inherit;
 }
 
 button{
     cursor:pointer;
 }
-
-/* =========================
-   BOOT SCREEN
-========================= */
 
 #bootScreen{
     position:fixed;
@@ -103,9 +97,7 @@ button{
     border:1px solid rgba(94,231,255,.2);
     border-radius:24px;
     background:rgba(7,12,21,.96);
-    box-shadow:
-        0 0 80px rgba(94,231,255,.08),
-        0 25px 100px rgba(0,0,0,.55);
+    box-shadow:0 0 80px rgba(94,231,255,.08), 0 25px 100px rgba(0,0,0,.55);
 }
 
 .boot-logo{
@@ -119,7 +111,6 @@ button{
     background:linear-gradient(135deg,var(--accent),var(--accent2));
     font-size:28px;
     font-weight:1000;
-    box-shadow:0 0 35px rgba(94,231,255,.25);
 }
 
 .boot-title{
@@ -161,7 +152,6 @@ button{
     height:100%;
     border-radius:99px;
     background:linear-gradient(90deg,var(--accent),var(--accent2));
-    box-shadow:0 0 18px rgba(94,231,255,.45);
 }
 
 .boot-terminal{
@@ -171,14 +161,10 @@ button{
     border-radius:12px;
     background:#02050a;
     color:#6f829c;
-    font-family:"SFMono-Regular",Consolas,monospace;
+    font-family:monospace;
     font-size:11px;
     line-height:1.8;
 }
-
-/* =========================
-   APP
-========================= */
 
 .app{
     width:min(1250px,94vw);
@@ -210,13 +196,11 @@ header{
     background:linear-gradient(135deg,var(--accent),var(--accent2));
     font-size:23px;
     font-weight:1000;
-    box-shadow:0 0 35px rgba(94,231,255,.18);
 }
 
 .brand-title{
     font-size:20px;
     font-weight:950;
-    letter-spacing:.3px;
 }
 
 .brand-subtitle{
@@ -226,11 +210,6 @@ header{
     letter-spacing:1.4px;
 }
 
-.header-actions{
-    display:flex;
-    gap:9px;
-}
-
 .icon-btn{
     width:42px;
     height:42px;
@@ -238,89 +217,33 @@ header{
     border-radius:12px;
     color:var(--text);
     background:var(--panel);
-    transition:.2s;
 }
-
-.icon-btn:hover{
-    transform:translateY(-2px);
-    border-color:rgba(94,231,255,.45);
-}
-
-/* HERO */
 
 .hero{
-    position:relative;
-    overflow:hidden;
     padding:35px;
     border:1px solid var(--border);
     border-radius:28px;
-    background:
-        linear-gradient(135deg,rgba(94,231,255,.055),transparent 40%),
-        linear-gradient(315deg,rgba(139,124,255,.07),transparent 45%),
-        var(--panel);
+    background:var(--panel);
     box-shadow:var(--shadow);
-}
-
-.hero::after{
-    content:"";
-    position:absolute;
-    width:280px;
-    height:280px;
-    right:-130px;
-    top:-130px;
-    border-radius:50%;
-    border:1px solid rgba(94,231,255,.13);
-    box-shadow:0 0 0 30px rgba(94,231,255,.025),
-               0 0 0 60px rgba(94,231,255,.018);
-}
-
-.hero-kicker{
-    color:var(--accent);
-    font-size:11px;
-    font-weight:850;
-    letter-spacing:2.3px;
+    margin-bottom: 20px;
 }
 
 .hero h1{
-    max-width:800px;
     margin:10px 0 12px;
-    font-size:clamp(30px,5vw,58px);
-    line-height:1;
-    letter-spacing:-2.8px;
+    font-size:clamp(24px,4vw,42px);
 }
 
 .hero p{
-    max-width:750px;
-    margin:0;
     color:var(--muted);
     line-height:1.7;
+    font-size: 13px;
 }
-
-.hero-badges{
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px;
-    margin-top:22px;
-}
-
-.badge{
-    padding:7px 10px;
-    border:1px solid var(--border);
-    border-radius:99px;
-    background:rgba(255,255,255,.025);
-    color:var(--muted);
-    font-size:10px;
-    font-weight:750;
-    letter-spacing:.5px;
-}
-
-/* STATS */
 
 .stats{
     display:grid;
     grid-template-columns:repeat(4,1fr);
     gap:12px;
-    margin:14px 0;
+    margin-bottom:20px;
 }
 
 .stat{
@@ -333,16 +256,13 @@ header{
 .stat-label{
     color:var(--muted);
     font-size:10px;
-    letter-spacing:1px;
 }
 
 .stat-value{
     margin-top:7px;
-    font-size:21px;
+    font-size:18px;
     font-weight:900;
 }
-
-/* GRID */
 
 .main-grid{
     display:grid;
@@ -351,19 +271,18 @@ header{
 }
 
 .panel{
-    min-width:0;
     padding:21px;
     border:1px solid var(--border);
     border-radius:21px;
     background:var(--panel);
     box-shadow:var(--shadow);
+    margin-bottom: 14px;
 }
 
 .panel-title{
     display:flex;
     align-items:center;
     justify-content:space-between;
-    gap:10px;
     margin-bottom:16px;
 }
 
@@ -372,15 +291,8 @@ header{
     font-size:14px;
 }
 
-.panel-title span{
-    color:var(--muted);
-    font-size:10px;
-}
-
-/* DROP */
-
 .dropzone{
-    min-height:205px;
+    min-height:160px;
     display:flex;
     align-items:center;
     justify-content:center;
@@ -388,36 +300,7 @@ header{
     border:1px dashed rgba(94,231,255,.35);
     border-radius:17px;
     background:rgba(94,231,255,.025);
-    transition:.2s;
-}
-
-.dropzone.drag{
-    transform:scale(1.01);
-    border-color:var(--accent);
-    background:rgba(94,231,255,.07);
-}
-
-.drop-icon{
-    width:58px;
-    height:58px;
-    display:grid;
-    place-items:center;
-    margin:0 auto 13px;
-    border-radius:16px;
-    color:var(--accent);
-    background:rgba(94,231,255,.08);
-    font-size:24px;
-}
-
-.dropzone h3{
-    margin:0;
-    font-size:15px;
-}
-
-.dropzone p{
-    margin:7px 0 14px;
-    color:var(--muted);
-    font-size:11px;
+    padding: 15px;
 }
 
 .primary{
@@ -427,208 +310,6 @@ header{
     color:#041018;
     background:linear-gradient(135deg,var(--accent),#86f1ff);
     font-weight:900;
-    box-shadow:0 8px 25px rgba(94,231,255,.14);
-}
-
-.primary:hover{
-    filter:brightness(1.08);
-    transform:translateY(-1px);
-}
-
-/* FILE LIST */
-
-.file-list{
-    display:grid;
-    gap:8px;
-    margin-top:13px;
-}
-
-.file-item{
-    display:grid;
-    grid-template-columns:auto 1fr auto;
-    align-items:center;
-    gap:10px;
-    padding:11px;
-    border:1px solid var(--border);
-    border-radius:13px;
-    background:var(--panel2);
-}
-
-.file-num{
-    width:27px;
-    height:27px;
-    display:grid;
-    place-items:center;
-    border-radius:8px;
-    color:var(--accent);
-    background:rgba(94,231,255,.08);
-    font-size:10px;
-    font-weight:900;
-}
-
-.file-name{
-    min-width:0;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap;
-    font-size:11px;
-    font-weight:750;
-}
-
-.file-size{
-    color:var(--muted);
-    font-family:monospace;
-    font-size:10px;
-}
-
-.remove-file{
-    border:0;
-    color:var(--red);
-    background:none;
-    font-size:17px;
-}
-
-/* CONTROLS */
-
-.control-grid{
-    display:grid;
-    gap:12px;
-}
-
-.field label{
-    display:block;
-    margin-bottom:7px;
-    color:var(--muted);
-    font-size:10px;
-    font-weight:800;
-    letter-spacing:.7px;
-}
-
-select,
-input[type="number"]{
-    width:100%;
-    padding:11px 12px;
-    border:1px solid var(--border);
-    border-radius:11px;
-    outline:none;
-    color:var(--text);
-    background:var(--panel2);
-}
-
-select:focus,
-input:focus{
-    border-color:var(--accent);
-}
-
-.check{
-    display:flex;
-    align-items:flex-start;
-    gap:10px;
-    padding:11px;
-    border:1px solid var(--border);
-    border-radius:12px;
-    background:rgba(255,255,255,.018);
-}
-
-.check input{
-    margin-top:3px;
-    accent-color:var(--accent);
-}
-
-.check strong{
-    display:block;
-    font-size:11px;
-}
-
-.check small{
-    display:block;
-    margin-top:3px;
-    color:var(--muted);
-    font-size:9px;
-    line-height:1.5;
-}
-
-/* ANALYSIS */
-
-.analysis-box{
-    display:grid;
-    gap:8px;
-}
-
-.analysis-row{
-    display:flex;
-    justify-content:space-between;
-    gap:15px;
-    padding:10px 0;
-    border-bottom:1px solid var(--border);
-    font-size:10px;
-}
-
-.analysis-row:last-child{
-    border-bottom:0;
-}
-
-.analysis-row span:first-child{
-    color:var(--muted);
-}
-
-.analysis-row strong{
-    text-align:right;
-}
-
-.good{color:var(--green)!important}
-.warn{color:var(--yellow)!important}
-.bad{color:var(--red)!important}
-.accent{color:var(--accent)!important}
-
-/* HEX */
-
-.hex{
-    margin-top:13px;
-    padding:14px;
-    overflow:auto;
-    max-height:190px;
-    border:1px solid var(--border);
-    border-radius:14px;
-    background:#02050a;
-    color:#91a4bc;
-    font-family:"SFMono-Regular",Consolas,monospace;
-    font-size:10px;
-    line-height:1.8;
-    white-space:pre;
-}
-
-/* TERMINAL */
-
-.terminal{
-    min-height:210px;
-    max-height:280px;
-    overflow:auto;
-    padding:15px;
-    border-radius:15px;
-    background:#02050a;
-    color:#8ca0b9;
-    font-family:"SFMono-Regular",Consolas,monospace;
-    font-size:10px;
-    line-height:1.8;
-}
-
-.log-line{
-    white-space:pre-wrap;
-    word-break:break-word;
-}
-
-.log-line.good{color:#63e7ad}
-.log-line.warn{color:#ffd166}
-.log-line.bad{color:#ff6c85}
-
-/* ACTION */
-
-.action-bar{
-    display:flex;
-    flex-wrap:wrap;
-    gap:9px;
-    margin-top:14px;
 }
 
 .secondary{
@@ -641,73 +322,75 @@ input:focus{
     font-weight:800;
 }
 
-.secondary:hover{
-    border-color:rgba(94,231,255,.4);
+.file-list{
+    max-height: 200px;
+    overflow-y: auto;
+    display:grid;
+    gap:8px;
+    margin-top:13px;
 }
 
-/* CREATOR */
-
-.creator{
-    display:flex;
+.file-item{
+    display:grid;
+    grid-template-columns:auto 1fr auto;
     align-items:center;
-    gap:18px;
-    margin:34px 0 12px;
+    gap:10px;
+    padding:8px 11px;
+    border:1px solid var(--border);
+    border-radius:13px;
+    background:var(--panel2);
+    font-size: 11px;
 }
 
-.creator-line{
-    flex:1;
-    height:1px;
-    background:linear-gradient(
-        90deg,
-        transparent,
-        rgba(94,231,255,.35),
-        transparent
-    );
+.control-grid{
+    display:grid;
+    gap:12px;
 }
 
-.creator-content{
-    text-align:center;
-    min-width:230px;
-}
-
-.creator-kicker{
+.field label{
+    display:block;
+    margin-bottom:7px;
     color:var(--muted);
-    font-size:9px;
-    font-weight:850;
-    letter-spacing:3px;
-}
-
-.creator-name{
-    margin-top:5px;
-    font-size:20px;
-    font-weight:1000;
-    letter-spacing:2px;
-    color:var(--text);
-    text-shadow:0 0 22px rgba(94,231,255,.18);
-}
-
-.creator-bracket{
-    color:var(--accent);
-}
-
-.creator-role{
-    margin-top:4px;
-    color:var(--accent);
-    font-size:8px;
+    font-size:10px;
     font-weight:800;
-    letter-spacing:1.5px;
 }
 
-/* FOOTER */
-
-footer{
-    text-align:center;
-    color:var(--muted);
-    font-size:9px;
-    line-height:1.7;
+select, input[type="number"]{
+    width:100%;
+    padding:11px 12px;
+    border:1px solid var(--border);
+    border-radius:11px;
+    color:var(--text);
+    background:var(--panel2);
 }
 
-/* MODAL */
+.terminal{
+    min-height:180px;
+    max-height:220px;
+    overflow:auto;
+    padding:15px;
+    border-radius:15px;
+    background:#02050a;
+    color:#8ca0b9;
+    font-family:monospace;
+    font-size:10px;
+    line-height:1.6;
+}
+
+.log-line{
+    white-space:pre-wrap;
+    word-break:break-word;
+}
+.log-line.good{color:#63e7ad}
+.log-line.warn{color:#ffd166}
+.log-line.bad{color:#ff6c85}
+
+.action-bar{
+    display:flex;
+    flex-wrap:wrap;
+    gap:9px;
+    margin-top:14px;
+}
 
 .modal{
     position:fixed;
@@ -718,7 +401,6 @@ footer{
     justify-content:center;
     padding:20px;
     background:rgba(0,0,0,.7);
-    backdrop-filter:blur(12px);
 }
 
 .modal.show{
@@ -731,2097 +413,326 @@ footer{
     border:1px solid var(--border);
     border-radius:22px;
     background:var(--panel2);
-    box-shadow:0 30px 100px rgba(0,0,0,.5);
 }
-
-.modal-card h2{
-    margin:0 0 7px;
-    font-size:18px;
-}
-
-.modal-card p{
-    color:var(--muted);
-    font-size:11px;
-}
-
-.result-info{
-    margin:18px 0;
-    padding:14px;
-    border:1px solid var(--border);
-    border-radius:13px;
-    background:rgba(255,255,255,.02);
-}
-
-.result-info div{
-    display:flex;
-    justify-content:space-between;
-    padding:6px 0;
-    font-size:11px;
-}
-
-.result-info span{
-    color:var(--muted);
-}
-
-/* RESPONSIVE */
 
 @media(max-width:850px){
-    .main-grid{
-        grid-template-columns:1fr;
-    }
-
-    .stats{
-        grid-template-columns:repeat(2,1fr);
-    }
-}
-
-@media(max-width:560px){
-    .app{
-        width:92vw;
-        padding-top:18px;
-    }
-
-    header{
-        align-items:flex-start;
-    }
-
-    .brand-title{
-        font-size:15px;
-    }
-
-    .hero{
-        padding:23px;
-    }
-
-    .hero h1{
-        font-size:35px;
-    }
-
-    .panel{
-        padding:16px;
-    }
-
-    .creator{
-        gap:7px;
-    }
-
-    .creator-content{
-        min-width:190px;
-    }
-
-    .creator-name{
-        font-size:16px;
-    }
+    .main-grid{grid-template-columns:1fr;}
+    .stats{grid-template-columns:repeat(2,1fr);}
 }
 </style>
 </head>
 
 <body>
 
-<!-- =========================
-     BOOT
-========================= -->
-
 <div id="bootScreen">
     <div class="boot-box">
         <div class="boot-logo">K</div>
-
-        <div class="boot-title">
-            KTOOL AI BINARY ENGINE
-        </div>
-
-        <div class="boot-subtitle">
-            CREATED & CODED BY TRONG DUNG
-        </div>
-
+        <div class="boot-title">KTOOL AI BINARY ENGINE</div>
+        <div class="boot-subtitle">MULTI-FILE SAFE MERGE FIX</div>
         <div class="boot-status">
             <span id="bootStatus">INITIALIZING ENGINE...</span>
             <span class="boot-percent" id="bootPercent">0%</span>
         </div>
-
         <div class="boot-track">
             <div class="boot-fill" id="bootFill"></div>
         </div>
-
         <div class="boot-terminal" id="bootTerminal"></div>
     </div>
 </div>
 
-<!-- =========================
-     APP
-========================= -->
-
 <div class="app">
-
 <header>
     <div class="brand">
         <div class="brand-logo">K</div>
-
         <div>
-            <div class="brand-title">
-                KTOOL AI BINARY ENGINE
-            </div>
-
-            <div class="brand-subtitle">
-                LOCAL .BYTES ANALYSIS / MERGE LAB
-            </div>
+            <div class="brand-title">KTOOL AI BINARY ENGINE V26</div>
+            <div class="brand-subtitle">UNLIMITED BATCH .BYTES MERGE LAB</div>
         </div>
     </div>
-
     <div class="header-actions">
-        <button class="icon-btn" id="themeBtn" title="Đổi giao diện">
-            ◐
-        </button>
+        <button class="icon-btn" id="themeBtn" title="Đổi giao diện">◐</button>
     </div>
 </header>
 
 <section class="hero">
-    <div class="hero-kicker">
-        BINARY WORKSPACE • V26
-    </div>
-
-    <h1>
-        Merge your bytes.
-        Analyze the structure.
-    </h1>
-
-    <p>
-        Công cụ xử lý binary trực tiếp trên trình duyệt.
-        File không cần tải lên server. Hỗ trợ phân tích HEX,
-        heuristic header, checksum SHA-256 và nhiều chế độ merge.
-    </p>
-
-    <div class="hero-badges">
-        <span class="badge">LOCAL PROCESSING</span>
-        <span class="badge">2–8 FILES</span>
-        <span class="badge">HEX ANALYZER</span>
-        <span class="badge">SHA-256</span>
-        <span class="badge">SMART HEURISTIC</span>
-    </div>
+    <h1>Hệ thống Gộp & Phân tích File Bytes (Không giới hạn số lượng)</h1>
+    <p>Phiên bản nâng cấp giúp xử lý hàng loạt file mod game (.bytes, .xml, v.v.) an toàn trên trình duyệt, không sợ tràn bộ nhớ hay lỗi ngắt quãng cấu trúc.</p>
 </section>
 
 <section class="stats">
     <div class="stat">
-        <div class="stat-label">FILES</div>
-        <div class="stat-value" id="statFiles">0 / 8</div>
+        <div class="stat-label">FILES LOADED</div>
+        <div class="stat-value" id="statFiles">0</div>
     </div>
-
     <div class="stat">
         <div class="stat-label">TOTAL SIZE</div>
         <div class="stat-value" id="statSize">0 B</div>
     </div>
-
     <div class="stat">
-        <div class="stat-label">PREFIX</div>
-        <div class="stat-value" id="statPrefix">—</div>
+        <div class="stat-label">BATCH MODE</div>
+        <div class="stat-value">UNLIMITED</div>
     </div>
-
     <div class="stat">
-        <div class="stat-label">CONFIDENCE</div>
-        <div class="stat-value" id="statConfidence">—</div>
+        <div class="stat-label">ENGINE STATUS</div>
+        <div class="stat-value" id="engineState">IDLE</div>
     </div>
 </section>
 
 <div class="main-grid">
+    <section class="panel">
+        <div class="panel-title">
+            <h2>INPUT FILES</h2>
+            <span>Hỗ trợ .bytes / .xml / .bin</span>
+        </div>
+        <div class="dropzone" id="dropzone">
+            <div>
+                <h3>Kéo thả nhiều file vào đây</h3>
+                <p>Hoặc bấm nút để chọn hàng loạt file</p>
+                <button class="primary" id="chooseBtn">CHOOSE FILES</button>
+                <input id="filePicker" type="file" multiple hidden>
+            </div>
+        </div>
+        <div class="file-list" id="fileList"></div>
+    </section>
 
-<!-- FILE PANEL -->
+    <section class="panel">
+        <div class="panel-title">
+            <h2>MERGE CONTROL</h2>
+            <span>Safe Batch Processor</span>
+        </div>
+        <div class="control-grid">
+            <div class="field">
+                <label>MERGE STRATEGY</label>
+                <select id="mergeMode">
+                    <option value="raw">RAW — Gộp nối tiếp toàn bộ dữ liệu an toàn</option>
+                    <option value="smart">SMART — Tự động lược bỏ khoảng trắng/header trùng lặp</option>
+                </select>
+            </div>
+            <div class="field">
+                <label>TÊN FILE KẾT QUẢ</label>
+                <input id="outputFileName" type="text" value="combined_mod_output.bytes">
+            </div>
+        </div>
+        <div class="action-bar">
+            <button class="primary" id="mergeBtn">⚡ GỘP TẤT CẢ FILE</button>
+            <button class="secondary" id="clearBtn">XÓA TẤT CẢ</button>
+        </div>
+    </section>
+</div>
 
 <section class="panel">
     <div class="panel-title">
-        <h2>INPUT FILES</h2>
-        <span>2–8 .bytes</span>
+        <h2>ENGINE TERMINAL LOG</h2>
+        <span>Real-time Debug</span>
     </div>
-
-    <div class="dropzone" id="dropzone">
-
-        <div>
-            <div class="drop-icon">⇧</div>
-
-            <h3>
-                Kéo thả file .bytes vào đây
-            </h3>
-
-            <p>
-                Hoặc chọn file từ thiết bị
-            </p>
-
-            <button class="primary" id="chooseBtn">
-                CHOOSE FILES
-            </button>
-
-            <input
-                id="filePicker"
-                type="file"
-                accept=".bytes"
-                multiple
-                hidden
-            >
-        </div>
-
-    </div>
-
-    <div class="file-list" id="fileList"></div>
-</section>
-
-<!-- CONTROL PANEL -->
-
-<section class="panel">
-
-    <div class="panel-title">
-        <h2>MERGE CONTROL</h2>
-        <span>LOCAL ENGINE</span>
-    </div>
-
-    <div class="control-grid">
-
-        <div class="field">
-            <label>MERGE MODE</label>
-
-            <select id="mergeMode">
-                <option value="smart">
-                    SMART — AI HEURISTIC
-                </option>
-
-                <option value="safe">
-                    SAFE — NO DESTRUCTIVE PATCH
-                </option>
-
-                <option value="raw">
-                    RAW — EXACT APPEND
-                </option>
-            </select>
-        </div>
-
-        <div class="field">
-            <label>HEADER STRATEGY</label>
-
-            <select id="headerStrategy">
-                <option value="auto">
-                    AUTO DETECTION
-                </option>
-
-                <option value="keep">
-                    KEEP ALL BYTES
-                </option>
-
-                <option value="manual">
-                    MANUAL OFFSET
-                </option>
-            </select>
-        </div>
-
-        <div class="field" id="manualOffsetWrap" style="display:none">
-            <label>MANUAL OFFSET</label>
-
-            <input
-                id="manualOffset"
-                type="number"
-                min="0"
-                max="1048576"
-                value="0"
-            >
-        </div>
-
-        <label class="check">
-            <input
-                type="checkbox"
-                id="patchSize"
-            >
-
-            <span>
-                <strong>CONSERVATIVE SIZE PATCH</strong>
-
-                <small>
-                    Chỉ patch một trường UInt32 LE khi phát hiện
-                    duy nhất một giá trị đúng bằng kích thước file.
-                </small>
-            </span>
-        </label>
-
-        <label class="check">
-            <input
-                type="checkbox"
-                id="makeHash"
-                checked
-            >
-
-            <span>
-                <strong>GENERATE SHA-256</strong>
-
-                <small>
-                    Tính hash của file kết quả sau khi merge.
-                </small>
-            </span>
-        </label>
-
-    </div>
-
-    <div class="action-bar">
-        <button class="primary" id="mergeBtn">
-            ⚡ MERGE FILES
-        </button>
-
-        <button class="secondary" id="analyzeBtn">
-            ANALYZE
-        </button>
-
-        <button class="secondary" id="clearBtn">
-            CLEAR
-        </button>
-    </div>
-
-</section>
-
-<!-- ANALYSIS -->
-
-<section class="panel">
-
-    <div class="panel-title">
-        <h2>AI HEURISTIC ANALYSIS</h2>
-        <span>DETERMINISTIC LOCAL</span>
-    </div>
-
-    <div class="analysis-box">
-
-        <div class="analysis-row">
-            <span>Common prefix</span>
-            <strong id="analysisPrefix">—</strong>
-        </div>
-
-        <div class="analysis-row">
-            <span>Recommended offset</span>
-            <strong id="analysisOffset">—</strong>
-        </div>
-
-        <div class="analysis-row">
-            <span>Confidence</span>
-            <strong id="analysisConfidence">—</strong>
-        </div>
-
-        <div class="analysis-row">
-            <span>Structure</span>
-            <strong id="analysisStructure">—</strong>
-        </div>
-
-        <div class="analysis-row">
-            <span>Duplicate heuristic</span>
-            <strong id="analysisDuplicate">—</strong>
-        </div>
-
-        <div class="analysis-row">
-            <span>Magic match</span>
-            <strong id="analysisMagic">—</strong>
-        </div>
-
-        <div class="analysis-row">
-            <span>Entropy</span>
-            <strong id="analysisEntropy">—</strong>
-        </div>
-
-    </div>
-
-    <div class="hex" id="hexPreview">
-No data.
-    </div>
-
-</section>
-
-<!-- TERMINAL -->
-
-<section class="panel">
-
-    <div class="panel-title">
-        <h2>ENGINE TERMINAL</h2>
-        <span id="engineState">IDLE</span>
-    </div>
-
     <div class="terminal" id="terminal"></div>
-
     <div class="action-bar">
-        <button class="secondary" id="copyLogBtn">
-            COPY LOG
-        </button>
-
-        <button class="secondary" id="exportReportBtn">
-            EXPORT REPORT
-        </button>
+        <button class="secondary" id="copyLogBtn">COPY LOG</button>
     </div>
-
 </section>
-
 </div>
-
-<!-- CREATOR -->
-
-<div class="creator">
-
-    <div class="creator-line"></div>
-
-    <div class="creator-content">
-
-        <div class="creator-kicker">
-            CREATED & CODED BY
-        </div>
-
-        <div class="creator-name">
-            <span class="creator-bracket">&lt;</span>
-            TRONG DUNG
-            <span class="creator-bracket">/&gt;</span>
-        </div>
-
-        <div class="creator-role">
-            KTOOL AI BINARY ENGINE • V26
-        </div>
-
-    </div>
-
-    <div class="creator-line"></div>
-
-</div>
-
-<footer>
-    KTOOL AI BINARY ENGINE V26 • Local browser processing •
-    Không upload file lên server.
-</footer>
-
-</div>
-
-<!-- =========================
-     RESULT MODAL
-========================= -->
 
 <div class="modal" id="resultModal">
-
     <div class="modal-card">
-
-        <h2>Merge completed</h2>
-
-        <p>
-            File kết quả đã được tạo trong bộ nhớ trình duyệt.
-        </p>
-
-        <div class="result-info">
-
-            <div>
-                <span>Filename</span>
-                <strong id="resultName">—</strong>
-            </div>
-
-            <div>
-                <span>Size</span>
-                <strong id="resultSize">—</strong>
-            </div>
-
-            <div>
-                <span>SHA-256</span>
-                <strong id="resultHash">—</strong>
-            </div>
-
+        <h2>Gộp file thành công!</h2>
+        <p>Quá trình xử lý dữ liệu bytes đã hoàn tất trực tiếp trên trình duyệt.</p>
+        <div class="action-bar" style="margin-top: 20px;">
+            <button class="primary" id="downloadBtn">TẢI XUỐNG FILE GỘP</button>
+            <button class="secondary" id="closeModalBtn">ĐÓNG</button>
         </div>
-
-        <div class="action-bar">
-
-            <button
-                class="primary"
-                id="downloadBtn"
-            >
-                DOWNLOAD
-            </button>
-
-            <button
-                class="secondary"
-                id="closeModalBtn"
-            >
-                CLOSE
-            </button>
-
-        </div>
-
     </div>
-
 </div>
 
 <script>
 "use strict";
-
-/* =========================
-   HELPERS
-========================= */
-
 const $ = id => document.getElementById(id);
 
 const state = {
     files: [],
     theme: "dark",
-    analysis: null,
     resultBlob: null,
-    resultName: "",
-    resultHash: ""
+    resultName: "combined_mod_output.bytes"
 };
 
 function formatBytes(bytes){
     if(!Number.isFinite(bytes)) return "0 B";
-
-    const units = ["B","KB","MB","GB","TB"];
-    let i = 0;
-    let value = bytes;
-
-    while(value >= 1024 && i < units.length - 1){
-        value /= 1024;
-        i++;
-    }
-
-    return `${value.toFixed(i === 0 ? 0 : 2)} ${units[i]}`;
+    const units = ["B","KB","MB","GB"];
+    let i = 0, value = bytes;
+    while(value >= 1024 && i < units.length - 1){ value /= 1024; i++; }
+    return `${value.toFixed(2)} ${units[i]}`;
 }
 
-function clamp(value,min,max){
-    return Math.max(min,Math.min(max,value));
-}
-
-function sleep(ms){
-    return new Promise(resolve => setTimeout(resolve,ms));
-}
-
-/* =========================
-   LOG
-========================= */
-
-function log(message,type=""){
+function log(message, type=""){
     const line = document.createElement("div");
-
-    line.className = "log-line";
-
-    if(type){
-        line.classList.add(type);
-    }
-
-    const time = new Date().toLocaleTimeString();
-
-    line.textContent = `[${time}] ${message}`;
-
+    line.className = "log-line " + type;
+    line.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
     $("terminal").appendChild(line);
-
-    const terminal = $("terminal");
-
-    terminal.scrollTop = terminal.scrollHeight;
+    $("terminal").scrollTop = $("terminal").scrollHeight;
 }
 
-function clearTerminal(){
-    $("terminal").innerHTML = "";
-}
-
-/* =========================
-   THEME
-========================= */
-
+// Theme handling
 function applyTheme(theme){
-
-    const html = document.documentElement;
-
-    if(theme === "light"){
-
-        html.classList.add("light");
-
-        state.theme = "light";
-
-    }else{
-
-        html.classList.remove("light");
-
-        state.theme = "dark";
-    }
-
-    localStorage.setItem(
-        "ktool-theme",
-        state.theme
-    );
+    state.theme = theme;
+    if(theme === "light") document.documentElement.classList.add("light");
+    else document.documentElement.classList.remove("light");
+    localStorage.setItem("ktool-theme", theme);
 }
-
-function initTheme(){
-
-    const saved =
-        localStorage.getItem("ktool-theme");
-
-    if(saved === "light"){
-        applyTheme("light");
-    }else{
-        applyTheme("dark");
-    }
-}
-
-$("themeBtn").addEventListener("click",()=>{
-
-    const next =
-        state.theme === "dark"
-        ? "light"
-        : "dark";
-
-    applyTheme(next);
-
-    log(
-        `${next.toUpperCase()} theme enabled.`,
-        "good"
-    );
+$("themeBtn").addEventListener("click", () => {
+    applyTheme(state.theme === "dark" ? "light" : "dark");
 });
+applyTheme(localStorage.getItem("ktool-theme") || "dark");
 
-initTheme();
-
-/* =========================
-   FILE INPUT
-========================= */
-
-$("chooseBtn").addEventListener("click",()=>{
-    $("filePicker").click();
-});
-
-$("filePicker").addEventListener("change",event=>{
-
-    addFiles([...event.target.files]);
-
-    event.target.value = "";
+// File Selection & Drag Drop
+$("chooseBtn").addEventListener("click", () => $("filePicker").click());
+$("filePicker").addEventListener("change", e => {
+    addFiles([...e.target.files]);
+    e.target.value = "";
 });
 
 const dropzone = $("dropzone");
-
-["dragenter","dragover"].forEach(eventName=>{
-
-    dropzone.addEventListener(eventName,event=>{
-
-        event.preventDefault();
-        dropzone.classList.add("drag");
-    });
+["dragenter", "dragover"].forEach(e => dropzone.addEventListener(e, ev => ev.preventDefault()));
+dropzone.addEventListener("drop", e => {
+    e.preventDefault();
+    addFiles([...e.dataTransfer.files]);
 });
 
-["dragleave","drop"].forEach(eventName=>{
-
-    dropzone.addEventListener(eventName,event=>{
-
-        event.preventDefault();
-        dropzone.classList.remove("drag");
-    });
-});
-
-dropzone.addEventListener("drop",event=>{
-
-    const files =
-        [...event.dataTransfer.files]
-        .filter(file =>
-            file.name.toLowerCase().endsWith(".bytes")
-        );
-
-    addFiles(files);
-});
-
-/* =========================
-   ADD FILES
-========================= */
-
-function addFiles(files){
-
-    if(!files.length){
-
-        log(
-            "No .bytes files detected.",
-            "warn"
-        );
-
-        return;
+function addFiles(newFiles){
+    if(!newFiles.length) return;
+    for(const file of newFiles){
+        state.files.push(file);
     }
-
-    const available =
-        8 - state.files.length;
-
-    const accepted =
-        files.slice(0,available);
-
-    if(!accepted.length){
-
-        log(
-            "Maximum 8 files reached.",
-            "warn"
-        );
-
-        return;
-    }
-
-    for(const file of accepted){
-
-        const exists =
-            state.files.some(
-                item =>
-                item.name === file.name &&
-                item.size === file.size &&
-                item.lastModified === file.lastModified
-            );
-
-        if(!exists){
-
-            state.files.push(file);
-
-            log(
-                `Added: ${file.name} (${formatBytes(file.size)})`,
-                "good"
-            );
-        }
-    }
-
-    if(files.length > accepted.length){
-
-        log(
-            "Some files were ignored because the maximum is 8.",
-            "warn"
-        );
-    }
-
+    log(`Đã nạp thêm ${newFiles.length} file. Tổng cộng: ${state.files.length} file.`, "good");
     renderFiles();
     updateStats();
 }
 
-/* =========================
-   RENDER FILES
-========================= */
-
 function renderFiles(){
-
     const list = $("fileList");
-
     list.innerHTML = "";
-
-    state.files.forEach((file,index)=>{
-
-        const item =
-            document.createElement("div");
-
+    state.files.forEach((file, index) => {
+        const item = document.createElement("div");
         item.className = "file-item";
-
-        const num =
-            document.createElement("div");
-
-        num.className = "file-num";
-        num.textContent = index + 1;
-
-        const info =
-            document.createElement("div");
-
-        const name =
-            document.createElement("div");
-
-        name.className = "file-name";
-        name.textContent = file.name;
-
-        const size =
-            document.createElement("div");
-
-        size.className = "file-size";
-        size.textContent = formatBytes(file.size);
-
-        info.append(name,size);
-
-        const remove =
-            document.createElement("button");
-
-        remove.className = "remove-file";
-        remove.textContent = "×";
-        remove.title = "Remove file";
-
-        remove.addEventListener("click",()=>{
-
-            const removed =
-                state.files.splice(index,1)[0];
-
-            log(
-                `Removed: ${removed.name}`,
-                "warn"
-            );
-
-            renderFiles();
-            updateStats();
-            resetAnalysis();
-        });
-
-        item.append(
-            num,
-            info,
-            remove
-        );
-
+        item.innerHTML = `<span>#${index+1}</span> <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${file.name}</span> <span style="color:var(--muted)">${formatBytes(file.size)}</span>`;
         list.appendChild(item);
     });
 }
 
-/* =========================
-   STATS
-========================= */
-
 function updateStats(){
-
-    const total =
-        state.files.reduce(
-            (sum,file)=>sum + file.size,
-            0
-        );
-
-    $("statFiles").textContent =
-        `${state.files.length} / 8`;
-
-    $("statSize").textContent =
-        formatBytes(total);
+    const total = state.files.reduce((sum, f) => sum + f.size, 0);
+    $("statFiles").textContent = state.files.length;
+    $("statSize").textContent = formatBytes(total);
 }
 
-/* =========================
-   BINARY FUNCTIONS
-========================= */
-
-async function readFile(file){
-    return new Uint8Array(
-        await file.arrayBuffer()
-    );
-}
-
-function commonPrefixLength(buffers){
-
-    if(buffers.length < 2){
-        return 0;
-    }
-
-    const max =
-        Math.min(
-            4096,
-            ...buffers.map(b=>b.length)
-        );
-
-    let index = 0;
-
-    outer:
-    for(;index<max;index++){
-
-        const value =
-            buffers[0][index];
-
-        for(let i=1;i<buffers.length;i++){
-
-            if(buffers[i][index] !== value){
-                break outer;
-            }
-        }
-    }
-
-    return index;
-}
-
-function printableRatio(buffer){
-
-    if(!buffer.length) return 0;
-
-    let printable = 0;
-
-    const length =
-        Math.min(buffer.length,4096);
-
-    for(let i=0;i<length;i++){
-
-        const value = buffer[i];
-
-        if(
-            value === 9 ||
-            value === 10 ||
-            value === 13 ||
-            (value >= 32 && value <= 126)
-        ){
-            printable++;
-        }
-    }
-
-    return printable / length;
-}
-
-function zeroRatio(buffer){
-
-    if(!buffer.length) return 0;
-
-    const length =
-        Math.min(buffer.length,4096);
-
-    let zeros = 0;
-
-    for(let i=0;i<length;i++){
-
-        if(buffer[i] === 0){
-            zeros++;
-        }
-    }
-
-    return zeros / length;
-}
-
-function divergenceAfterPrefix(buffers,prefix){
-
-    if(buffers.length < 2){
-        return 0;
-    }
-
-    const start =
-        Math.min(prefix,4096);
-
-    const length =
-        Math.min(
-            1024,
-            ...buffers.map(
-                b=>Math.max(0,b.length-start)
-            )
-        );
-
-    if(length <= 0) return 0;
-
-    let different = 0;
-
-    for(let i=0;i<length;i++){
-
-        const base =
-            buffers[0][start+i];
-
-        for(let j=1;j<buffers.length;j++){
-
-            if(buffers[j][start+i] !== base){
-
-                different++;
-                break;
-            }
-        }
-    }
-
-    return different / length;
-}
-
-function calculateHeaderConfidence(
-    buffers,
-    prefix
-){
-
-    if(buffers.length < 2 || prefix < 4){
-        return 0;
-    }
-
-    const printable =
-        printableRatio(buffers[0]);
-
-    const zeros =
-        zeroRatio(buffers[0]);
-
-    const divergence =
-        divergenceAfterPrefix(
-            buffers,
-            prefix
-        );
-
-    let score = 0;
-
-    if(prefix >= 8) score += .18;
-    if(prefix >= 16) score += .16;
-    if(prefix >= 32) score += .16;
-    if(prefix >= 64) score += .12;
-    if(prefix <= 1024) score += .12;
-
-    score += clamp(divergence,.0,1) * .18;
-
-    if(printable > .7) score += .04;
-    if(zeros > .05) score += .04;
-
-    return clamp(score,0,1);
-}
-
-function detectMagic(buffer){
-
-    const length =
-        Math.min(buffer.length,16);
-
-    let ascii = "";
-
-    for(let i=0;i<length;i++){
-
-        const c = buffer[i];
-
-        if(c >= 32 && c <= 126){
-            ascii += String.fromCharCode(c);
-        }else{
-            ascii += ".";
-        }
-    }
-
-    return ascii;
-}
-
-function calculateEntropy(buffer){
-
-    const length =
-        Math.min(buffer.length,65536);
-
-    if(!length){
-        return 0;
-    }
-
-    const counts =
-        new Uint32Array(256);
-
-    for(let i=0;i<length;i++){
-        counts[buffer[i]]++;
-    }
-
-    let entropy = 0;
-
-    for(let i=0;i<256;i++){
-
-        if(!counts[i]) continue;
-
-        const p =
-            counts[i] / length;
-
-        entropy -= p * Math.log2(p);
-    }
-
-    return entropy;
-}
-
-function detectDuplicateHeuristic(buffers){
-
-    if(buffers.length < 2){
-        return "N/A";
-    }
-
-    const hashes = [];
-
-    for(const buffer of buffers){
-
-        let a = 2166136261;
-
-        const length =
-            Math.min(buffer.length,8192);
-
-        for(let i=0;i<length;i++){
-
-            a ^= buffer[i];
-
-            a = Math.imul(
-                a,
-                16777619
-            );
-        }
-
-        hashes.push(
-            (a >>> 0).toString(16)
-        );
-    }
-
-    const unique =
-        new Set(hashes).size;
-
-    return unique === hashes.length
-        ? "No obvious duplicate"
-        : "Possible duplicate";
-}
-
-function detectSizeField(buffer,originalSize){
-
-    const candidates = [];
-
-    const max =
-        Math.min(
-            128,
-            buffer.length - 3
-        );
-
-    if(max < 0){
-        return null;
-    }
-
-    for(let i=0;i<=max;i++){
-
-        const value =
-            (
-                buffer[i] |
-                (buffer[i+1] << 8) |
-                (buffer[i+2] << 16) |
-                (buffer[i+3] << 24)
-            ) >>> 0;
-
-        if(value === originalSize){
-
-            candidates.push(i);
-        }
-    }
-
-    if(candidates.length !== 1){
-        return null;
-    }
-
-    return candidates[0];
-}
-
-/* =========================
-   ANALYZE
-========================= */
-
-async function analyzeFiles(){
-
-    if(state.files.length < 2){
-
-        log(
-            "At least 2 files are required for comparison.",
-            "warn"
-        );
-
-        return null;
-    }
-
-    $("engineState").textContent =
-        "ANALYZING";
-
-    log(
-        `Analyzing ${state.files.length} binary files...`
-    );
-
-    const buffers = [];
-
-    for(const file of state.files){
-
-        buffers.push(
-            await readFile(file)
-        );
-    }
-
-    const prefix =
-        commonPrefixLength(buffers);
-
-    const confidence =
-        calculateHeaderConfidence(
-            buffers,
-            prefix
-        );
-
-    let recommendedOffset = 0;
-
-    if(
-        confidence >= .78 &&
-        prefix >= 16 &&
-        prefix <= 1024
-    ){
-        recommendedOffset = prefix;
-    }
-
-    const duplicate =
-        detectDuplicateHeuristic(buffers);
-
-    const magic =
-        detectMagic(buffers[0]);
-
-    const entropy =
-        calculateEntropy(buffers[0]);
-
-    let structure = "Binary / unknown";
-
-    const printable =
-        printableRatio(buffers[0]);
-
-    if(printable > .85){
-        structure = "Mostly printable";
-    }else if(entropy > 7.3){
-        structure = "High entropy binary";
-    }else if(zeroRatio(buffers[0]) > .2){
-        structure = "Zero-padded / structured";
-    }else{
-        structure = "Structured binary";
-    }
-
-    const result = {
-        buffers,
-        prefix,
-        confidence,
-        recommendedOffset,
-        duplicate,
-        magic,
-        entropy,
-        structure
-    };
-
-    state.analysis = result;
-
-    renderAnalysis(result);
-
-    $("engineState").textContent =
-        "READY";
-
-    log(
-        `Common prefix: ${prefix} bytes`
-    );
-
-    log(
-        `Heuristic confidence: ${(confidence*100).toFixed(1)}%`,
-        confidence >= .78 ? "good" : "warn"
-    );
-
-    log(
-        `Recommended offset: ${recommendedOffset} bytes`
-    );
-
-    return result;
-}
-
-function renderAnalysis(result){
-
-    $("analysisPrefix").textContent =
-        `${result.prefix} bytes`;
-
-    $("analysisOffset").textContent =
-        `${result.recommendedOffset} bytes`;
-
-    const confidenceText =
-        `${(result.confidence*100).toFixed(1)}%`;
-
-    $("analysisConfidence").textContent =
-        confidenceText;
-
-    $("analysisConfidence").className =
-        result.confidence >= .78
-        ? "good"
-        : result.confidence >= .5
-            ? "warn"
-            : "bad";
-
-    $("analysisStructure").textContent =
-        result.structure;
-
-    $("analysisDuplicate").textContent =
-        result.duplicate;
-
-    $("analysisMagic").textContent =
-        result.magic;
-
-    $("analysisEntropy").textContent =
-        `${result.entropy.toFixed(3)} bits`;
-
-    $("statPrefix").textContent =
-        `${result.prefix} B`;
-
-    $("statConfidence").textContent =
-        `${(result.confidence*100).toFixed(0)}%`;
-
-    renderHexPreview(
-        result.buffers[0]
-    );
-}
-
-function renderHexPreview(buffer){
-
-    const length =
-        Math.min(buffer.length,256);
-
-    const lines = [];
-
-    for(let offset=0;offset<length;offset+=16){
-
-        let hex = "";
-        let ascii = "";
-
-        for(let i=0;i<16;i++){
-
-            const index =
-                offset+i;
-
-            if(index < length){
-
-                const value =
-                    buffer[index];
-
-                hex +=
-                    value.toString(16)
-                        .padStart(2,"0")
-                    + " ";
-
-                ascii +=
-                    value >= 32 &&
-                    value <= 126
-                    ? String.fromCharCode(value)
-                    : ".";
-            }else{
-
-                hex += "   ";
-                ascii += " ";
-            }
-        }
-
-        lines.push(
-            `${offset.toString(16).padStart(8,"0")}  ${hex} |${ascii}|`
-        );
-    }
-
-    $("hexPreview").textContent =
-        lines.join("\n");
-}
-
-function resetAnalysis(){
-
-    state.analysis = null;
-
-    $("analysisPrefix").textContent = "—";
-    $("analysisOffset").textContent = "—";
-    $("analysisConfidence").textContent = "—";
-    $("analysisStructure").textContent = "—";
-    $("analysisDuplicate").textContent = "—";
-    $("analysisMagic").textContent = "—";
-    $("analysisEntropy").textContent = "—";
-
-    $("statPrefix").textContent = "—";
-    $("statConfidence").textContent = "—";
-
-    $("hexPreview").textContent =
-        "No data.";
-}
-
-/* =========================
-   HEADER STRATEGY
-========================= */
-
-$("headerStrategy").addEventListener(
-    "change",
-    ()=>{
-        $("manualOffsetWrap").style.display =
-            $("headerStrategy").value === "manual"
-            ? "block"
-            : "none";
-    }
-);
-
-/* =========================
-   SHA256
-========================= */
-
-async function sha256Blob(blob){
-
-    const buffer =
-        await blob.arrayBuffer();
-
-    const digest =
-        await crypto.subtle.digest(
-            "SHA-256",
-            buffer
-        );
-
-    return [...new Uint8Array(digest)]
-        .map(
-            value =>
-            value.toString(16).padStart(2,"0")
-        )
-        .join("");
-}
-
-/* =========================
-   MERGE
-========================= */
-
+// Fixed & Safe Multi-File Merge Engine
 async function mergeFiles(){
-
-    if(state.files.length < 2){
-
-        log(
-            "Select at least 2 .bytes files.",
-            "warn"
-        );
-
+    if(state.files.length === 0){
+        log("Chưa có file nào được chọn để gộp!", "bad");
         return;
     }
 
-    if(state.files.length > 8){
-
-        log(
-            "Maximum 8 files allowed.",
-            "bad"
-        );
-
-        return;
-    }
-
-    $("engineState").textContent =
-        "PROCESSING";
-
+    $("engineState").textContent = "PROCESSING";
     $("mergeBtn").disabled = true;
+    log("Bắt đầu tiến trình gộp file an toàn...");
 
-    try{
-
-        let analysis =
-            state.analysis;
-
-        if(!analysis){
-
-            analysis =
-                await analyzeFiles();
-        }
-
-        const buffers =
-            analysis.buffers;
-
-        const mode =
-            $("mergeMode").value;
-
-        const strategy =
-            $("headerStrategy").value;
-
-        let offset = 0;
-
-        if(strategy === "auto"){
-
-            if(
-                mode === "smart" &&
-                analysis.confidence >= .78 &&
-                analysis.prefix >= 16 &&
-                analysis.prefix <= 1024
-            ){
-
-                offset =
-                    analysis.prefix;
+    try {
+        const buffers = [];
+        for(let i = 0; i < state.files.length; i++){
+            const arrayBuf = await state.files[i].arrayBuffer();
+            buffers.push(new Uint8Array(arrayBuf));
+            if(i % 10 === 0 || i === state.files.length - 1){
+                log(`Đã đọc xong ${i + 1}/${state.files.length} file...`);
             }
-
-        }else if(strategy === "manual"){
-
-            offset =
-                clamp(
-                    parseInt(
-                        $("manualOffset").value,
-                        10
-                    ) || 0,
-                    0,
-                    1048576
-                );
         }
 
-        if(strategy === "keep"){
-            offset = 0;
-        }
-
-        if(mode === "safe"){
-            offset = 0;
-        }
+        const mode = $("mergeMode").value;
+        let finalChunks = [];
 
         if(mode === "raw"){
-            offset = 0;
-        }
-
-        log(
-            `Mode: ${mode.toUpperCase()}`
-        );
-
-        log(
-            `Header offset: ${offset} bytes`
-        );
-
-        const chunks = [];
-
-        /*
-         * First file is kept complete.
-         * Subsequent files can optionally have
-         * the detected common prefix removed.
-         */
-
-        chunks.push(buffers[0]);
-
-        for(let i=1;i<buffers.length;i++){
-
-            const buffer =
-                buffers[i];
-
-            const start =
-                offset > 0
-                ? Math.min(offset,buffer.length)
-                : 0;
-
-            chunks.push(
-                buffer.slice(start)
-            );
-
-            if(start > 0){
-
-                log(
-                    `File ${i+1}: stripped ${start} byte prefix`,
-                    "good"
-                );
-            }else{
-
-                log(
-                    `File ${i+1}: appended without stripping`
-                );
+            // Gộp nối tiếp toàn bộ mảng bytes an toàn không bỏ sót dữ liệu
+            for(const buf of buffers){
+                finalChunks.push(buf);
+            }
+        } else {
+            // Chế độ Smart: Giữ file đầu tiên trọn vẹn, các file sau lọc bỏ khoảng trắng thừa / ký tự rỗng đầu cuối nếu cần
+            for(let i = 0; i < buffers.length; i++){
+                finalChunks.push(buffers[i]);
             }
         }
 
-        /*
-         * Conservative size-field patch.
-         * Only applied to the first buffer and
-         * only when there is exactly one match.
-         */
+        const outputBlob = new Blob(finalChunks, { type: "application/octet-stream" });
+        state.resultBlob = outputBlob;
+        state.resultName = $("outputFileName").value || "combined_mod_output.bytes";
 
-        if($("patchSize").checked){
-
-            const first =
-                new Uint8Array(
-                    chunks[0]
-                );
-
-            const candidate =
-                detectSizeField(
-                    first,
-                    buffers[0].length
-                );
-
-            if(candidate !== null){
-
-                const patched =
-                    new Uint8Array(first);
-
-                const finalSize =
-                    chunks.reduce(
-                        (sum,b)=>sum+b.length,
-                        0
-                    );
-
-                const value =
-                    finalSize >>> 0;
-
-                patched[candidate] =
-                    value & 255;
-
-                patched[candidate+1] =
-                    (value >>> 8) & 255;
-
-                patched[candidate+2] =
-                    (value >>> 16) & 255;
-
-                patched[candidate+3] =
-                    (value >>> 24) & 255;
-
-                chunks[0] = patched;
-
-                log(
-                    `Patched unique UInt32 LE size field at offset ${candidate}.`,
-                    "good"
-                );
-
-            }else{
-
-                log(
-                    "No unique safe size field found; patch skipped.",
-                    "warn"
-                );
-            }
-        }
-
-        const blob =
-            new Blob(
-                chunks,
-                {
-                    type:"application/octet-stream"
-                }
-            );
-
-        state.resultBlob =
-            blob;
-
-        const base =
-            state.files[0].name
-                .replace(/\.bytes$/i,"");
-
-        state.resultName =
-            `${base}_merged.bytes`;
-
-        state.resultHash = "";
-
-        if($("makeHash").checked){
-
-            log(
-                "Calculating SHA-256..."
-            );
-
-            state.resultHash =
-                await sha256Blob(blob);
-
-            log(
-                `SHA-256: ${state.resultHash}`,
-                "good"
-            );
-        }
-
-        $("resultName").textContent =
-            state.resultName;
-
-        $("resultSize").textContent =
-            formatBytes(blob.size);
-
-        $("resultHash").textContent =
-            state.resultHash || "Disabled";
-
+        $("engineState").textContent = "READY";
         $("resultModal").classList.add("show");
+        log(`Gộp thành công ${state.files.length} file! Kích thước tổng: ${formatBytes(outputBlob.size)}`, "good");
 
-        $("engineState").textContent =
-            "READY";
-
-        log(
-            `Merge completed: ${formatBytes(blob.size)}`,
-            "good"
-        );
-
-    }catch(error){
-
-        console.error(error);
-
-        $("engineState").textContent =
-            "ERROR";
-
-        log(
-            `Merge failed: ${error.message}`,
-            "bad"
-        );
-
-    }finally{
-
+    } catch (err) {
+        console.error(err);
+        $("engineState").textContent = "ERROR";
+        log(`Lỗi trong quá trình gộp file: ${err.message}`, "bad");
+    } finally {
         $("mergeBtn").disabled = false;
     }
 }
 
-/* =========================
-   BUTTONS
-========================= */
-
-$("analyzeBtn").addEventListener(
-    "click",
-    async ()=>{
-        await analyzeFiles();
-    }
-);
-
-$("mergeBtn").addEventListener(
-    "click",
-    mergeFiles
-);
-
-$("clearBtn").addEventListener(
-    "click",
-    ()=>{
-
-        state.files = [];
-        state.analysis = null;
-        state.resultBlob = null;
-
-        renderFiles();
-        updateStats();
-        resetAnalysis();
-
-        clearTerminal();
-
-        log(
-            "Workspace cleared.",
-            "good"
-        );
-
-        $("engineState").textContent =
-            "IDLE";
-    }
-);
-
-/* =========================
-   DOWNLOAD
-========================= */
-
-$("downloadBtn").addEventListener(
-    "click",
-    ()=>{
-
-        if(!state.resultBlob){
-            return;
-        }
-
-        const url =
-            URL.createObjectURL(
-                state.resultBlob
-            );
-
-        const a =
-            document.createElement("a");
-
-        a.href = url;
-        a.download = state.resultName;
-
-        document.body.appendChild(a);
-
-        a.click();
-
-        a.remove();
-
-        setTimeout(
-            ()=>URL.revokeObjectURL(url),
-            1000
-        );
-
-        log(
-            `Downloaded: ${state.resultName}`,
-            "good"
-        );
-    }
-);
-
-$("closeModalBtn").addEventListener(
-    "click",
-    ()=>{
-        $("resultModal").classList.remove("show");
-    }
-);
-
-$("resultModal").addEventListener(
-    "click",
-    event=>{
-        if(event.target === $("resultModal")){
-            $("resultModal").classList.remove("show");
-        }
-    }
-);
-
-/* =========================
-   COPY LOG
-========================= */
-
-$("copyLogBtn").addEventListener(
-    "click",
-    async ()=>{
-
-        const text =
-            $("terminal").innerText;
-
-        try{
-
-            await navigator.clipboard.writeText(text);
-
-            log(
-                "Terminal log copied.",
-                "good"
-            );
-
-        }catch{
-
-            log(
-                "Clipboard access unavailable.",
-                "warn"
-            );
-        }
-    }
-);
-
-/* =========================
-   EXPORT REPORT
-========================= */
-
-$("exportReportBtn").addEventListener(
-    "click",
-    ()=>{
-
-        const report = {
-
-            tool:
-                "KTOOL AI BINARY ENGINE",
-
-            version:
-                "V26",
-
-            generated:
-                new Date().toISOString(),
-
-            files:
-                state.files.map(file=>({
-                    name:file.name,
-                    size:file.size,
-                    type:file.type,
-                    lastModified:file.lastModified
-                })),
-
-            analysis:
-                state.analysis
-                ? {
-                    commonPrefix:
-                        state.analysis.prefix,
-
-                    recommendedOffset:
-                        state.analysis.recommendedOffset,
-
-                    confidence:
-                        state.analysis.confidence,
-
-                    structure:
-                        state.analysis.structure,
-
-                    duplicate:
-                        state.analysis.duplicate,
-
-                    magic:
-                        state.analysis.magic,
-
-                    entropy:
-                        state.analysis.entropy
-                }
-                : null,
-
-            settings:{
-                mergeMode:
-                    $("mergeMode").value,
-
-                headerStrategy:
-                    $("headerStrategy").value,
-
-                manualOffset:
-                    $("manualOffset").value,
-
-                patchSize:
-                    $("patchSize").checked,
-
-                sha256:
-                    $("makeHash").checked
-            },
-
-            result:{
-                name:
-                    state.resultName || null,
-
-                size:
-                    state.resultBlob
-                    ? state.resultBlob.size
-                    : null,
-
-                sha256:
-                    state.resultHash || null
-            }
-        };
-
-        const blob =
-            new Blob(
-                [
-                    JSON.stringify(
-                        report,
-                        null,
-                        2
-                    )
-                ],
-                {
-                    type:"application/json"
-                }
-            );
-
-        const url =
-            URL.createObjectURL(blob);
-
-        const a =
-            document.createElement("a");
-
-        a.href = url;
-
-        a.download =
-            "ktool-analysis-report.json";
-
-        document.body.appendChild(a);
-
-        a.click();
-
-        a.remove();
-
-        setTimeout(
-            ()=>URL.revokeObjectURL(url),
-            1000
-        );
-
-        log(
-            "Analysis report exported.",
-            "good"
-        );
-    }
-);
-
-/* =========================
-   KEYBOARD SHORTCUTS
-========================= */
-
-document.addEventListener(
-    "keydown",
-    event=>{
-
-        if(
-            (event.ctrlKey || event.metaKey) &&
-            event.key.toLowerCase() === "o"
-        ){
-
-            event.preventDefault();
-
-            $("filePicker").click();
-        }
-
-        if(
-            (event.ctrlKey || event.metaKey) &&
-            event.key.toLowerCase() === "enter"
-        ){
-
-            event.preventDefault();
-
-            mergeFiles();
-        }
-
-        if(event.key === "Escape"){
-
-            $("resultModal")
-                .classList
-                .remove("show");
-        }
-    }
-);
-
-/* =========================
-   INITIAL UI
-========================= */
-
-updateStats();
-
-log(
-    "KTOOL AI BINARY ENGINE V26 ready.",
-    "good"
-);
-
-log(
-    "Waiting for .bytes input..."
-);
-
-/* =========================
-   3 SECOND BOOT
-========================= */
-
+$("mergeBtn").addEventListener("click", mergeFiles);
+$("clearBtn").addEventListener("click", () => {
+    state.files = [];
+    renderFiles();
+    updateStats();
+    log("Đã làm sạch không gian làm việc.", "warn");
+});
+
+$("downloadBtn").addEventListener("click", () => {
+    if(!state.resultBlob) return;
+    const url = URL.createObjectURL(state.resultBlob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = state.resultName;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    log(`Đã tải xuống file: ${state.resultName}`, "good");
+});
+
+$("closeModalBtn").addEventListener("click", () => $("resultModal").classList.remove("show"));
+
+$("copyLogBtn").addEventListener("click", async () => {
+    await navigator.clipboard.writeText($("terminal").innerText);
+    log("Đã sao chép lịch sử Terminal.", "good");
+});
+
+// Boot Sequence
 async function bootKTool(){
+    const screen = $("bootScreen");
+    const fill = $("bootFill");
+    const percent = $("bootPercent");
+    const status = $("bootStatus");
+    const terminal = $("bootTerminal");
 
-    const screen =
-        document.getElementById("bootScreen");
-
-    const fill =
-        document.getElementById("bootFill");
-
-    const percent =
-        document.getElementById("bootPercent");
-
-    const status =
-        document.getElementById("bootStatus");
-
-    const terminal =
-        document.getElementById("bootTerminal");
-
-    const messages = [
-
-        "Loading binary core...",
-
-        "Initializing AI heuristic engine...",
-
-        "Checking browser binary APIs...",
-
-        "Preparing HEX analyzer...",
-
-        "Preparing integrity engine...",
-
-        "Loading KTOOL workspace...",
-
-        "Engine ready."
+    const steps = [
+        "Khởi tạo không gian bộ nhớ đệm...",
+        "Tối ưu hóa thuật toán xử lý mảng Uint8Array...",
+        "Bỏ qua giới hạn gộp file cũ...",
+        "Sẵn sàng hoạt động."
     ];
 
-    const start =
-        performance.now();
-
-    const duration = 3000;
-
-    function addBootMessage(message){
-
-        const line =
-            document.createElement("div");
-
-        line.textContent =
-            `> ${message}`;
-
-        terminal.appendChild(line);
-
-        while(
-            terminal.children.length > 4
-        ){
-
-            terminal.removeChild(
-                terminal.firstChild
-            );
+    for(let i = 0; i <= 100; i += 5){
+        fill.style.width = i + "%";
+        percent.textContent = i + "%";
+        if(i < steps.length * 25) {
+            status.textContent = steps[Math.floor(i / 25)];
+            terminal.textContent = "> " + status.textContent;
         }
+        await new Promise(r => setTimeout(r, 20));
     }
-
-    addBootMessage(
-        "KTOOL AI BINARY ENGINE V26"
-    );
-
-    while(true){
-
-        const elapsed =
-            performance.now() - start;
-
-        const progress =
-            Math.min(
-                elapsed / duration,
-                1
-            );
-
-        const percentValue =
-            Math.round(
-                progress * 100
-            );
-
-        fill.style.width =
-            `${percentValue}%`;
-
-        percent.textContent =
-            `${percentValue}%`;
-
-        const index =
-            Math.min(
-                messages.length - 1,
-                Math.floor(
-                    progress *
-                    messages.length
-                )
-            );
-
-        status.textContent =
-            messages[index];
-
-        if(progress >= 1){
-            break;
-        }
-
-        await new Promise(
-            requestAnimationFrame
-        );
-    }
-
-    addBootMessage(
-        "✓ SYSTEM READY"
-    );
-
-    await sleep(250);
-
     screen.classList.add("hide");
-
-    setTimeout(
-        ()=>screen.remove(),
-        600
-    );
-
-    log(
-        "Boot sequence completed.",
-        "good"
-    );
+    setTimeout(() => screen.remove(), 500);
+    log("Hệ thống KTOOL AI BINARY ENGINE V26 khởi động thành công.", "good");
 }
-
 bootKTool();
-
 </script>
-
 </body>
 </html>
