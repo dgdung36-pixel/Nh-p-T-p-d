@@ -2,88 +2,174 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#070b12">
-<title>KTOOL AI BINARY ENGINE V26 - MULTI MERGE FIX</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="theme-color" content="#05070d">
+<title>KTOOL AI BINARY ENGINE V27</title>
 
 <script>
-(function () {
-    try {
-        if (localStorage.getItem("ktool-theme") === "light") {
+(function(){
+    try{
+        const theme=localStorage.getItem("ktool-theme");
+        if(theme==="light"){
             document.documentElement.classList.add("light");
         }
-    } catch (_) {}
+    }catch(e){}
 })();
 </script>
 
 <style>
 :root{
-    --bg:#050810;
-    --bg2:#09101b;
-    --panel:rgba(10,16,28,.82);
-    --panel2:rgba(15,23,38,.92);
-    --text:#edf5ff;
-    --muted:#8290a7;
-    --border:rgba(120,150,190,.18);
+    --bg:#03050a;
+    --bg2:#070b13;
+    --panel:rgba(10,15,27,.78);
+    --panel2:rgba(15,22,37,.88);
+    --text:#f2f7ff;
+    --muted:#8190a8;
+    --border:rgba(120,155,200,.16);
     --accent:#5ee7ff;
     --accent2:#8b7cff;
-    --green:#50e3a4;
+    --green:#52e0a4;
     --yellow:#ffd166;
-    --red:#ff617d;
-    --shadow:0 20px 70px rgba(0,0,0,.42);
-    --radius:20px;
+    --red:#ff607c;
+    --shadow:0 25px 90px rgba(0,0,0,.45);
+    --glow:rgba(94,231,255,.25);
 }
 
 html.light{
-    --bg:#eef3f8;
+    --bg:#edf2f7;
     --bg2:#e5ebf2;
-    --panel:rgba(255,255,255,.88);
-    --panel2:#ffffff;
+    --panel:rgba(255,255,255,.82);
+    --panel2:#fff;
     --text:#101827;
-    --muted:#637086;
-    --border:rgba(40,60,90,.15);
-    --accent:#087f9b;
-    --accent2:#6554d9;
-    --green:#07865b;
-    --yellow:#a86b00;
-    --red:#c92d4d;
-    --shadow:0 18px 50px rgba(35,55,80,.14);
+    --muted:#65748a;
+    --border:rgba(35,55,80,.13);
+    --accent:#0788a5;
+    --accent2:#6656d9;
+    --green:#07885d;
+    --yellow:#a66b00;
+    --red:#ca3150;
+    --shadow:0 25px 70px rgba(40,55,75,.14);
+    --glow:rgba(8,136,165,.18);
 }
 
-*{box-sizing:border-box}
+*{
+    box-sizing:border-box;
+}
 
-html,body{
-    margin:0;
+html{
     min-height:100%;
-    font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-    background:
-        radial-gradient(circle at 10% 0%,rgba(94,231,255,.10),transparent 30%),
-        radial-gradient(circle at 90% 10%,rgba(139,124,255,.10),transparent 28%),
-        var(--bg);
-    color:var(--text);
 }
 
 body{
+    margin:0;
+    min-height:100vh;
     overflow-x:hidden;
+    color:var(--text);
+    font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    background:
+        radial-gradient(
+            circle at 10% 0%,
+            rgba(94,231,255,.10),
+            transparent 27%
+        ),
+        radial-gradient(
+            circle at 90% 8%,
+            rgba(139,124,255,.11),
+            transparent 28%
+        ),
+        linear-gradient(
+            180deg,
+            var(--bg),
+            var(--bg2)
+        );
 }
 
-button, input, select{
-    font:inherit;
+/* =========================
+   BACKGROUND EFFECT
+========================= */
+
+#bgCanvas{
+    position:fixed;
+    inset:0;
+    z-index:-3;
+    width:100%;
+    height:100%;
+    pointer-events:none;
 }
 
-button{
-    cursor:pointer;
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:-2;
+    pointer-events:none;
+    opacity:.23;
+
+    background-image:
+        linear-gradient(
+            rgba(94,231,255,.045) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(94,231,255,.045) 1px,
+            transparent 1px
+        );
+
+    background-size:45px 45px;
+
+    mask-image:linear-gradient(
+        to bottom,
+        black,
+        transparent 90%
+    );
 }
+
+body::after{
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:9998;
+    pointer-events:none;
+
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            rgba(255,255,255,.018) 0,
+            rgba(255,255,255,.018) 1px,
+            transparent 2px,
+            transparent 5px
+        );
+
+    opacity:.14;
+}
+
+/* =========================
+   BOOT
+========================= */
 
 #bootScreen{
     position:fixed;
     inset:0;
     z-index:99999;
+
     display:flex;
     align-items:center;
     justify-content:center;
-    background:#03060b;
-    transition:opacity .55s ease,visibility .55s ease;
+
+    background:#020409;
+
+    transition:
+        opacity .7s ease,
+        visibility .7s ease;
 }
 
 #bootScreen.hide{
@@ -91,93 +177,174 @@ button{
     visibility:hidden;
 }
 
-.boot-box{
-    width:min(560px,90vw);
-    padding:34px;
-    border:1px solid rgba(94,231,255,.2);
-    border-radius:24px;
-    background:rgba(7,12,21,.96);
-    box-shadow:0 0 80px rgba(94,231,255,.08), 0 25px 100px rgba(0,0,0,.55);
+.boot-card{
+    width:min(590px,92vw);
+    padding:35px;
+
+    border:1px solid rgba(94,231,255,.18);
+    border-radius:28px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(13,21,36,.98),
+            rgba(3,7,14,.98)
+        );
+
+    box-shadow:
+        0 0 90px rgba(94,231,255,.08),
+        0 40px 120px rgba(0,0,0,.65);
+
+    animation:bootIn .7s ease;
+}
+
+@keyframes bootIn{
+    from{
+        opacity:0;
+        transform:translateY(18px) scale(.97);
+    }
+    to{
+        opacity:1;
+        transform:none;
+    }
 }
 
 .boot-logo{
-    width:58px;
-    height:58px;
+    width:65px;
+    height:65px;
+
     display:grid;
     place-items:center;
-    margin-bottom:20px;
-    border-radius:16px;
-    color:#061018;
-    background:linear-gradient(135deg,var(--accent),var(--accent2));
-    font-size:28px;
+
+    border-radius:18px;
+
+    color:#031018;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--accent),
+            var(--accent2)
+        );
+
+    font-size:30px;
     font-weight:1000;
+
+    box-shadow:
+        0 0 45px rgba(94,231,255,.3);
+
+    animation:
+        bootPulse 1.5s infinite;
+}
+
+@keyframes bootPulse{
+    50%{
+        transform:scale(1.05);
+        box-shadow:
+            0 0 65px rgba(94,231,255,.45);
+    }
 }
 
 .boot-title{
-    font-size:clamp(20px,4vw,31px);
-    font-weight:950;
-    letter-spacing:-1px;
+    margin-top:20px;
+    font-size:clamp(22px,5vw,34px);
+    font-weight:1000;
+    letter-spacing:-1.5px;
 }
 
 .boot-subtitle{
-    margin-top:7px;
-    color:#8493a9;
-    font-size:12px;
-    letter-spacing:1.8px;
+    margin-top:6px;
+    color:#8290a7;
+    font-size:10px;
+    letter-spacing:2.2px;
 }
 
 .boot-status{
     display:flex;
     justify-content:space-between;
-    margin-top:30px;
+
+    margin-top:32px;
     margin-bottom:9px;
-    font-size:12px;
+
     color:#aebbd0;
+    font-family:monospace;
+    font-size:11px;
 }
 
 .boot-percent{
     color:var(--accent);
-    font-weight:800;
+    font-weight:900;
 }
 
 .boot-track{
     height:7px;
     overflow:hidden;
     border-radius:99px;
-    background:#111a28;
+    background:#101827;
 }
 
 .boot-fill{
     width:0;
     height:100%;
     border-radius:99px;
-    background:linear-gradient(90deg,var(--accent),var(--accent2));
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--accent),
+            var(--accent2)
+        );
+
+    box-shadow:
+        0 0 22px var(--glow);
+
+    transition:width .08s linear;
 }
 
 .boot-terminal{
-    min-height:75px;
+    min-height:78px;
     margin-top:20px;
-    padding:12px;
-    border-radius:12px;
+    padding:13px;
+
+    border:1px solid rgba(94,231,255,.08);
+    border-radius:13px;
+
     background:#02050a;
-    color:#6f829c;
-    font-family:monospace;
-    font-size:11px;
+
+    color:#70849e;
+
+    font-family:
+        "SFMono-Regular",
+        Consolas,
+        monospace;
+
+    font-size:10px;
     line-height:1.8;
 }
 
+/* =========================
+   APP
+========================= */
+
 .app{
-    width:min(1250px,94vw);
+    width:min(1280px,94vw);
     margin:auto;
-    padding:28px 0 50px;
+    padding:
+        25px
+        0
+        70px;
 }
+
+/* =========================
+   HEADER
+========================= */
 
 header{
     display:flex;
-    align-items:center;
     justify-content:space-between;
-    gap:20px;
-    margin-bottom:28px;
+    align-items:center;
+    gap:18px;
+    margin-bottom:25px;
 }
 
 .brand{
@@ -187,160 +354,649 @@ header{
 }
 
 .brand-logo{
-    width:48px;
-    height:48px;
+    width:49px;
+    height:49px;
+
     display:grid;
     place-items:center;
-    border-radius:15px;
-    color:#041018;
-    background:linear-gradient(135deg,var(--accent),var(--accent2));
-    font-size:23px;
+
+    border-radius:16px;
+
+    color:#031018;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--accent),
+            var(--accent2)
+        );
+
+    font-size:24px;
     font-weight:1000;
+
+    box-shadow:
+        0 0 35px var(--glow);
+
+    animation:
+        logoFloat 4s ease-in-out infinite;
+}
+
+@keyframes logoFloat{
+    50%{
+        transform:translateY(-3px);
+    }
 }
 
 .brand-title{
-    font-size:20px;
-    font-weight:950;
+    font-size:19px;
+    font-weight:1000;
+    letter-spacing:.2px;
 }
 
 .brand-subtitle{
     margin-top:3px;
     color:var(--muted);
-    font-size:10px;
-    letter-spacing:1.4px;
+    font-size:9px;
+    letter-spacing:1.8px;
+}
+
+.header-right{
+    display:flex;
+    align-items:center;
+    gap:9px;
+}
+
+.clock{
+    min-width:140px;
+    padding:9px 13px;
+
+    border:1px solid var(--border);
+    border-radius:13px;
+
+    background:var(--panel);
+
+    text-align:center;
+
+    box-shadow:
+        inset 0 1px rgba(255,255,255,.03);
+}
+
+.clock-time{
+    font-family:
+        "SFMono-Regular",
+        Consolas,
+        monospace;
+
+    font-size:13px;
+    font-weight:900;
+    color:var(--accent);
+    letter-spacing:1px;
+}
+
+.clock-date{
+    margin-top:2px;
+    color:var(--muted);
+    font-size:8px;
 }
 
 .icon-btn{
     width:42px;
     height:42px;
+
     border:1px solid var(--border);
-    border-radius:12px;
+    border-radius:13px;
+
     color:var(--text);
     background:var(--panel);
+
+    transition:
+        transform .2s,
+        border-color .2s,
+        box-shadow .2s;
 }
 
+.icon-btn:hover{
+    transform:translateY(-2px);
+    border-color:var(--accent);
+    box-shadow:0 0 25px var(--glow);
+}
+
+/* =========================
+   HERO
+========================= */
+
 .hero{
-    padding:35px;
+    position:relative;
+    overflow:hidden;
+
+    padding:42px;
+
     border:1px solid var(--border);
-    border-radius:28px;
-    background:var(--panel);
+    border-radius:29px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(94,231,255,.055),
+            transparent 38%
+        ),
+        linear-gradient(
+            315deg,
+            rgba(139,124,255,.07),
+            transparent 50%
+        ),
+        var(--panel);
+
     box-shadow:var(--shadow);
-    margin-bottom: 20px;
+
+    animation:
+        fadeUp .7s ease both;
+}
+
+.hero::before{
+    content:"";
+    position:absolute;
+
+    width:280px;
+    height:280px;
+
+    right:-120px;
+    top:-120px;
+
+    border:1px solid rgba(94,231,255,.15);
+    border-radius:50%;
+
+    box-shadow:
+        0 0 0 35px rgba(94,231,255,.025),
+        0 0 0 70px rgba(94,231,255,.018);
+
+    animation:
+        rotateOrb 15s linear infinite;
+}
+
+@keyframes rotateOrb{
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+.hero-kicker{
+    color:var(--accent);
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:3px;
 }
 
 .hero h1{
-    margin:10px 0 12px;
-    font-size:clamp(24px,4vw,42px);
+    max-width:850px;
+    margin:11px 0 13px;
+
+    font-size:
+        clamp(31px,5vw,57px);
+
+    line-height:1;
+    letter-spacing:-3px;
+}
+
+.hero h1 span{
+    background:
+        linear-gradient(
+            90deg,
+            var(--accent),
+            var(--accent2)
+        );
+
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
 }
 
 .hero p{
+    max-width:800px;
+    margin:0;
+
     color:var(--muted);
-    line-height:1.7;
-    font-size: 13px;
+
+    font-size:12px;
+    line-height:1.8;
 }
+
+.hero-badges{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:23px;
+}
+
+.badge{
+    padding:7px 10px;
+
+    border:1px solid var(--border);
+    border-radius:99px;
+
+    color:var(--muted);
+    background:rgba(255,255,255,.025);
+
+    font-size:8px;
+    font-weight:850;
+    letter-spacing:1px;
+}
+
+/* =========================
+   STATS
+========================= */
 
 .stats{
     display:grid;
-    grid-template-columns:repeat(4,1fr);
+    grid-template-columns:
+        repeat(4,1fr);
+
     gap:12px;
-    margin-bottom:20px;
+
+    margin:
+        14px
+        0;
 }
 
 .stat{
+    position:relative;
+    overflow:hidden;
+
     padding:18px;
+
     border:1px solid var(--border);
-    border-radius:17px;
+    border-radius:18px;
+
     background:var(--panel);
+
+    transition:
+        transform .25s,
+        border-color .25s;
+}
+
+.stat::after{
+    content:"";
+
+    position:absolute;
+
+    left:-40%;
+    bottom:0;
+
+    width:80%;
+    height:1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            var(--accent),
+            transparent
+        );
+
+    animation:
+        statScan 4s linear infinite;
+}
+
+@keyframes statScan{
+    to{
+        left:100%;
+    }
+}
+
+.stat:hover{
+    transform:translateY(-3px);
+    border-color:rgba(94,231,255,.28);
 }
 
 .stat-label{
     color:var(--muted);
-    font-size:10px;
+    font-size:8px;
+    font-weight:800;
+    letter-spacing:1.5px;
 }
 
 .stat-value{
     margin-top:7px;
-    font-size:18px;
-    font-weight:900;
+    font-size:20px;
+    font-weight:950;
 }
+
+/* =========================
+   GRID
+========================= */
 
 .main-grid{
     display:grid;
-    grid-template-columns:1.1fr .9fr;
+    grid-template-columns:
+        1.08fr
+        .92fr;
+
     gap:14px;
 }
 
 .panel{
+    position:relative;
+    overflow:hidden;
+
     padding:21px;
+
     border:1px solid var(--border);
     border-radius:21px;
+
     background:var(--panel);
+
     box-shadow:var(--shadow);
-    margin-bottom: 14px;
+
+    margin-bottom:14px;
+
+    animation:
+        fadeUp .65s ease both;
+}
+
+.panel::before{
+    content:"";
+
+    position:absolute;
+    left:0;
+    top:0;
+
+    width:70px;
+    height:1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--accent),
+            transparent
+        );
 }
 
 .panel-title{
     display:flex;
-    align-items:center;
     justify-content:space-between;
+    align-items:center;
+
     margin-bottom:16px;
 }
 
 .panel-title h2{
     margin:0;
-    font-size:14px;
+
+    font-size:12px;
+    font-weight:950;
+    letter-spacing:.8px;
 }
 
+.panel-title span{
+    color:var(--muted);
+    font-size:8px;
+    letter-spacing:.7px;
+}
+
+/* =========================
+   DROPZONE
+========================= */
+
 .dropzone{
-    min-height:160px;
+    min-height:190px;
+
     display:flex;
     align-items:center;
     justify-content:center;
+
     text-align:center;
-    border:1px dashed rgba(94,231,255,.35);
+
+    border:1px dashed rgba(94,231,255,.32);
+    border-radius:18px;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(94,231,255,.055),
+            transparent 65%
+        );
+
+    transition:
+        transform .25s,
+        border-color .25s,
+        background .25s;
+}
+
+.dropzone:hover{
+    border-color:var(--accent);
+    background:
+        radial-gradient(
+            circle,
+            rgba(94,231,255,.09),
+            transparent 65%
+        );
+}
+
+.dropzone.drag{
+    transform:scale(1.015);
+    border-color:var(--accent);
+    box-shadow:
+        0 0 40px var(--glow);
+}
+
+.drop-icon{
+    width:57px;
+    height:57px;
+
+    display:grid;
+    place-items:center;
+
+    margin:
+        0
+        auto
+        13px;
+
     border-radius:17px;
-    background:rgba(94,231,255,.025);
-    padding: 15px;
+
+    color:var(--accent);
+
+    background:
+        rgba(94,231,255,.07);
+
+    font-size:24px;
+
+    animation:
+        floatIcon 2.5s ease-in-out infinite;
+}
+
+@keyframes floatIcon{
+    50%{
+        transform:translateY(-5px);
+    }
+}
+
+.dropzone h3{
+    margin:0;
+    font-size:14px;
+}
+
+.dropzone p{
+    margin:7px 0 14px;
+    color:var(--muted);
+    font-size:10px;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+button{
+    font:inherit;
 }
 
 .primary{
     border:0;
-    border-radius:11px;
-    padding:11px 16px;
-    color:#041018;
-    background:linear-gradient(135deg,var(--accent),#86f1ff);
-    font-weight:900;
+    border-radius:12px;
+
+    padding:
+        11px
+        17px;
+
+    color:#031018;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--accent),
+            #91f2ff
+        );
+
+    font-size:10px;
+    font-weight:950;
+
+    box-shadow:
+        0 10px 30px var(--glow);
+
+    transition:
+        transform .2s,
+        filter .2s,
+        box-shadow .2s;
+}
+
+.primary:hover{
+    transform:translateY(-2px);
+    filter:brightness(1.07);
+
+    box-shadow:
+        0 14px 38px var(--glow);
+}
+
+.primary:active{
+    transform:scale(.97);
 }
 
 .secondary{
     border:1px solid var(--border);
     border-radius:11px;
-    padding:10px 14px;
+
+    padding:
+        10px
+        14px;
+
     color:var(--text);
     background:var(--panel2);
-    font-size:11px;
-    font-weight:800;
+
+    font-size:10px;
+    font-weight:850;
+
+    transition:.2s;
 }
 
+.secondary:hover{
+    border-color:var(--accent);
+    transform:translateY(-1px);
+}
+
+button:disabled{
+    opacity:.5;
+    cursor:not-allowed;
+}
+
+/* =========================
+   FILE LIST
+========================= */
+
 .file-list{
-    max-height: 200px;
-    overflow-y: auto;
+    max-height:250px;
+    overflow:auto;
+
     display:grid;
     gap:8px;
+
     margin-top:13px;
+
+    scrollbar-width:thin;
 }
 
 .file-item{
     display:grid;
-    grid-template-columns:auto 1fr auto;
+
+    grid-template-columns:
+        28px
+        1fr
+        auto
+        28px;
+
     align-items:center;
-    gap:10px;
-    padding:8px 11px;
+    gap:9px;
+
+    padding:9px 11px;
+
     border:1px solid var(--border);
     border-radius:13px;
+
     background:var(--panel2);
-    font-size: 11px;
+
+    font-size:10px;
+
+    animation:
+        fileIn .3s ease both;
 }
+
+@keyframes fileIn{
+    from{
+        opacity:0;
+        transform:translateX(-7px);
+    }
+    to{
+        opacity:1;
+        transform:none;
+    }
+}
+
+.file-number{
+    width:27px;
+    height:27px;
+
+    display:grid;
+    place-items:center;
+
+    border-radius:8px;
+
+    color:var(--accent);
+    background:rgba(94,231,255,.07);
+
+    font-size:9px;
+    font-weight:950;
+}
+
+.file-name{
+    min-width:0;
+
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+
+    font-weight:750;
+}
+
+.file-size{
+    color:var(--muted);
+    font-family:monospace;
+    font-size:9px;
+}
+
+.remove-file{
+    width:25px;
+    height:25px;
+
+    border:0;
+    border-radius:7px;
+
+    color:var(--red);
+    background:rgba(255,96,124,.06);
+
+    cursor:pointer;
+}
+
+/* =========================
+   INPUTS
+========================= */
 
 .control-grid{
     display:grid;
@@ -349,41 +1005,145 @@ header{
 
 .field label{
     display:block;
+
     margin-bottom:7px;
+
     color:var(--muted);
-    font-size:10px;
-    font-weight:800;
+
+    font-size:8px;
+    font-weight:900;
+    letter-spacing:1px;
 }
 
-select, input[type="number"]{
+select,
+input[type="text"]{
     width:100%;
+
     padding:11px 12px;
+
     border:1px solid var(--border);
     border-radius:11px;
+
+    outline:none;
+
     color:var(--text);
     background:var(--panel2);
+
+    font-size:10px;
+
+    transition:border-color .2s;
 }
 
+select:focus,
+input:focus{
+    border-color:var(--accent);
+}
+
+/* =========================
+   PROGRESS
+========================= */
+
+.progress-box{
+    display:none;
+    margin-top:14px;
+}
+
+.progress-box.show{
+    display:block;
+}
+
+.progress-head{
+    display:flex;
+    justify-content:space-between;
+
+    color:var(--muted);
+
+    font-size:9px;
+    margin-bottom:7px;
+}
+
+.progress-track{
+    height:6px;
+
+    overflow:hidden;
+
+    border-radius:99px;
+
+    background:
+        rgba(255,255,255,.05);
+}
+
+.progress-fill{
+    width:0;
+    height:100%;
+
+    border-radius:99px;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--accent),
+            var(--accent2)
+        );
+
+    box-shadow:
+        0 0 20px var(--glow);
+
+    transition:
+        width .18s ease;
+}
+
+/* =========================
+   TERMINAL
+========================= */
+
 .terminal{
-    min-height:180px;
-    max-height:220px;
+    min-height:210px;
+    max-height:280px;
+
     overflow:auto;
+
     padding:15px;
+
+    border:1px solid rgba(94,231,255,.08);
     border-radius:15px;
+
     background:#02050a;
-    color:#8ca0b9;
-    font-family:monospace;
-    font-size:10px;
-    line-height:1.6;
+
+    color:#8296b0;
+
+    font-family:
+        "SFMono-Regular",
+        Consolas,
+        monospace;
+
+    font-size:9px;
+    line-height:1.8;
+
+    box-shadow:
+        inset 0 0 30px rgba(0,0,0,.4);
 }
 
 .log-line{
     white-space:pre-wrap;
     word-break:break-word;
 }
-.log-line.good{color:#63e7ad}
-.log-line.warn{color:#ffd166}
-.log-line.bad{color:#ff6c85}
+
+.log-line.good{
+    color:#63e7ad;
+}
+
+.log-line.warn{
+    color:#ffd166;
+}
+
+.log-line.bad{
+    color:#ff6c85;
+}
+
+/* =========================
+   ACTION
+========================= */
 
 .action-bar{
     display:flex;
@@ -392,15 +1152,156 @@ select, input[type="number"]{
     margin-top:14px;
 }
 
+/* =========================
+   CREATOR
+========================= */
+
+.creator{
+    position:relative;
+
+    display:flex;
+    align-items:center;
+    gap:18px;
+
+    margin:
+        35px
+        0
+        13px;
+
+    padding:
+        20px
+        0;
+}
+
+.creator-line{
+    flex:1;
+    height:1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(94,231,255,.45),
+            transparent
+        );
+}
+
+.creator-content{
+    position:relative;
+
+    min-width:270px;
+
+    padding:
+        15px
+        25px;
+
+    text-align:center;
+
+    border:
+        1px solid
+        rgba(94,231,255,.12);
+
+    border-radius:18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(94,231,255,.045),
+            rgba(139,124,255,.045)
+        );
+
+    box-shadow:
+        0 0 35px rgba(94,231,255,.045);
+}
+
+.creator-kicker{
+    color:var(--muted);
+
+    font-size:8px;
+    font-weight:950;
+
+    letter-spacing:3px;
+}
+
+.creator-name{
+    margin-top:5px;
+
+    font-size:20px;
+    font-weight:1000;
+
+    letter-spacing:2.5px;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--text),
+            var(--accent),
+            var(--text)
+        );
+
+    background-size:200% auto;
+
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+
+    animation:
+        creatorShine 4s linear infinite;
+}
+
+@keyframes creatorShine{
+    to{
+        background-position:200% center;
+    }
+}
+
+.creator-bracket{
+    color:var(--accent);
+}
+
+.creator-role{
+    margin-top:5px;
+
+    color:var(--accent);
+
+    font-size:7px;
+    font-weight:900;
+
+    letter-spacing:1.8px;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer{
+    text-align:center;
+
+    color:var(--muted);
+
+    font-size:8px;
+    line-height:1.8;
+}
+
+/* =========================
+   MODAL
+========================= */
+
 .modal{
     position:fixed;
     inset:0;
     z-index:5000;
+
     display:none;
     align-items:center;
     justify-content:center;
+
     padding:20px;
-    background:rgba(0,0,0,.7);
+
+    background:
+        rgba(0,0,0,.72);
+
+    backdrop-filter:blur(14px);
 }
 
 .modal.show{
@@ -408,331 +1309,2032 @@ select, input[type="number"]{
 }
 
 .modal-card{
-    width:min(550px,94vw);
-    padding:24px;
+    width:min(540px,94vw);
+
+    padding:26px;
+
     border:1px solid var(--border);
-    border-radius:22px;
+    border-radius:23px;
+
     background:var(--panel2);
+
+    box-shadow:
+        0 35px 100px rgba(0,0,0,.55);
+
+    animation:
+        modalIn .3s ease;
 }
 
-@media(max-width:850px){
-    .main-grid{grid-template-columns:1fr;}
-    .stats{grid-template-columns:repeat(2,1fr);}
+@keyframes modalIn{
+    from{
+        opacity:0;
+        transform:translateY(15px) scale(.96);
+    }
+    to{
+        opacity:1;
+        transform:none;
+    }
+}
+
+.modal-card h2{
+    margin:0;
+    font-size:19px;
+}
+
+.modal-card p{
+    color:var(--muted);
+    font-size:10px;
+    line-height:1.7;
+}
+
+/* =========================
+   TOAST
+========================= */
+
+#toast{
+    position:fixed;
+
+    left:50%;
+    bottom:25px;
+
+    z-index:9000;
+
+    transform:
+        translate(-50%,20px);
+
+    padding:
+        10px
+        15px;
+
+    border:1px solid rgba(94,231,255,.2);
+    border-radius:12px;
+
+    color:var(--text);
+    background:var(--panel2);
+
+    box-shadow:
+        0 15px 50px rgba(0,0,0,.3);
+
+    font-size:10px;
+    font-weight:800;
+
+    opacity:0;
+    pointer-events:none;
+
+    transition:
+        opacity .25s,
+        transform .25s;
+}
+
+#toast.show{
+    opacity:1;
+    transform:
+        translate(-50%,0);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:900px){
+
+    .main-grid{
+        grid-template-columns:1fr;
+    }
+
+    .stats{
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+}
+
+@media(max-width:600px){
+
+    .app{
+        width:92vw;
+        padding-top:17px;
+    }
+
+    header{
+        align-items:flex-start;
+    }
+
+    .brand-title{
+        font-size:14px;
+    }
+
+    .brand-subtitle{
+        font-size:7px;
+    }
+
+    .clock{
+        min-width:112px;
+    }
+
+    .clock-time{
+        font-size:10px;
+    }
+
+    .hero{
+        padding:26px 21px;
+    }
+
+    .hero h1{
+        font-size:34px;
+        letter-spacing:-2px;
+    }
+
+    .panel{
+        padding:16px;
+    }
+
+    .creator{
+        gap:6px;
+    }
+
+    .creator-content{
+        min-width:200px;
+        padding:13px 15px;
+    }
+
+    .creator-name{
+        font-size:15px;
+        letter-spacing:1.5px;
+    }
+
+    .creator-line{
+        display:none;
+    }
+
+    .file-item{
+        grid-template-columns:
+            27px
+            1fr
+            27px;
+    }
+
+    .file-size{
+        display:none;
+    }
 }
 </style>
 </head>
 
 <body>
 
+<canvas id="bgCanvas"></canvas>
+
+<!-- =========================
+     BOOT SCREEN
+========================= -->
+
 <div id="bootScreen">
-    <div class="boot-box">
+
+    <div class="boot-card">
+
         <div class="boot-logo">K</div>
-        <div class="boot-title">KTOOL AI BINARY ENGINE</div>
-        <div class="boot-subtitle">MULTI-FILE SAFE MERGE FIX</div>
+
+        <div class="boot-title">
+            KTOOL AI BINARY ENGINE
+        </div>
+
+        <div class="boot-subtitle">
+            CREATED & CODED BY TRONG DUNG
+        </div>
+
         <div class="boot-status">
-            <span id="bootStatus">INITIALIZING ENGINE...</span>
-            <span class="boot-percent" id="bootPercent">0%</span>
+            <span id="bootStatus">
+                INITIALIZING ENGINE...
+            </span>
+
+            <span
+                class="boot-percent"
+                id="bootPercent"
+            >
+                0%
+            </span>
         </div>
+
         <div class="boot-track">
-            <div class="boot-fill" id="bootFill"></div>
+            <div
+                class="boot-fill"
+                id="bootFill"
+            ></div>
         </div>
-        <div class="boot-terminal" id="bootTerminal"></div>
+
+        <div
+            class="boot-terminal"
+            id="bootTerminal"
+        ></div>
+
     </div>
+
 </div>
 
 <div class="app">
+
+<!-- =========================
+     HEADER
+========================= -->
+
 <header>
+
     <div class="brand">
-        <div class="brand-logo">K</div>
-        <div>
-            <div class="brand-title">KTOOL AI BINARY ENGINE V26</div>
-            <div class="brand-subtitle">UNLIMITED BATCH .BYTES MERGE LAB</div>
+
+        <div class="brand-logo">
+            K
         </div>
+
+        <div>
+
+            <div class="brand-title">
+                KTOOL AI BINARY ENGINE V27
+            </div>
+
+            <div class="brand-subtitle">
+                LOCAL MULTI-FILE BINARY MERGE LAB
+            </div>
+
+        </div>
+
     </div>
-    <div class="header-actions">
-        <button class="icon-btn" id="themeBtn" title="Đổi giao diện">◐</button>
+
+    <div class="header-right">
+
+        <!-- LIVE CLOCK -->
+
+        <div class="clock">
+
+            <div
+                class="clock-time"
+                id="clockTime"
+            >
+                00:00:00
+            </div>
+
+            <div
+                class="clock-date"
+                id="clockDate"
+            >
+                --/--/----
+            </div>
+
+        </div>
+
+        <button
+            class="icon-btn"
+            id="themeBtn"
+            title="Đổi giao diện"
+        >
+            ◐
+        </button>
+
     </div>
+
 </header>
 
+<!-- =========================
+     HERO
+========================= -->
+
 <section class="hero">
-    <h1>Hệ thống Gộp & Phân tích File Bytes (Không giới hạn số lượng)</h1>
-    <p>Phiên bản nâng cấp giúp xử lý hàng loạt file mod game (.bytes, .xml, v.v.) an toàn trên trình duyệt, không sợ tràn bộ nhớ hay lỗi ngắt quãng cấu trúc.</p>
+
+    <div class="hero-kicker">
+        BINARY WORKSPACE • V27
+    </div>
+
+    <h1>
+        Merge.
+        <span>Analyze.</span>
+        Export.
+    </h1>
+
+    <p>
+        Công cụ xử lý binary trực tiếp trên trình duyệt.
+        File được xử lý local, không upload lên server.
+        Hỗ trợ batch nhiều file, RAW merge, SMART heuristic,
+        progress realtime và terminal monitoring.
+    </p>
+
+    <div class="hero-badges">
+
+        <span class="badge">
+            LOCAL PROCESSING
+        </span>
+
+        <span class="badge">
+            BATCH FILES
+        </span>
+
+        <span class="badge">
+            RAW MERGE
+        </span>
+
+        <span class="badge">
+            SMART HEURISTIC
+        </span>
+
+        <span class="badge">
+            REALTIME CLOCK
+        </span>
+
+    </div>
+
 </section>
+
+<!-- =========================
+     STATS
+========================= -->
 
 <section class="stats">
+
     <div class="stat">
-        <div class="stat-label">FILES LOADED</div>
-        <div class="stat-value" id="statFiles">0</div>
+
+        <div class="stat-label">
+            FILES LOADED
+        </div>
+
+        <div
+            class="stat-value"
+            id="statFiles"
+        >
+            0
+        </div>
+
     </div>
+
     <div class="stat">
-        <div class="stat-label">TOTAL SIZE</div>
-        <div class="stat-value" id="statSize">0 B</div>
+
+        <div class="stat-label">
+            TOTAL SIZE
+        </div>
+
+        <div
+            class="stat-value"
+            id="statSize"
+        >
+            0 B
+        </div>
+
     </div>
+
     <div class="stat">
-        <div class="stat-label">BATCH MODE</div>
-        <div class="stat-value">UNLIMITED</div>
+
+        <div class="stat-label">
+            ENGINE
+        </div>
+
+        <div class="stat-value">
+            V27
+        </div>
+
     </div>
+
     <div class="stat">
-        <div class="stat-label">ENGINE STATUS</div>
-        <div class="stat-value" id="engineState">IDLE</div>
+
+        <div class="stat-label">
+            STATUS
+        </div>
+
+        <div
+            class="stat-value"
+            id="engineState"
+        >
+            IDLE
+        </div>
+
     </div>
+
 </section>
+
+<!-- =========================
+     MAIN
+========================= -->
 
 <div class="main-grid">
-    <section class="panel">
-        <div class="panel-title">
-            <h2>INPUT FILES</h2>
-            <span>Hỗ trợ .bytes / .xml / .bin</span>
-        </div>
-        <div class="dropzone" id="dropzone">
-            <div>
-                <h3>Kéo thả nhiều file vào đây</h3>
-                <p>Hoặc bấm nút để chọn hàng loạt file</p>
-                <button class="primary" id="chooseBtn">CHOOSE FILES</button>
-                <input id="filePicker" type="file" multiple hidden>
-            </div>
-        </div>
-        <div class="file-list" id="fileList"></div>
-    </section>
 
-    <section class="panel">
-        <div class="panel-title">
-            <h2>MERGE CONTROL</h2>
-            <span>Safe Batch Processor</span>
-        </div>
-        <div class="control-grid">
-            <div class="field">
-                <label>MERGE STRATEGY</label>
-                <select id="mergeMode">
-                    <option value="raw">RAW — Gộp nối tiếp toàn bộ dữ liệu an toàn</option>
-                    <option value="smart">SMART — Tự động lược bỏ khoảng trắng/header trùng lặp</option>
-                </select>
-            </div>
-            <div class="field">
-                <label>TÊN FILE KẾT QUẢ</label>
-                <input id="outputFileName" type="text" value="combined_mod_output.bytes">
-            </div>
-        </div>
-        <div class="action-bar">
-            <button class="primary" id="mergeBtn">⚡ GỘP TẤT CẢ FILE</button>
-            <button class="secondary" id="clearBtn">XÓA TẤT CẢ</button>
-        </div>
-    </section>
-</div>
+<!-- INPUT -->
 
 <section class="panel">
+
     <div class="panel-title">
-        <h2>ENGINE TERMINAL LOG</h2>
-        <span>Real-time Debug</span>
+
+        <h2>
+            INPUT FILES
+        </h2>
+
+        <span>
+            MULTI FILE
+        </span>
+
     </div>
-    <div class="terminal" id="terminal"></div>
-    <div class="action-bar">
-        <button class="secondary" id="copyLogBtn">COPY LOG</button>
+
+    <div
+        class="dropzone"
+        id="dropzone"
+    >
+
+        <div>
+
+            <div class="drop-icon">
+                ⇧
+            </div>
+
+            <h3>
+                Kéo & thả nhiều file vào đây
+            </h3>
+
+            <p>
+                Chọn nhiều file binary từ thiết bị
+            </p>
+
+            <button
+                class="primary"
+                id="chooseBtn"
+            >
+                CHOOSE FILES
+            </button>
+
+            <input
+                id="filePicker"
+                type="file"
+                multiple
+                hidden
+            >
+
+        </div>
+
     </div>
+
+    <div
+        class="file-list"
+        id="fileList"
+    ></div>
+
 </section>
+
+<!-- CONTROL -->
+
+<section class="panel">
+
+    <div class="panel-title">
+
+        <h2>
+            MERGE CONTROL
+        </h2>
+
+        <span>
+            SAFE LOCAL ENGINE
+        </span>
+
+    </div>
+
+    <div class="control-grid">
+
+        <div class="field">
+
+            <label>
+                MERGE STRATEGY
+            </label>
+
+            <select id="mergeMode">
+
+                <option value="raw">
+                    RAW — GIỮ NGUYÊN TOÀN BỘ BYTES
+                </option>
+
+                <option value="smart">
+                    SMART — PHÂN TÍCH PREFIX TRƯỚC KHI GHÉP
+                </option>
+
+            </select>
+
+        </div>
+
+        <div class="field">
+
+            <label>
+                OUTPUT FILE NAME
+            </label>
+
+            <input
+                id="outputFileName"
+                type="text"
+                value="combined_mod_output.bytes"
+            >
+
+        </div>
+
+    </div>
+
+    <div
+        class="progress-box"
+        id="progressBox"
+    >
+
+        <div class="progress-head">
+
+            <span id="progressText">
+                Processing...
+            </span>
+
+            <span id="progressPercent">
+                0%
+            </span>
+
+        </div>
+
+        <div class="progress-track">
+
+            <div
+                class="progress-fill"
+                id="progressFill"
+            ></div>
+
+        </div>
+
+    </div>
+
+    <div class="action-bar">
+
+        <button
+            class="primary"
+            id="mergeBtn"
+        >
+            ⚡ GỘP TẤT CẢ
+        </button>
+
+        <button
+            class="secondary"
+            id="clearBtn"
+        >
+            CLEAR
+        </button>
+
+    </div>
+
+</section>
+
 </div>
 
-<div class="modal" id="resultModal">
-    <div class="modal-card">
-        <h2>Gộp file thành công!</h2>
-        <p>Quá trình xử lý dữ liệu bytes đã hoàn tất trực tiếp trên trình duyệt.</p>
-        <div class="action-bar" style="margin-top: 20px;">
-            <button class="primary" id="downloadBtn">TẢI XUỐNG FILE GỘP</button>
-            <button class="secondary" id="closeModalBtn">ĐÓNG</button>
-        </div>
+<!-- TERMINAL -->
+
+<section class="panel">
+
+    <div class="panel-title">
+
+        <h2>
+            ENGINE TERMINAL
+        </h2>
+
+        <span>
+            REALTIME
+        </span>
+
     </div>
+
+    <div
+        class="terminal"
+        id="terminal"
+    ></div>
+
+    <div class="action-bar">
+
+        <button
+            class="secondary"
+            id="copyLogBtn"
+        >
+            COPY LOG
+        </button>
+
+    </div>
+
+</section>
+
+<!-- =========================
+     CREATOR
+========================= -->
+
+<div class="creator">
+
+    <div class="creator-line"></div>
+
+    <div class="creator-content">
+
+        <div class="creator-kicker">
+            CREATED & CODED BY
+        </div>
+
+        <div class="creator-name">
+
+            <span class="creator-bracket">
+                &lt;
+            </span>
+
+            TRONG DUNG
+
+            <span class="creator-bracket">
+                /&gt;
+            </span>
+
+        </div>
+
+        <div class="creator-role">
+            KTOOL AI BINARY ENGINE • V27
+        </div>
+
+    </div>
+
+    <div class="creator-line"></div>
+
 </div>
+
+<footer>
+
+    KTOOL AI BINARY ENGINE V27
+    • LOCAL PROCESSING
+    • CREATED & CODED BY TRONG DUNG
+
+</footer>
+
+</div>
+
+<!-- =========================
+     RESULT MODAL
+========================= -->
+
+<div
+    class="modal"
+    id="resultModal"
+>
+
+    <div class="modal-card">
+
+        <h2>
+            ✓ MERGE COMPLETED
+        </h2>
+
+        <p>
+            File kết quả đã được tạo trực tiếp
+            trong bộ nhớ trình duyệt.
+        </p>
+
+        <div class="action-bar">
+
+            <button
+                class="primary"
+                id="downloadBtn"
+            >
+                DOWNLOAD FILE
+            </button>
+
+            <button
+                class="secondary"
+                id="closeModalBtn"
+            >
+                CLOSE
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div id="toast"></div>
 
 <script>
 "use strict";
-const $ = id => document.getElementById(id);
+
+/* ==========================================
+   GLOBAL STATE
+========================================== */
+
+const $ = id =>
+    document.getElementById(id);
 
 const state = {
+
     files: [],
+
     theme: "dark",
+
     resultBlob: null,
-    resultName: "combined_mod_output.bytes"
+
+    resultName:
+        "combined_mod_output.bytes"
+
 };
 
+/* ==========================================
+   UTILITIES
+========================================== */
+
 function formatBytes(bytes){
-    if(!Number.isFinite(bytes)) return "0 B";
-    const units = ["B","KB","MB","GB"];
-    let i = 0, value = bytes;
-    while(value >= 1024 && i < units.length - 1){ value /= 1024; i++; }
-    return `${value.toFixed(2)} ${units[i]}`;
-}
 
-function log(message, type=""){
-    const line = document.createElement("div");
-    line.className = "log-line " + type;
-    line.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
-    $("terminal").appendChild(line);
-    $("terminal").scrollTop = $("terminal").scrollHeight;
-}
-
-// Theme handling
-function applyTheme(theme){
-    state.theme = theme;
-    if(theme === "light") document.documentElement.classList.add("light");
-    else document.documentElement.classList.remove("light");
-    localStorage.setItem("ktool-theme", theme);
-}
-$("themeBtn").addEventListener("click", () => {
-    applyTheme(state.theme === "dark" ? "light" : "dark");
-});
-applyTheme(localStorage.getItem("ktool-theme") || "dark");
-
-// File Selection & Drag Drop
-$("chooseBtn").addEventListener("click", () => $("filePicker").click());
-$("filePicker").addEventListener("change", e => {
-    addFiles([...e.target.files]);
-    e.target.value = "";
-});
-
-const dropzone = $("dropzone");
-["dragenter", "dragover"].forEach(e => dropzone.addEventListener(e, ev => ev.preventDefault()));
-dropzone.addEventListener("drop", e => {
-    e.preventDefault();
-    addFiles([...e.dataTransfer.files]);
-});
-
-function addFiles(newFiles){
-    if(!newFiles.length) return;
-    for(const file of newFiles){
-        state.files.push(file);
+    if(!Number.isFinite(bytes)){
+        return "0 B";
     }
-    log(`Đã nạp thêm ${newFiles.length} file. Tổng cộng: ${state.files.length} file.`, "good");
+
+    const units =
+        ["B","KB","MB","GB","TB"];
+
+    let value = bytes;
+    let index = 0;
+
+    while(
+        value >= 1024 &&
+        index < units.length - 1
+    ){
+
+        value /= 1024;
+        index++;
+    }
+
+    return (
+        value.toFixed(
+            index === 0 ? 0 : 2
+        )
+        +
+        " "
+        +
+        units[index]
+    );
+}
+
+function sleep(ms){
+
+    return new Promise(
+        resolve =>
+        setTimeout(resolve,ms)
+    );
+}
+
+/* ==========================================
+   TOAST
+========================================== */
+
+let toastTimer;
+
+function toast(message){
+
+    const box =
+        $("toast");
+
+    box.textContent =
+        message;
+
+    box.classList.add("show");
+
+    clearTimeout(toastTimer);
+
+    toastTimer =
+        setTimeout(
+            ()=>{
+                box.classList.remove("show");
+            },
+            2200
+        );
+}
+
+/* ==========================================
+   TERMINAL
+========================================== */
+
+function log(
+    message,
+    type=""
+){
+
+    const line =
+        document.createElement("div");
+
+    line.className =
+        "log-line";
+
+    if(type){
+        line.classList.add(type);
+    }
+
+    line.textContent =
+        `[${new Date().toLocaleTimeString()}] ${message}`;
+
+    $("terminal").appendChild(line);
+
+    const terminal =
+        $("terminal");
+
+    terminal.scrollTop =
+        terminal.scrollHeight;
+}
+
+/* ==========================================
+   CLOCK
+========================================== */
+
+function updateClock(){
+
+    const now =
+        new Date();
+
+    const time =
+        now.toLocaleTimeString(
+            "vi-VN",
+            {
+                hour:"2-digit",
+                minute:"2-digit",
+                second:"2-digit",
+                hour12:false
+            }
+        );
+
+    const date =
+        now.toLocaleDateString(
+            "vi-VN",
+            {
+                weekday:"short",
+                day:"2-digit",
+                month:"2-digit",
+                year:"numeric"
+            }
+        );
+
+    $("clockTime").textContent =
+        time;
+
+    $("clockDate").textContent =
+        date;
+}
+
+updateClock();
+
+setInterval(
+    updateClock,
+    1000
+);
+
+/* ==========================================
+   THEME
+========================================== */
+
+function applyTheme(theme){
+
+    state.theme =
+        theme;
+
+    if(theme === "light"){
+
+        document.documentElement
+            .classList
+            .add("light");
+
+    }else{
+
+        document.documentElement
+            .classList
+            .remove("light");
+    }
+
+    localStorage.setItem(
+        "ktool-theme",
+        theme
+    );
+}
+
+applyTheme(
+    localStorage.getItem(
+        "ktool-theme"
+    ) || "dark"
+);
+
+$("themeBtn")
+    .addEventListener(
+        "click",
+        ()=>{
+
+            const next =
+                state.theme === "dark"
+                ? "light"
+                : "dark";
+
+            applyTheme(next);
+
+            toast(
+                next === "light"
+                ? "LIGHT MODE"
+                : "DARK MODE"
+            );
+
+            log(
+                `${next.toUpperCase()} theme enabled.`,
+                "good"
+            );
+        }
+    );
+
+/* ==========================================
+   FILE PICKER
+========================================== */
+
+$("chooseBtn")
+    .addEventListener(
+        "click",
+        ()=>{
+            $("filePicker").click();
+        }
+    );
+
+$("filePicker")
+    .addEventListener(
+        "change",
+        event=>{
+
+            addFiles(
+                [...event.target.files]
+            );
+
+            event.target.value =
+                "";
+        }
+    );
+
+/* ==========================================
+   DRAG & DROP
+========================================== */
+
+const dropzone =
+    $("dropzone");
+
+["dragenter","dragover"]
+.forEach(
+    eventName=>{
+
+        dropzone.addEventListener(
+            eventName,
+            event=>{
+
+                event.preventDefault();
+
+                dropzone
+                    .classList
+                    .add("drag");
+            }
+        );
+    }
+);
+
+["dragleave","drop"]
+.forEach(
+    eventName=>{
+
+        dropzone.addEventListener(
+            eventName,
+            event=>{
+
+                event.preventDefault();
+
+                dropzone
+                    .classList
+                    .remove("drag");
+            }
+        );
+    }
+);
+
+dropzone.addEventListener(
+    "drop",
+    event=>{
+
+        const files =
+            [...event.dataTransfer.files];
+
+        addFiles(files);
+    }
+);
+
+/* ==========================================
+   FILE MANAGEMENT
+========================================== */
+
+function addFiles(files){
+
+    if(!files.length){
+        return;
+    }
+
+    let added = 0;
+
+    for(const file of files){
+
+        const duplicate =
+            state.files.some(
+                existing =>
+                    existing.name === file.name &&
+                    existing.size === file.size &&
+                    existing.lastModified ===
+                    file.lastModified
+            );
+
+        if(duplicate){
+
+            log(
+                `Skipped duplicate: ${file.name}`,
+                "warn"
+            );
+
+            continue;
+        }
+
+        state.files.push(file);
+
+        added++;
+
+        log(
+            `Loaded: ${file.name} (${formatBytes(file.size)})`,
+            "good"
+        );
+    }
+
+    renderFiles();
+    updateStats();
+
+    toast(
+        `${added} file(s) added`
+    );
+}
+
+function removeFile(index){
+
+    const file =
+        state.files[index];
+
+    if(!file){
+        return;
+    }
+
+    state.files.splice(
+        index,
+        1
+    );
+
+    log(
+        `Removed: ${file.name}`,
+        "warn"
+    );
+
     renderFiles();
     updateStats();
 }
 
 function renderFiles(){
-    const list = $("fileList");
-    list.innerHTML = "";
-    state.files.forEach((file, index) => {
-        const item = document.createElement("div");
-        item.className = "file-item";
-        item.innerHTML = `<span>#${index+1}</span> <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${file.name}</span> <span style="color:var(--muted)">${formatBytes(file.size)}</span>`;
-        list.appendChild(item);
-    });
+
+    const list =
+        $("fileList");
+
+    list.innerHTML =
+        "";
+
+    state.files.forEach(
+        (file,index)=>{
+
+            const item =
+                document.createElement(
+                    "div"
+                );
+
+            item.className =
+                "file-item";
+
+            const number =
+                document.createElement(
+                    "div"
+                );
+
+            number.className =
+                "file-number";
+
+            number.textContent =
+                index + 1;
+
+            const name =
+                document.createElement(
+                    "div"
+                );
+
+            name.className =
+                "file-name";
+
+            name.textContent =
+                file.name;
+
+            const size =
+                document.createElement(
+                    "div"
+                );
+
+            size.className =
+                "file-size";
+
+            size.textContent =
+                formatBytes(
+                    file.size
+                );
+
+            const remove =
+                document.createElement(
+                    "button"
+                );
+
+            remove.className =
+                "remove-file";
+
+            remove.textContent =
+                "×";
+
+            remove.title =
+                "Remove";
+
+            remove.addEventListener(
+                "click",
+                ()=>{
+                    removeFile(index);
+                }
+            );
+
+            item.append(
+                number,
+                name,
+                size,
+                remove
+            );
+
+            list.appendChild(
+                item
+            );
+        }
+    );
 }
 
 function updateStats(){
-    const total = state.files.reduce((sum, f) => sum + f.size, 0);
-    $("statFiles").textContent = state.files.length;
-    $("statSize").textContent = formatBytes(total);
+
+    const total =
+        state.files.reduce(
+            (sum,file)=>
+                sum + file.size,
+            0
+        );
+
+    $("statFiles")
+        .textContent =
+        state.files.length;
+
+    $("statSize")
+        .textContent =
+        formatBytes(total);
 }
 
-// Fixed & Safe Multi-File Merge Engine
+/* ==========================================
+   PREFIX ANALYSIS
+========================================== */
+
+function commonPrefix(
+    buffers
+){
+
+    if(buffers.length < 2){
+        return 0;
+    }
+
+    const limit =
+        Math.min(
+            4096,
+            ...buffers.map(
+                buffer =>
+                    buffer.length
+            )
+        );
+
+    let offset = 0;
+
+    outer:
+    for(
+        ;
+        offset < limit;
+        offset++
+    ){
+
+        const value =
+            buffers[0][offset];
+
+        for(
+            let i=1;
+            i<buffers.length;
+            i++
+        ){
+
+            if(
+                buffers[i][offset]
+                !== value
+            ){
+
+                break outer;
+            }
+        }
+    }
+
+    return offset;
+}
+
+/* ==========================================
+   READ FILES
+========================================== */
+
+async function readFiles(){
+
+    const buffers = [];
+
+    for(
+        let i=0;
+        i<state.files.length;
+        i++
+    ){
+
+        const file =
+            state.files[i];
+
+        const buffer =
+            new Uint8Array(
+                await file.arrayBuffer()
+            );
+
+        buffers.push(buffer);
+
+        const percent =
+            Math.round(
+                (
+                    (i+1) /
+                    state.files.length
+                ) * 100
+            );
+
+        setProgress(
+            percent,
+            `Reading ${i+1}/${state.files.length}`
+        );
+
+        await new Promise(
+            requestAnimationFrame
+        );
+    }
+
+    return buffers;
+}
+
+/* ==========================================
+   PROGRESS
+========================================== */
+
+function setProgress(
+    percent,
+    text
+){
+
+    $("progressBox")
+        .classList
+        .add("show");
+
+    $("progressFill")
+        .style.width =
+        percent + "%";
+
+    $("progressPercent")
+        .textContent =
+        percent + "%";
+
+    $("progressText")
+        .textContent =
+        text;
+}
+
+function hideProgress(){
+
+    setTimeout(
+        ()=>{
+            $("progressBox")
+                .classList
+                .remove("show");
+
+            $("progressFill")
+                .style.width =
+                "0%";
+        },
+        800
+    );
+}
+
+/* ==========================================
+   MERGE ENGINE
+========================================== */
+
 async function mergeFiles(){
-    if(state.files.length === 0){
-        log("Chưa có file nào được chọn để gộp!", "bad");
+
+    if(!state.files.length){
+
+        toast(
+            "Chưa chọn file!"
+        );
+
+        log(
+            "No input files selected.",
+            "bad"
+        );
+
         return;
     }
 
-    $("engineState").textContent = "PROCESSING";
-    $("mergeBtn").disabled = true;
-    log("Bắt đầu tiến trình gộp file an toàn...");
+    const mergeButton =
+        $("mergeBtn");
 
-    try {
-        const buffers = [];
-        for(let i = 0; i < state.files.length; i++){
-            const arrayBuf = await state.files[i].arrayBuffer();
-            buffers.push(new Uint8Array(arrayBuf));
-            if(i % 10 === 0 || i === state.files.length - 1){
-                log(`Đã đọc xong ${i + 1}/${state.files.length} file...`);
-            }
-        }
+    mergeButton.disabled =
+        true;
 
-        const mode = $("mergeMode").value;
-        let finalChunks = [];
+    $("engineState")
+        .textContent =
+        "PROCESSING";
+
+    log(
+        "================================"
+    );
+
+    log(
+        "Starting binary merge engine..."
+    );
+
+    try{
+
+        const buffers =
+            await readFiles();
+
+        const mode =
+            $("mergeMode").value;
+
+        let chunks = [];
+
+        /*
+         * RAW:
+         * Giữ nguyên 100% dữ liệu
+         * của từng file và nối theo
+         * đúng thứ tự người dùng chọn.
+         */
 
         if(mode === "raw"){
-            // Gộp nối tiếp toàn bộ mảng bytes an toàn không bỏ sót dữ liệu
-            for(const buf of buffers){
-                finalChunks.push(buf);
+
+            log(
+                "RAW MODE: preserving every byte.",
+                "good"
+            );
+
+            for(
+                let i=0;
+                i<buffers.length;
+                i++
+            ){
+
+                chunks.push(
+                    buffers[i]
+                );
+
+                setProgress(
+                    Math.round(
+                        (
+                            (i+1) /
+                            buffers.length
+                        ) * 100
+                    ),
+                    `Appending ${i+1}/${buffers.length}`
+                );
+
+                await new Promise(
+                    requestAnimationFrame
+                );
             }
-        } else {
-            // Chế độ Smart: Giữ file đầu tiên trọn vẹn, các file sau lọc bỏ khoảng trắng thừa / ký tự rỗng đầu cuối nếu cần
-            for(let i = 0; i < buffers.length; i++){
-                finalChunks.push(buffers[i]);
+
+        }else{
+
+            /*
+             * SMART:
+             * Chỉ phân tích prefix.
+             * Không tự xoá dữ liệu nếu
+             * không đạt điều kiện rõ ràng.
+             */
+
+            const prefix =
+                commonPrefix(buffers);
+
+            log(
+                `Detected common prefix: ${prefix} bytes`
+            );
+
+            /*
+             * Không tự cắt prefix trong
+             * trường hợp chưa biết format.
+             * Điều này tránh phá cấu trúc
+             * proprietary binary.
+             */
+
+            log(
+                "SMART mode: format-safe fallback enabled.",
+                "good"
+            );
+
+            for(
+                let i=0;
+                i<buffers.length;
+                i++
+            ){
+
+                chunks.push(
+                    buffers[i]
+                );
+
+                setProgress(
+                    Math.round(
+                        (
+                            (i+1) /
+                            buffers.length
+                        ) * 100
+                    ),
+                    `Validating ${i+1}/${buffers.length}`
+                );
+
+                await new Promise(
+                    requestAnimationFrame
+                );
             }
         }
 
-        const outputBlob = new Blob(finalChunks, { type: "application/octet-stream" });
-        state.resultBlob = outputBlob;
-        state.resultName = $("outputFileName").value || "combined_mod_output.bytes";
+        /*
+         * Blob không cần copy lại toàn bộ
+         * thành một Array duy nhất.
+         * Browser có thể giữ các chunk.
+         */
 
-        $("engineState").textContent = "READY";
-        $("resultModal").classList.add("show");
-        log(`Gộp thành công ${state.files.length} file! Kích thước tổng: ${formatBytes(outputBlob.size)}`, "good");
+        const blob =
+            new Blob(
+                chunks,
+                {
+                    type:
+                        "application/octet-stream"
+                }
+            );
 
-    } catch (err) {
-        console.error(err);
-        $("engineState").textContent = "ERROR";
-        log(`Lỗi trong quá trình gộp file: ${err.message}`, "bad");
-    } finally {
-        $("mergeBtn").disabled = false;
+        state.resultBlob =
+            blob;
+
+        let outputName =
+            $("outputFileName")
+                .value
+                .trim();
+
+        if(!outputName){
+
+            outputName =
+                "combined_mod_output.bytes";
+        }
+
+        if(
+            !outputName
+                .toLowerCase()
+                .endsWith(".bytes")
+        ){
+
+            outputName +=
+                ".bytes";
+        }
+
+        state.resultName =
+            outputName;
+
+        setProgress(
+            100,
+            "Merge completed"
+        );
+
+        $("engineState")
+            .textContent =
+            "READY";
+
+        $("resultModal")
+            .classList
+            .add("show");
+
+        log(
+            `Merged ${state.files.length} file(s).`,
+            "good"
+        );
+
+        log(
+            `Output size: ${formatBytes(blob.size)}`,
+            "good"
+        );
+
+        toast(
+            "MERGE COMPLETED"
+        );
+
+    }catch(error){
+
+        console.error(error);
+
+        $("engineState")
+            .textContent =
+            "ERROR";
+
+        log(
+            `Merge error: ${error.message}`,
+            "bad"
+        );
+
+        toast(
+            "MERGE ERROR"
+        );
+
+    }finally{
+
+        mergeButton.disabled =
+            false;
+
+        hideProgress();
     }
 }
 
-$("mergeBtn").addEventListener("click", mergeFiles);
-$("clearBtn").addEventListener("click", () => {
-    state.files = [];
-    renderFiles();
-    updateStats();
-    log("Đã làm sạch không gian làm việc.", "warn");
-});
+/* ==========================================
+   CLEAR
+========================================== */
 
-$("downloadBtn").addEventListener("click", () => {
-    if(!state.resultBlob) return;
-    const url = URL.createObjectURL(state.resultBlob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = state.resultName;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
-    log(`Đã tải xuống file: ${state.resultName}`, "good");
-});
+$("clearBtn")
+    .addEventListener(
+        "click",
+        ()=>{
 
-$("closeModalBtn").addEventListener("click", () => $("resultModal").classList.remove("show"));
+            state.files =
+                [];
 
-$("copyLogBtn").addEventListener("click", async () => {
-    await navigator.clipboard.writeText($("terminal").innerText);
-    log("Đã sao chép lịch sử Terminal.", "good");
-});
+            state.resultBlob =
+                null;
 
-// Boot Sequence
+            renderFiles();
+            updateStats();
+
+            $("engineState")
+                .textContent =
+                "IDLE";
+
+            log(
+                "Workspace cleared.",
+                "warn"
+            );
+
+            toast(
+                "WORKSPACE CLEARED"
+            );
+        }
+    );
+
+/* ==========================================
+   DOWNLOAD
+========================================== */
+
+$("downloadBtn")
+    .addEventListener(
+        "click",
+        ()=>{
+
+            if(!state.resultBlob){
+                return;
+            }
+
+            const url =
+                URL.createObjectURL(
+                    state.resultBlob
+                );
+
+            const link =
+                document.createElement(
+                    "a"
+                );
+
+            link.href =
+                url;
+
+            link.download =
+                state.resultName;
+
+            document.body.appendChild(
+                link
+            );
+
+            link.click();
+
+            link.remove();
+
+            setTimeout(
+                ()=>{
+                    URL.revokeObjectURL(
+                        url
+                    );
+                },
+                1000
+            );
+
+            log(
+                `Downloaded: ${state.resultName}`,
+                "good"
+            );
+
+            toast(
+                "FILE DOWNLOADED"
+            );
+        }
+    );
+
+$("closeModalBtn")
+    .addEventListener(
+        "click",
+        ()=>{
+            $("resultModal")
+                .classList
+                .remove("show");
+        }
+    );
+
+$("resultModal")
+    .addEventListener(
+        "click",
+        event=>{
+
+            if(
+                event.target ===
+                $("resultModal")
+            ){
+
+                $("resultModal")
+                    .classList
+                    .remove("show");
+            }
+        }
+    );
+
+/* ==========================================
+   COPY TERMINAL
+========================================== */
+
+$("copyLogBtn")
+    .addEventListener(
+        "click",
+        async ()=>{
+
+            try{
+
+                await navigator.clipboard
+                    .writeText(
+                        $("terminal")
+                            .innerText
+                    );
+
+                toast(
+                    "LOG COPIED"
+                );
+
+                log(
+                    "Terminal log copied.",
+                    "good"
+                );
+
+            }catch(error){
+
+                log(
+                    "Clipboard unavailable.",
+                    "warn"
+                );
+            }
+        }
+    );
+
+/* ==========================================
+   KEYBOARD SHORTCUT
+========================================== */
+
+document.addEventListener(
+    "keydown",
+    event=>{
+
+        if(
+            (event.ctrlKey ||
+             event.metaKey) &&
+            event.key.toLowerCase()
+            === "o"
+        ){
+
+            event.preventDefault();
+
+            $("filePicker").click();
+        }
+
+        if(
+            (event.ctrlKey ||
+             event.metaKey) &&
+            event.key === "Enter"
+        ){
+
+            event.preventDefault();
+
+            mergeFiles();
+        }
+
+        if(
+            event.key ===
+            "Escape"
+        ){
+
+            $("resultModal")
+                .classList
+                .remove("show");
+        }
+    }
+);
+
+/* ==========================================
+   PARTICLE BACKGROUND
+========================================== */
+
+const canvas =
+    $("bgCanvas");
+
+const ctx =
+    canvas.getContext("2d");
+
+let particles = [];
+
+function resizeCanvas(){
+
+    canvas.width =
+        window.innerWidth *
+        devicePixelRatio;
+
+    canvas.height =
+        window.innerHeight *
+        devicePixelRatio;
+
+    ctx.setTransform(
+        devicePixelRatio,
+        0,
+        0,
+        devicePixelRatio,
+        0,
+        0
+    );
+}
+
+function createParticles(){
+
+    const count =
+        Math.min(
+            85,
+            Math.floor(
+                window.innerWidth / 15
+            )
+        );
+
+    particles =
+        [];
+
+    for(
+        let i=0;
+        i<count;
+        i++
+    ){
+
+        particles.push({
+
+            x:
+                Math.random() *
+                window.innerWidth,
+
+            y:
+                Math.random() *
+                window.innerHeight,
+
+            vx:
+                (Math.random()-.5)
+                * .18,
+
+            vy:
+                (Math.random()-.5)
+                * .18,
+
+            r:
+                Math.random()
+                * 1.5
+                + .4
+        });
+    }
+}
+
+function animateParticles(){
+
+    const width =
+        window.innerWidth;
+
+    const height =
+        window.innerHeight;
+
+    ctx.clearRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+    for(
+        const particle
+        of particles
+    ){
+
+        particle.x +=
+            particle.vx;
+
+        particle.y +=
+            particle.vy;
+
+        if(
+            particle.x < 0 ||
+            particle.x > width
+        ){
+
+            particle.vx *= -1;
+        }
+
+        if(
+            particle.y < 0 ||
+            particle.y > height
+        ){
+
+            particle.vy *= -1;
+        }
+
+        ctx.beginPath();
+
+        ctx.arc(
+            particle.x,
+            particle.y,
+            particle.r,
+            0,
+            Math.PI*2
+        );
+
+        ctx.fillStyle =
+            "rgba(94,231,255,.32)";
+
+        ctx.fill();
+    }
+
+    requestAnimationFrame(
+        animateParticles
+    );
+}
+
+resizeCanvas();
+createParticles();
+
+window.addEventListener(
+    "resize",
+    ()=>{
+        resizeCanvas();
+        createParticles();
+    }
+);
+
+animateParticles();
+
+/* ==========================================
+   BOOT
+========================================== */
+
 async function bootKTool(){
-    const screen = $("bootScreen");
-    const fill = $("bootFill");
-    const percent = $("bootPercent");
-    const status = $("bootStatus");
-    const terminal = $("bootTerminal");
 
-    const steps = [
-        "Khởi tạo không gian bộ nhớ đệm...",
-        "Tối ưu hóa thuật toán xử lý mảng Uint8Array...",
-        "Bỏ qua giới hạn gộp file cũ...",
-        "Sẵn sàng hoạt động."
+    const screen =
+        $("bootScreen");
+
+    const fill =
+        $("bootFill");
+
+    const percent =
+        $("bootPercent");
+
+    const status =
+        $("bootStatus");
+
+    const terminal =
+        $("bootTerminal");
+
+    const messages = [
+
+        "Initializing binary core...",
+        "Preparing Uint8Array engine...",
+        "Loading local workspace...",
+        "Preparing multi-file processor...",
+        "Starting realtime monitor...",
+        "Checking browser APIs...",
+        "Engine ready."
     ];
 
-    for(let i = 0; i <= 100; i += 5){
-        fill.style.width = i + "%";
-        percent.textContent = i + "%";
-        if(i < steps.length * 25) {
-            status.textContent = steps[Math.floor(i / 25)];
-            terminal.textContent = "> " + status.textContent;
+    const start =
+        performance.now();
+
+    const duration =
+        3000;
+
+    while(true){
+
+        const elapsed =
+            performance.now()
+            - start;
+
+        const progress =
+            Math.min(
+                elapsed / duration,
+                1
+            );
+
+        const value =
+            Math.round(
+                progress * 100
+            );
+
+        fill.style.width =
+            value + "%";
+
+        percent.textContent =
+            value + "%";
+
+        const index =
+            Math.min(
+                messages.length - 1,
+                Math.floor(
+                    progress *
+                    messages.length
+                )
+            );
+
+        status.textContent =
+            messages[index];
+
+        terminal.innerHTML =
+            "> " +
+            messages[index];
+
+        if(progress >= 1){
+            break;
         }
-        await new Promise(r => setTimeout(r, 20));
+
+        await new Promise(
+            requestAnimationFrame
+        );
     }
-    screen.classList.add("hide");
-    setTimeout(() => screen.remove(), 500);
-    log("Hệ thống KTOOL AI BINARY ENGINE V26 khởi động thành công.", "good");
+
+    terminal.innerHTML =
+        "> SYSTEM READY<br>" +
+        "> KTOOL V27 ONLINE";
+
+    await sleep(350);
+
+    screen.classList.add(
+        "hide"
+    );
+
+    setTimeout(
+        ()=>{
+            screen.remove();
+
+            log(
+                "KTOOL AI BINARY ENGINE V27 online.",
+                "good"
+            );
+
+            log(
+                "Local binary workspace initialized."
+            );
+        },
+        700
+    );
 }
+
+updateStats();
+
 bootKTool();
+
 </script>
+
 </body>
 </html>
