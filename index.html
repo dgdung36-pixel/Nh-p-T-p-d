@@ -1,4 +1,3 @@
-Dưới đây là toàn bộ mã nguồn hoàn chỉnh của KTOOL V30.1 đã được tích hợp thêm chức năng Tạo Patch 3105 trực tiếp vào giao diện và logic xử lý:
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -200,7 +199,7 @@ select,input[type="text"]{width:100%;padding:11px 12px;border:1px solid var(--li
 <section class="hero">
     <div class="hero-badge">STREAM ENGINE ONLINE</div>
     <h1>Gộp nhiều ZIP & Tạo Patch 3105</h1>
-    <p>V30.1 tích hợp cơ chế đọc ZIP theo từng entry và tự động cấu trúc hóa thư mục Patch 3105 trực tiếp trên trình duyệt.</p>
+    <p>V30.1 tích hợp cơ chế đọc ZIP theo từng entry và tự động cấu trúc thư mục <code>com.garena.game.kgvn/Documents/</code> chuẩn cho Liên Quân.</p>
 </section>
 
 <section class="stats">
@@ -232,7 +231,7 @@ select,input[type="text"]{width:100%;padding:11px 12px;border:1px solid var(--li
         <label>CHẾ ĐỘ XUẤT FILE</label>
         <select id="patchMode">
             <option value="normal">Gộp ZIP thông thường (Giữ nguyên cấu trúc)</option>
-            <option value="patch3105">Đóng gói chuẩn Patch 3105 (Gán thư mục Patch)</option>
+            <option value="patch3105">Đóng gói chuẩn Patch 3105 (Vào Documents)</option>
         </select>
     </div>
     <div class="field">
@@ -410,15 +409,15 @@ function setProgress(percent, text){
 // Dynamic output name change on mode switch
 $("patchMode").addEventListener("change", (e) => {
     if(e.target.value === "patch3105"){
-        $("outputName").value = "patch_3105_output.zip";
-        log("Đã chuyển sang chế độ tạo Patch 3105.", "info");
+        $("outputName").value = "patch_3105_kgvn.zip";
+        log("Đã chuyển sang chế độ tạo Patch 3105 (com.garena.game.kgvn/Documents).", "info");
     } else {
         $("outputName").value = "KTOOL_MERGED_V30.1.zip";
         log("Đã chuyển về chế độ gộp ZIP thông thường.", "info");
     }
 });
 
-// Zip Engine Logic with Patch 3105 Integration
+// Zip Engine Logic with Patch 3105 & Documents Integration
 async function mergeZipFiles(){
     if(state.busy) return;
     if(state.files.length < 1){ log("Chưa có ZIP nào được chọn.", "bad"); return; }
@@ -443,6 +442,15 @@ async function mergeZipFiles(){
         writer = new zip.ZipWriter(new zip.BlobWriter("application/zip"));
         const zipReaders = [];
         let totalEntries = 0;
+
+        // Nếu là chế độ patch3105, tạo thư mục gốc yêu cầu trước trong file ZIP kết quả
+        if(patchMode === "patch3105"){
+            await writer.add("com.garena.game.kgvn/", undefined);
+            await writer.add("com.garena.game.kgvn/Documents/", undefined);
+            addedEntries.add("com.garena.game.kgvn/");
+            addedEntries.add("com.garena.game.kgvn/Documents/");
+            log("Đã tạo cấu trúc: com.garena.game.kgvn/Documents/", "info");
+        }
 
         for(let i = 0; i < state.files.length; i++){
             const file = state.files[i];
@@ -469,11 +477,10 @@ async function mergeZipFiles(){
                 }
                 let normalized = filename.replace(/\\/g, "/");
 
-                // Logic xử lý Patch 3105
+                // Nếu file bên trong ZIP bị trùng thư mục gốc rác, loại bỏ bớt phần đầu nếu cần hoặc chuyển vào Documents
                 if(patchMode === "patch3105"){
-                    if(!normalized.startsWith("patch3105/") && !normalized.includes("Asset/")){
-                        normalized = "Asset/Patch3105/" + normalized;
-                    }
+                    // Đưa toàn bộ tệp tin giải nén vào trong thư mục Documents
+                    normalized = "com.garena.game.kgvn/Documents/" + normalized;
                 }
 
                 // Xử lý logic trùng tên file
@@ -514,7 +521,7 @@ async function mergeZipFiles(){
 
         $("resultInfo").textContent = [
             `Output : ${state.resultName}`,
-            `Mode   : ${patchMode === "patch3105" ? "Patch 3105 Active" : "Normal Merge"}`,
+            `Mode   : ${patchMode === "patch3105" ? "Patch 3105 (com.garena.game.kgvn/Documents)" : "Normal Merge"}`,
             `Entries: ${addedEntries.size}`,
             `Size   : ${formatBytes(state.resultBlob.size)}`,
             `Input  : ${formatBytes(state.totalInputBytes)}`
@@ -573,4 +580,3 @@ updateStats();
 </script>
 </body>
 </html>
-
