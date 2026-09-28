@@ -1,70 +1,83 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#050812">
 <title>KTOOL AI BINARY ENGINE V27</title>
 
 <style>
 :root{
-    --bg:#05070d;
-    --bg2:#090d17;
-    --panel:rgba(12,17,29,.78);
-    --panel2:rgba(8,12,22,.92);
-    --text:#eef7ff;
-    --muted:#78869c;
-    --line:rgba(255,255,255,.08);
+    --bg:#03050b;
+    --bg2:#070b14;
+    --panel:rgba(8,13,25,.78);
+    --panel2:rgba(10,16,30,.94);
+    --text:#f2f8ff;
+    --muted:#718097;
+    --line:rgba(255,255,255,.085);
 
     --cyan:#00eaff;
-    --blue:#2684ff;
-    --violet:#8b5cff;
-    --green:#00ff9d;
+    --blue:#277cff;
+    --violet:#925cff;
+    --green:#00ffa3;
     --yellow:#ffd166;
     --red:#ff416c;
 
-    --radius:20px;
-    --shadow:0 20px 60px rgba(0,0,0,.35);
+    --shadow:0 25px 80px rgba(0,0,0,.45);
 }
 
 *{
     box-sizing:border-box;
 }
 
-html,body{
+html{
+    scroll-behavior:smooth;
+}
+
+body{
     margin:0;
-    min-height:100%;
+    min-height:100vh;
+    overflow-x:hidden;
+    color:var(--text);
+    background:
+        radial-gradient(
+            circle at 10% 0%,
+            rgba(0,234,255,.12),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 90% 90%,
+            rgba(146,92,255,.12),
+            transparent 30%
+        ),
+        linear-gradient(
+            135deg,
+            #02040a,
+            #070b14 50%,
+            #03050b
+        );
     font-family:
         Inter,
-        ui-sans-serif,
         system-ui,
         -apple-system,
         BlinkMacSystemFont,
         "Segoe UI",
         sans-serif;
-    background:
-        radial-gradient(circle at 20% 0%,rgba(0,234,255,.08),transparent 30%),
-        radial-gradient(circle at 80% 100%,rgba(139,92,255,.08),transparent 35%),
-        var(--bg);
-    color:var(--text);
-}
-
-body{
-    overflow-x:hidden;
 }
 
 body::before{
     content:"";
     position:fixed;
     inset:0;
+    z-index:9998;
     pointer-events:none;
-    z-index:999;
-    opacity:.035;
+    opacity:.045;
     background:
         repeating-linear-gradient(
             to bottom,
-            transparent 0px,
+            transparent 0,
             transparent 2px,
-            #fff 3px
+            rgba(255,255,255,.8) 3px
         );
 }
 
@@ -72,27 +85,31 @@ body::after{
     content:"";
     position:fixed;
     inset:0;
+    z-index:-1;
     pointer-events:none;
+    opacity:.18;
     background-image:
-        linear-gradient(rgba(0,234,255,.025) 1px,transparent 1px),
-        linear-gradient(90deg,rgba(0,234,255,.025) 1px,transparent 1px);
-    background-size:35px 35px;
-    mask-image:linear-gradient(to bottom,#000,transparent);
-}
-
-body.light{
-    --bg:#edf3f9;
-    --bg2:#f7faff;
-    --panel:rgba(255,255,255,.78);
-    --panel2:rgba(255,255,255,.95);
-    --text:#101827;
-    --muted:#667085;
-    --line:rgba(15,23,42,.1);
-    --shadow:0 20px 50px rgba(31,41,55,.12);
+        linear-gradient(
+            rgba(0,234,255,.035) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(0,234,255,.035) 1px,
+            transparent 1px
+        );
+    background-size:38px 38px;
+    mask-image:linear-gradient(
+        to bottom,
+        #000 0%,
+        rgba(0,0,0,.4) 70%,
+        transparent 100%
+    );
 }
 
 button,
-input{
+input,
+select{
     font:inherit;
 }
 
@@ -100,118 +117,366 @@ button{
     cursor:pointer;
 }
 
-.ambient{
+/* =====================================================
+   PARTICLES
+===================================================== */
+
+.particle{
     position:fixed;
-    width:360px;
-    height:360px;
+    width:2px;
+    height:2px;
     border-radius:50%;
-    filter:blur(90px);
-    opacity:.13;
+    background:var(--cyan);
+    box-shadow:0 0 12px var(--cyan);
+    opacity:.35;
     pointer-events:none;
     z-index:-1;
+    animation:particleFloat linear infinite;
 }
 
-.ambient.one{
-    background:var(--cyan);
-    top:-180px;
-    left:-100px;
-    animation:floatOne 9s ease-in-out infinite;
+@keyframes particleFloat{
+    from{
+        transform:translateY(110vh);
+        opacity:0;
+    }
+
+    15%{
+        opacity:.45;
+    }
+
+    85%{
+        opacity:.35;
+    }
+
+    to{
+        transform:translateY(-10vh);
+        opacity:0;
+    }
 }
 
-.ambient.two{
-    background:var(--violet);
-    right:-150px;
-    bottom:-160px;
-    animation:floatTwo 11s ease-in-out infinite;
-}
-
-@keyframes floatOne{
-    50%{transform:translate(80px,80px) scale(1.2)}
-}
-
-@keyframes floatTwo{
-    50%{transform:translate(-80px,-50px) scale(1.15)}
-}
-
-/* BOOT */
+/* =====================================================
+   BOOT
+===================================================== */
 
 #boot{
     position:fixed;
     inset:0;
-    z-index:1000;
+    z-index:10000;
     display:flex;
-    align-items:center;
-    justify-content:center;
     flex-direction:column;
-    background:#03050a;
-    transition:.8s;
+    justify-content:center;
+    align-items:center;
+    background:
+        radial-gradient(
+            circle at center,
+            #0a1424,
+            #02040a 65%
+        );
+    transition:
+        opacity .7s,
+        visibility .7s;
 }
 
 #boot.hide{
     opacity:0;
-    pointer-events:none;
+    visibility:hidden;
 }
 
 .boot-logo{
-    font-size:clamp(32px,8vw,70px);
+    position:relative;
+    font-size:clamp(55px,13vw,120px);
+    line-height:1;
     font-weight:1000;
-    letter-spacing:8px;
+    letter-spacing:12px;
     color:var(--cyan);
     text-shadow:
-        0 0 15px rgba(0,234,255,.7),
-        0 0 50px rgba(0,234,255,.35);
-    animation:pulseLogo 1.2s infinite alternate;
+        0 0 10px var(--cyan),
+        0 0 35px rgba(0,234,255,.8),
+        0 0 100px rgba(0,234,255,.25);
+    animation:bootPulse 1s ease-in-out infinite alternate;
 }
 
-.boot-text{
-    margin-top:14px;
-    color:#7c8ba3;
-    letter-spacing:4px;
-    font-size:10px;
-}
-
-.boot-line{
-    width:260px;
+.boot-logo::after{
+    content:"";
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:-10px;
     height:2px;
+    background:linear-gradient(
+        90deg,
+        transparent,
+        var(--cyan),
+        transparent
+    );
+    box-shadow:0 0 20px var(--cyan);
+}
+
+.boot-sub{
+    margin-top:28px;
+    color:#7e8da5;
+    font-size:9px;
+    letter-spacing:5px;
+    text-align:center;
+}
+
+.boot-progress{
+    width:min(360px,75vw);
+    height:4px;
     margin-top:24px;
     overflow:hidden;
-    background:#101a2b;
+    border-radius:20px;
+    background:#111b2d;
 }
 
-.boot-line span{
+.boot-progress span{
     display:block;
     width:0;
     height:100%;
-    background:var(--cyan);
-    box-shadow:0 0 15px var(--cyan);
-    animation:bootLoad 2.2s forwards;
+    background:
+        linear-gradient(
+            90deg,
+            var(--blue),
+            var(--cyan),
+            var(--green)
+        );
+    box-shadow:
+        0 0 15px var(--cyan);
+    animation:bootProgress 3s linear forwards;
 }
 
-@keyframes bootLoad{
-    to{width:100%}
+.boot-status{
+    margin-top:12px;
+    color:#52617a;
+    font-family:monospace;
+    font-size:8px;
+    letter-spacing:1px;
 }
 
-@keyframes pulseLogo{
-    from{opacity:.65}
-    to{opacity:1}
+@keyframes bootProgress{
+    to{
+        width:100%;
+    }
 }
 
-/* APP */
+@keyframes bootPulse{
+    from{
+        opacity:.65;
+        transform:scale(.98);
+    }
 
-.app{
+    to{
+        opacity:1;
+        transform:scale(1.02);
+    }
+}
+
+/* =====================================================
+   LOCK SCREEN
+===================================================== */
+
+#lockScreen{
+    position:fixed;
+    inset:0;
+    z-index:9999;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(0,234,255,.07),
+            transparent 30%
+        ),
+        #02040a;
+}
+
+#lockScreen.show{
+    display:flex;
+}
+
+.lock-box{
+    position:relative;
+    width:min(420px,100%);
+    padding:32px;
+    overflow:hidden;
+    text-align:center;
+    border:1px solid rgba(0,234,255,.2);
+    border-radius:28px;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(0,234,255,.055),
+            rgba(146,92,255,.045)
+        ),
+        rgba(7,12,22,.9);
+    box-shadow:
+        0 0 80px rgba(0,234,255,.08),
+        var(--shadow);
+    backdrop-filter:blur(25px);
+}
+
+.lock-box::before{
+    content:"";
+    position:absolute;
+    left:-30%;
+    top:0;
+    width:160%;
+    height:1px;
+    background:linear-gradient(
+        90deg,
+        transparent,
+        var(--cyan),
+        transparent
+    );
+    animation:lockScan 3s linear infinite;
+}
+
+@keyframes lockScan{
+    from{
+        transform:translateX(-30%);
+    }
+
+    to{
+        transform:translateX(30%);
+    }
+}
+
+.lock-icon{
+    width:70px;
+    height:70px;
+    margin:0 auto 20px;
+    display:grid;
+    place-items:center;
+    border:1px solid rgba(0,234,255,.25);
+    border-radius:22px;
+    color:var(--cyan);
+    font-size:30px;
+    background:rgba(0,234,255,.045);
+    box-shadow:
+        inset 0 0 25px rgba(0,234,255,.06),
+        0 0 35px rgba(0,234,255,.08);
+}
+
+.lock-box h2{
+    margin:0;
+    font-size:20px;
+    letter-spacing:3px;
+}
+
+.lock-box p{
+    margin:10px 0 22px;
+    color:var(--muted);
+    font-size:9px;
+    line-height:1.7;
+}
+
+.code-input{
+    width:100%;
+    height:55px;
+    outline:none;
+    text-align:center;
+    letter-spacing:12px;
+    font-size:20px;
+    font-weight:900;
+    color:var(--cyan);
+    border:1px solid rgba(0,234,255,.18);
+    border-radius:15px;
+    background:rgba(0,0,0,.25);
+    box-shadow:
+        inset 0 0 20px rgba(0,234,255,.025);
+}
+
+.code-input:focus{
+    border-color:rgba(0,234,255,.65);
+    box-shadow:
+        0 0 25px rgba(0,234,255,.1),
+        inset 0 0 20px rgba(0,234,255,.04);
+}
+
+.unlock-btn{
+    width:100%;
+    height:48px;
+    margin-top:12px;
+    border:0;
+    border-radius:14px;
+    color:#001015;
+    font-weight:1000;
+    letter-spacing:2px;
+    background:
+        linear-gradient(
+            100deg,
+            var(--cyan),
+            #72f8ff
+        );
+    box-shadow:
+        0 0 30px rgba(0,234,255,.2);
+    transition:.25s;
+}
+
+.unlock-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:
+        0 0 45px rgba(0,234,255,.3);
+}
+
+.lock-error{
+    min-height:16px;
+    margin-top:10px;
+    color:var(--red);
+    font-size:9px;
+    font-weight:900;
+}
+
+.lock-meta{
+    margin-top:22px;
+    color:#435169;
+    font-size:7px;
+    letter-spacing:2px;
+}
+
+/* =====================================================
+   APP
+===================================================== */
+
+#app{
+    display:none;
+}
+
+#app.active{
+    display:block;
+    animation:appIn .7s ease;
+}
+
+@keyframes appIn{
+    from{
+        opacity:0;
+        transform:translateY(15px);
+    }
+
+    to{
+        opacity:1;
+        transform:none;
+    }
+}
+
+.container{
     width:min(1450px,94%);
     margin:auto;
-    padding:24px 0 35px;
+    padding:22px 0 45px;
 }
 
-/* HEADER */
+/* =====================================================
+   HEADER
+===================================================== */
 
 header{
     display:flex;
-    justify-content:space-between;
     align-items:center;
-    gap:15px;
-    margin-bottom:25px;
+    justify-content:space-between;
+    gap:20px;
+    margin-bottom:22px;
 }
 
 .brand{
@@ -221,22 +486,43 @@ header{
 }
 
 .brand-icon{
+    position:relative;
     width:46px;
     height:46px;
-    border-radius:14px;
     display:grid;
     place-items:center;
+    border-radius:15px;
     color:#001016;
-    background:linear-gradient(135deg,var(--cyan),#69f5ff);
-    box-shadow:
-        0 0 25px rgba(0,234,255,.35),
-        inset 0 0 15px rgba(255,255,255,.35);
+    font-size:20px;
     font-weight:1000;
+    background:
+        linear-gradient(
+            135deg,
+            var(--cyan),
+            #76f8ff
+        );
+    box-shadow:
+        0 0 30px rgba(0,234,255,.3);
+}
+
+.brand-icon::after{
+    content:"";
+    position:absolute;
+    inset:-5px;
+    border:1px solid rgba(0,234,255,.2);
+    border-radius:19px;
+    animation:iconRing 2s linear infinite;
+}
+
+@keyframes iconRing{
+    to{
+        transform:rotate(360deg);
+    }
 }
 
 .brand h1{
     margin:0;
-    font-size:16px;
+    font-size:15px;
     letter-spacing:2px;
 }
 
@@ -244,14 +530,14 @@ header{
     display:block;
     margin-top:4px;
     color:var(--muted);
-    font-size:8px;
+    font-size:7px;
     letter-spacing:2px;
 }
 
 .header-right{
     display:flex;
     align-items:center;
-    gap:10px;
+    gap:12px;
 }
 
 .clock{
@@ -260,13 +546,14 @@ header{
 
 .clock strong{
     display:block;
+    font-family:monospace;
     font-size:13px;
     letter-spacing:2px;
 }
 
 .clock span{
     color:var(--muted);
-    font-size:8px;
+    font-size:7px;
 }
 
 .theme-btn{
@@ -276,82 +563,103 @@ header{
     border-radius:13px;
     color:var(--text);
     background:var(--panel);
-    backdrop-filter:blur(14px);
+    transition:.25s;
 }
 
-/* HERO */
+.theme-btn:hover{
+    border-color:var(--cyan);
+    transform:rotate(15deg);
+}
+
+/* =====================================================
+   HERO
+===================================================== */
 
 .hero{
     position:relative;
     overflow:hidden;
-    padding:35px;
-    margin-bottom:16px;
+    padding:38px;
+    margin-bottom:14px;
     border:1px solid var(--line);
     border-radius:28px;
     background:
-        linear-gradient(135deg,
-            rgba(0,234,255,.055),
-            rgba(139,92,255,.045)),
+        linear-gradient(
+            135deg,
+            rgba(0,234,255,.065),
+            rgba(146,92,255,.055)
+        ),
         var(--panel);
     box-shadow:var(--shadow);
-    backdrop-filter:blur(20px);
+    backdrop-filter:blur(25px);
 }
 
 .hero::before{
     content:"";
     position:absolute;
+    left:-40%;
     top:0;
-    left:-30%;
-    width:30%;
+    width:35%;
     height:1px;
-    background:linear-gradient(90deg,transparent,var(--cyan),transparent);
-    animation:scanHero 5s linear infinite;
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            var(--cyan),
+            transparent
+        );
+    box-shadow:0 0 15px var(--cyan);
+    animation:heroScan 4s linear infinite;
 }
 
-@keyframes scanHero{
-    to{left:130%}
+@keyframes heroScan{
+    to{
+        left:140%;
+    }
 }
 
 .hero h2{
     margin:0;
-    font-size:clamp(28px,5vw,58px);
+    font-size:clamp(30px,5vw,60px);
     line-height:1;
-    letter-spacing:-2px;
+    letter-spacing:-3px;
 }
 
 .hero h2 span{
     color:var(--cyan);
-    text-shadow:0 0 25px rgba(0,234,255,.35);
+    text-shadow:
+        0 0 15px rgba(0,234,255,.6),
+        0 0 45px rgba(0,234,255,.2);
 }
 
 .hero p{
-    max-width:700px;
+    max-width:720px;
+    margin:18px 0 0;
     color:var(--muted);
-    line-height:1.6;
-    font-size:12px;
+    font-size:11px;
+    line-height:1.7;
 }
 
 .badges{
     display:flex;
     flex-wrap:wrap;
     gap:7px;
-    margin-top:20px;
+    margin-top:22px;
 }
 
 .badge{
     padding:7px 10px;
-    border-radius:999px;
     border:1px solid var(--line);
+    border-radius:999px;
+    color:#9caac0;
     background:rgba(255,255,255,.025);
-    color:#aebbd0;
-    font-size:8px;
-    font-weight:900;
+    font-size:7px;
+    font-weight:1000;
     letter-spacing:1px;
 }
 
 .badge.green{
     color:var(--green);
-    border-color:rgba(0,255,157,.2);
+    border-color:rgba(0,255,163,.2);
 }
 
 .badge.cyan{
@@ -359,26 +667,43 @@ header{
     border-color:rgba(0,234,255,.2);
 }
 
-/* STATS */
+/* =====================================================
+   STATS
+===================================================== */
 
 .stats{
     display:grid;
     grid-template-columns:repeat(3,1fr);
-    gap:12px;
-    margin-bottom:16px;
+    gap:10px;
+    margin-bottom:14px;
 }
 
 .stat{
-    padding:17px;
+    position:relative;
+    overflow:hidden;
+    padding:16px;
     border:1px solid var(--line);
-    border-radius:18px;
+    border-radius:17px;
     background:var(--panel);
-    backdrop-filter:blur(15px);
+    backdrop-filter:blur(18px);
+}
+
+.stat::after{
+    content:"";
+    position:absolute;
+    width:80px;
+    height:80px;
+    right:-50px;
+    bottom:-50px;
+    border-radius:50%;
+    background:var(--cyan);
+    filter:blur(25px);
+    opacity:.07;
 }
 
 .stat small{
     color:var(--muted);
-    font-size:8px;
+    font-size:7px;
     font-weight:900;
     letter-spacing:1.5px;
 }
@@ -386,21 +711,49 @@ header{
 .stat strong{
     display:block;
     margin-top:7px;
-    font-size:22px;
+    font-size:21px;
 }
 
-/* SYSTEM */
-
-.system-panel{
-    margin-bottom:16px;
-}
+/* =====================================================
+   COMMON PANEL
+===================================================== */
 
 .panel{
+    padding:19px;
     border:1px solid var(--line);
-    border-radius:var(--radius);
+    border-radius:21px;
     background:var(--panel);
     box-shadow:var(--shadow);
-    backdrop-filter:blur(18px);
+    backdrop-filter:blur(20px);
+}
+
+.panel-title{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    margin-bottom:15px;
+}
+
+.panel-title h3{
+    margin:0;
+    font-size:10px;
+    letter-spacing:2px;
+}
+
+.panel-title span{
+    color:var(--muted);
+    font-size:7px;
+    font-weight:900;
+    letter-spacing:1px;
+}
+
+/* =====================================================
+   SYSTEM
+===================================================== */
+
+.system-panel{
+    margin-bottom:14px;
 }
 
 .system-panel .panel-title span{
@@ -410,26 +763,31 @@ header{
 .system-grid{
     display:grid;
     grid-template-columns:repeat(4,1fr);
-    gap:10px;
+    gap:9px;
 }
 
 .system-item{
     position:relative;
     overflow:hidden;
-    min-height:75px;
-    padding:13px;
+    min-height:76px;
+    padding:12px;
     border:1px solid var(--line);
-    border-radius:15px;
+    border-radius:14px;
     background:
         linear-gradient(
             135deg,
             rgba(0,234,255,.025),
-            rgba(139,92,255,.035)
+            rgba(146,92,255,.03)
         );
-    transition:
-        transform .25s,
-        border-color .25s,
-        box-shadow .25s;
+    transition:.25s;
+}
+
+.system-item:hover{
+    transform:translateY(-3px);
+    border-color:rgba(0,234,255,.35);
+    box-shadow:
+        0 10px 30px rgba(0,0,0,.18),
+        inset 0 0 25px rgba(0,234,255,.025);
 }
 
 .system-item::after{
@@ -445,19 +803,11 @@ header{
     opacity:.08;
 }
 
-.system-item:hover{
-    transform:translateY(-3px);
-    border-color:rgba(0,234,255,.32);
-    box-shadow:
-        0 8px 25px rgba(0,0,0,.18),
-        inset 0 0 20px rgba(0,234,255,.025);
-}
-
 .system-item small{
     display:block;
     color:var(--muted);
-    font-size:8px;
-    font-weight:900;
+    font-size:6.5px;
+    font-weight:1000;
     letter-spacing:1px;
 }
 
@@ -467,112 +817,120 @@ header{
     overflow:hidden;
     text-overflow:ellipsis;
     white-space:nowrap;
-    color:var(--text);
-    font-size:12px;
-    font-weight:800;
+    font-size:11px;
+    font-weight:900;
 }
 
-/* MAIN */
+/* =====================================================
+   MAIN GRID
+===================================================== */
 
 .main-grid{
     display:grid;
     grid-template-columns:1fr 1fr;
-    gap:16px;
+    gap:14px;
 }
 
-.panel{
-    padding:20px;
-}
+/* =====================================================
+   FILE INPUT
+===================================================== */
 
-.panel-title{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:10px;
-    margin-bottom:16px;
-}
-
-.panel-title h3{
-    margin:0;
-    font-size:11px;
-    letter-spacing:2px;
-}
-
-.panel-title span{
-    color:var(--muted);
-    font-size:8px;
-    font-weight:900;
-    letter-spacing:1px;
-}
-
-/* DROP */
-
-.drop-zone{
+.file-picker{
     position:relative;
-    overflow:hidden;
-    min-height:190px;
+    min-height:200px;
     display:flex;
-    align-items:center;
-    justify-content:center;
     flex-direction:column;
-    gap:8px;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
     border:1px dashed rgba(0,234,255,.25);
     border-radius:18px;
     background:
         radial-gradient(
             circle at center,
-            rgba(0,234,255,.07),
-            transparent 60%
+            rgba(0,234,255,.06),
+            transparent 65%
         );
     transition:.3s;
 }
 
-.drop-zone.drag{
+.file-picker.drag{
     border-color:var(--cyan);
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(0,234,255,.12),
+            transparent 65%
+        );
     box-shadow:
-        inset 0 0 30px rgba(0,234,255,.08),
-        0 0 30px rgba(0,234,255,.08);
+        0 0 40px rgba(0,234,255,.08),
+        inset 0 0 40px rgba(0,234,255,.04);
     transform:scale(1.01);
 }
 
-.drop-icon{
-    font-size:38px;
-    filter:drop-shadow(0 0 15px rgba(0,234,255,.5));
+.file-picker-icon{
+    font-size:42px;
+    margin-bottom:10px;
+    color:var(--cyan);
+    filter:drop-shadow(0 0 15px rgba(0,234,255,.6));
 }
 
-.drop-zone strong{
-    font-size:12px;
+.file-picker strong{
+    font-size:11px;
 }
 
-.drop-zone span{
+.file-picker small{
+    margin-top:7px;
     color:var(--muted);
-    font-size:9px;
+    font-size:8px;
 }
 
-.file-input{
+.select-file-btn{
+    margin-top:16px;
+    padding:11px 18px;
+    border:1px solid rgba(0,234,255,.25);
+    border-radius:12px;
+    color:var(--cyan);
+    background:rgba(0,234,255,.045);
+    font-size:8px;
+    font-weight:1000;
+    letter-spacing:1px;
+    transition:.25s;
+}
+
+.select-file-btn:hover{
+    color:#001015;
+    background:var(--cyan);
+    box-shadow:0 0 25px rgba(0,234,255,.2);
+}
+
+#fileInput{
     display:none;
 }
 
-/* FILE LIST */
+/* =====================================================
+   FILE LIST
+===================================================== */
 
 .file-list{
     display:flex;
     flex-direction:column;
-    gap:8px;
-    margin-top:14px;
-    max-height:270px;
+    gap:7px;
+    max-height:275px;
     overflow:auto;
+    margin-top:13px;
+    padding-right:3px;
 }
 
 .file{
     display:flex;
-    align-items:center;
     justify-content:space-between;
+    align-items:center;
     gap:10px;
-    padding:11px 12px;
+    padding:10px 12px;
     border:1px solid var(--line);
-    border-radius:13px;
-    background:rgba(255,255,255,.025);
+    border-radius:12px;
+    background:rgba(255,255,255,.02);
 }
 
 .file-name{
@@ -584,66 +942,87 @@ header{
     overflow:hidden;
     text-overflow:ellipsis;
     white-space:nowrap;
-    font-size:10px;
+    font-size:9px;
 }
 
 .file-name small{
+    display:block;
+    margin-top:3px;
     color:var(--muted);
-    font-size:8px;
+    font-size:7px;
 }
 
 .file-index{
     color:var(--cyan);
-    font-size:9px;
-    font-weight:900;
+    font-family:monospace;
+    font-size:8px;
+    font-weight:1000;
 }
 
-/* BUTTONS */
+/* =====================================================
+   BUTTONS
+===================================================== */
 
 .actions{
     display:flex;
     flex-wrap:wrap;
-    gap:8px;
-    margin-top:13px;
+    gap:7px;
+    margin-top:12px;
 }
 
 .btn{
-    border:1px solid var(--line);
-    border-radius:12px;
+    position:relative;
+    overflow:hidden;
     padding:10px 13px;
+    border:1px solid var(--line);
+    border-radius:11px;
     color:var(--text);
-    background:rgba(255,255,255,.035);
-    font-size:9px;
-    font-weight:900;
+    background:rgba(255,255,255,.03);
+    font-size:8px;
+    font-weight:1000;
     letter-spacing:.8px;
     transition:.25s;
 }
 
 .btn:hover{
     transform:translateY(-2px);
-    border-color:rgba(0,234,255,.3);
+    border-color:rgba(0,234,255,.35);
 }
 
 .btn.primary{
     color:#001014;
-    background:linear-gradient(135deg,var(--cyan),#72f7ff);
-    border-color:transparent;
-    box-shadow:0 0 25px rgba(0,234,255,.18);
+    border:0;
+    background:
+        linear-gradient(
+            110deg,
+            var(--cyan),
+            #6ff7ff
+        );
+    box-shadow:0 0 25px rgba(0,234,255,.16);
+}
+
+.btn.success{
+    color:var(--green);
+}
+
+.btn.danger{
+    color:#ff6c89;
 }
 
 .btn.ai{
-    position:relative;
-    overflow:hidden;
+    width:100%;
+    padding:14px;
     color:white;
-    border-color:rgba(139,92,255,.4);
+    border-color:rgba(146,92,255,.4);
     background:
         linear-gradient(
-            120deg,
-            #251550,
-            #172d58,
-            #35135c
+            110deg,
+            #211343,
+            #152d5a,
+            #32134e
         );
-    box-shadow:0 0 25px rgba(139,92,255,.15);
+    box-shadow:
+        0 0 35px rgba(146,92,255,.1);
 }
 
 .btn.ai::before{
@@ -653,48 +1032,45 @@ header{
     left:-100%;
     width:60%;
     height:100%;
-    background:linear-gradient(
-        90deg,
-        transparent,
-        rgba(255,255,255,.18),
-        transparent
-    );
-    animation:buttonScan 2.5s linear infinite;
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.2),
+            transparent
+        );
+    animation:buttonScan 2.3s linear infinite;
 }
 
 @keyframes buttonScan{
-    to{left:150%}
+    to{
+        left:150%;
+    }
 }
 
-.btn.danger{
-    color:#ff6d8d;
-}
-
-.btn.success{
-    color:var(--green);
-}
-
-/* AI */
-
-.ai-engine{
-    position:relative;
-}
+/* =====================================================
+   AI PREDICTION
+===================================================== */
 
 .prediction{
     position:relative;
     overflow:hidden;
+    min-height:150px;
+    margin-top:13px;
     padding:20px;
     border:1px solid var(--line);
-    border-radius:18px;
+    border-radius:17px;
     background:
         radial-gradient(
-            circle at 50% 20%,
-            rgba(0,234,255,.06),
-            transparent 60%
+            circle at 20% 30%,
+            rgba(0,234,255,.07),
+            transparent 40%
         );
 }
 
 .prediction-head{
+    position:relative;
+    z-index:2;
     display:flex;
     align-items:center;
     justify-content:space-between;
@@ -702,23 +1078,15 @@ header{
 
 .prediction-head small{
     color:var(--muted);
-    font-size:8px;
-    letter-spacing:1.5px;
-    font-weight:900;
-}
-
-.score{
-    font-size:42px;
+    font-size:7px;
     font-weight:1000;
-    letter-spacing:-2px;
-    color:var(--cyan);
-    text-shadow:0 0 25px rgba(0,234,255,.3);
+    letter-spacing:1.5px;
 }
 
 .prediction-status{
-    margin-top:4px;
+    margin-top:6px;
     font-size:10px;
-    font-weight:900;
+    font-weight:1000;
     letter-spacing:2px;
 }
 
@@ -738,28 +1106,40 @@ header{
     color:var(--red);
 }
 
+.score{
+    font-size:43px;
+    font-weight:1000;
+    letter-spacing:-3px;
+    color:var(--cyan);
+    text-shadow:
+        0 0 20px rgba(0,234,255,.45);
+}
+
 .radar{
     position:absolute;
-    width:130px;
-    height:130px;
-    right:20px;
-    bottom:-35px;
-    border:1px solid rgba(0,234,255,.1);
+    width:150px;
+    height:150px;
+    right:10px;
+    bottom:-60px;
+    border:1px solid rgba(0,234,255,.12);
     border-radius:50%;
-    opacity:.5;
+    opacity:.65;
 }
 
 .radar::before,
 .radar::after{
     content:"";
     position:absolute;
-    inset:20px;
     border:1px solid rgba(0,234,255,.1);
     border-radius:50%;
 }
 
+.radar::before{
+    inset:25px;
+}
+
 .radar::after{
-    inset:45px;
+    inset:50px;
 }
 
 .radar-line{
@@ -769,76 +1149,89 @@ header{
     width:1px;
     height:50%;
     transform-origin:bottom;
-    background:linear-gradient(var(--cyan),transparent);
-    animation:radarSpin 3s linear infinite;
+    background:
+        linear-gradient(
+            var(--cyan),
+            transparent
+        );
+    box-shadow:0 0 10px var(--cyan);
+    animation:radarSpin 2.7s linear infinite;
 }
 
 @keyframes radarSpin{
-    to{transform:rotate(360deg)}
+    to{
+        transform:rotate(360deg);
+    }
 }
 
-/* FORM */
+/* =====================================================
+   FORM
+===================================================== */
 
 .form-group{
-    margin-top:15px;
+    margin-top:14px;
 }
 
 .form-group label{
     display:block;
-    margin-bottom:7px;
+    margin-bottom:6px;
     color:var(--muted);
-    font-size:8px;
-    font-weight:900;
-    letter-spacing:1.2px;
+    font-size:7px;
+    font-weight:1000;
+    letter-spacing:1px;
 }
 
 .text-input,
 .select{
     width:100%;
-    padding:12px;
+    height:42px;
+    padding:0 12px;
     outline:none;
-    border:1px solid var(--line);
-    border-radius:12px;
     color:var(--text);
-    background:rgba(0,0,0,.14);
+    border:1px solid var(--line);
+    border-radius:11px;
+    background:rgba(0,0,0,.18);
 }
 
 .select option{
-    background:#0a0f19;
+    color:white;
+    background:#090e18;
 }
 
-/* PROGRESS */
+/* =====================================================
+   PROGRESS
+===================================================== */
 
 .progress-box{
-    margin-top:16px;
-    padding:15px;
+    margin-top:14px;
+    padding:14px;
     border:1px solid var(--line);
-    border-radius:16px;
+    border-radius:15px;
     background:rgba(255,255,255,.018);
 }
 
 .progress-top{
     display:flex;
     justify-content:space-between;
-    margin-bottom:9px;
+    margin-bottom:8px;
 }
 
 .progress-top span{
     color:var(--muted);
-    font-size:8px;
-    font-weight:900;
+    font-size:7px;
+    font-weight:1000;
     letter-spacing:1px;
 }
 
 .progress-track{
-    height:8px;
+    height:7px;
     overflow:hidden;
-    border-radius:999px;
-    background:#111827;
+    border-radius:99px;
+    background:#101827;
 }
 
 .progress-fill{
-    width:0%;
+    width:0;
     height:100%;
     border-radius:inherit;
     background:
@@ -848,67 +1241,86 @@ header{
             var(--cyan),
             var(--green)
         );
-    box-shadow:0 0 15px rgba(0,234,255,.45);
-    transition:width .3s;
+    box-shadow:
+        0 0 15px rgba(0,234,255,.5);
+    transition:width .3s ease;
 }
 
 .progress-detail{
-    margin-top:8px;
+    margin-top:7px;
     color:var(--muted);
-    font-size:8px;
+    font-size:7px;
 }
 
-/* TERMINAL */
+/* =====================================================
+   RESULT
+===================================================== */
+
+.result{
+    min-height:45px;
+    margin-top:12px;
+    padding:12px;
+    color:var(--muted);
+    border:1px solid var(--line);
+    border-radius:12px;
+    font-size:8px;
+    line-height:1.6;
+}
+
+/* =====================================================
+   TERMINAL
+===================================================== */
 
 .terminal-panel{
-    margin-top:16px;
+    margin-top:14px;
 }
 
 .terminal{
     min-height:160px;
-    max-height:280px;
+    max-height:270px;
     overflow:auto;
-    padding:15px;
-    border:1px solid var(--line);
-    border-radius:16px;
-    background:#03060b;
+    padding:14px;
+    border:1px solid rgba(0,255,163,.08);
+    border-radius:15px;
+    background:#02050a;
     color:#8ef7ce;
     font-family:
         "SFMono-Regular",
         Consolas,
         monospace;
-    font-size:9px;
-    line-height:1.7;
+    font-size:8px;
+    line-height:1.8;
 }
 
-.log-info{color:#75dfff}
-.log-success{color:#67f5a6}
-.log-warning{color:#ffd166}
-.log-error{color:#ff6584}
-
-/* RESULT */
-
-.result{
-    margin-top:14px;
-    padding:13px;
-    border-radius:13px;
-    border:1px solid var(--line);
-    color:var(--muted);
-    font-size:9px;
-    line-height:1.6;
+.log-info{
+    color:#72ddff;
 }
 
-/* FOOTER */
+.log-success{
+    color:#66f3a5;
+}
+
+.log-warning{
+    color:#ffd166;
+}
+
+.log-error{
+    color:#ff6584;
+}
+
+/* =====================================================
+   FOOTER
+===================================================== */
 
 footer{
+    padding:35px 0 0;
     text-align:center;
-    padding:35px 0 5px;
 }
 
 .creator-label{
-    color:var(--muted);
-    font-size:8px;
-    font-weight:900;
+    color:#52617a;
+    font-size:7px;
+    font-weight:1000;
     letter-spacing:4px;
 }
 
@@ -919,31 +1331,36 @@ footer{
     font-weight:1000;
     letter-spacing:3px;
     text-shadow:
-        0 0 10px rgba(0,234,255,.5),
-        0 0 30px rgba(0,234,255,.15);
+        0 0 15px rgba(0,234,255,.55);
     animation:creatorGlow 2s ease-in-out infinite alternate;
 }
 
 .creator-version{
     margin-top:8px;
-    color:var(--muted);
-    font-size:7px;
+    color:#39465a;
+    font-size:6px;
     letter-spacing:2px;
 }
 
 @keyframes creatorGlow{
-    from{opacity:.7}
+    from{
+        opacity:.65;
+    }
+
     to{
         opacity:1;
         text-shadow:
-            0 0 15px rgba(0,234,255,.7),
-            0 0 40px rgba(0,234,255,.2);
+            0 0 20px rgba(0,234,255,.7),
+            0 0 45px rgba(0,234,255,.15);
     }
 }
 
-/* RESPONSIVE */
+/* =====================================================
+   RESPONSIVE
+===================================================== */
 
 @media(max-width:950px){
+
     .main-grid{
         grid-template-columns:1fr;
     }
@@ -954,21 +1371,18 @@ footer{
 }
 
 @media(max-width:650px){
-    .app{
+
+    .container{
         width:94%;
         padding-top:15px;
     }
 
-    header{
-        align-items:flex-start;
-    }
-
-    .clock{
-        display:none;
-    }
-
     .hero{
-        padding:24px;
+        padding:25px;
+    }
+
+    .hero h2{
+        font-size:32px;
     }
 
     .stats{
@@ -981,15 +1395,30 @@ footer{
 
     .system-item{
         min-height:70px;
-        padding:11px;
+        padding:10px;
     }
 
     .system-item strong{
-        font-size:10px;
+        font-size:9px;
+    }
+
+    .clock{
+        display:none;
     }
 
     .panel{
         padding:15px;
+    }
+}
+
+@media(max-width:430px){
+
+    .system-grid{
+        grid-template-columns:1fr;
+    }
+
+    .lock-box{
+        padding:25px 20px;
     }
 }
 </style>
@@ -997,60 +1426,183 @@ footer{
 
 <body>
 
+<!-- =====================================================
+     BOOT SCREEN
+===================================================== -->
+
 <div id="boot">
+
     <div class="boot-logo">V27</div>
-    <div class="boot-text">KTOOL AI BINARY ENGINE INITIALIZING</div>
-    <div class="boot-line">
+
+    <div class="boot-sub">
+        KTOOL AI BINARY ENGINE
+    </div>
+
+    <div class="boot-progress">
         <span></span>
     </div>
+
+    <div
+        id="bootStatus"
+        class="boot-status"
+    >
+        INITIALIZING CORE...
+    </div>
+
 </div>
 
-<div class="ambient one"></div>
-<div class="ambient two"></div>
+<!-- =====================================================
+     ACCESS CODE
+===================================================== -->
 
-<div class="app">
+<div id="lockScreen">
+
+    <div class="lock-box">
+
+        <div class="lock-icon">
+            ◈
+        </div>
+
+        <h2>SECURE ACCESS</h2>
+
+        <p>
+            KTOOL AI BINARY ENGINE V27<br>
+            ENTER AUTHORIZATION CODE TO CONTINUE
+        </p>
+
+        <input
+            id="accessCode"
+            class="code-input"
+            type="password"
+            inputmode="numeric"
+            maxlength="4"
+            autocomplete="off"
+            placeholder="••••"
+        >
+
+        <button
+            id="unlockBtn"
+            class="unlock-btn"
+        >
+            UNLOCK V27
+        </button>
+
+        <div
+            id="lockError"
+            class="lock-error"
+        ></div>
+
+        <div class="lock-meta">
+            LOCAL AUTHENTICATION • V27
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =====================================================
+     APPLICATION
+===================================================== -->
+
+<div id="app">
+
+<div class="container">
 
 <header>
+
     <div class="brand">
-        <div class="brand-icon">K</div>
-        <div>
-            <h1>KTOOL AI BINARY ENGINE</h1>
-            <small>LOCAL BYTE PROCESSOR / V27</small>
+
+        <div class="brand-icon">
+            K
         </div>
+
+        <div>
+
+            <h1>
+                KTOOL AI BINARY ENGINE
+            </h1>
+
+            <small>
+                LOCAL BYTE PROCESSOR / V27
+            </small>
+
+        </div>
+
     </div>
 
     <div class="header-right">
+
         <div class="clock">
-            <strong id="clock">00:00:00</strong>
-            <span id="date">--/--/----</span>
+
+            <strong id="clock">
+                00:00:00
+            </strong>
+
+            <span id="date">
+                --/--/----
+            </span>
+
         </div>
 
-        <button class="theme-btn" id="themeBtn">☼</button>
+        <button
+            id="themeBtn"
+            class="theme-btn"
+        >
+            ◐
+        </button>
+
     </div>
+
 </header>
 
+<!-- =====================================================
+     HERO
+===================================================== -->
+
 <section class="hero">
+
     <h2>
         AI BINARY
         <span>MERGE ENGINE</span>
     </h2>
 
     <p>
-        Local browser-based binary analysis and merge engine.
-        Files are processed directly in your browser without uploading
-        them to a server.
+        Advanced local binary analysis interface.
+        Files remain inside the browser during processing.
     </p>
 
     <div class="badges">
-        <span class="badge green">● ENGINE ONLINE</span>
-        <span class="badge cyan">LOCAL PROCESSING</span>
-        <span class="badge">BYTE SAFE</span>
-        <span class="badge">AI GUARD</span>
-        <span class="badge">.BYTES ONLY</span>
+
+        <span class="badge green">
+            ● ENGINE ONLINE
+        </span>
+
+        <span class="badge cyan">
+            LOCAL PROCESSING
+        </span>
+
+        <span class="badge">
+            BYTE SAFE
+        </span>
+
+        <span class="badge">
+            AI GUARD
+        </span>
+
+        <span class="badge">
+            .BYTES ONLY
+        </span>
+
     </div>
+
 </section>
 
+<!-- =====================================================
+     STATS
+===================================================== -->
+
 <div class="stats">
+
     <div class="stat">
         <small>FILES LOADED</small>
         <strong id="fileCount">0</strong>
@@ -1065,15 +1617,25 @@ footer{
         <small>AI STATUS</small>
         <strong id="aiStatus">WAITING</strong>
     </div>
+
 </div>
 
-<!-- SYSTEM INFORMATION -->
+<!-- =====================================================
+     SYSTEM INFORMATION
+===================================================== -->
 
 <section class="panel system-panel">
 
     <div class="panel-title">
-        <h3>◉ SYSTEM INFORMATION</h3>
-        <span id="systemStatus">DETECTING...</span>
+
+        <h3>
+            ◉ DEEP SYSTEM INFORMATION
+        </h3>
+
+        <span id="systemStatus">
+            DETECTING...
+        </span>
+
     </div>
 
     <div class="system-grid">
@@ -1089,7 +1651,7 @@ footer{
         </div>
 
         <div class="system-item">
-            <small>PLATFORM / ARCH</small>
+            <small>PLATFORM</small>
             <strong id="sysPlatform">Detecting...</strong>
         </div>
 
@@ -1104,8 +1666,8 @@ footer{
         </div>
 
         <div class="system-item">
-            <small>LANGUAGE</small>
-            <strong id="sysLanguage">Detecting...</strong>
+            <small>GPU / WEBGL</small>
+            <strong id="sysGPU">Detecting...</strong>
         </div>
 
         <div class="system-item">
@@ -1114,74 +1676,174 @@ footer{
         </div>
 
         <div class="system-item">
+            <small>VIEWPORT</small>
+            <strong id="sysViewport">Detecting...</strong>
+        </div>
+
+        <div class="system-item">
+            <small>PIXEL RATIO</small>
+            <strong id="sysDPR">Detecting...</strong>
+        </div>
+
+        <div class="system-item">
+            <small>TOUCH</small>
+            <strong id="sysTouch">Detecting...</strong>
+        </div>
+
+        <div class="system-item">
+            <small>LANGUAGE</small>
+            <strong id="sysLanguage">Detecting...</strong>
+        </div>
+
+        <div class="system-item">
+            <small>TIMEZONE</small>
+            <strong id="sysTimezone">Detecting...</strong>
+        </div>
+
+        <div class="system-item">
             <small>NETWORK</small>
             <strong id="sysNetwork">Detecting...</strong>
         </div>
 
+        <div class="system-item">
+            <small>CONNECTION</small>
+            <strong id="sysConnection">Detecting...</strong>
+        </div>
+
+        <div class="system-item">
+            <small>COOKIES</small>
+            <strong id="sysCookies">Detecting...</strong>
+        </div>
+
+        <div class="system-item">
+            <small>STORAGE</small>
+            <strong id="sysStorage">Detecting...</strong>
+        </div>
+
     </div>
+
 </section>
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
 
 <main class="main-grid">
 
-<!-- INPUT -->
+<!-- FILE PANEL -->
 
 <section class="panel">
 
     <div class="panel-title">
-        <h3>01 / INPUT FILES</h3>
-        <span>.BYTES ONLY</span>
+
+        <h3>
+            01 / INPUT FILES
+        </h3>
+
+        <span>
+            .BYTES ONLY
+        </span>
+
     </div>
 
-    <label class="drop-zone" id="dropZone">
+    <div
+        id="filePicker"
+        class="file-picker"
+    >
 
-        <div class="drop-icon">⬡</div>
+        <div class="file-picker-icon">
+            ⬡
+        </div>
 
-        <strong>DROP .BYTES FILES HERE</strong>
+        <strong>
+            DROP .BYTES FILES HERE
+        </strong>
 
-        <span>or click to select binary files</span>
+        <small>
+            Drag & drop hoặc chọn file trực tiếp
+        </small>
+
+        <button
+            type="button"
+            id="selectFileBtn"
+            class="select-file-btn"
+        >
+            SELECT .BYTES FILES
+        </button>
 
         <input
             id="fileInput"
-            class="file-input"
             type="file"
             accept=".bytes"
             multiple
         >
 
-    </label>
+    </div>
 
-    <div id="fileList" class="file-list"></div>
+    <div
+        id="fileList"
+        class="file-list"
+    ></div>
 
     <div class="actions">
-        <button class="btn" id="sortBtn">↕ SORT</button>
-        <button class="btn" id="reverseBtn">⇅ REVERSE</button>
-        <button class="btn danger" id="clearBtn">× CLEAR</button>
+
+        <button
+            id="sortBtn"
+            class="btn"
+        >
+            ↕ SORT
+        </button>
+
+        <button
+            id="reverseBtn"
+            class="btn"
+        >
+            ⇅ REVERSE
+        </button>
+
+        <button
+            id="clearBtn"
+            class="btn danger"
+        >
+            × CLEAR
+        </button>
+
     </div>
 
 </section>
 
-<!-- AI ENGINE -->
+<!-- AI PANEL -->
 
-<section class="panel ai-engine">
+<section class="panel">
 
     <div class="panel-title">
-        <h3>02 / AI ENGINE</h3>
-        <span>COMPATIBILITY ANALYSIS</span>
+
+        <h3>
+            02 / AI ENGINE
+        </h3>
+
+        <span>
+            COMPATIBILITY
+        </span>
+
     </div>
 
     <button
-        class="btn ai"
         id="aiMergeBtn"
-        style="width:100%;padding:14px;"
+        class="btn ai"
     >
         🤖 AI GỘP FILE
     </button>
 
-    <div class="prediction" style="margin-top:14px">
+    <div class="prediction">
 
         <div class="prediction-head">
+
             <div>
-                <small>AI SUCCESS PREDICTION</small>
+
+                <small>
+                    AI SUCCESS PREDICTION
+                </small>
 
                 <div
                     id="predictionStatus"
@@ -1189,11 +1851,13 @@ footer{
                 >
                     WAITING
                 </div>
+
             </div>
 
             <div class="score">
                 <span id="predictionScore">0</span>%
             </div>
+
         </div>
 
         <div class="radar">
@@ -1203,36 +1867,63 @@ footer{
     </div>
 
     <div class="form-group">
-        <label>OUTPUT FILE NAME</label>
+
+        <label>
+            OUTPUT FILE NAME
+        </label>
 
         <input
             id="outputName"
             class="text-input"
             value="KTOOL_MERGED.bytes"
         >
+
     </div>
 
     <div class="form-group">
-        <label>MERGE MODE</label>
 
-        <select id="mergeMode" class="select">
-            <option value="binary">RAW BINARY CONCATENATION</option>
-            <option value="sequence">SEQUENTIAL MERGE</option>
+        <label>
+            MERGE MODE
+        </label>
+
+        <select
+            id="mergeMode"
+            class="select"
+        >
+
+            <option value="binary">
+                RAW BINARY CONCATENATION
+            </option>
+
+            <option value="sequence">
+                SEQUENTIAL MERGE
+            </option>
+
         </select>
+
     </div>
 
     <div class="progress-box">
 
         <div class="progress-top">
-            <span>PROCESS PROGRESS</span>
-            <span id="progressPercent">0%</span>
+
+            <span>
+                PROCESS PROGRESS
+            </span>
+
+            <span id="progressPercent">
+                0%
+            </span>
+
         </div>
 
         <div class="progress-track">
+
             <div
                 id="progressFill"
                 class="progress-fill"
             ></div>
+
         </div>
 
         <div
@@ -1254,15 +1945,15 @@ footer{
     <div class="actions">
 
         <button
-            class="btn primary"
             id="mergeBtn"
+            class="btn primary"
         >
             ⚡ MERGE
         </button>
 
         <button
-            class="btn success"
             id="downloadBtn"
+            class="btn success"
             disabled
         >
             ↓ DOWNLOAD
@@ -1281,19 +1972,25 @@ footer{
 
 </main>
 
-<!-- TERMINAL -->
+<!-- =====================================================
+     TERMINAL
+===================================================== -->
 
 <section class="panel terminal-panel">
 
     <div class="panel-title">
-        <h3>03 / SYSTEM TERMINAL</h3>
+
+        <h3>
+            03 / SYSTEM TERMINAL
+        </h3>
 
         <button
-            class="btn"
             id="copyLogBtn"
+            class="btn"
         >
             COPY LOG
         </button>
+
     </div>
 
     <div
@@ -1320,99 +2017,258 @@ footer{
 </footer>
 
 </div>
+</div>
 
 <script>
 "use strict";
 
-/* =========================================================
+/* =====================================================
+   PARTICLES
+===================================================== */
+
+for(let i=0;i<45;i++){
+
+    const p =
+        document.createElement("div");
+
+    p.className = "particle";
+
+    p.style.left =
+        Math.random()*100 + "%";
+
+    p.style.animationDuration =
+        (7 + Math.random()*12) + "s";
+
+    p.style.animationDelay =
+        (-Math.random()*15) + "s";
+
+    p.style.opacity =
+        (.1 + Math.random()*.4);
+
+    document.body.appendChild(p);
+}
+
+/* =====================================================
+   ELEMENT HELPER
+===================================================== */
+
+const $ = id =>
+    document.getElementById(id);
+
+/* =====================================================
    STATE
-========================================================= */
+===================================================== */
 
 const state = {
-    files: [],
-    resultBlob: null,
-    resultName: "",
-    merging: false,
-    aiRunning: false,
-    logs: [],
-    analysis: [],
-    prediction: null,
-    blocked: false
+
+    files:[],
+
+    resultBlob:null,
+
+    resultName:"",
+
+    merging:false,
+
+    aiRunning:false,
+
+    logs:[],
+
+    analysis:[],
+
+    prediction:null,
+
+    blocked:false,
+
+    unlocked:false
+
 };
 
-/* =========================================================
-   ELEMENTS
-========================================================= */
+/* =====================================================
+   BOOT
+===================================================== */
 
-const $ = id => document.getElementById(id);
+setTimeout(()=>{
 
-const fileInput = $("fileInput");
-const dropZone = $("dropZone");
-const fileList = $("fileList");
-const terminal = $("terminal");
+    $("boot").classList.add("hide");
 
-/* =========================================================
-   BASIC HELPERS
-========================================================= */
+    $("lockScreen").classList.add("show");
+
+    $("accessCode").focus();
+
+},3000);
+
+/* =====================================================
+   ACCESS CODE
+===================================================== */
+
+function unlock(){
+
+    const code =
+        $("accessCode").value.trim();
+
+    if(code === "2812"){
+
+        state.unlocked = true;
+
+        $("lockError").textContent =
+            "";
+
+        $("lockScreen").classList.remove(
+            "show"
+        );
+
+        $("app").classList.add(
+            "active"
+        );
+
+        log(
+            "Authorization accepted.",
+            "success"
+        );
+
+        log(
+            "KTOOL V27 access granted.",
+            "success"
+        );
+
+        detectSystemInfo();
+
+        return;
+    }
+
+    $("lockError").textContent =
+        "INVALID ACCESS CODE";
+
+    $("accessCode").value = "";
+
+    $("accessCode").focus();
+
+    $("lockScreen").querySelector(
+        ".lock-box"
+    ).animate(
+        [
+            {transform:"translateX(0)"},
+            {transform:"translateX(-7px)"},
+            {transform:"translateX(7px)"},
+            {transform:"translateX(0)"}
+        ],
+        {
+            duration:260
+        }
+    );
+}
+
+$("unlockBtn").addEventListener(
+    "click",
+    unlock
+);
+
+$("accessCode").addEventListener(
+    "keydown",
+    event => {
+
+        if(event.key === "Enter"){
+            unlock();
+        }
+
+    }
+);
+
+/* =====================================================
+   HELPERS
+===================================================== */
 
 function sleep(ms){
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise(
+        resolve => setTimeout(resolve,ms)
+    );
 }
 
 function formatBytes(bytes){
-    if(bytes < 1024) return `${bytes} B`;
 
-    const units = ["KB","MB","GB","TB"];
+    if(bytes < 1024){
+        return bytes + " B";
+    }
+
+    const units =
+        ["KB","MB","GB","TB"];
+
     let value = bytes;
 
     for(const unit of units){
+
         value /= 1024;
 
         if(value < 1024){
-            return `${value.toFixed(2)} ${unit}`;
+
+            return (
+                value.toFixed(2) +
+                " " +
+                unit
+            );
         }
     }
 
-    return `${value.toFixed(2)} PB`;
+    return (
+        value.toFixed(2) +
+        " PB"
+    );
 }
 
-function isBytesFile(file){
-    return file &&
-        typeof file.name === "string" &&
-        file.name.toLowerCase().endsWith(".bytes");
+function escapeHTML(text){
+
+    return String(text)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
 }
 
-/* =========================================================
+/* =====================================================
    TERMINAL
-========================================================= */
+===================================================== */
 
-function log(message, type="info"){
-    const time = new Date().toLocaleTimeString();
+function log(message,type="info"){
 
-    state.logs.push(`[${time}] ${message}`);
+    const time =
+        new Date().toLocaleTimeString();
 
-    const div = document.createElement("div");
-    div.className = `log-${type}`;
-
-    div.textContent =
+    const line =
         `[${time}] ${message}`;
 
-    terminal.appendChild(div);
+    state.logs.push(line);
 
-    terminal.scrollTop = terminal.scrollHeight;
+    const div =
+        document.createElement("div");
+
+    div.className =
+        "log-" + type;
+
+    div.textContent =
+        line;
+
+    $("terminal").appendChild(div);
+
+    $("terminal").scrollTop =
+        $("terminal").scrollHeight;
 }
 
-function clearTerminal(){
-    terminal.innerHTML = "";
-    state.logs = [];
-}
-
-/* =========================================================
+/* =====================================================
    PROGRESS
-========================================================= */
+===================================================== */
 
-function setProgress(percent,label,detail=""){
-    percent = Math.max(0,Math.min(100,percent));
+function setProgress(
+    percent,
+    label,
+    detail=""
+){
+
+    percent =
+        Math.max(
+            0,
+            Math.min(100,percent)
+        );
 
     $("progressFill").style.width =
         percent + "%";
@@ -1427,175 +2283,222 @@ function setProgress(percent,label,detail=""){
         detail;
 }
 
-/* =========================================================
-   FILE UI
-========================================================= */
+/* =====================================================
+   FILE CHECK
+===================================================== */
 
-function updateStats(){
-    $("fileCount").textContent =
-        state.files.length;
+function isBytesFile(file){
 
-    const total = state.files.reduce(
-        (sum,file) => sum + file.size,
-        0
-    );
-
-    $("totalSize").textContent =
-        formatBytes(total);
+    return file &&
+        typeof file.name === "string" &&
+        file.name
+            .toLowerCase()
+            .endsWith(".bytes");
 }
 
-function renderFiles(){
+/* =====================================================
+   FILE ADD
+===================================================== */
 
-    fileList.innerHTML = "";
-
-    state.files.forEach((file,index) => {
-
-        const item =
-            document.createElement("div");
-
-        item.className = "file";
-
-        item.innerHTML = `
-            <div class="file-name">
-                <strong title="${escapeHTML(file.name)}">
-                    ${escapeHTML(file.name)}
-                </strong>
-                <small>${formatBytes(file.size)}</small>
-            </div>
-
-            <div class="file-index">
-                #${String(index+1).padStart(2,"0")}
-            </div>
-        `;
-
-        fileList.appendChild(item);
-    });
-
-    updateStats();
-}
-
-function escapeHTML(text){
-    return String(text)
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
-}
-
-/* =========================================================
-   ADD FILES
-========================================================= */
-
-function addFiles(files){
+function addFiles(fileList){
 
     const incoming =
-        [...files].filter(isBytesFile);
+        [...fileList];
 
-    if(!incoming.length){
-        log(
-            "Rejected: only .bytes files are allowed.",
-            "error"
+    const valid =
+        incoming.filter(isBytesFile);
+
+    const invalid =
+        incoming.filter(
+            file => !isBytesFile(file)
         );
 
-        return;
+    if(invalid.length){
+
+        log(
+            `${invalid.length} file(s) rejected — only .bytes allowed.`,
+            "warning"
+        );
     }
 
     let added = 0;
 
-    for(const file of incoming){
+    for(const file of valid){
 
         const duplicate =
             state.files.some(
-                existing =>
-                    existing.name === file.name &&
-                    existing.size === file.size &&
-                    existing.lastModified === file.lastModified
+                old =>
+                    old.name === file.name &&
+                    old.size === file.size &&
+                    old.lastModified ===
+                        file.lastModified
             );
 
         if(!duplicate){
+
             state.files.push(file);
+
             added++;
         }
     }
 
     renderFiles();
 
-    $("aiStatus").textContent =
-        state.files.length >= 2
-            ? "READY"
-            : "WAITING";
+    resetPrediction();
 
     log(
-        `Loaded ${added} .bytes file(s).`,
+        `${added} .bytes file(s) loaded.`,
         "success"
     );
-
-    if(incoming.length !== added){
-        log(
-            `${incoming.length-added} duplicate file(s) skipped.`,
-            "warning"
-        );
-    }
-
-    resetPrediction();
 }
 
-/* =========================================================
-   FILE INPUT
-========================================================= */
+/* =====================================================
+   FILE PICKER
+===================================================== */
 
-fileInput.addEventListener(
+$("selectFileBtn").addEventListener(
+    "click",
+    event => {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        $("fileInput").click();
+    }
+);
+
+$("fileInput").addEventListener(
     "change",
     event => {
-        addFiles(event.target.files);
-        fileInput.value = "";
+
+        addFiles(
+            event.target.files
+        );
+
+        event.target.value = "";
     }
 );
 
-/* =========================================================
-   DRAG & DROP
-========================================================= */
+const picker =
+    $("filePicker");
 
-dropZone.addEventListener(
-    "click",
-    () => fileInput.click()
+picker.addEventListener(
+    "dragenter",
+    event => {
+
+        event.preventDefault();
+
+        picker.classList.add(
+            "drag"
+        );
+    }
 );
 
-["dragenter","dragover"].forEach(eventName => {
+picker.addEventListener(
+    "dragover",
+    event => {
 
-    dropZone.addEventListener(
-        eventName,
-        event => {
-            event.preventDefault();
-            dropZone.classList.add("drag");
-        }
-    );
-});
+        event.preventDefault();
 
-["dragleave","drop"].forEach(eventName => {
+        picker.classList.add(
+            "drag"
+        );
+    }
+);
 
-    dropZone.addEventListener(
-        eventName,
-        event => {
-            event.preventDefault();
-            dropZone.classList.remove("drag");
-        }
-    );
-});
+picker.addEventListener(
+    "dragleave",
+    event => {
 
-dropZone.addEventListener(
+        event.preventDefault();
+
+        picker.classList.remove(
+            "drag"
+        );
+    }
+);
+
+picker.addEventListener(
     "drop",
     event => {
-        addFiles(event.dataTransfer.files);
+
+        event.preventDefault();
+
+        picker.classList.remove(
+            "drag"
+        );
+
+        addFiles(
+            event.dataTransfer.files
+        );
     }
 );
 
-/* =========================================================
-   BINARY ANALYSIS
-========================================================= */
+/* =====================================================
+   RENDER FILES
+===================================================== */
 
-async function readPrefix(file,size=512){
+function renderFiles(){
+
+    $("fileList").innerHTML = "";
+
+    state.files.forEach(
+        (file,index) => {
+
+            const item =
+                document.createElement("div");
+
+            item.className =
+                "file";
+
+            item.innerHTML = `
+
+                <div class="file-name">
+
+                    <strong title="${escapeHTML(file.name)}">
+                        ${escapeHTML(file.name)}
+                    </strong>
+
+                    <small>
+                        ${formatBytes(file.size)}
+                    </small>
+
+                </div>
+
+                <div class="file-index">
+                    #${String(index+1).padStart(2,"0")}
+                </div>
+
+            `;
+
+            $("fileList").appendChild(
+                item
+            );
+        }
+    );
+
+    $("fileCount").textContent =
+        state.files.length;
+
+    const total =
+        state.files.reduce(
+            (sum,file) =>
+                sum + file.size,
+            0
+        );
+
+    $("totalSize").textContent =
+        formatBytes(total);
+}
+
+/* =====================================================
+   BINARY ANALYSIS
+===================================================== */
+
+async function readPrefix(
+    file,
+    size=512
+){
 
     const blob =
         file.slice(0,size);
@@ -1608,7 +2511,9 @@ async function readPrefix(file,size=512){
 
 function printableRatio(bytes){
 
-    if(!bytes.length) return 0;
+    if(!bytes.length){
+        return 0;
+    }
 
     let printable = 0;
 
@@ -1618,7 +2523,10 @@ function printableRatio(bytes){
             byte === 9 ||
             byte === 10 ||
             byte === 13 ||
-            (byte >= 32 && byte <= 126)
+            (
+                byte >= 32 &&
+                byte <= 126
+            )
         ){
             printable++;
         }
@@ -1658,7 +2566,9 @@ function detectSignature(bytes){
     const text =
         new TextDecoder(
             "utf-8",
-            {fatal:false}
+            {
+                fatal:false
+            }
         ).decode(bytes);
 
     const trimmed =
@@ -1677,7 +2587,9 @@ function detectSignature(bytes){
         return "XML-LIKE";
     }
 
-    if(printableRatio(bytes) > .82){
+    if(
+        printableRatio(bytes) > .82
+    ){
         return "TEXT-LIKE";
     }
 
@@ -1686,7 +2598,9 @@ function detectSignature(bytes){
 
 function calculateEntropy(bytes){
 
-    if(!bytes.length) return 0;
+    if(!bytes.length){
+        return 0;
+    }
 
     const freq =
         new Array(256).fill(0);
@@ -1699,7 +2613,9 @@ function calculateEntropy(bytes){
 
     for(const count of freq){
 
-        if(!count) continue;
+        if(!count){
+            continue;
+        }
 
         const p =
             count / bytes.length;
@@ -1714,21 +2630,31 @@ function calculateEntropy(bytes){
 async function analyzeFile(file){
 
     const prefix =
-        await readPrefix(file,512);
+        await readPrefix(file);
 
     return {
+
         file,
+
         prefix,
+
         size:file.size,
-        signature:detectSignature(prefix),
-        entropy:calculateEntropy(prefix),
-        printable:printableRatio(prefix)
+
+        signature:
+            detectSignature(prefix),
+
+        entropy:
+            calculateEntropy(prefix),
+
+        printable:
+            printableRatio(prefix)
+
     };
 }
 
-/* =========================================================
-   SIMILARITY
-========================================================= */
+/* =====================================================
+   COMPATIBILITY
+===================================================== */
 
 function prefixSimilarity(a,b){
 
@@ -1738,7 +2664,9 @@ function prefixSimilarity(a,b){
             b.length
         );
 
-    if(!length) return 0;
+    if(!length){
+        return 0;
+    }
 
     let same = 0;
 
@@ -1747,6 +2675,7 @@ function prefixSimilarity(a,b){
         i<length;
         i++
     ){
+
         if(a[i] === b[i]){
             same++;
         }
@@ -1765,7 +2694,10 @@ function structureDistance(a,b){
             b.prefix
         );
 
-    if(a.signature !== b.signature){
+    if(
+        a.signature !==
+        b.signature
+    ){
         risk += 40;
     }
 
@@ -1781,7 +2713,8 @@ function structureDistance(a,b){
 
     const entropyDiff =
         Math.abs(
-            a.entropy - b.entropy
+            a.entropy -
+            b.entropy
         );
 
     if(entropyDiff > 2){
@@ -1801,25 +2734,28 @@ function structureDistance(a,b){
         risk += 10;
     }
 
-    return Math.min(100,risk);
+    return Math.min(
+        100,
+        risk
+    );
 }
 
-/* =========================================================
+/* =====================================================
    PREDICTION
-========================================================= */
+===================================================== */
 
 function resetPrediction(){
 
     state.prediction = null;
     state.blocked = false;
 
-    $("predictionScore").textContent = "0";
+    $("predictionScore").textContent =
+        "0";
 
-    const status =
-        $("predictionStatus");
+    $("predictionStatus").textContent =
+        "WAITING";
 
-    status.textContent = "WAITING";
-    status.className =
+    $("predictionStatus").className =
         "prediction-status";
 
     $("aiStatus").textContent =
@@ -1832,25 +2768,6 @@ function resetPrediction(){
         "Waiting for AI analysis...",
         "Add at least 2 .bytes files."
     );
-}
-
-function updatePrediction(score,status){
-
-    $("predictionScore").textContent =
-        Math.round(score);
-
-    const element =
-        $("predictionStatus");
-
-    element.className =
-        "prediction-status " +
-        status.toLowerCase();
-
-    element.textContent =
-        status;
-
-    $("aiStatus").textContent =
-        status;
 }
 
 async function runAIAnalysis(){
@@ -1866,8 +2783,6 @@ async function runAIAnalysis(){
             "warning"
         );
 
-        updatePrediction(0,"WAITING");
-
         return false;
     }
 
@@ -1876,15 +2791,15 @@ async function runAIAnalysis(){
 
     try{
 
-        log(
-            "AI compatibility engine initialized.",
-            "info"
-        );
-
         setProgress(
             3,
-            "Initializing AI engine...",
+            "Initializing AI...",
             "Preparing binary analysis."
+        );
+
+        log(
+            "AI compatibility engine started.",
+            "info"
         );
 
         await sleep(180);
@@ -1897,28 +2812,31 @@ async function runAIAnalysis(){
             i++
         ){
 
-            const file =
-                state.files[i];
-
             const result =
-                await analyzeFile(file);
+                await analyzeFile(
+                    state.files[i]
+                );
 
-            state.analysis.push(result);
+            state.analysis.push(
+                result
+            );
 
             const progress =
                 10 +
-                ((i+1) /
-                state.files.length) *
-                55;
+                (
+                    (i+1) /
+                    state.files.length
+                ) * 55;
 
             setProgress(
                 progress,
-                `Scanning ${file.name}`,
-                `Signature: ${result.signature} • Entropy: ${result.entropy.toFixed(2)}`
+                "Scanning " +
+                    result.file.name,
+                `Signature ${result.signature} • Entropy ${result.entropy.toFixed(2)}`
             );
 
             log(
-                `${file.name} → ${result.signature}, entropy ${result.entropy.toFixed(2)}`,
+                `${result.file.name} → ${result.signature}`,
                 "info"
             );
 
@@ -1928,10 +2846,8 @@ async function runAIAnalysis(){
         setProgress(
             72,
             "Comparing structures...",
-            "Calculating binary compatibility."
+            "Calculating compatibility."
         );
-
-        await sleep(180);
 
         let totalRisk = 0;
         let pairs = 0;
@@ -1956,9 +2872,13 @@ async function runAIAnalysis(){
                     state.analysis[j];
 
                 const risk =
-                    structureDistance(a,b);
+                    structureDistance(
+                        a,
+                        b
+                    );
 
                 totalRisk += risk;
+
                 pairs++;
 
                 const similarity =
@@ -1974,7 +2894,8 @@ async function runAIAnalysis(){
                     );
 
                 if(
-                    a.signature !== b.signature &&
+                    a.signature !==
+                    b.signature &&
                     similarity < .05 &&
                     entropyDiff > 1.5
                 ){
@@ -1982,7 +2903,7 @@ async function runAIAnalysis(){
                 }
 
                 log(
-                    `Compare #${i+1} ↔ #${j+1}: risk ${risk.toFixed(0)}%`,
+                    `PAIR ${i+1}/${j+1} → risk ${risk.toFixed(0)}%`,
                     risk > 60
                         ? "warning"
                         : "info"
@@ -2005,12 +2926,20 @@ async function runAIAnalysis(){
             );
 
         if(hardConflict){
-            score = Math.min(score,15);
+            score =
+                Math.min(
+                    score,
+                    15
+                );
         }
 
-        state.prediction = score;
+        state.prediction =
+            score;
 
-        if(hardConflict || score < 35){
+        if(
+            hardConflict ||
+            score < 35
+        ){
 
             state.blocked = true;
 
@@ -2019,17 +2948,20 @@ async function runAIAnalysis(){
                 "BLOCKED"
             );
 
-            $("resultBox").innerHTML =
-                "⛔ Merge blocked: the selected files show a strong structural conflict based on the heuristic analysis.";
-
             setProgress(
                 100,
                 "Merge blocked",
-                "Binary structures are considered incompatible."
+                "Strong structural conflict detected."
             );
 
+            $("resultBox").innerHTML =
+                `<span style="color:var(--red)">
+                    ⛔ MERGE BLOCKED
+                </span><br>
+                Selected files have a strong structural conflict according to the binary heuristic.`;
+
             log(
-                "AI GUARD: merge blocked by compatibility heuristic.",
+                "AI GUARD blocked the merge.",
                 "error"
             );
 
@@ -2048,7 +2980,7 @@ async function runAIAnalysis(){
             );
 
             log(
-                `AI prediction: ${score.toFixed(0)}% — WARNING.`,
+                `Prediction ${score.toFixed(0)}% — WARNING`,
                 "warning"
             );
 
@@ -2067,7 +2999,7 @@ async function runAIAnalysis(){
             );
 
             log(
-                `AI prediction: ${score.toFixed(0)}% — LIKELY.`,
+                `Prediction ${score.toFixed(0)}% — LIKELY`,
                 "success"
             );
 
@@ -2086,7 +3018,7 @@ async function runAIAnalysis(){
             );
 
             log(
-                `AI prediction: ${score.toFixed(0)}% — HIGH.`,
+                `Prediction ${score.toFixed(0)}% — HIGH`,
                 "success"
             );
         }
@@ -2096,28 +3028,54 @@ async function runAIAnalysis(){
     }
     catch(error){
 
-        log(
-            `AI analysis error: ${error.message}`,
-            "error"
+        state.blocked = true;
+
+        updatePrediction(
+            0,
+            "BLOCKED"
         );
 
-        updatePrediction(0,"BLOCKED");
-
-        state.blocked = true;
+        log(
+            "AI error: " +
+            error.message,
+            "error"
+        );
 
         return false;
 
     }
     finally{
+
         state.aiRunning = false;
     }
 }
 
-/* =========================================================
-   MERGE
-========================================================= */
+function updatePrediction(
+    score,
+    status
+){
 
-async function mergeBlob(skipAnalysis=false){
+    $("predictionScore").textContent =
+        Math.round(score);
+
+    $("predictionStatus").textContent =
+        status;
+
+    $("predictionStatus").className =
+        "prediction-status " +
+        status.toLowerCase();
+
+    $("aiStatus").textContent =
+        status;
+}
+
+/* =====================================================
+   MERGE
+===================================================== */
+
+async function mergeBlob(
+    skipAnalysis=false
+){
 
     if(state.merging){
         return;
@@ -2126,7 +3084,7 @@ async function mergeBlob(skipAnalysis=false){
     if(state.files.length < 2){
 
         log(
-            "At least 2 .bytes files are required.",
+            "Select at least 2 .bytes files.",
             "warning"
         );
 
@@ -2140,7 +3098,7 @@ async function mergeBlob(skipAnalysis=false){
     ){
 
         log(
-            "Invalid file detected. Only .bytes files are allowed.",
+            "Only .bytes files are accepted.",
             "error"
         );
 
@@ -2159,12 +3117,12 @@ async function mergeBlob(skipAnalysis=false){
             if(!allowed){
                 return;
             }
-
         }
-        else if(state.blocked){
+
+        if(state.blocked){
 
             log(
-                "Merge cancelled because AI Guard blocked the files.",
+                "Merge stopped by AI Guard.",
                 "error"
             );
 
@@ -2174,39 +3132,46 @@ async function mergeBlob(skipAnalysis=false){
         setProgress(
             94,
             "Creating binary output...",
-            "Concatenating selected .bytes files."
+            "Concatenating selected files."
         );
 
         await sleep(250);
 
-        const chunks =
-            state.files.map(
-                file => file
-            );
-
         const blob =
             new Blob(
-                chunks,
+                state.files,
                 {
-                    type:"application/octet-stream"
+                    type:
+                        "application/octet-stream"
                 }
             );
 
         let name =
-            $("outputName").value.trim();
+            $("outputName")
+                .value
+                .trim();
 
         if(!name){
-            name = "KTOOL_MERGED.bytes";
+            name =
+                "KTOOL_MERGED.bytes";
         }
 
-        if(!name.toLowerCase().endsWith(".bytes")){
+        if(
+            !name
+                .toLowerCase()
+                .endsWith(".bytes")
+        ){
             name += ".bytes";
         }
 
-        state.resultBlob = blob;
-        state.resultName = name;
+        state.resultBlob =
+            blob;
 
-        $("downloadBtn").disabled = false;
+        state.resultName =
+            name;
+
+        $("downloadBtn").disabled =
+            false;
 
         setProgress(
             100,
@@ -2214,16 +3179,15 @@ async function mergeBlob(skipAnalysis=false){
             `${formatBytes(blob.size)} output generated.`
         );
 
-        $("resultBox").innerHTML = `
-            <strong style="color:var(--green)">
+        $("resultBox").innerHTML =
+            `<strong style="color:var(--green)">
                 ✓ OUTPUT READY
             </strong><br>
             ${escapeHTML(name)}
-            • ${formatBytes(blob.size)}
-        `;
+            • ${formatBytes(blob.size)}`;
 
         log(
-            `Merge complete → ${name} (${formatBytes(blob.size)})`,
+            `Merge complete → ${name}`,
             "success"
         );
 
@@ -2231,56 +3195,52 @@ async function mergeBlob(skipAnalysis=false){
     catch(error){
 
         log(
-            `Merge error: ${error.message}`,
+            "Merge error: " +
+            error.message,
             "error"
         );
 
-        $("resultBox").textContent =
-            "Merge failed.";
-
     }
     finally{
+
         state.merging = false;
     }
 }
 
-/* =========================================================
-   AI MERGE BUTTON
-========================================================= */
+/* =====================================================
+   AI MERGE
+===================================================== */
 
 $("aiMergeBtn").addEventListener(
     "click",
     async () => {
 
-        if(state.files.length < 2){
-            log(
-                "Select at least 2 .bytes files first.",
-                "warning"
-            );
-            return;
-        }
-
         const allowed =
             await runAIAnalysis();
 
         if(allowed){
-            await mergeBlob(true);
+
+            await mergeBlob(
+                true
+            );
         }
     }
 );
 
-/* =========================================================
+/* =====================================================
    NORMAL MERGE
-========================================================= */
+===================================================== */
 
 $("mergeBtn").addEventListener(
     "click",
-    () => mergeBlob(false)
+    () => {
+        mergeBlob(false);
+    }
 );
 
-/* =========================================================
+/* =====================================================
    DOWNLOAD
-========================================================= */
+===================================================== */
 
 $("downloadBtn").addEventListener(
     "click",
@@ -2299,7 +3259,9 @@ $("downloadBtn").addEventListener(
             document.createElement("a");
 
         a.href = url;
-        a.download = state.resultName;
+
+        a.download =
+            state.resultName;
 
         document.body.appendChild(a);
 
@@ -2319,9 +3281,9 @@ $("downloadBtn").addEventListener(
     }
 );
 
-/* =========================================================
-   SORT / REVERSE / CLEAR
-========================================================= */
+/* =====================================================
+   SORT
+===================================================== */
 
 $("sortBtn").addEventListener(
     "click",
@@ -2338,11 +3300,15 @@ $("sortBtn").addEventListener(
         resetPrediction();
 
         log(
-            "Files sorted alphabetically.",
+            "Files sorted.",
             "info"
         );
     }
 );
+
+/* =====================================================
+   REVERSE
+===================================================== */
 
 $("reverseBtn").addEventListener(
     "click",
@@ -2360,27 +3326,27 @@ $("reverseBtn").addEventListener(
     }
 );
 
+/* =====================================================
+   CLEAR
+===================================================== */
+
 $("clearBtn").addEventListener(
     "click",
     () => {
 
         state.files = [];
+        state.analysis = [];
         state.resultBlob = null;
         state.resultName = "";
 
-        $("downloadBtn").disabled = true;
+        $("downloadBtn").disabled =
+            true;
 
         $("resultBox").textContent =
             "No result generated.";
 
         renderFiles();
         resetPrediction();
-
-        setProgress(
-            0,
-            "Waiting for files...",
-            "AI engine idle."
-        );
 
         log(
             "All files cleared.",
@@ -2389,9 +3355,9 @@ $("clearBtn").addEventListener(
     }
 );
 
-/* =========================================================
+/* =====================================================
    COPY LOG
-========================================================= */
+===================================================== */
 
 $("copyLogBtn").addEventListener(
     "click",
@@ -2404,7 +3370,7 @@ $("copyLogBtn").addEventListener(
             );
 
             log(
-                "Terminal log copied.",
+                "Terminal copied.",
                 "success"
             );
 
@@ -2412,20 +3378,21 @@ $("copyLogBtn").addEventListener(
         catch{
 
             log(
-                "Clipboard access unavailable.",
+                "Clipboard unavailable.",
                 "warning"
             );
         }
     }
 );
 
-/* =========================================================
+/* =====================================================
    CLOCK
-========================================================= */
+===================================================== */
 
 function updateClock(){
 
-    const now = new Date();
+    const now =
+        new Date();
 
     $("clock").textContent =
         now.toLocaleTimeString(
@@ -2453,39 +3420,148 @@ setInterval(
     1000
 );
 
-/* =========================================================
+/* =====================================================
    THEME
-========================================================= */
-
-const savedTheme =
-    localStorage.getItem(
-        "ktool-theme"
-    );
-
-if(savedTheme === "light"){
-    document.body.classList.add("light");
-}
+===================================================== */
 
 $("themeBtn").addEventListener(
     "click",
     () => {
 
+        /*
+         * Dark/light theme intentionally
+         * remains simple for V27.
+         */
+
         document.body.classList.toggle(
             "light"
-        );
-
-        localStorage.setItem(
-            "ktool-theme",
-            document.body.classList.contains("light")
-                ? "light"
-                : "dark"
         );
     }
 );
 
-/* =========================================================
+/* =====================================================
+   GPU / WEBGL
+===================================================== */
+
+function detectGPU(){
+
+    try{
+
+        const canvas =
+            document.createElement("canvas");
+
+        const gl =
+            canvas.getContext(
+                "webgl"
+            ) ||
+            canvas.getContext(
+                "experimental-webgl"
+            );
+
+        if(!gl){
+            return "Unavailable";
+        }
+
+        const debug =
+            gl.getExtension(
+                "WEBGL_debug_renderer_info"
+            );
+
+        if(debug){
+
+            const renderer =
+                gl.getParameter(
+                    debug.UNMASKED_RENDERER_WEBGL
+                );
+
+            return renderer || "WebGL";
+        }
+
+        return "WebGL available";
+
+    }
+    catch{
+
+        return "Unavailable";
+    }
+}
+
+/* =====================================================
+   CONNECTION
+===================================================== */
+
+function detectConnection(){
+
+    const connection =
+        navigator.connection ||
+        navigator.mozConnection ||
+        navigator.webkitConnection;
+
+    if(!connection){
+        return "Unavailable";
+    }
+
+    const parts = [];
+
+    if(connection.effectiveType){
+        parts.push(
+            connection.effectiveType
+        );
+    }
+
+    if(connection.downlink){
+        parts.push(
+            `${connection.downlink} Mbps`
+        );
+    }
+
+    if(connection.rtt){
+        parts.push(
+            `${connection.rtt} ms`
+        );
+    }
+
+    return parts.length
+        ? parts.join(" • ")
+        : "Available";
+}
+
+/* =====================================================
+   STORAGE
+===================================================== */
+
+function detectStorage(){
+
+    try{
+
+        const local =
+            typeof localStorage !==
+            "undefined";
+
+        const session =
+            typeof sessionStorage !==
+            "undefined";
+
+        if(local && session){
+            return "LOCAL + SESSION";
+        }
+
+        if(local){
+            return "LOCAL";
+        }
+
+        return "Limited";
+
+    }
+    catch{
+
+        return "Unavailable";
+    }
+}
+
+/* =====================================================
    SYSTEM INFORMATION
-========================================================= */
+===================================================== */
 
 function detectOperatingSystem(){
 
@@ -2495,13 +3571,8 @@ function detectOperatingSystem(){
     const platform =
         navigator.platform || "";
 
-    /*
-       iPadOS may identify itself as MacIntel
-       while still having touch support.
-    */
-
     if(
-        /iPad|iPhone|iPod/i.test(ua)
+        /iPhone|iPad|iPod/i.test(ua)
     ){
         return "iOS / iPadOS";
     }
@@ -2537,27 +3608,19 @@ function detectOperatingSystem(){
         return "Windows 7";
     }
 
-    if(
-        /Android/i.test(ua)
-    ){
+    if(/Android/i.test(ua)){
         return "Android";
     }
 
-    if(
-        /CrOS/i.test(ua)
-    ){
+    if(/CrOS/i.test(ua)){
         return "ChromeOS";
     }
 
-    if(
-        /Mac OS X/i.test(ua)
-    ){
+    if(/Mac OS X/i.test(ua)){
         return "macOS";
     }
 
-    if(
-        /Linux/i.test(ua)
-    ){
+    if(/Linux/i.test(ua)){
         return "Linux";
     }
 
@@ -2600,7 +3663,7 @@ function detectBrowser(){
         return "Safari";
     }
 
-    return "Unknown Browser";
+    return "Unknown";
 }
 
 function detectArchitecture(){
@@ -2614,9 +3677,7 @@ function detectArchitecture(){
         return "ARM64";
     }
 
-    if(
-        /arm/i.test(ua)
-    ){
+    if(/arm/i.test(ua)){
         return "ARM";
     }
 
@@ -2631,10 +3692,6 @@ function detectArchitecture(){
     ){
         return "x86";
     }
-
-    /*
-       Apple mobile devices often hide architecture.
-    */
 
     if(
         /iPhone|iPad|iPod/i.test(ua)
@@ -2669,27 +3726,59 @@ function detectSystemInfo(){
             ? `${nav.deviceMemory} GB approx.`
             : "Unavailable";
 
+    $("sysGPU").textContent =
+        detectGPU();
+
+    $("sysDisplay").textContent =
+        `${screen.width} × ${screen.height}`;
+
+    $("sysViewport").textContent =
+        `${window.innerWidth} × ${window.innerHeight}`;
+
+    $("sysDPR").textContent =
+        window.devicePixelRatio
+            ? `${window.devicePixelRatio}x`
+            : "1x";
+
+    $("sysTouch").textContent =
+        nav.maxTouchPoints
+            ? `${nav.maxTouchPoints} points`
+            : "NO";
+
     $("sysLanguage").textContent =
         nav.language ||
         "Unknown";
 
-    $("sysDisplay").textContent =
-        `${screen.width} × ${screen.height}`;
+    $("sysTimezone").textContent =
+        Intl.DateTimeFormat()
+            .resolvedOptions()
+            .timeZone ||
+        "Unknown";
 
     $("sysNetwork").textContent =
         nav.onLine
             ? "ONLINE"
             : "OFFLINE";
 
+    $("sysConnection").textContent =
+        detectConnection();
+
+    $("sysCookies").textContent =
+        navigator.cookieEnabled
+            ? "ENABLED"
+            : "DISABLED";
+
+    $("sysStorage").textContent =
+        detectStorage();
+
     $("systemStatus").textContent =
         "SYSTEM DETECTED";
 }
 
-detectSystemInfo();
-
 window.addEventListener(
     "online",
     () => {
+
         $("sysNetwork").textContent =
             "ONLINE";
     }
@@ -2698,6 +3787,7 @@ window.addEventListener(
 window.addEventListener(
     "offline",
     () => {
+
         $("sysNetwork").textContent =
             "OFFLINE";
     }
@@ -2706,14 +3796,18 @@ window.addEventListener(
 window.addEventListener(
     "resize",
     () => {
+
+        $("sysViewport").textContent =
+            `${window.innerWidth} × ${window.innerHeight}`;
+
         $("sysDisplay").textContent =
             `${screen.width} × ${screen.height}`;
     }
 );
 
-/* =========================================================
-   KEYBOARD SHORTCUT
-========================================================= */
+/* =====================================================
+   KEYBOARD
+===================================================== */
 
 document.addEventListener(
     "keydown",
@@ -2721,52 +3815,45 @@ document.addEventListener(
 
         if(
             event.ctrlKey &&
-            event.key === "Enter"
+            event.key === "Enter" &&
+            state.unlocked
         ){
+
             event.preventDefault();
 
             mergeBlob(false);
         }
+
     }
 );
 
-/* =========================================================
-   BOOT
-========================================================= */
+/* =====================================================
+   INITIAL
+===================================================== */
 
 setTimeout(
     () => {
-        $("boot").classList.add("hide");
+
+        detectSystemInfo();
 
         log(
-            "KTOOL AI BINARY ENGINE V27 online.",
+            "V27 core initialized.",
             "success"
         );
 
         log(
-            "Local processing mode enabled.",
+            ".bytes input guard active.",
             "info"
         );
 
         log(
-            ".bytes-only input guard enabled.",
-            "info"
-        );
-
-        log(
-            "System information module detected.",
+            "System telemetry module ready.",
             "success"
         );
+
     },
-    2600
+    3300
 );
-
-/* =========================================================
-   INITIAL
-========================================================= */
-
-resetPrediction();
-detectSystemInfo();
 
 </script>
 
