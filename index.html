@@ -2,780 +2,815 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="theme-color" content="#05070d">
-<title>TOOL AI BINARY ENGINE V26</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#070b12">
+<title>KTOOL AI BINARY ENGINE V26</title>
+
+<script>
+(function () {
+    try {
+        if (localStorage.getItem("ktool-theme") === "light") {
+            document.documentElement.classList.add("light");
+        }
+    } catch (_) {}
+})();
+</script>
 
 <style>
 :root{
-    --bg:#05070d;
-    --panel:rgba(12,17,28,.82);
-    --panel2:rgba(17,24,39,.92);
-    --line:rgba(120,150,190,.16);
+    --bg:#050810;
+    --bg2:#09101b;
+    --panel:rgba(10,16,28,.82);
+    --panel2:rgba(15,23,38,.92);
     --text:#edf5ff;
-    --muted:#8290a8;
-    --cyan:#35e8ff;
-    --blue:#4f8cff;
-    --green:#48f0a0;
+    --muted:#8290a7;
+    --border:rgba(120,150,190,.18);
+    --accent:#5ee7ff;
+    --accent2:#8b7cff;
+    --green:#50e3a4;
     --yellow:#ffd166;
-    --red:#ff5577;
+    --red:#ff617d;
     --shadow:0 20px 70px rgba(0,0,0,.42);
     --radius:20px;
 }
 
-*{
-    box-sizing:border-box;
+html.light{
+    --bg:#eef3f8;
+    --bg2:#e5ebf2;
+    --panel:rgba(255,255,255,.88);
+    --panel2:#ffffff;
+    --text:#101827;
+    --muted:#637086;
+    --border:rgba(40,60,90,.15);
+    --accent:#087f9b;
+    --accent2:#6554d9;
+    --green:#07865b;
+    --yellow:#a86b00;
+    --red:#c92d4d;
+    --shadow:0 18px 50px rgba(35,55,80,.14);
+}
+
+*{box-sizing:border-box}
+
+html,body{
     margin:0;
-    padding:0;
+    min-height:100%;
+    font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:
+        radial-gradient(circle at 10% 0%,rgba(94,231,255,.10),transparent 30%),
+        radial-gradient(circle at 90% 10%,rgba(139,124,255,.10),transparent 28%),
+        var(--bg);
+    color:var(--text);
 }
 
 body{
-    min-height:100vh;
-    color:var(--text);
-    background:
-        radial-gradient(circle at 10% 0%,rgba(53,232,255,.08),transparent 30%),
-        radial-gradient(circle at 90% 10%,rgba(79,140,255,.08),transparent 30%),
-        linear-gradient(145deg,#03050a,#070b14 55%,#04060b);
-    font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
     overflow-x:hidden;
 }
 
-body:before{
-    content:"";
-    position:fixed;
-    inset:0;
-    pointer-events:none;
-    opacity:.18;
-    background-image:
-        linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
-        linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
-    background-size:32px 32px;
-}
-
-button,input,select{
+button,
+input,
+select{
     font:inherit;
 }
 
 button{
-    border:0;
     cursor:pointer;
 }
 
-.app{
-    width:min(1500px,calc(100% - 28px));
-    margin:auto;
-    padding:18px 0 40px;
+/* =========================
+   BOOT SCREEN
+========================= */
+
+#bootScreen{
+    position:fixed;
+    inset:0;
+    z-index:99999;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#03060b;
+    transition:opacity .55s ease,visibility .55s ease;
 }
 
-.topbar{
+#bootScreen.hide{
+    opacity:0;
+    visibility:hidden;
+}
+
+.boot-box{
+    width:min(560px,90vw);
+    padding:34px;
+    border:1px solid rgba(94,231,255,.2);
+    border-radius:24px;
+    background:rgba(7,12,21,.96);
+    box-shadow:
+        0 0 80px rgba(94,231,255,.08),
+        0 25px 100px rgba(0,0,0,.55);
+}
+
+.boot-logo{
+    width:58px;
+    height:58px;
+    display:grid;
+    place-items:center;
+    margin-bottom:20px;
+    border-radius:16px;
+    color:#061018;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    font-size:28px;
+    font-weight:1000;
+    box-shadow:0 0 35px rgba(94,231,255,.25);
+}
+
+.boot-title{
+    font-size:clamp(20px,4vw,31px);
+    font-weight:950;
+    letter-spacing:-1px;
+}
+
+.boot-subtitle{
+    margin-top:7px;
+    color:#8493a9;
+    font-size:12px;
+    letter-spacing:1.8px;
+}
+
+.boot-status{
+    display:flex;
+    justify-content:space-between;
+    margin-top:30px;
+    margin-bottom:9px;
+    font-size:12px;
+    color:#aebbd0;
+}
+
+.boot-percent{
+    color:var(--accent);
+    font-weight:800;
+}
+
+.boot-track{
+    height:7px;
+    overflow:hidden;
+    border-radius:99px;
+    background:#111a28;
+}
+
+.boot-fill{
+    width:0;
+    height:100%;
+    border-radius:99px;
+    background:linear-gradient(90deg,var(--accent),var(--accent2));
+    box-shadow:0 0 18px rgba(94,231,255,.45);
+}
+
+.boot-terminal{
+    min-height:75px;
+    margin-top:20px;
+    padding:12px;
+    border-radius:12px;
+    background:#02050a;
+    color:#6f829c;
+    font-family:"SFMono-Regular",Consolas,monospace;
+    font-size:11px;
+    line-height:1.8;
+}
+
+/* =========================
+   APP
+========================= */
+
+.app{
+    width:min(1250px,94vw);
+    margin:auto;
+    padding:28px 0 50px;
+}
+
+header{
     display:flex;
     align-items:center;
     justify-content:space-between;
     gap:20px;
-    padding:18px 22px;
-    border:1px solid var(--line);
-    border-radius:24px;
-    background:rgba(7,11,19,.82);
-    backdrop-filter:blur(20px);
-    box-shadow:var(--shadow);
-    position:sticky;
-    top:12px;
-    z-index:20;
+    margin-bottom:28px;
 }
 
 .brand{
     display:flex;
     align-items:center;
-    gap:14px;
+    gap:13px;
 }
 
-.brand-icon{
+.brand-logo{
     width:48px;
     height:48px;
     display:grid;
     place-items:center;
     border-radius:15px;
-    color:#031018;
-    background:linear-gradient(135deg,var(--cyan),var(--blue));
+    color:#041018;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
     font-size:23px;
     font-weight:1000;
-    box-shadow:0 0 30px rgba(53,232,255,.25);
+    box-shadow:0 0 35px rgba(94,231,255,.18);
 }
 
-.brand h1{
-    font-size:17px;
-    letter-spacing:.8px;
+.brand-title{
+    font-size:20px;
+    font-weight:950;
+    letter-spacing:.3px;
 }
 
-.brand p{
-    margin-top:4px;
+.brand-subtitle{
+    margin-top:3px;
     color:var(--muted);
-    font-size:11px;
-    letter-spacing:1.5px;
+    font-size:10px;
+    letter-spacing:1.4px;
 }
 
-.top-actions{
+.header-actions{
     display:flex;
-    gap:8px;
+    gap:9px;
 }
 
 .icon-btn{
-    min-width:40px;
-    height:40px;
-    border:1px solid var(--line);
+    width:42px;
+    height:42px;
+    border:1px solid var(--border);
     border-radius:12px;
     color:var(--text);
-    background:rgba(255,255,255,.035);
+    background:var(--panel);
+    transition:.2s;
 }
 
 .icon-btn:hover{
-    border-color:rgba(53,232,255,.45);
-    background:rgba(53,232,255,.08);
+    transform:translateY(-2px);
+    border-color:rgba(94,231,255,.45);
 }
+
+/* HERO */
 
 .hero{
-    margin-top:20px;
-    padding:34px;
-    border:1px solid var(--line);
+    position:relative;
+    overflow:hidden;
+    padding:35px;
+    border:1px solid var(--border);
     border-radius:28px;
     background:
-        linear-gradient(135deg,rgba(15,25,42,.96),rgba(7,11,20,.92));
+        linear-gradient(135deg,rgba(94,231,255,.055),transparent 40%),
+        linear-gradient(315deg,rgba(139,124,255,.07),transparent 45%),
+        var(--panel);
     box-shadow:var(--shadow);
-    overflow:hidden;
-    position:relative;
 }
 
-.hero:after{
+.hero::after{
     content:"";
     position:absolute;
-    width:420px;
-    height:420px;
-    right:-180px;
-    top:-220px;
+    width:280px;
+    height:280px;
+    right:-130px;
+    top:-130px;
     border-radius:50%;
-    background:rgba(53,232,255,.08);
-    filter:blur(10px);
+    border:1px solid rgba(94,231,255,.13);
+    box-shadow:0 0 0 30px rgba(94,231,255,.025),
+               0 0 0 60px rgba(94,231,255,.018);
 }
 
-.hero-label{
-    color:var(--cyan);
+.hero-kicker{
+    color:var(--accent);
     font-size:11px;
-    font-weight:900;
-    letter-spacing:3px;
-    margin-bottom:12px;
+    font-weight:850;
+    letter-spacing:2.3px;
 }
 
-.hero h2{
+.hero h1{
+    max-width:800px;
+    margin:10px 0 12px;
     font-size:clamp(30px,5vw,58px);
     line-height:1;
-    letter-spacing:-2px;
+    letter-spacing:-2.8px;
 }
 
-.hero h2 span{
-    background:linear-gradient(90deg,var(--cyan),#fff,var(--blue));
-    -webkit-background-clip:text;
-    color:transparent;
-}
-
-.hero-desc{
-    max-width:850px;
-    margin-top:15px;
+.hero p{
+    max-width:750px;
+    margin:0;
     color:var(--muted);
     line-height:1.7;
-    font-size:14px;
 }
 
-.creator{
-    margin-top:24px;
-    display:inline-flex;
-    align-items:center;
-    gap:10px;
-    padding:11px 16px;
-    border:1px solid rgba(53,232,255,.35);
-    border-radius:14px;
-    background:linear-gradient(135deg,rgba(53,232,255,.12),rgba(79,140,255,.08));
-    box-shadow:0 0 30px rgba(53,232,255,.08);
+.hero-badges{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:22px;
 }
 
-.creator small{
-    color:#8ea0b8;
-    letter-spacing:1px;
+.badge{
+    padding:7px 10px;
+    border:1px solid var(--border);
+    border-radius:99px;
+    background:rgba(255,255,255,.025);
+    color:var(--muted);
+    font-size:10px;
+    font-weight:750;
+    letter-spacing:.5px;
 }
 
-.creator strong{
-    color:#fff;
-    letter-spacing:1.5px;
-    text-shadow:0 0 16px rgba(53,232,255,.7);
-}
+/* STATS */
 
 .stats{
     display:grid;
     grid-template-columns:repeat(4,1fr);
     gap:12px;
-    margin-top:18px;
+    margin:14px 0;
 }
 
 .stat{
     padding:18px;
-    border:1px solid var(--line);
-    border-radius:18px;
+    border:1px solid var(--border);
+    border-radius:17px;
     background:var(--panel);
 }
 
 .stat-label{
     color:var(--muted);
     font-size:10px;
-    text-transform:uppercase;
-    letter-spacing:1.5px;
+    letter-spacing:1px;
 }
 
 .stat-value{
-    margin-top:8px;
-    font-size:23px;
+    margin-top:7px;
+    font-size:21px;
     font-weight:900;
 }
 
-.workspace{
+/* GRID */
+
+.main-grid{
     display:grid;
-    grid-template-columns:minmax(0,1.35fr) minmax(340px,.65fr);
-    gap:16px;
-    margin-top:16px;
+    grid-template-columns:1.1fr .9fr;
+    gap:14px;
 }
 
 .panel{
-    border:1px solid var(--line);
-    border-radius:var(--radius);
+    min-width:0;
+    padding:21px;
+    border:1px solid var(--border);
+    border-radius:21px;
     background:var(--panel);
-    backdrop-filter:blur(16px);
     box-shadow:var(--shadow);
-    overflow:hidden;
-}
-
-.panel-head{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:15px;
-    padding:18px 20px;
-    border-bottom:1px solid var(--line);
 }
 
 .panel-title{
-    font-weight:900;
-    letter-spacing:.5px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:16px;
 }
 
-.panel-sub{
+.panel-title h2{
+    margin:0;
+    font-size:14px;
+}
+
+.panel-title span{
     color:var(--muted);
-    font-size:11px;
-    margin-top:4px;
+    font-size:10px;
 }
 
-.panel-body{
-    padding:20px;
-}
+/* DROP */
 
-.drop{
-    min-height:190px;
-    border:1px dashed rgba(53,232,255,.4);
-    border-radius:20px;
-    display:grid;
-    place-items:center;
+.dropzone{
+    min-height:205px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
     text-align:center;
-    padding:30px;
-    background:
-        radial-gradient(circle,rgba(53,232,255,.06),transparent 60%),
-        rgba(53,232,255,.015);
+    border:1px dashed rgba(94,231,255,.35);
+    border-radius:17px;
+    background:rgba(94,231,255,.025);
     transition:.2s;
 }
 
-.drop.drag{
-    border-color:var(--cyan);
-    background:rgba(53,232,255,.08);
+.dropzone.drag{
     transform:scale(1.01);
+    border-color:var(--accent);
+    background:rgba(94,231,255,.07);
 }
 
 .drop-icon{
-    font-size:40px;
-    margin-bottom:10px;
+    width:58px;
+    height:58px;
+    display:grid;
+    place-items:center;
+    margin:0 auto 13px;
+    border-radius:16px;
+    color:var(--accent);
+    background:rgba(94,231,255,.08);
+    font-size:24px;
 }
 
-.drop strong{
-    display:block;
+.dropzone h3{
+    margin:0;
     font-size:15px;
 }
 
-.drop span{
-    display:block;
+.dropzone p{
+    margin:7px 0 14px;
     color:var(--muted);
-    font-size:12px;
-    margin-top:7px;
+    font-size:11px;
 }
 
 .primary{
-    margin-top:16px;
-    width:100%;
-    padding:14px 18px;
-    border-radius:14px;
-    color:#021017;
-    background:linear-gradient(90deg,var(--cyan),#66b8ff);
-    font-weight:950;
-    box-shadow:0 10px 35px rgba(53,232,255,.15);
+    border:0;
+    border-radius:11px;
+    padding:11px 16px;
+    color:#041018;
+    background:linear-gradient(135deg,var(--accent),#86f1ff);
+    font-weight:900;
+    box-shadow:0 8px 25px rgba(94,231,255,.14);
 }
 
-.primary:disabled{
-    opacity:.35;
-    cursor:not-allowed;
+.primary:hover{
+    filter:brightness(1.08);
+    transform:translateY(-1px);
 }
+
+/* FILE LIST */
 
 .file-list{
-    margin-top:16px;
     display:grid;
-    gap:9px;
+    gap:8px;
+    margin-top:13px;
 }
 
-.file-card{
+.file-item{
     display:grid;
     grid-template-columns:auto 1fr auto;
     align-items:center;
-    gap:12px;
-    padding:13px;
-    border:1px solid var(--line);
-    border-radius:15px;
-    background:rgba(255,255,255,.025);
+    gap:10px;
+    padding:11px;
+    border:1px solid var(--border);
+    border-radius:13px;
+    background:var(--panel2);
 }
 
 .file-num{
-    width:32px;
-    height:32px;
-    border-radius:10px;
+    width:27px;
+    height:27px;
     display:grid;
     place-items:center;
-    color:#041017;
-    background:linear-gradient(135deg,var(--cyan),var(--blue));
+    border-radius:8px;
+    color:var(--accent);
+    background:rgba(94,231,255,.08);
+    font-size:10px;
     font-weight:900;
 }
 
 .file-name{
+    min-width:0;
     overflow:hidden;
     text-overflow:ellipsis;
     white-space:nowrap;
-    font-size:13px;
-    font-weight:700;
+    font-size:11px;
+    font-weight:750;
 }
 
-.file-meta{
+.file-size{
     color:var(--muted);
+    font-family:monospace;
     font-size:10px;
-    margin-top:4px;
 }
 
-.file-actions{
-    display:flex;
-    gap:5px;
+.remove-file{
+    border:0;
+    color:var(--red);
+    background:none;
+    font-size:17px;
 }
 
-.mini{
-    width:31px;
-    height:31px;
-    border-radius:9px;
-    color:var(--text);
-    border:1px solid var(--line);
-    background:rgba(255,255,255,.035);
-}
+/* CONTROLS */
 
-.mini:hover{
-    border-color:var(--cyan);
-}
-
-.controls{
-    margin-top:18px;
+.control-grid{
     display:grid;
-    grid-template-columns:repeat(2,1fr);
     gap:12px;
 }
 
-.control{
-    display:grid;
-    gap:7px;
-}
-
-.control.full{
-    grid-column:1/-1;
-}
-
-.control label{
+.field label{
+    display:block;
+    margin-bottom:7px;
     color:var(--muted);
     font-size:10px;
     font-weight:800;
-    letter-spacing:1px;
-    text-transform:uppercase;
+    letter-spacing:.7px;
 }
 
-.control input,
-.control select{
+select,
+input[type="number"]{
     width:100%;
-    height:44px;
-    padding:0 12px;
-    color:var(--text);
-    background:#090e18;
-    border:1px solid var(--line);
-    border-radius:12px;
+    padding:11px 12px;
+    border:1px solid var(--border);
+    border-radius:11px;
     outline:none;
+    color:var(--text);
+    background:var(--panel2);
 }
 
-.control input:focus,
-.control select:focus{
-    border-color:rgba(53,232,255,.55);
-    box-shadow:0 0 0 3px rgba(53,232,255,.06);
+select:focus,
+input:focus{
+    border-color:var(--accent);
 }
 
 .check{
     display:flex;
-    align-items:center;
+    align-items:flex-start;
     gap:10px;
-    min-height:44px;
-    padding:0 12px;
-    border:1px solid var(--line);
+    padding:11px;
+    border:1px solid var(--border);
     border-radius:12px;
-    background:#090e18;
-    font-size:12px;
+    background:rgba(255,255,255,.018);
 }
 
 .check input{
-    width:16px;
-    height:16px;
-    accent-color:var(--cyan);
+    margin-top:3px;
+    accent-color:var(--accent);
 }
 
-.buttons{
+.check strong{
+    display:block;
+    font-size:11px;
+}
+
+.check small{
+    display:block;
+    margin-top:3px;
+    color:var(--muted);
+    font-size:9px;
+    line-height:1.5;
+}
+
+/* ANALYSIS */
+
+.analysis-box{
     display:grid;
-    grid-template-columns:1fr 1fr 1fr;
+    gap:8px;
+}
+
+.analysis-row{
+    display:flex;
+    justify-content:space-between;
+    gap:15px;
+    padding:10px 0;
+    border-bottom:1px solid var(--border);
+    font-size:10px;
+}
+
+.analysis-row:last-child{
+    border-bottom:0;
+}
+
+.analysis-row span:first-child{
+    color:var(--muted);
+}
+
+.analysis-row strong{
+    text-align:right;
+}
+
+.good{color:var(--green)!important}
+.warn{color:var(--yellow)!important}
+.bad{color:var(--red)!important}
+.accent{color:var(--accent)!important}
+
+/* HEX */
+
+.hex{
+    margin-top:13px;
+    padding:14px;
+    overflow:auto;
+    max-height:190px;
+    border:1px solid var(--border);
+    border-radius:14px;
+    background:#02050a;
+    color:#91a4bc;
+    font-family:"SFMono-Regular",Consolas,monospace;
+    font-size:10px;
+    line-height:1.8;
+    white-space:pre;
+}
+
+/* TERMINAL */
+
+.terminal{
+    min-height:210px;
+    max-height:280px;
+    overflow:auto;
+    padding:15px;
+    border-radius:15px;
+    background:#02050a;
+    color:#8ca0b9;
+    font-family:"SFMono-Regular",Consolas,monospace;
+    font-size:10px;
+    line-height:1.8;
+}
+
+.log-line{
+    white-space:pre-wrap;
+    word-break:break-word;
+}
+
+.log-line.good{color:#63e7ad}
+.log-line.warn{color:#ffd166}
+.log-line.bad{color:#ff6c85}
+
+/* ACTION */
+
+.action-bar{
+    display:flex;
+    flex-wrap:wrap;
     gap:9px;
     margin-top:14px;
 }
 
-.action{
-    min-height:43px;
-    border-radius:12px;
+.secondary{
+    border:1px solid var(--border);
+    border-radius:11px;
+    padding:10px 14px;
     color:var(--text);
-    border:1px solid var(--line);
-    background:rgba(255,255,255,.04);
+    background:var(--panel2);
+    font-size:11px;
     font-weight:800;
 }
 
-.action:hover{
-    border-color:rgba(53,232,255,.5);
-    background:rgba(53,232,255,.07);
+.secondary:hover{
+    border-color:rgba(94,231,255,.4);
 }
 
-.action.danger:hover{
-    border-color:rgba(255,85,119,.6);
-}
+/* CREATOR */
 
-.progress{
-    margin-top:16px;
-    height:8px;
-    border-radius:999px;
-    background:#080c14;
-    overflow:hidden;
-}
-
-.progress-bar{
-    height:100%;
-    width:0%;
-    border-radius:inherit;
-    background:linear-gradient(90deg,var(--cyan),var(--blue));
-    transition:width .15s;
-}
-
-.ai-box{
-    padding:20px;
-}
-
-.ai-status{
+.creator{
     display:flex;
     align-items:center;
-    gap:12px;
-    padding:15px;
-    border:1px solid rgba(53,232,255,.2);
-    border-radius:16px;
-    background:rgba(53,232,255,.035);
+    gap:18px;
+    margin:34px 0 12px;
 }
 
-.ai-orb{
-    width:43px;
-    height:43px;
-    border-radius:50%;
-    display:grid;
-    place-items:center;
-    background:radial-gradient(circle,#fff 0 5%,var(--cyan) 6% 30%,rgba(53,232,255,.15) 31%);
-    box-shadow:0 0 25px rgba(53,232,255,.5);
+.creator-line{
+    flex:1;
+    height:1px;
+    background:linear-gradient(
+        90deg,
+        transparent,
+        rgba(94,231,255,.35),
+        transparent
+    );
 }
 
-.ai-status strong{
-    display:block;
-    font-size:13px;
+.creator-content{
+    text-align:center;
+    min-width:230px;
 }
 
-.ai-status span{
-    display:block;
+.creator-kicker{
     color:var(--muted);
-    font-size:10px;
-    margin-top:4px;
-}
-
-.confidence{
-    margin-top:16px;
-}
-
-.conf-top{
-    display:flex;
-    justify-content:space-between;
-    color:var(--muted);
-    font-size:11px;
-}
-
-.conf-top strong{
-    color:var(--text);
-}
-
-.conf-track{
-    height:9px;
-    margin-top:8px;
-    background:#080c14;
-    border-radius:99px;
-    overflow:hidden;
-}
-
-.conf-fill{
-    width:0%;
-    height:100%;
-    background:linear-gradient(90deg,var(--yellow),var(--green));
-    transition:.4s;
-}
-
-.analysis-grid{
-    margin-top:16px;
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:8px;
-}
-
-.metric{
-    padding:12px;
-    border:1px solid var(--line);
-    border-radius:13px;
-    background:rgba(255,255,255,.02);
-}
-
-.metric small{
-    color:var(--muted);
-    display:block;
     font-size:9px;
-    text-transform:uppercase;
-    letter-spacing:1px;
+    font-weight:850;
+    letter-spacing:3px;
 }
 
-.metric b{
-    display:block;
+.creator-name{
     margin-top:5px;
-    font-size:13px;
+    font-size:20px;
+    font-weight:1000;
+    letter-spacing:2px;
+    color:var(--text);
+    text-shadow:0 0 22px rgba(94,231,255,.18);
 }
 
-.warning{
-    margin-top:14px;
-    padding:13px;
-    border-radius:13px;
-    border:1px solid rgba(255,209,102,.2);
-    background:rgba(255,209,102,.035);
-    color:#d9c895;
-    font-size:11px;
-    line-height:1.6;
+.creator-bracket{
+    color:var(--accent);
 }
 
-.preview{
-    margin-top:16px;
+.creator-role{
+    margin-top:4px;
+    color:var(--accent);
+    font-size:8px;
+    font-weight:800;
+    letter-spacing:1.5px;
 }
 
-.preview-title{
+/* FOOTER */
+
+footer{
+    text-align:center;
     color:var(--muted);
-    font-size:10px;
-    letter-spacing:1px;
-    text-transform:uppercase;
-    margin-bottom:8px;
+    font-size:9px;
+    line-height:1.7;
 }
 
-.hex{
-    min-height:100px;
-    max-height:190px;
-    overflow:auto;
-    padding:13px;
-    border:1px solid var(--line);
-    border-radius:13px;
-    background:#03050a;
-    color:#90f5ff;
-    font:11px/1.65 ui-monospace,SFMono-Regular,Menlo,monospace;
-    white-space:pre-wrap;
-    word-break:break-all;
-}
-
-.terminal{
-    margin-top:16px;
-}
-
-.terminal-body{
-    height:270px;
-    overflow:auto;
-    padding:15px;
-    background:#020407;
-    font:11px/1.7 ui-monospace,SFMono-Regular,Menlo,monospace;
-}
-
-.log{
-    margin-bottom:3px;
-}
-
-.log .time{
-    color:#4f6078;
-}
-
-.log.info{
-    color:#9ab0ca;
-}
-
-.log.good{
-    color:#55efaa;
-}
-
-.log.warn{
-    color:#ffd166;
-}
-
-.log.error{
-    color:#ff6684;
-}
-
-.report{
-    margin-top:16px;
-}
-
-textarea{
-    resize:vertical;
-}
+/* MODAL */
 
 .modal{
     position:fixed;
     inset:0;
-    z-index:100;
+    z-index:5000;
     display:none;
-    place-items:center;
+    align-items:center;
+    justify-content:center;
     padding:20px;
     background:rgba(0,0,0,.7);
-    backdrop-filter:blur(10px);
+    backdrop-filter:blur(12px);
 }
 
 .modal.show{
-    display:grid;
+    display:flex;
 }
 
 .modal-card{
-    width:min(600px,100%);
-    max-height:90vh;
-    overflow:auto;
-    padding:25px;
-    border:1px solid rgba(53,232,255,.25);
-    border-radius:23px;
-    background:#080d17;
-    box-shadow:0 30px 100px rgba(0,0,0,.65);
+    width:min(550px,94vw);
+    padding:24px;
+    border:1px solid var(--border);
+    border-radius:22px;
+    background:var(--panel2);
+    box-shadow:0 30px 100px rgba(0,0,0,.5);
 }
 
-.modal-card h3{
-    font-size:22px;
+.modal-card h2{
+    margin:0 0 7px;
+    font-size:18px;
 }
 
-.result-grid{
-    margin-top:17px;
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:9px;
-}
-
-.result{
-    padding:13px;
-    border:1px solid var(--line);
-    border-radius:13px;
-}
-
-.result small{
+.modal-card p{
     color:var(--muted);
-    font-size:9px;
+    font-size:11px;
 }
 
-.result b{
-    display:block;
-    margin-top:5px;
-    word-break:break-all;
-    font-size:12px;
+.result-info{
+    margin:18px 0;
+    padding:14px;
+    border:1px solid var(--border);
+    border-radius:13px;
+    background:rgba(255,255,255,.02);
 }
 
-.modal-buttons{
+.result-info div{
     display:flex;
-    gap:9px;
-    margin-top:17px;
+    justify-content:space-between;
+    padding:6px 0;
+    font-size:11px;
 }
 
-.modal-buttons button{
-    flex:1;
+.result-info span{
+    color:var(--muted);
 }
 
-.footer{
-    margin-top:22px;
-    text-align:center;
-    color:#526178;
-    font-size:10px;
-    letter-spacing:1px;
-}
+/* RESPONSIVE */
 
-.footer strong{
-    color:#8defff;
-}
-
-@media(max-width:1000px){
-    .workspace{
+@media(max-width:850px){
+    .main-grid{
         grid-template-columns:1fr;
-    }
-}
-
-@media(max-width:700px){
-    .app{
-        width:min(100% - 16px,1500px);
-    }
-
-    .topbar{
-        padding:13px;
-    }
-
-    .hero{
-        padding:24px 18px;
     }
 
     .stats{
-        grid-template-columns:1fr 1fr;
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:560px){
+    .app{
+        width:92vw;
+        padding-top:18px;
     }
 
-    .controls,
-    .buttons{
-        grid-template-columns:1fr;
+    header{
+        align-items:flex-start;
     }
 
-    .buttons .action{
-        min-height:46px;
+    .brand-title{
+        font-size:15px;
+    }
+
+    .hero{
+        padding:23px;
+    }
+
+    .hero h1{
+        font-size:35px;
+    }
+
+    .panel{
+        padding:16px;
     }
 
     .creator{
-        display:flex;
-        flex-wrap:wrap;
+        gap:7px;
+    }
+
+    .creator-content{
+        min-width:190px;
+    }
+
+    .creator-name{
+        font-size:16px;
     }
 }
 </style>
@@ -783,1609 +818,1551 @@ textarea{
 
 <body>
 
+<!-- =========================
+     BOOT
+========================= -->
+
+<div id="bootScreen">
+    <div class="boot-box">
+        <div class="boot-logo">K</div>
+
+        <div class="boot-title">
+            KTOOL AI BINARY ENGINE
+        </div>
+
+        <div class="boot-subtitle">
+            CREATED & CODED BY TRONG DUNG
+        </div>
+
+        <div class="boot-status">
+            <span id="bootStatus">INITIALIZING ENGINE...</span>
+            <span class="boot-percent" id="bootPercent">0%</span>
+        </div>
+
+        <div class="boot-track">
+            <div class="boot-fill" id="bootFill"></div>
+        </div>
+
+        <div class="boot-terminal" id="bootTerminal"></div>
+    </div>
+</div>
+
+<!-- =========================
+     APP
+========================= -->
+
 <div class="app">
 
-<header class="topbar">
+<header>
     <div class="brand">
-        <div class="brand-icon">K</div>
+        <div class="brand-logo">K</div>
+
         <div>
-            <h1>KTOOL AI BINARY ENGINE</h1>
-            <p>LOCAL .BYTES ANALYSIS / MERGE LAB</p>
+            <div class="brand-title">
+                KTOOL AI BINARY ENGINE
+            </div>
+
+            <div class="brand-subtitle">
+                LOCAL .BYTES ANALYSIS / MERGE LAB
+            </div>
         </div>
     </div>
 
-    <div class="top-actions">
-        <button class="icon-btn" id="themeBtn" title="Đổi giao diện">◐</button>
-        <button class="icon-btn" id="clearLogBtn" title="Xóa terminal">⌫</button>
+    <div class="header-actions">
+        <button class="icon-btn" id="themeBtn" title="Đổi giao diện">
+            ◐
+        </button>
     </div>
 </header>
 
 <section class="hero">
-    <div class="hero-label">V26 • BINARY INTELLIGENCE CORE</div>
+    <div class="hero-kicker">
+        BINARY WORKSPACE • V26
+    </div>
 
-    <h2>
-        KTOOL <span>AI BINARY</span> ENGINE
-    </h2>
+    <h1>
+        Merge your bytes.
+        Analyze the structure.
+    </h1>
 
-    <p class="hero-desc">
-        Công cụ phân tích và ghép file .bytes chạy hoàn toàn trên trình duyệt.
-        Engine sẽ kiểm tra cấu trúc, common-prefix, entropy, duplicate,
-        kích thước và mức độ tin cậy trước khi quyết định cách merge.
+    <p>
+        Công cụ xử lý binary trực tiếp trên trình duyệt.
+        File không cần tải lên server. Hỗ trợ phân tích HEX,
+        heuristic header, checksum SHA-256 và nhiều chế độ merge.
     </p>
 
-    <div class="creator">
-        <small>CREATED & CODED BY</small>
-        <strong>⚡ TRONG DUNG ⚡</strong>
+    <div class="hero-badges">
+        <span class="badge">LOCAL PROCESSING</span>
+        <span class="badge">2–8 FILES</span>
+        <span class="badge">HEX ANALYZER</span>
+        <span class="badge">SHA-256</span>
+        <span class="badge">SMART HEURISTIC</span>
     </div>
 </section>
 
 <section class="stats">
     <div class="stat">
-        <div class="stat-label">Files</div>
-        <div class="stat-value" id="statFiles">0</div>
+        <div class="stat-label">FILES</div>
+        <div class="stat-value" id="statFiles">0 / 8</div>
     </div>
 
     <div class="stat">
-        <div class="stat-label">Input Size</div>
+        <div class="stat-label">TOTAL SIZE</div>
         <div class="stat-value" id="statSize">0 B</div>
     </div>
 
     <div class="stat">
-        <div class="stat-label">AI Confidence</div>
-        <div class="stat-value" id="statConfidence">—</div>
+        <div class="stat-label">PREFIX</div>
+        <div class="stat-value" id="statPrefix">—</div>
     </div>
 
     <div class="stat">
-        <div class="stat-label">Engine</div>
-        <div class="stat-value">V26</div>
+        <div class="stat-label">CONFIDENCE</div>
+        <div class="stat-value" id="statConfidence">—</div>
     </div>
 </section>
 
-<main class="workspace">
+<div class="main-grid">
 
-<section>
+<!-- FILE PANEL -->
 
-<div class="panel">
-
-<div class="panel-head">
-    <div>
-        <div class="panel-title">INPUT FILES</div>
-        <div class="panel-sub">Chọn 2–8 file .bytes</div>
+<section class="panel">
+    <div class="panel-title">
+        <h2>INPUT FILES</h2>
+        <span>2–8 .bytes</span>
     </div>
 
-    <span id="fileCounter" class="panel-sub">0 / 8</span>
-</div>
+    <div class="dropzone" id="dropzone">
 
-<div class="panel-body">
+        <div>
+            <div class="drop-icon">⇧</div>
 
-<div class="drop" id="dropZone">
+            <h3>
+                Kéo thả file .bytes vào đây
+            </h3>
 
-    <div>
-        <div class="drop-icon">⬡</div>
+            <p>
+                Hoặc chọn file từ thiết bị
+            </p>
 
-        <strong>Kéo & thả file .bytes vào đây</strong>
+            <button class="primary" id="chooseBtn">
+                CHOOSE FILES
+            </button>
 
-        <span>
-            hoặc chọn file từ thiết bị
-        </span>
+            <input
+                id="filePicker"
+                type="file"
+                accept=".bytes"
+                multiple
+                hidden
+            >
+        </div>
 
-        <button
-            class="primary"
-            id="pickBtn"
-            type="button">
-            + CHỌN FILE
+    </div>
+
+    <div class="file-list" id="fileList"></div>
+</section>
+
+<!-- CONTROL PANEL -->
+
+<section class="panel">
+
+    <div class="panel-title">
+        <h2>MERGE CONTROL</h2>
+        <span>LOCAL ENGINE</span>
+    </div>
+
+    <div class="control-grid">
+
+        <div class="field">
+            <label>MERGE MODE</label>
+
+            <select id="mergeMode">
+                <option value="smart">
+                    SMART — AI HEURISTIC
+                </option>
+
+                <option value="safe">
+                    SAFE — NO DESTRUCTIVE PATCH
+                </option>
+
+                <option value="raw">
+                    RAW — EXACT APPEND
+                </option>
+            </select>
+        </div>
+
+        <div class="field">
+            <label>HEADER STRATEGY</label>
+
+            <select id="headerStrategy">
+                <option value="auto">
+                    AUTO DETECTION
+                </option>
+
+                <option value="keep">
+                    KEEP ALL BYTES
+                </option>
+
+                <option value="manual">
+                    MANUAL OFFSET
+                </option>
+            </select>
+        </div>
+
+        <div class="field" id="manualOffsetWrap" style="display:none">
+            <label>MANUAL OFFSET</label>
+
+            <input
+                id="manualOffset"
+                type="number"
+                min="0"
+                max="1048576"
+                value="0"
+            >
+        </div>
+
+        <label class="check">
+            <input
+                type="checkbox"
+                id="patchSize"
+            >
+
+            <span>
+                <strong>CONSERVATIVE SIZE PATCH</strong>
+
+                <small>
+                    Chỉ patch một trường UInt32 LE khi phát hiện
+                    duy nhất một giá trị đúng bằng kích thước file.
+                </small>
+            </span>
+        </label>
+
+        <label class="check">
+            <input
+                type="checkbox"
+                id="makeHash"
+                checked
+            >
+
+            <span>
+                <strong>GENERATE SHA-256</strong>
+
+                <small>
+                    Tính hash của file kết quả sau khi merge.
+                </small>
+            </span>
+        </label>
+
+    </div>
+
+    <div class="action-bar">
+        <button class="primary" id="mergeBtn">
+            ⚡ MERGE FILES
+        </button>
+
+        <button class="secondary" id="analyzeBtn">
+            ANALYZE
+        </button>
+
+        <button class="secondary" id="clearBtn">
+            CLEAR
         </button>
     </div>
 
-</div>
+</section>
 
-<input
-    type="file"
-    id="filePicker"
-    multiple
-    accept=".bytes"
-    hidden>
+<!-- ANALYSIS -->
 
-<div class="file-list" id="fileList"></div>
+<section class="panel">
 
-<div class="controls">
-
-    <div class="control">
-        <label>Merge Mode</label>
-
-        <select id="mergeMode">
-            <option value="smart">SMART — AI HEURISTIC</option>
-            <option value="safe">SAFE — NO DESTRUCTIVE PATCH</option>
-            <option value="raw">RAW — EXACT APPEND</option>
-        </select>
+    <div class="panel-title">
+        <h2>AI HEURISTIC ANALYSIS</h2>
+        <span>DETERMINISTIC LOCAL</span>
     </div>
 
-    <div class="control">
-        <label>Header Strategy</label>
+    <div class="analysis-box">
 
-        <select id="headerStrategy">
-            <option value="auto">AUTO DETECTION</option>
-            <option value="none">KEEP ALL BYTES</option>
-            <option value="manual">MANUAL OFFSET</option>
-        </select>
-    </div>
-
-    <div class="control">
-        <label>Manual Header Offset</label>
-
-        <input
-            id="manualOffset"
-            type="number"
-            min="0"
-            max="1048576"
-            value="0"
-            placeholder="Ví dụ: 32">
-    </div>
-
-    <div class="control">
-        <label>Output Filename</label>
-
-        <input
-            id="outputName"
-            type="text"
-            value="KTOOL_MERGED_V26.bytes">
-    </div>
-
-    <div class="control full">
-        <label>Integrity Options</label>
-
-        <label class="check">
-            <input id="checksumToggle" type="checkbox" checked>
-            Tính SHA-256 cho file kết quả
-        </label>
-    </div>
-
-    <div class="control full">
-        <label>Conservative Size-Field Patch</label>
-
-        <label class="check">
-            <input id="sizePatchToggle" type="checkbox">
-            Chỉ patch nếu engine tìm thấy DUY NHẤT trường 32-bit LE
-            trùng kích thước file đầu tiên
-        </label>
-    </div>
-
-</div>
-
-<div class="buttons">
-
-    <button class="action" id="analyzeBtn">
-        ◉ PHÂN TÍCH AI
-    </button>
-
-    <button class="action" id="mergeBtn" disabled>
-        ⚡ MERGE
-    </button>
-
-    <button class="action danger" id="resetBtn">
-        ↻ RESET
-    </button>
-
-</div>
-
-<div class="progress">
-    <div class="progress-bar" id="progressBar"></div>
-</div>
-
-</div>
-</div>
-
-<div class="panel terminal">
-
-<div class="panel-head">
-    <div>
-        <div class="panel-title">KTOOL AI TERMINAL</div>
-        <div class="panel-sub">
-            Binary analysis console
+        <div class="analysis-row">
+            <span>Common prefix</span>
+            <strong id="analysisPrefix">—</strong>
         </div>
+
+        <div class="analysis-row">
+            <span>Recommended offset</span>
+            <strong id="analysisOffset">—</strong>
+        </div>
+
+        <div class="analysis-row">
+            <span>Confidence</span>
+            <strong id="analysisConfidence">—</strong>
+        </div>
+
+        <div class="analysis-row">
+            <span>Structure</span>
+            <strong id="analysisStructure">—</strong>
+        </div>
+
+        <div class="analysis-row">
+            <span>Duplicate heuristic</span>
+            <strong id="analysisDuplicate">—</strong>
+        </div>
+
+        <div class="analysis-row">
+            <span>Magic match</span>
+            <strong id="analysisMagic">—</strong>
+        </div>
+
+        <div class="analysis-row">
+            <span>Entropy</span>
+            <strong id="analysisEntropy">—</strong>
+        </div>
+
     </div>
-</div>
 
-<div class="terminal-body" id="terminal"></div>
-
-</div>
+    <div class="hex" id="hexPreview">
+No data.
+    </div>
 
 </section>
 
-<aside>
+<!-- TERMINAL -->
 
-<div class="panel">
+<section class="panel">
 
-<div class="panel-head">
-    <div>
-        <div class="panel-title">AI BINARY ANALYZER</div>
-        <div class="panel-sub">
-            Local heuristic engine
+    <div class="panel-title">
+        <h2>ENGINE TERMINAL</h2>
+        <span id="engineState">IDLE</span>
+    </div>
+
+    <div class="terminal" id="terminal"></div>
+
+    <div class="action-bar">
+        <button class="secondary" id="copyLogBtn">
+            COPY LOG
+        </button>
+
+        <button class="secondary" id="exportReportBtn">
+            EXPORT REPORT
+        </button>
+    </div>
+
+</section>
+
+</div>
+
+<!-- CREATOR -->
+
+<div class="creator">
+
+    <div class="creator-line"></div>
+
+    <div class="creator-content">
+
+        <div class="creator-kicker">
+            CREATED & CODED BY
         </div>
-    </div>
-</div>
 
-<div class="ai-box">
-
-<div class="ai-status">
-
-    <div class="ai-orb">AI</div>
-
-    <div>
-        <strong id="aiStatus">
-            Waiting for files
-        </strong>
-
-        <span id="aiDetail">
-            Chưa có dữ liệu phân tích
-        </span>
-    </div>
-
-</div>
-
-<div class="confidence">
-
-    <div class="conf-top">
-        <span>Merge confidence</span>
-        <strong id="confidenceText">0%</strong>
-    </div>
-
-    <div class="conf-track">
-        <div class="conf-fill" id="confidenceFill"></div>
-    </div>
-
-</div>
-
-<div class="analysis-grid">
-
-    <div class="metric">
-        <small>Common Prefix</small>
-        <b id="commonPrefix">—</b>
-    </div>
-
-    <div class="metric">
-        <small>Recommended Offset</small>
-        <b id="recommendedOffset">—</b>
-    </div>
-
-    <div class="metric">
-        <small>Structure</small>
-        <b id="structureState">—</b>
-    </div>
-
-    <div class="metric">
-        <small>Duplicates</small>
-        <b id="duplicateState">—</b>
-    </div>
-
-    <div class="metric">
-        <small>Magic</small>
-        <b id="magicState">—</b>
-    </div>
-
-    <div class="metric">
-        <small>Entropy</small>
-        <b id="entropyState">—</b>
-    </div>
-
-</div>
-
-<div class="warning" id="aiWarning">
-    AI không tự giả định một header cố định.
-    Khi confidence thấp, engine sẽ giữ nguyên dữ liệu thay vì
-    tự ý cắt byte.
-</div>
-
-<div class="preview">
-
-    <div class="preview-title">
-        HEX / ASCII PREVIEW
-    </div>
-
-    <pre class="hex" id="hexPreview">
-Chưa có file.
-    </pre>
-
-</div>
-
-</div>
-</div>
-
-<div class="panel report">
-
-<div class="panel-head">
-    <div>
-        <div class="panel-title">ANALYSIS REPORT</div>
-        <div class="panel-sub">
-            Có thể copy hoặc xuất JSON
+        <div class="creator-name">
+            <span class="creator-bracket">&lt;</span>
+            TRONG DUNG
+            <span class="creator-bracket">/&gt;</span>
         </div>
+
+        <div class="creator-role">
+            KTOOL AI BINARY ENGINE • V26
+        </div>
+
     </div>
-</div>
 
-<div class="panel-body">
-
-<textarea
-    id="reportBox"
-    rows="10"
-    readonly
-    style="
-        width:100%;
-        padding:13px;
-        color:#9cefff;
-        background:#03050a;
-        border:1px solid var(--line);
-        border-radius:13px;
-        font:10px/1.6 ui-monospace,monospace;
-        outline:none;
-    ">Chưa có report.</textarea>
-
-<div class="buttons">
-
-    <button class="action" id="copyReportBtn">
-        COPY REPORT
-    </button>
-
-    <button class="action" id="downloadReportBtn">
-        EXPORT JSON
-    </button>
+    <div class="creator-line"></div>
 
 </div>
 
-</div>
-</div>
-
-</aside>
-
-</main>
-
-<footer class="footer">
-    KTOOL AI BINARY ENGINE V26
-    • LOCAL PROCESSING
-    •
-    <strong>CREATED & CODED BY TRONG DUNG</strong>
+<footer>
+    KTOOL AI BINARY ENGINE V26 • Local browser processing •
+    Không upload file lên server.
 </footer>
 
 </div>
 
+<!-- =========================
+     RESULT MODAL
+========================= -->
+
 <div class="modal" id="resultModal">
 
-<div class="modal-card">
+    <div class="modal-card">
 
-    <h3>✓ MERGE COMPLETED</h3>
+        <h2>Merge completed</h2>
 
-    <div class="result-grid">
+        <p>
+            File kết quả đã được tạo trong bộ nhớ trình duyệt.
+        </p>
 
-        <div class="result">
-            <small>OUTPUT</small>
-            <b id="resultName">—</b>
+        <div class="result-info">
+
+            <div>
+                <span>Filename</span>
+                <strong id="resultName">—</strong>
+            </div>
+
+            <div>
+                <span>Size</span>
+                <strong id="resultSize">—</strong>
+            </div>
+
+            <div>
+                <span>SHA-256</span>
+                <strong id="resultHash">—</strong>
+            </div>
+
         </div>
 
-        <div class="result">
-            <small>SIZE</small>
-            <b id="resultSize">—</b>
-        </div>
+        <div class="action-bar">
 
-        <div class="result">
-            <small>MODE</small>
-            <b id="resultMode">—</b>
-        </div>
+            <button
+                class="primary"
+                id="downloadBtn"
+            >
+                DOWNLOAD
+            </button>
 
-        <div class="result">
-            <small>HEADER OFFSET</small>
-            <b id="resultOffset">—</b>
-        </div>
+            <button
+                class="secondary"
+                id="closeModalBtn"
+            >
+                CLOSE
+            </button>
 
-        <div class="result" style="grid-column:1/-1">
-            <small>SHA-256</small>
-            <b id="resultHash">—</b>
         </div>
 
     </div>
 
-    <div class="modal-buttons">
-
-        <button class="primary" id="downloadBtn">
-            ↓ DOWNLOAD
-        </button>
-
-        <button class="action" id="closeModalBtn">
-            CLOSE
-        </button>
-
-    </div>
-
-</div>
 </div>
 
 <script>
 "use strict";
 
-/* =========================================================
-   KTOOL AI BINARY ENGINE V26
-   CREATED & CODED BY TRONG DUNG
-   ---------------------------------------------------------
-   Local-only binary analyzer/merger.
-
-   IMPORTANT:
-   This engine deliberately avoids assuming that every .bytes
-   file has a 32-byte header or a specific proprietary format.
-   ========================================================= */
-
-const MAX_FILES = 8;
-const SAMPLE_SIZE = 4096;
-const MAX_MANUAL_OFFSET = 1048576;
-
-const state = {
-    files: [],
-    analysis: null,
-    outputBlob: null,
-    outputName: "",
-    busy: false,
-    theme: "dark"
-};
+/* =========================
+   HELPERS
+========================= */
 
 const $ = id => document.getElementById(id);
 
-const filePicker = $("filePicker");
-const dropZone = $("dropZone");
-const fileList = $("fileList");
-const terminal = $("terminal");
-
-/* =========================================================
-   UTILITY
-   ========================================================= */
+const state = {
+    files: [],
+    theme: "dark",
+    analysis: null,
+    resultBlob: null,
+    resultName: "",
+    resultHash: ""
+};
 
 function formatBytes(bytes){
-    if (!Number.isFinite(bytes)) return "—";
+    if(!Number.isFinite(bytes)) return "0 B";
 
     const units = ["B","KB","MB","GB","TB"];
     let i = 0;
-    let n = bytes;
+    let value = bytes;
 
-    while(n >= 1024 && i < units.length - 1){
-        n /= 1024;
+    while(value >= 1024 && i < units.length - 1){
+        value /= 1024;
         i++;
     }
 
-    return `${n.toFixed(i ? 2 : 0)} ${units[i]}`;
+    return `${value.toFixed(i === 0 ? 0 : 2)} ${units[i]}`;
 }
 
-function now(){
-    return new Date().toLocaleTimeString("vi-VN",{
-        hour12:false
-    });
-}
-
-function clamp(v,min,max){
-    return Math.max(min,Math.min(max,v));
+function clamp(value,min,max){
+    return Math.max(min,Math.min(max,value));
 }
 
 function sleep(ms){
     return new Promise(resolve => setTimeout(resolve,ms));
 }
 
-function setProgress(value){
-    $("progressBar").style.width = `${clamp(value,0,100)}%`;
-}
+/* =========================
+   LOG
+========================= */
 
-function log(message,type="info"){
-    const row = document.createElement("div");
-    row.className = `log ${type}`;
+function log(message,type=""){
+    const line = document.createElement("div");
 
-    const time = document.createElement("span");
-    time.className = "time";
-    time.textContent = `[${now()}] `;
+    line.className = "log-line";
 
-    const text = document.createElement("span");
-    text.textContent = message;
+    if(type){
+        line.classList.add(type);
+    }
 
-    row.append(time,text);
-    terminal.appendChild(row);
+    const time = new Date().toLocaleTimeString();
+
+    line.textContent = `[${time}] ${message}`;
+
+    $("terminal").appendChild(line);
+
+    const terminal = $("terminal");
 
     terminal.scrollTop = terminal.scrollHeight;
 }
 
 function clearTerminal(){
-    terminal.replaceChildren();
-    log("KTOOL AI TERMINAL initialized.","good");
-    log("Local binary engine ready.");
+    $("terminal").innerHTML = "";
 }
 
-function arrayEqual(a,b){
-    if(a.length !== b.length) return false;
+/* =========================
+   THEME
+========================= */
 
-    for(let i=0;i<a.length;i++){
-        if(a[i] !== b[i]) return false;
+function applyTheme(theme){
+
+    const html = document.documentElement;
+
+    if(theme === "light"){
+
+        html.classList.add("light");
+
+        state.theme = "light";
+
+    }else{
+
+        html.classList.remove("light");
+
+        state.theme = "dark";
     }
 
-    return true;
+    localStorage.setItem(
+        "ktool-theme",
+        state.theme
+    );
+}
+
+function initTheme(){
+
+    const saved =
+        localStorage.getItem("ktool-theme");
+
+    if(saved === "light"){
+        applyTheme("light");
+    }else{
+        applyTheme("dark");
+    }
+}
+
+$("themeBtn").addEventListener("click",()=>{
+
+    const next =
+        state.theme === "dark"
+        ? "light"
+        : "dark";
+
+    applyTheme(next);
+
+    log(
+        `${next.toUpperCase()} theme enabled.`,
+        "good"
+    );
+});
+
+initTheme();
+
+/* =========================
+   FILE INPUT
+========================= */
+
+$("chooseBtn").addEventListener("click",()=>{
+    $("filePicker").click();
+});
+
+$("filePicker").addEventListener("change",event=>{
+
+    addFiles([...event.target.files]);
+
+    event.target.value = "";
+});
+
+const dropzone = $("dropzone");
+
+["dragenter","dragover"].forEach(eventName=>{
+
+    dropzone.addEventListener(eventName,event=>{
+
+        event.preventDefault();
+        dropzone.classList.add("drag");
+    });
+});
+
+["dragleave","drop"].forEach(eventName=>{
+
+    dropzone.addEventListener(eventName,event=>{
+
+        event.preventDefault();
+        dropzone.classList.remove("drag");
+    });
+});
+
+dropzone.addEventListener("drop",event=>{
+
+    const files =
+        [...event.dataTransfer.files]
+        .filter(file =>
+            file.name.toLowerCase().endsWith(".bytes")
+        );
+
+    addFiles(files);
+});
+
+/* =========================
+   ADD FILES
+========================= */
+
+function addFiles(files){
+
+    if(!files.length){
+
+        log(
+            "No .bytes files detected.",
+            "warn"
+        );
+
+        return;
+    }
+
+    const available =
+        8 - state.files.length;
+
+    const accepted =
+        files.slice(0,available);
+
+    if(!accepted.length){
+
+        log(
+            "Maximum 8 files reached.",
+            "warn"
+        );
+
+        return;
+    }
+
+    for(const file of accepted){
+
+        const exists =
+            state.files.some(
+                item =>
+                item.name === file.name &&
+                item.size === file.size &&
+                item.lastModified === file.lastModified
+            );
+
+        if(!exists){
+
+            state.files.push(file);
+
+            log(
+                `Added: ${file.name} (${formatBytes(file.size)})`,
+                "good"
+            );
+        }
+    }
+
+    if(files.length > accepted.length){
+
+        log(
+            "Some files were ignored because the maximum is 8.",
+            "warn"
+        );
+    }
+
+    renderFiles();
+    updateStats();
+}
+
+/* =========================
+   RENDER FILES
+========================= */
+
+function renderFiles(){
+
+    const list = $("fileList");
+
+    list.innerHTML = "";
+
+    state.files.forEach((file,index)=>{
+
+        const item =
+            document.createElement("div");
+
+        item.className = "file-item";
+
+        const num =
+            document.createElement("div");
+
+        num.className = "file-num";
+        num.textContent = index + 1;
+
+        const info =
+            document.createElement("div");
+
+        const name =
+            document.createElement("div");
+
+        name.className = "file-name";
+        name.textContent = file.name;
+
+        const size =
+            document.createElement("div");
+
+        size.className = "file-size";
+        size.textContent = formatBytes(file.size);
+
+        info.append(name,size);
+
+        const remove =
+            document.createElement("button");
+
+        remove.className = "remove-file";
+        remove.textContent = "×";
+        remove.title = "Remove file";
+
+        remove.addEventListener("click",()=>{
+
+            const removed =
+                state.files.splice(index,1)[0];
+
+            log(
+                `Removed: ${removed.name}`,
+                "warn"
+            );
+
+            renderFiles();
+            updateStats();
+            resetAnalysis();
+        });
+
+        item.append(
+            num,
+            info,
+            remove
+        );
+
+        list.appendChild(item);
+    });
+}
+
+/* =========================
+   STATS
+========================= */
+
+function updateStats(){
+
+    const total =
+        state.files.reduce(
+            (sum,file)=>sum + file.size,
+            0
+        );
+
+    $("statFiles").textContent =
+        `${state.files.length} / 8`;
+
+    $("statSize").textContent =
+        formatBytes(total);
+}
+
+/* =========================
+   BINARY FUNCTIONS
+========================= */
+
+async function readFile(file){
+    return new Uint8Array(
+        await file.arrayBuffer()
+    );
 }
 
 function commonPrefixLength(buffers){
-    if(!buffers.length) return 0;
 
-    const limit = Math.min(
-        SAMPLE_SIZE,
-        ...buffers.map(b => b.length)
-    );
+    if(buffers.length < 2){
+        return 0;
+    }
 
-    let i = 0;
+    const max =
+        Math.min(
+            4096,
+            ...buffers.map(b=>b.length)
+        );
+
+    let index = 0;
 
     outer:
-    for(;i<limit;i++){
-        const value = buffers[0][i];
+    for(;index<max;index++){
 
-        for(let j=1;j<buffers.length;j++){
-            if(buffers[j][i] !== value){
+        const value =
+            buffers[0][index];
+
+        for(let i=1;i<buffers.length;i++){
+
+            if(buffers[i][index] !== value){
                 break outer;
             }
         }
     }
 
-    return i;
-}
-
-function hexLine(buffer,offset=0){
-    const hex = Array.from(buffer)
-        .map(v => v.toString(16).padStart(2,"0"))
-        .join(" ");
-
-    const ascii = Array.from(buffer)
-        .map(v => v >= 32 && v <= 126
-            ? String.fromCharCode(v)
-            : ".")
-        .join("");
-
-    return `${offset.toString(16).padStart(6,"0")}  ${hex.padEnd(47," ")}  ${ascii}`;
-}
-
-function makeHexPreview(buffer){
-    const first = buffer.slice(0,64);
-
-    const lines = [];
-
-    for(let i=0;i<first.length;i+=16){
-        lines.push(
-            hexLine(first.slice(i,i+16),i)
-        );
-    }
-
-    return lines.join("\n");
+    return index;
 }
 
 function printableRatio(buffer){
+
     if(!buffer.length) return 0;
 
-    let count = 0;
+    let printable = 0;
 
-    for(const v of buffer){
+    const length =
+        Math.min(buffer.length,4096);
+
+    for(let i=0;i<length;i++){
+
+        const value = buffer[i];
+
         if(
-            v === 9 ||
-            v === 10 ||
-            v === 13 ||
-            (v >= 32 && v <= 126)
+            value === 9 ||
+            value === 10 ||
+            value === 13 ||
+            (value >= 32 && value <= 126)
         ){
-            count++;
+            printable++;
         }
     }
 
-    return count / buffer.length;
+    return printable / length;
 }
 
 function zeroRatio(buffer){
+
     if(!buffer.length) return 0;
 
-    let count = 0;
+    const length =
+        Math.min(buffer.length,4096);
 
-    for(const v of buffer){
-        if(v === 0) count++;
-    }
+    let zeros = 0;
 
-    return count / buffer.length;
-}
+    for(let i=0;i<length;i++){
 
-function entropy(buffer){
-    if(!buffer.length) return 0;
-
-    const freq = new Uint32Array(256);
-
-    for(const v of buffer){
-        freq[v]++;
-    }
-
-    let result = 0;
-
-    for(const n of freq){
-        if(!n) continue;
-
-        const p = n / buffer.length;
-        result -= p * Math.log2(p);
-    }
-
-    return result;
-}
-
-function detectMagic(buffer){
-    if(buffer.length < 4) return "NONE";
-
-    const first = Array.from(
-        buffer.slice(0,16)
-    ).map(v => v.toString(16).padStart(2,"0"));
-
-    const ascii = Array.from(
-        buffer.slice(0,16)
-    )
-    .map(v => v >= 32 && v <= 126
-        ? String.fromCharCode(v)
-        : ".")
-    .join("");
-
-    return `${first.join(" ")} | ${ascii}`;
-}
-
-function readUint32LE(buffer,offset){
-    if(offset < 0 || offset + 4 > buffer.length){
-        return null;
-    }
-
-    return (
-        buffer[offset] |
-        (buffer[offset+1] << 8) |
-        (buffer[offset+2] << 16) |
-        (buffer[offset+3] * 0x1000000)
-    ) >>> 0;
-}
-
-async function sha256Blob(blob){
-    const data = await blob.arrayBuffer();
-
-    const digest = await crypto.subtle.digest(
-        "SHA-256",
-        data
-    );
-
-    return Array.from(
-        new Uint8Array(digest)
-    )
-    .map(v => v.toString(16).padStart(2,"0"))
-    .join("");
-}
-
-/* =========================================================
-   FILE ANALYSIS
-   ========================================================= */
-
-async function sampleFile(file){
-    const head = await file.slice(
-        0,
-        SAMPLE_SIZE
-    ).arrayBuffer();
-
-    const tailStart = Math.max(
-        0,
-        file.size - SAMPLE_SIZE
-    );
-
-    const tail = await file.slice(
-        tailStart,
-        file.size
-    ).arrayBuffer();
-
-    return {
-        head:new Uint8Array(head),
-        tail:new Uint8Array(tail)
-    };
-}
-
-function detectSizeField(buffer,fileSize){
-    const candidates = [];
-
-    /*
-      Search only first 128 bytes.
-
-      We patch only when exactly ONE field equals
-      the original file size. This is intentionally
-      conservative.
-    */
-
-    const limit = Math.min(
-        128,
-        buffer.length - 3
-    );
-
-    for(let offset=0;offset<=limit;offset++){
-        const value = readUint32LE(
-            buffer,
-            offset
-        );
-
-        if(value === fileSize){
-            candidates.push(offset);
+        if(buffer[i] === 0){
+            zeros++;
         }
     }
 
-    return candidates;
+    return zeros / length;
 }
 
-function calculateHeaderConfidence(
-    buffers,
-    prefixLength,
-    files
-){
+function divergenceAfterPrefix(buffers,prefix){
+
     if(buffers.length < 2){
         return 0;
     }
 
-    if(prefixLength < 8){
-        return 0;
-    }
+    const start =
+        Math.min(prefix,4096);
 
-    const minSize = Math.min(
-        ...files.map(f => f.file.size)
-    );
-
-    if(prefixLength > minSize * .25){
-        return 0;
-    }
-
-    let score = 0;
-
-    if(prefixLength >= 16) score += .28;
-    else if(prefixLength >= 8) score += .10;
-
-    if(prefixLength <= 256){
-        score += .20;
-    }else if(prefixLength <= 1024){
-        score += .08;
-    }
-
-    const prefix = buffers[0].slice(
-        0,
-        prefixLength
-    );
-
-    const pRatio = printableRatio(prefix);
-    const zRatio = zeroRatio(prefix);
-
-    if(pRatio > .25) score += .14;
-    if(zRatio > .15) score += .10;
-
-    let difference = 0;
-    let compared = 0;
-
-    const compareLength = Math.min(
-        64,
-        ...buffers.map(
-            b => Math.max(
-                0,
-                b.length - prefixLength
+    const length =
+        Math.min(
+            1024,
+            ...buffers.map(
+                b=>Math.max(0,b.length-start)
             )
-        )
-    );
+        );
 
-    for(let i=0;i<compareLength;i++){
-        compared++;
+    if(length <= 0) return 0;
 
-        if(
-            buffers.some(
-                b => b[prefixLength+i] !==
-                     buffers[0][prefixLength+i]
-            )
-        ){
-            difference++;
+    let different = 0;
+
+    for(let i=0;i<length;i++){
+
+        const base =
+            buffers[0][start+i];
+
+        for(let j=1;j<buffers.length;j++){
+
+            if(buffers[j][start+i] !== base){
+
+                different++;
+                break;
+            }
         }
     }
 
-    const divergence =
-        compared ? difference / compared : 0;
+    return different / length;
+}
 
-    if(divergence >= .75) score += .22;
-    else if(divergence >= .5) score += .12;
+function calculateHeaderConfidence(
+    buffers,
+    prefix
+){
 
-    /*
-      Very small common prefixes are often just magic bytes,
-      so avoid automatically treating them as headers.
-    */
-    if(prefixLength < 16){
-        score -= .25;
+    if(buffers.length < 2 || prefix < 4){
+        return 0;
     }
+
+    const printable =
+        printableRatio(buffers[0]);
+
+    const zeros =
+        zeroRatio(buffers[0]);
+
+    const divergence =
+        divergenceAfterPrefix(
+            buffers,
+            prefix
+        );
+
+    let score = 0;
+
+    if(prefix >= 8) score += .18;
+    if(prefix >= 16) score += .16;
+    if(prefix >= 32) score += .16;
+    if(prefix >= 64) score += .12;
+    if(prefix <= 1024) score += .12;
+
+    score += clamp(divergence,.0,1) * .18;
+
+    if(printable > .7) score += .04;
+    if(zeros > .05) score += .04;
 
     return clamp(score,0,1);
 }
 
-async function analyzeFiles(){
-    if(state.files.length < 2){
-        throw new Error(
-            "Cần ít nhất 2 file để phân tích."
+function detectMagic(buffer){
+
+    const length =
+        Math.min(buffer.length,16);
+
+    let ascii = "";
+
+    for(let i=0;i<length;i++){
+
+        const c = buffer[i];
+
+        if(c >= 32 && c <= 126){
+            ascii += String.fromCharCode(c);
+        }else{
+            ascii += ".";
+        }
+    }
+
+    return ascii;
+}
+
+function calculateEntropy(buffer){
+
+    const length =
+        Math.min(buffer.length,65536);
+
+    if(!length){
+        return 0;
+    }
+
+    const counts =
+        new Uint32Array(256);
+
+    for(let i=0;i<length;i++){
+        counts[buffer[i]]++;
+    }
+
+    let entropy = 0;
+
+    for(let i=0;i<256;i++){
+
+        if(!counts[i]) continue;
+
+        const p =
+            counts[i] / length;
+
+        entropy -= p * Math.log2(p);
+    }
+
+    return entropy;
+}
+
+function detectDuplicateHeuristic(buffers){
+
+    if(buffers.length < 2){
+        return "N/A";
+    }
+
+    const hashes = [];
+
+    for(const buffer of buffers){
+
+        let a = 2166136261;
+
+        const length =
+            Math.min(buffer.length,8192);
+
+        for(let i=0;i<length;i++){
+
+            a ^= buffer[i];
+
+            a = Math.imul(
+                a,
+                16777619
+            );
+        }
+
+        hashes.push(
+            (a >>> 0).toString(16)
         );
     }
 
-    log(
-        `Starting analysis for ${state.files.length} files...`,
-        "info"
-    );
+    const unique =
+        new Set(hashes).size;
 
-    setProgress(5);
+    return unique === hashes.length
+        ? "No obvious duplicate"
+        : "Possible duplicate";
+}
 
-    const samples = [];
+function detectSizeField(buffer,originalSize){
 
-    for(let i=0;i<state.files.length;i++){
-        const item = state.files[i];
+    const candidates = [];
 
-        const sample = await sampleFile(
-            item.file
+    const max =
+        Math.min(
+            128,
+            buffer.length - 3
         );
 
-        samples.push(sample);
+    if(max < 0){
+        return null;
+    }
 
-        const e = entropy(sample.head);
+    for(let i=0;i<=max;i++){
 
-        item.analysis = {
-            size:item.file.size,
-            entropy:e,
-            printable:printableRatio(sample.head),
-            zeros:zeroRatio(sample.head),
-            magic:detectMagic(sample.head),
-            sizeFields:detectSizeField(
-                sample.head,
-                item.file.size
-            )
-        };
+        const value =
+            (
+                buffer[i] |
+                (buffer[i+1] << 8) |
+                (buffer[i+2] << 16) |
+                (buffer[i+3] << 24)
+            ) >>> 0;
+
+        if(value === originalSize){
+
+            candidates.push(i);
+        }
+    }
+
+    if(candidates.length !== 1){
+        return null;
+    }
+
+    return candidates[0];
+}
+
+/* =========================
+   ANALYZE
+========================= */
+
+async function analyzeFiles(){
+
+    if(state.files.length < 2){
 
         log(
-            `Analyzed ${item.file.name} | ${formatBytes(item.file.size)} | entropy ${e.toFixed(2)}`,
-            "info"
+            "At least 2 files are required for comparison.",
+            "warn"
         );
 
-        setProgress(
-            5 + ((i+1)/state.files.length)*35
-        );
-
-        await sleep(0);
+        return null;
     }
 
-    const buffers = samples.map(
-        x => x.head
+    $("engineState").textContent =
+        "ANALYZING";
+
+    log(
+        `Analyzing ${state.files.length} binary files...`
     );
 
-    const prefixLength =
+    const buffers = [];
+
+    for(const file of state.files){
+
+        buffers.push(
+            await readFile(file)
+        );
+    }
+
+    const prefix =
         commonPrefixLength(buffers);
 
     const confidence =
         calculateHeaderConfidence(
             buffers,
-            prefixLength,
-            state.files
+            prefix
         );
-
-    let duplicate = false;
-
-    /*
-      Fast duplicate heuristic:
-      same size + identical first and last sample.
-    */
-    for(let i=0;i<state.files.length;i++){
-        for(let j=i+1;j<state.files.length;j++){
-
-            if(
-                state.files[i].file.size ===
-                state.files[j].file.size &&
-                arrayEqual(
-                    samples[i].head,
-                    samples[j].head
-                ) &&
-                arrayEqual(
-                    samples[i].tail,
-                    samples[j].tail
-                )
-            ){
-                duplicate = true;
-            }
-        }
-    }
 
     let recommendedOffset = 0;
 
     if(
         confidence >= .78 &&
-        prefixLength >= 16 &&
-        prefixLength <= 1024
+        prefix >= 16 &&
+        prefix <= 1024
     ){
-        recommendedOffset = prefixLength;
+        recommendedOffset = prefix;
     }
 
-    let structure =
-        confidence >= .78
-            ? "HIGH CONFIDENCE"
-            : confidence >= .5
-                ? "AMBIGUOUS"
-                : "UNKNOWN";
+    const duplicate =
+        detectDuplicateHeuristic(buffers);
 
-    const avgEntropy =
-        state.files.reduce(
-            (sum,item) =>
-                sum + item.analysis.entropy,
-            0
-        ) / state.files.length;
+    const magic =
+        detectMagic(buffers[0]);
 
-    const magicSame =
-        state.files.every(
-            item =>
-                item.analysis.magic.split("|")[0] ===
-                state.files[0].analysis.magic.split("|")[0]
-        );
+    const entropy =
+        calculateEntropy(buffers[0]);
 
-    state.analysis = {
-        files:state.files.length,
-        totalSize:state.files.reduce(
-            (sum,item) => sum + item.file.size,
-            0
-        ),
-        commonPrefix:prefixLength,
-        recommendedOffset,
+    let structure = "Binary / unknown";
+
+    const printable =
+        printableRatio(buffers[0]);
+
+    if(printable > .85){
+        structure = "Mostly printable";
+    }else if(entropy > 7.3){
+        structure = "High entropy binary";
+    }else if(zeroRatio(buffers[0]) > .2){
+        structure = "Zero-padded / structured";
+    }else{
+        structure = "Structured binary";
+    }
+
+    const result = {
+        buffers,
+        prefix,
         confidence,
-        structure,
+        recommendedOffset,
         duplicate,
-        magicSame,
-        avgEntropy,
-        generatedAt:new Date().toISOString()
+        magic,
+        entropy,
+        structure
     };
 
-    renderAnalysis();
+    state.analysis = result;
 
-    setProgress(100);
+    renderAnalysis(result);
+
+    $("engineState").textContent =
+        "READY";
 
     log(
-        `Analysis complete | prefix=${prefixLength} | confidence=${Math.round(confidence*100)}%`,
+        `Common prefix: ${prefix} bytes`
+    );
+
+    log(
+        `Heuristic confidence: ${(confidence*100).toFixed(1)}%`,
         confidence >= .78 ? "good" : "warn"
     );
 
-    return state.analysis;
+    log(
+        `Recommended offset: ${recommendedOffset} bytes`
+    );
+
+    return result;
 }
 
-/* =========================================================
-   RENDER
-   ========================================================= */
+function renderAnalysis(result){
 
-function renderFiles(){
-    fileList.replaceChildren();
+    $("analysisPrefix").textContent =
+        `${result.prefix} bytes`;
 
-    state.files.forEach((item,index)=>{
+    $("analysisOffset").textContent =
+        `${result.recommendedOffset} bytes`;
 
-        const card = document.createElement("div");
-        card.className = "file-card";
+    const confidenceText =
+        `${(result.confidence*100).toFixed(1)}%`;
 
-        const number = document.createElement("div");
-        number.className = "file-num";
-        number.textContent = String(index+1);
+    $("analysisConfidence").textContent =
+        confidenceText;
 
-        const center = document.createElement("div");
+    $("analysisConfidence").className =
+        result.confidence >= .78
+        ? "good"
+        : result.confidence >= .5
+            ? "warn"
+            : "bad";
 
-        const name = document.createElement("div");
-        name.className = "file-name";
-        name.textContent = item.file.name;
+    $("analysisStructure").textContent =
+        result.structure;
 
-        const meta = document.createElement("div");
-        meta.className = "file-meta";
-        meta.textContent =
-            `${formatBytes(item.file.size)} • .bytes`;
+    $("analysisDuplicate").textContent =
+        result.duplicate;
 
-        center.append(name,meta);
+    $("analysisMagic").textContent =
+        result.magic;
 
-        const actions = document.createElement("div");
-        actions.className = "file-actions";
+    $("analysisEntropy").textContent =
+        `${result.entropy.toFixed(3)} bits`;
 
-        const up = document.createElement("button");
-        up.className = "mini";
-        up.textContent = "↑";
-        up.title = "Move up";
-        up.disabled = index === 0;
-
-        up.onclick = ()=>{
-            if(index === 0) return;
-
-            [
-                state.files[index-1],
-                state.files[index]
-            ] = [
-                state.files[index],
-                state.files[index-1]
-            ];
-
-            invalidateAnalysis();
-            renderFiles();
-        };
-
-        const down = document.createElement("button");
-        down.className = "mini";
-        down.textContent = "↓";
-        down.title = "Move down";
-        down.disabled =
-            index === state.files.length-1;
-
-        down.onclick = ()=>{
-            if(index === state.files.length-1){
-                return;
-            }
-
-            [
-                state.files[index+1],
-                state.files[index]
-            ] = [
-                state.files[index],
-                state.files[index+1]
-            ];
-
-            invalidateAnalysis();
-            renderFiles();
-        };
-
-        const remove = document.createElement("button");
-        remove.className = "mini";
-        remove.textContent = "×";
-        remove.title = "Remove";
-
-        remove.onclick = ()=>{
-            log(
-                `Removed ${item.file.name}`,
-                "warn"
-            );
-
-            state.files.splice(index,1);
-
-            invalidateAnalysis();
-            renderFiles();
-            updateUI();
-        };
-
-        actions.append(up,down,remove);
-
-        card.append(
-            number,
-            center,
-            actions
-        );
-
-        fileList.appendChild(card);
-    });
-
-    $("fileCounter").textContent =
-        `${state.files.length} / ${MAX_FILES}`;
-}
-
-function renderAnalysis(){
-    const a = state.analysis;
-
-    if(!a) return;
-
-    $("statFiles").textContent = a.files;
-    $("statSize").textContent =
-        formatBytes(a.totalSize);
-
-    const percent =
-        Math.round(a.confidence*100);
+    $("statPrefix").textContent =
+        `${result.prefix} B`;
 
     $("statConfidence").textContent =
-        `${percent}%`;
+        `${(result.confidence*100).toFixed(0)}%`;
 
-    $("confidenceText").textContent =
-        `${percent}%`;
-
-    $("confidenceFill").style.width =
-        `${percent}%`;
-
-    $("commonPrefix").textContent =
-        `${a.commonPrefix} bytes`;
-
-    $("recommendedOffset").textContent =
-        a.recommendedOffset
-            ? `${a.recommendedOffset} bytes`
-            : "KEEP";
-
-    $("structureState").textContent =
-        a.structure;
-
-    $("duplicateState").textContent =
-        a.duplicate
-            ? "POSSIBLE DUPLICATE"
-            : "NONE";
-
-    $("magicState").textContent =
-        a.magicSame
-            ? "MATCH"
-            : "DIFFERENT";
-
-    $("entropyState").textContent =
-        a.avgEntropy.toFixed(2);
-
-    $("aiStatus").textContent =
-        a.confidence >= .78
-            ? "High-confidence structure"
-            : a.confidence >= .5
-                ? "Ambiguous structure"
-                : "No safe structure detected";
-
-    $("aiDetail").textContent =
-        `Prefix ${a.commonPrefix} bytes • recommended ${a.recommendedOffset} bytes`;
-
-    $("aiWarning").textContent =
-        a.confidence >= .78
-            ? "Engine tìm thấy common-prefix có độ tin cậy cao. SMART có thể loại prefix khỏi các file sau file đầu tiên."
-            : "Confidence thấp. Engine sẽ KHÔNG tự ý cắt header. Đây là cơ chế bảo vệ dữ liệu khỏi heuristic sai.";
-
-    const first =
-        state.files[0]?.analysis;
-
-    if(first){
-        $("hexPreview").textContent =
-            makeHexPreview(
-                new Uint8Array(
-                    []
-                )
-            );
-    }
-
-    /*
-      Preview is refreshed separately because analysis samples
-      are intentionally not retained as large buffers.
-    */
-    previewFirstFile();
-
-    updateReport();
+    renderHexPreview(
+        result.buffers[0]
+    );
 }
 
-async function previewFirstFile(){
-    if(!state.files.length){
-        $("hexPreview").textContent =
-            "Chưa có file.";
+function renderHexPreview(buffer){
+
+    const length =
+        Math.min(buffer.length,256);
+
+    const lines = [];
+
+    for(let offset=0;offset<length;offset+=16){
+
+        let hex = "";
+        let ascii = "";
+
+        for(let i=0;i<16;i++){
+
+            const index =
+                offset+i;
+
+            if(index < length){
+
+                const value =
+                    buffer[index];
+
+                hex +=
+                    value.toString(16)
+                        .padStart(2,"0")
+                    + " ";
+
+                ascii +=
+                    value >= 32 &&
+                    value <= 126
+                    ? String.fromCharCode(value)
+                    : ".";
+            }else{
+
+                hex += "   ";
+                ascii += " ";
+            }
+        }
+
+        lines.push(
+            `${offset.toString(16).padStart(8,"0")}  ${hex} |${ascii}|`
+        );
+    }
+
+    $("hexPreview").textContent =
+        lines.join("\n");
+}
+
+function resetAnalysis(){
+
+    state.analysis = null;
+
+    $("analysisPrefix").textContent = "—";
+    $("analysisOffset").textContent = "—";
+    $("analysisConfidence").textContent = "—";
+    $("analysisStructure").textContent = "—";
+    $("analysisDuplicate").textContent = "—";
+    $("analysisMagic").textContent = "—";
+    $("analysisEntropy").textContent = "—";
+
+    $("statPrefix").textContent = "—";
+    $("statConfidence").textContent = "—";
+
+    $("hexPreview").textContent =
+        "No data.";
+}
+
+/* =========================
+   HEADER STRATEGY
+========================= */
+
+$("headerStrategy").addEventListener(
+    "change",
+    ()=>{
+        $("manualOffsetWrap").style.display =
+            $("headerStrategy").value === "manual"
+            ? "block"
+            : "none";
+    }
+);
+
+/* =========================
+   SHA256
+========================= */
+
+async function sha256Blob(blob){
+
+    const buffer =
+        await blob.arrayBuffer();
+
+    const digest =
+        await crypto.subtle.digest(
+            "SHA-256",
+            buffer
+        );
+
+    return [...new Uint8Array(digest)]
+        .map(
+            value =>
+            value.toString(16).padStart(2,"0")
+        )
+        .join("");
+}
+
+/* =========================
+   MERGE
+========================= */
+
+async function mergeFiles(){
+
+    if(state.files.length < 2){
+
+        log(
+            "Select at least 2 .bytes files.",
+            "warn"
+        );
 
         return;
     }
 
-    const buf =
-        new Uint8Array(
-            await state.files[0].file
-                .slice(0,64)
-                .arrayBuffer()
-        );
-
-    $("hexPreview").textContent =
-        makeHexPreview(buf);
-}
-
-function updateUI(){
-    $("statFiles").textContent =
-        state.files.length;
-
-    const total =
-        state.files.reduce(
-            (sum,x)=>sum+x.file.size,
-            0
-        );
-
-    $("statSize").textContent =
-        formatBytes(total);
-
-    $("mergeBtn").disabled =
-        state.files.length < 2 ||
-        state.busy;
-
-    if(!state.files.length){
-        $("statConfidence").textContent = "—";
-    }
-}
-
-function invalidateAnalysis(){
-    state.analysis = null;
-
-    $("confidenceText").textContent = "0%";
-    $("confidenceFill").style.width = "0%";
-    $("statConfidence").textContent = "—";
-
-    $("commonPrefix").textContent = "—";
-    $("recommendedOffset").textContent = "—";
-    $("structureState").textContent = "—";
-    $("duplicateState").textContent = "—";
-    $("magicState").textContent = "—";
-    $("entropyState").textContent = "—";
-
-    $("reportBox").value =
-        "Chưa có report.";
-
-    updateUI();
-}
-
-/* =========================================================
-   FILE INPUT
-   ========================================================= */
-
-function addFiles(fileArray){
-
-    const incoming =
-        Array.from(fileArray);
-
-    if(!incoming.length) return;
-
-    for(const file of incoming){
-
-        if(state.files.length >= MAX_FILES){
-            log(
-                `Maximum ${MAX_FILES} files reached.`,
-                "warn"
-            );
-            break;
-        }
-
-        const lower =
-            file.name.toLowerCase();
-
-        if(!lower.endsWith(".bytes")){
-            log(
-                `Skipped non-.bytes file: ${file.name}`,
-                "warn"
-            );
-            continue;
-        }
-
-        const duplicateName =
-            state.files.some(
-                x =>
-                    x.file.name === file.name &&
-                    x.file.size === file.size &&
-                    x.file.lastModified === file.lastModified
-            );
-
-        if(duplicateName){
-            log(
-                `Skipped duplicate selection: ${file.name}`,
-                "warn"
-            );
-            continue;
-        }
-
-        state.files.push({
-            file,
-            analysis:null
-        });
+    if(state.files.length > 8){
 
         log(
-            `Loaded ${file.name} (${formatBytes(file.size)})`,
-            "good"
+            "Maximum 8 files allowed.",
+            "bad"
         );
+
+        return;
     }
 
-    filePicker.value = "";
+    $("engineState").textContent =
+        "PROCESSING";
 
-    invalidateAnalysis();
-    renderFiles();
-    updateUI();
-}
+    $("mergeBtn").disabled = true;
 
-/* =========================================================
-   MERGE ENGINE
-   ========================================================= */
+    try{
 
-function getSelectedOffset(){
-    const strategy =
-        $("headerStrategy").value;
+        let analysis =
+            state.analysis;
 
-    if(strategy === "none"){
-        return 0;
-    }
+        if(!analysis){
 
-    if(strategy === "manual"){
-        const value =
-            Number(
-                $("manualOffset").value
-            );
-
-        if(
-            !Number.isInteger(value) ||
-            value < 0 ||
-            value > MAX_MANUAL_OFFSET
-        ){
-            throw new Error(
-                "Manual offset không hợp lệ."
-            );
+            analysis =
+                await analyzeFiles();
         }
 
-        return value;
-    }
+        const buffers =
+            analysis.buffers;
 
-    if(!state.analysis){
-        return 0;
-    }
+        const mode =
+            $("mergeMode").value;
 
-    return state.analysis.recommendedOffset;
-}
+        const strategy =
+            $("headerStrategy").value;
 
-async function buildMergedBlob(){
+        let offset = 0;
 
-    const mode =
-        $("mergeMode").value;
-
-    let offset = 0;
-
-    if(mode === "raw"){
-        log(
-            "RAW mode: exact append selected.",
-            "warn"
-        );
-
-        const parts =
-            state.files.map(
-                item => item.file
-            );
-
-        return {
-            blob:new Blob(parts,{
-                type:"application/octet-stream"
-            }),
-            offset:0
-        };
-    }
-
-    offset = getSelectedOffset();
-
-    if(
-        offset > 0 &&
-        state.files.some(
-            item => item.file.size <= offset
-        )
-    ){
-        throw new Error(
-            `Header offset ${offset} lớn hơn kích thước một file.`
-        );
-    }
-
-    if(
-        mode === "safe" &&
-        $("headerStrategy").value === "auto"
-    ){
-        /*
-          SAFE never performs automatic destructive stripping.
-        */
-        offset = 0;
-
-        log(
-            "SAFE mode: automatic header stripping disabled.",
-            "warn"
-        );
-    }
-
-    const parts = [];
-
-    /*
-      First file remains complete.
-    */
-    parts.push(state.files[0].file);
-
-    /*
-      Subsequent files may have a detected common prefix removed.
-    */
-    for(let i=1;i<state.files.length;i++){
-
-        const file =
-            state.files[i].file;
-
-        if(offset === 0){
-            parts.push(file);
-        }else{
-            parts.push(
-                file.slice(
-                    offset,
-                    file.size
-                )
-            );
-        }
-    }
-
-    /*
-      Optional conservative size-field patch.
-    */
-    let firstPart = parts[0];
-
-    if($("sizePatchToggle").checked){
-
-        const head =
-            new Uint8Array(
-                await state.files[0].file
-                    .slice(0,128)
-                    .arrayBuffer()
-            );
-
-        const candidates =
-            detectSizeField(
-                head,
-                state.files[0].file.size
-            );
-
-        if(candidates.length === 1){
-
-            const fieldOffset =
-                candidates[0];
-
-            const preliminarySize =
-                parts.reduce(
-                    (sum,p)=>sum+p.size,
-                    0
-                );
+        if(strategy === "auto"){
 
             if(
-                preliminarySize <= 0xffffffff
+                mode === "smart" &&
+                analysis.confidence >= .78 &&
+                analysis.prefix >= 16 &&
+                analysis.prefix <= 1024
             ){
 
-                const bytes =
-                    new Uint8Array(4);
+                offset =
+                    analysis.prefix;
+            }
 
-                new DataView(bytes.buffer)
-                    .setUint32(
-                        0,
-                        preliminarySize,
-                        true
-                    );
+        }else if(strategy === "manual"){
 
-                /*
-                  Replace only four bytes without loading
-                  the entire first file into memory.
-                */
-                firstPart =
-                    new Blob([
-                        state.files[0].file.slice(
-                            0,
-                            fieldOffset
-                        ),
-                        bytes,
-                        state.files[0].file.slice(
-                            fieldOffset + 4
-                        )
-                    ]);
+            offset =
+                clamp(
+                    parseInt(
+                        $("manualOffset").value,
+                        10
+                    ) || 0,
+                    0,
+                    1048576
+                );
+        }
 
-                parts[0] = firstPart;
+        if(strategy === "keep"){
+            offset = 0;
+        }
+
+        if(mode === "safe"){
+            offset = 0;
+        }
+
+        if(mode === "raw"){
+            offset = 0;
+        }
+
+        log(
+            `Mode: ${mode.toUpperCase()}`
+        );
+
+        log(
+            `Header offset: ${offset} bytes`
+        );
+
+        const chunks = [];
+
+        /*
+         * First file is kept complete.
+         * Subsequent files can optionally have
+         * the detected common prefix removed.
+         */
+
+        chunks.push(buffers[0]);
+
+        for(let i=1;i<buffers.length;i++){
+
+            const buffer =
+                buffers[i];
+
+            const start =
+                offset > 0
+                ? Math.min(offset,buffer.length)
+                : 0;
+
+            chunks.push(
+                buffer.slice(start)
+            );
+
+            if(start > 0){
 
                 log(
-                    `Conservative size-field patch at offset ${fieldOffset}.`,
+                    `File ${i+1}: stripped ${start} byte prefix`,
+                    "good"
+                );
+            }else{
+
+                log(
+                    `File ${i+1}: appended without stripping`
+                );
+            }
+        }
+
+        /*
+         * Conservative size-field patch.
+         * Only applied to the first buffer and
+         * only when there is exactly one match.
+         */
+
+        if($("patchSize").checked){
+
+            const first =
+                new Uint8Array(
+                    chunks[0]
+                );
+
+            const candidate =
+                detectSizeField(
+                    first,
+                    buffers[0].length
+                );
+
+            if(candidate !== null){
+
+                const patched =
+                    new Uint8Array(first);
+
+                const finalSize =
+                    chunks.reduce(
+                        (sum,b)=>sum+b.length,
+                        0
+                    );
+
+                const value =
+                    finalSize >>> 0;
+
+                patched[candidate] =
+                    value & 255;
+
+                patched[candidate+1] =
+                    (value >>> 8) & 255;
+
+                patched[candidate+2] =
+                    (value >>> 16) & 255;
+
+                patched[candidate+3] =
+                    (value >>> 24) & 255;
+
+                chunks[0] = patched;
+
+                log(
+                    `Patched unique UInt32 LE size field at offset ${candidate}.`,
                     "good"
                 );
 
             }else{
+
                 log(
-                    "Output exceeds 32-bit size-field range; patch skipped.",
+                    "No unique safe size field found; patch skipped.",
                     "warn"
                 );
             }
-
-        }else if(candidates.length === 0){
-
-            log(
-                "No unique size field found; patch skipped.",
-                "warn"
-            );
-
-        }else{
-
-            log(
-                `${candidates.length} possible size fields found; patch skipped for safety.`,
-                "warn"
-            );
-        }
-    }
-
-    const blob =
-        new Blob(parts,{
-            type:"application/octet-stream"
-        });
-
-    return {
-        blob,
-        offset
-    };
-}
-
-/* =========================================================
-   MERGE
-   ========================================================= */
-
-async function mergeFiles(){
-
-    if(state.busy) return;
-
-    if(state.files.length < 2){
-        alert("Cần ít nhất 2 file .bytes.");
-        return;
-    }
-
-    state.busy = true;
-    updateUI();
-
-    try{
-
-        setProgress(0);
-
-        log(
-            "========== MERGE SESSION ==========",
-            "good"
-        );
-
-        if(!state.analysis){
-            await analyzeFiles();
         }
 
-        setProgress(50);
-
-        const result =
-            await buildMergedBlob();
-
-        state.outputBlob =
-            result.blob;
-
-        state.outputName =
-            sanitizeFilename(
-                $("outputName").value ||
-                "KTOOL_MERGED_V26.bytes"
+        const blob =
+            new Blob(
+                chunks,
+                {
+                    type:"application/octet-stream"
+                }
             );
 
-        if(
-            !state.outputName
-                .toLowerCase()
-                .endsWith(".bytes")
-        ){
-            state.outputName += ".bytes";
-        }
+        state.resultBlob =
+            blob;
 
-        log(
-            `Output size: ${formatBytes(result.blob.size)}`,
-            "good"
-        );
+        const base =
+            state.files[0].name
+                .replace(/\.bytes$/i,"");
 
-        setProgress(75);
+        state.resultName =
+            `${base}_merged.bytes`;
 
-        let hash = "SHA-256 disabled";
+        state.resultHash = "";
 
-        if($("checksumToggle").checked){
+        if($("makeHash").checked){
+
             log(
-                "Calculating SHA-256...",
-                "info"
+                "Calculating SHA-256..."
             );
 
-            hash =
-                await sha256Blob(
-                    result.blob
-                );
+            state.resultHash =
+                await sha256Blob(blob);
 
             log(
-                `SHA-256: ${hash}`,
+                `SHA-256: ${state.resultHash}`,
                 "good"
             );
         }
 
-        setProgress(100);
-
         $("resultName").textContent =
-            state.outputName;
+            state.resultName;
 
         $("resultSize").textContent =
-            formatBytes(
-                result.blob.size
-            );
-
-        $("resultMode").textContent =
-            $("mergeMode")
-                .selectedOptions[0]
-                .textContent;
-
-        $("resultOffset").textContent =
-            `${result.offset} bytes`;
+            formatBytes(blob.size);
 
         $("resultHash").textContent =
-            hash;
+            state.resultHash || "Disabled";
 
-        $("resultModal")
-            .classList
-            .add("show");
+        $("resultModal").classList.add("show");
+
+        $("engineState").textContent =
+            "READY";
 
         log(
-            "Merge completed successfully.",
+            `Merge completed: ${formatBytes(blob.size)}`,
             "good"
         );
 
@@ -2393,469 +2370,457 @@ async function mergeFiles(){
 
         console.error(error);
 
-        log(
-            error.message ||
-            "Merge failed.",
-            "error"
-        );
+        $("engineState").textContent =
+            "ERROR";
 
-        alert(
-            error.message ||
-            "Merge failed."
+        log(
+            `Merge failed: ${error.message}`,
+            "bad"
         );
 
     }finally{
 
-        state.busy = false;
-        updateUI();
-
-        setTimeout(
-            ()=>setProgress(0),
-            900
-        );
+        $("mergeBtn").disabled = false;
     }
 }
 
-function sanitizeFilename(name){
-    return String(name)
-        .replace(/[<>:"/\\|?*\x00-\x1F]/g,"_")
-        .trim()
-        .slice(0,180);
-}
+/* =========================
+   BUTTONS
+========================= */
 
-/* =========================================================
+$("analyzeBtn").addEventListener(
+    "click",
+    async ()=>{
+        await analyzeFiles();
+    }
+);
+
+$("mergeBtn").addEventListener(
+    "click",
+    mergeFiles
+);
+
+$("clearBtn").addEventListener(
+    "click",
+    ()=>{
+
+        state.files = [];
+        state.analysis = null;
+        state.resultBlob = null;
+
+        renderFiles();
+        updateStats();
+        resetAnalysis();
+
+        clearTerminal();
+
+        log(
+            "Workspace cleared.",
+            "good"
+        );
+
+        $("engineState").textContent =
+            "IDLE";
+    }
+);
+
+/* =========================
    DOWNLOAD
-   ========================================================= */
+========================= */
 
-function downloadBlob(blob,name){
+$("downloadBtn").addEventListener(
+    "click",
+    ()=>{
 
-    if(!blob) return;
+        if(!state.resultBlob){
+            return;
+        }
 
-    const url =
-        URL.createObjectURL(blob);
+        const url =
+            URL.createObjectURL(
+                state.resultBlob
+            );
 
-    const a =
-        document.createElement("a");
+        const a =
+            document.createElement("a");
 
-    a.href = url;
-    a.download = name;
+        a.href = url;
+        a.download = state.resultName;
 
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
+        document.body.appendChild(a);
+
+        a.click();
+
+        a.remove();
+
+        setTimeout(
+            ()=>URL.revokeObjectURL(url),
+            1000
+        );
+
+        log(
+            `Downloaded: ${state.resultName}`,
+            "good"
+        );
+    }
+);
+
+$("closeModalBtn").addEventListener(
+    "click",
+    ()=>{
+        $("resultModal").classList.remove("show");
+    }
+);
+
+$("resultModal").addEventListener(
+    "click",
+    event=>{
+        if(event.target === $("resultModal")){
+            $("resultModal").classList.remove("show");
+        }
+    }
+);
+
+/* =========================
+   COPY LOG
+========================= */
+
+$("copyLogBtn").addEventListener(
+    "click",
+    async ()=>{
+
+        const text =
+            $("terminal").innerText;
+
+        try{
+
+            await navigator.clipboard.writeText(text);
+
+            log(
+                "Terminal log copied.",
+                "good"
+            );
+
+        }catch{
+
+            log(
+                "Clipboard access unavailable.",
+                "warn"
+            );
+        }
+    }
+);
+
+/* =========================
+   EXPORT REPORT
+========================= */
+
+$("exportReportBtn").addEventListener(
+    "click",
+    ()=>{
+
+        const report = {
+
+            tool:
+                "KTOOL AI BINARY ENGINE",
+
+            version:
+                "V26",
+
+            generated:
+                new Date().toISOString(),
+
+            files:
+                state.files.map(file=>({
+                    name:file.name,
+                    size:file.size,
+                    type:file.type,
+                    lastModified:file.lastModified
+                })),
+
+            analysis:
+                state.analysis
+                ? {
+                    commonPrefix:
+                        state.analysis.prefix,
+
+                    recommendedOffset:
+                        state.analysis.recommendedOffset,
+
+                    confidence:
+                        state.analysis.confidence,
+
+                    structure:
+                        state.analysis.structure,
+
+                    duplicate:
+                        state.analysis.duplicate,
+
+                    magic:
+                        state.analysis.magic,
+
+                    entropy:
+                        state.analysis.entropy
+                }
+                : null,
+
+            settings:{
+                mergeMode:
+                    $("mergeMode").value,
+
+                headerStrategy:
+                    $("headerStrategy").value,
+
+                manualOffset:
+                    $("manualOffset").value,
+
+                patchSize:
+                    $("patchSize").checked,
+
+                sha256:
+                    $("makeHash").checked
+            },
+
+            result:{
+                name:
+                    state.resultName || null,
+
+                size:
+                    state.resultBlob
+                    ? state.resultBlob.size
+                    : null,
+
+                sha256:
+                    state.resultHash || null
+            }
+        };
+
+        const blob =
+            new Blob(
+                [
+                    JSON.stringify(
+                        report,
+                        null,
+                        2
+                    )
+                ],
+                {
+                    type:"application/json"
+                }
+            );
+
+        const url =
+            URL.createObjectURL(blob);
+
+        const a =
+            document.createElement("a");
+
+        a.href = url;
+
+        a.download =
+            "ktool-analysis-report.json";
+
+        document.body.appendChild(a);
+
+        a.click();
+
+        a.remove();
+
+        setTimeout(
+            ()=>URL.revokeObjectURL(url),
+            1000
+        );
+
+        log(
+            "Analysis report exported.",
+            "good"
+        );
+    }
+);
+
+/* =========================
+   KEYBOARD SHORTCUTS
+========================= */
+
+document.addEventListener(
+    "keydown",
+    event=>{
+
+        if(
+            (event.ctrlKey || event.metaKey) &&
+            event.key.toLowerCase() === "o"
+        ){
+
+            event.preventDefault();
+
+            $("filePicker").click();
+        }
+
+        if(
+            (event.ctrlKey || event.metaKey) &&
+            event.key.toLowerCase() === "enter"
+        ){
+
+            event.preventDefault();
+
+            mergeFiles();
+        }
+
+        if(event.key === "Escape"){
+
+            $("resultModal")
+                .classList
+                .remove("show");
+        }
+    }
+);
+
+/* =========================
+   INITIAL UI
+========================= */
+
+updateStats();
+
+log(
+    "KTOOL AI BINARY ENGINE V26 ready.",
+    "good"
+);
+
+log(
+    "Waiting for .bytes input..."
+);
+
+/* =========================
+   3 SECOND BOOT
+========================= */
+
+async function bootKTool(){
+
+    const screen =
+        document.getElementById("bootScreen");
+
+    const fill =
+        document.getElementById("bootFill");
+
+    const percent =
+        document.getElementById("bootPercent");
+
+    const status =
+        document.getElementById("bootStatus");
+
+    const terminal =
+        document.getElementById("bootTerminal");
+
+    const messages = [
+
+        "Loading binary core...",
+
+        "Initializing AI heuristic engine...",
+
+        "Checking browser binary APIs...",
+
+        "Preparing HEX analyzer...",
+
+        "Preparing integrity engine...",
+
+        "Loading KTOOL workspace...",
+
+        "Engine ready."
+    ];
+
+    const start =
+        performance.now();
+
+    const duration = 3000;
+
+    function addBootMessage(message){
+
+        const line =
+            document.createElement("div");
+
+        line.textContent =
+            `> ${message}`;
+
+        terminal.appendChild(line);
+
+        while(
+            terminal.children.length > 4
+        ){
+
+            terminal.removeChild(
+                terminal.firstChild
+            );
+        }
+    }
+
+    addBootMessage(
+        "KTOOL AI BINARY ENGINE V26"
+    );
+
+    while(true){
+
+        const elapsed =
+            performance.now() - start;
+
+        const progress =
+            Math.min(
+                elapsed / duration,
+                1
+            );
+
+        const percentValue =
+            Math.round(
+                progress * 100
+            );
+
+        fill.style.width =
+            `${percentValue}%`;
+
+        percent.textContent =
+            `${percentValue}%`;
+
+        const index =
+            Math.min(
+                messages.length - 1,
+                Math.floor(
+                    progress *
+                    messages.length
+                )
+            );
+
+        status.textContent =
+            messages[index];
+
+        if(progress >= 1){
+            break;
+        }
+
+        await new Promise(
+            requestAnimationFrame
+        );
+    }
+
+    addBootMessage(
+        "✓ SYSTEM READY"
+    );
+
+    await sleep(250);
+
+    screen.classList.add("hide");
 
     setTimeout(
-        ()=>URL.revokeObjectURL(url),
-        1000
+        ()=>screen.remove(),
+        600
     );
 
     log(
-        `Download started: ${name}`,
+        "Boot sequence completed.",
         "good"
     );
 }
 
-/* =========================================================
-   REPORT
-   ========================================================= */
+bootKTool();
 
-function buildReport(){
-
-    const report = {
-        engine:"KTOOL AI BINARY ENGINE V26",
-        creator:"TRONG DUNG",
-        localProcessing:true,
-        timestamp:new Date().toISOString(),
-
-        settings:{
-            mergeMode:$("mergeMode").value,
-            headerStrategy:$("headerStrategy").value,
-            manualOffset:Number(
-                $("manualOffset").value
-            ),
-            sizePatch:$("sizePatchToggle").checked,
-            sha256:$("checksumToggle").checked
-        },
-
-        analysis:state.analysis,
-
-        files:state.files.map(
-            item => ({
-                name:item.file.name,
-                size:item.file.size,
-                type:item.file.type || "application/octet-stream",
-                lastModified:item.file.lastModified,
-                analysis:item.analysis
-            })
-        )
-    };
-
-    return report;
-}
-
-function updateReport(){
-
-    if(!state.analysis){
-        $("reportBox").value =
-            "Chưa có report.";
-
-        return;
-    }
-
-    $("reportBox").value =
-        JSON.stringify(
-            buildReport(),
-            null,
-            2
-        );
-}
-
-async function copyReport(){
-
-    const text =
-        $("reportBox").value;
-
-    try{
-
-        await navigator.clipboard.writeText(
-            text
-        );
-
-        log(
-            "Report copied to clipboard.",
-            "good"
-        );
-
-    }catch{
-
-        $("reportBox").select();
-
-        document.execCommand("copy");
-
-        log(
-            "Report copied.",
-            "good"
-        );
-    }
-}
-
-function exportReport(){
-
-    const report =
-        JSON.stringify(
-            buildReport(),
-            null,
-            2
-        );
-
-    const blob =
-        new Blob(
-            [report],
-            {type:"application/json"}
-        );
-
-    downloadBlob(
-        blob,
-        "KTOOL_V26_ANALYSIS.json"
-    );
-}
-
-/* =========================================================
-   RESET
-   ========================================================= */
-
-function resetAll(){
-
-    if(state.busy){
-        return;
-    }
-
-    state.files = [];
-    state.analysis = null;
-    state.outputBlob = null;
-    state.outputName = "";
-
-    $("manualOffset").value = "0";
-    $("outputName").value =
-        "KTOOL_MERGED_V26.bytes";
-
-    filePicker.value = "";
-
-    fileList.replaceChildren();
-
-    $("hexPreview").textContent =
-        "Chưa có file.";
-
-    $("aiStatus").textContent =
-        "Waiting for files";
-
-    $("aiDetail").textContent =
-        "Chưa có dữ liệu phân tích";
-
-    $("aiWarning").textContent =
-        "AI không tự giả định một header cố định.";
-
-    $("reportBox").value =
-        "Chưa có report.";
-
-    invalidateAnalysis();
-    updateUI();
-
-    setProgress(0);
-
-    log(
-        "Workspace reset.",
-        "warn"
-    );
-}
-
-/* =========================================================
-   EVENTS
-   ========================================================= */
-
-$("pickBtn").onclick = ()=>{
-    filePicker.click();
-};
-
-filePicker.addEventListener(
-    "change",
-    e => addFiles(e.target.files)
-);
-
-["dragenter","dragover"].forEach(
-    event => {
-        dropZone.addEventListener(
-            event,
-            e=>{
-                e.preventDefault();
-                dropZone.classList.add("drag");
-            }
-        );
-    }
-);
-
-["dragleave","drop"].forEach(
-    event => {
-        dropZone.addEventListener(
-            event,
-            e=>{
-                e.preventDefault();
-                dropZone.classList.remove("drag");
-            }
-        );
-    }
-);
-
-dropZone.addEventListener(
-    "drop",
-    e=>{
-        addFiles(e.dataTransfer.files);
-    }
-);
-
-$("analyzeBtn").onclick = async ()=>{
-    try{
-        await analyzeFiles();
-    }catch(error){
-        log(
-            error.message,
-            "error"
-        );
-
-        alert(error.message);
-    }
-};
-
-$("mergeBtn").onclick =
-    mergeFiles;
-
-$("resetBtn").onclick =
-    resetAll;
-
-$("clearLogBtn").onclick =
-    clearTerminal;
-
-$("copyReportBtn").onclick =
-    copyReport;
-
-$("downloadReportBtn").onclick =
-    exportReport;
-
-$("downloadBtn").onclick = ()=>{
-    downloadBlob(
-        state.outputBlob,
-        state.outputName
-    );
-};
-
-$("closeModalBtn").onclick = ()=>{
-    $("resultModal")
-        .classList
-        .remove("show");
-};
-
-$("resultModal").addEventListener(
-    "click",
-    e=>{
-        if(e.target === $("resultModal")){
-            $("resultModal")
-                .classList
-                .remove("show");
-        }
-    }
-);
-
-$("headerStrategy").addEventListener(
-    "change",
-    ()=>{
-        const manual =
-            $("headerStrategy").value === "manual";
-
-        $("manualOffset").disabled =
-            !manual;
-
-        if(manual){
-            log(
-                "Manual header offset enabled.",
-                "warn"
-            );
-        }
-    }
-);
-
-$("mergeMode").addEventListener(
-    "change",
-    ()=>{
-        const mode =
-            $("mergeMode").value;
-
-        if(mode === "raw"){
-            log(
-                "RAW mode selected: bytes will be appended exactly.",
-                "warn"
-            );
-        }
-
-        if(mode === "safe"){
-            log(
-                "SAFE mode selected: destructive automatic stripping disabled.",
-                "good"
-            );
-        }
-
-        if(mode === "smart"){
-            log(
-                "SMART mode selected: heuristic structure detection enabled.",
-                "good"
-            );
-        }
-    }
-);
-
-$("themeBtn").onclick = ()=>{
-
-    const root =
-        document.documentElement;
-
-    if(state.theme === "dark"){
-
-        state.theme = "dim";
-
-        root.style.setProperty(
-            "--bg",
-            "#0b1018"
-        );
-
-        log(
-            "Dim theme enabled."
-        );
-
-    }else{
-
-        state.theme = "dark";
-
-        root.style.setProperty(
-            "--bg",
-            "#05070d"
-        );
-
-        log(
-            "Dark theme enabled."
-        );
-    }
-};
-
-/* =========================================================
-   KEYBOARD SHORTCUTS
-   ========================================================= */
-
-document.addEventListener(
-    "keydown",
-    e=>{
-
-        if(e.ctrlKey && e.key.toLowerCase()==="o"){
-            e.preventDefault();
-            filePicker.click();
-        }
-
-        if(e.ctrlKey && e.key.toLowerCase()==="r"){
-            e.preventDefault();
-
-            if(!state.busy){
-                analyzeFiles().catch(
-                    error => log(
-                        error.message,
-                        "error"
-                    )
-                );
-            }
-        }
-
-        if(e.ctrlKey && e.key === "Enter"){
-            e.preventDefault();
-
-            if(!state.busy){
-                mergeFiles();
-            }
-        }
-
-        if(e.key === "Escape"){
-            $("resultModal")
-                .classList
-                .remove("show");
-        }
-    }
-);
-
-/* =========================================================
-   INITIALIZE
-   ========================================================= */
-
-clearTerminal();
-renderFiles();
-updateUI();
-
-$("manualOffset").disabled = true;
-
-log(
-    "Engine version V26 loaded.",
-    "good"
-);
-
-log(
-    "Safety rule: no hard-coded 32-byte header stripping.",
-    "good"
-);
-
-log(
-    "AI mode: deterministic local binary heuristics.",
-    "info"
-);
-
-log(
-    "Created & Coded by TRONG DUNG.",
-    "good"
-);
 </script>
 
 </body>
