@@ -1,3416 +1,2009 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#070b14">
-<title>KTOOL AI BINARY ENGINE V30</title>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#050810">
+<title>KTOOL V30.1 — ZIP STREAM ENGINE</title>
+<!--
+    KTOOL V30.1
+    ZIP STREAMING / CHUNKED ENGINE
+    Coded by Nguyen Trong Dung
+    IMPORTANT:
+    - ZIP files are processed entry-by-entry.
+    - The application never reloads the page after merging.
+    - The output is only created after processing finishes.
+-->
+<script src="https://cdn.jsdelivr.net/npm/@zip.js/zip.js@2.7.57/dist/zip-full.min.js"></script>
 <style>
 :root{
-  --bg:#070b14;
-  --bg2:#0b1120;
-  --panel:rgba(14,21,36,.88);
-  --card:rgba(255,255,255,.035);
-  --card2:rgba(255,255,255,.055);
-  --line:rgba(255,255,255,.085);
-  --text:#edf3ff;
-  --muted:#8996b2;
-  --accent:#6c7cff;
-  --cyan:#00e5ff;
-  --green:#44e08b;
-  --red:#ff5f73;
-  --yellow:#ffc857;
-  --shadow:0 18px 55px rgba(0,0,0,.28);
-  --radius:22px;
+    --bg:#050810;
+    --bg2:#09111f;
+    --panel:rgba(12,19,32,.82);
+    --panel2:rgba(17,27,44,.88);
+    --text:#eef7ff;
+    --muted:#8292a8;
+    --line:rgba(130,170,210,.16);
+    --accent:#58e7ff;
+    --accent2:#8c78ff;
+    --green:#4ee5a5;
+    --yellow:#ffd166;
+    --red:#ff6682;
+    --shadow:0 25px 80px rgba(0,0,0,.42);
+    --radius:22px;
 }
-
+html.light{
+    --bg:#edf3f8;
+    --bg2:#e2e9f1;
+    --panel:rgba(255,255,255,.88);
+    --panel2:#fff;
+    --text:#111827;
+    --muted:#657287;
+    --line:rgba(40,60,90,.14);
+    --accent:#087f9b;
+    --accent2:#6654d8;
+    --green:#07855b;
+    --yellow:#9a6500;
+    --red:#c82d4d;
+    --shadow:0 20px 55px rgba(40,60,80,.15);
+}
 *{
-  box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent;
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
 }
-
-html,body{
-  margin:0;
-  min-height:100%;
-  background:var(--bg);
-  color:var(--text);
-  font-family:
-    Inter,
-    -apple-system,
-    BlinkMacSystemFont,
-    "SF Pro Display",
-    "Segoe UI",
-    sans-serif;
+html{
+    min-height:100%;
+    background:var(--bg);
 }
-
 body{
-  overflow-x:hidden;
-  background:
-    radial-gradient(circle at 15% 5%,rgba(108,124,255,.12),transparent 28%),
-    radial-gradient(circle at 90% 15%,rgba(0,229,255,.07),transparent 24%),
-    linear-gradient(180deg,var(--bg),var(--bg2));
+    margin:0;
+    min-height:100vh;
+    color:var(--text);
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+    background:
+        radial-gradient(circle at 5% 0%,rgba(88,231,255,.12),transparent 27%),
+        radial-gradient(circle at 95% 8%,rgba(140,120,255,.13),transparent 27%),
+        linear-gradient(145deg,var(--bg),var(--bg2));
+    overflow-x:hidden;
 }
-
-button,
-input,
-select{
-  font:inherit;
+/* =========================
+   BACKGROUND
+========================= */
+.background{
+    position:fixed;
+    inset:0;
+    overflow:hidden;
+    pointer-events:none;
+    z-index:-5;
 }
-
-button{
-  cursor:pointer;
+.orb{
+    position:absolute;
+    border-radius:50%;
+    filter:blur(70px);
+    opacity:.18;
+    animation:floatOrb 15s ease-in-out infinite alternate;
 }
-
-.hidden{
-  display:none!important;
+.orb.one{
+    width:380px;
+    height:380px;
+    background:#00d9ff;
+    left:-130px;
+    top:-120px;
 }
-
+.orb.two{
+    width:430px;
+    height:430px;
+    background:#704cff;
+    right:-160px;
+    bottom:-120px;
+    animation-delay:-5s;
+}
+.orb.three{
+    width:280px;
+    height:280px;
+    background:#00ffa6;
+    left:45%;
+    top:45%;
+    animation-delay:-9s;
+}
+@keyframes floatOrb{
+    from{transform:translate3d(0,0,0) scale(1)}
+    to{transform:translate3d(45px,65px,0) scale(1.15)}
+}
 /* =========================
    BOOT
 ========================= */
-
 #boot{
-  min-height:100dvh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:24px;
+    position:fixed;
+    inset:0;
+    z-index:99999;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#03060b;
+    transition:
+        opacity .5s ease,
+        visibility .5s ease;
 }
-
-.boot-box{
-  width:min(430px,100%);
-  text-align:center;
-  padding:38px 25px;
-  border:1px solid var(--line);
-  border-radius:28px;
-  background:var(--panel);
-  box-shadow:var(--shadow);
-  animation:enter .6s ease;
+#boot.hide{
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
 }
-
-.boot-logo{
-  width:72px;
-  height:72px;
-  margin:0 auto 18px;
-  border-radius:22px;
-  display:grid;
-  place-items:center;
-  font-weight:1000;
-  font-size:24px;
-  background:linear-gradient(135deg,var(--accent),var(--cyan));
-  color:#fff;
-  box-shadow:0 12px 35px rgba(108,124,255,.25);
+.boot-card{
+    width:min(560px,90vw);
+    padding:30px;
+    border:1px solid rgba(88,231,255,.18);
+    border-radius:25px;
+    background:rgba(5,10,18,.96);
+    box-shadow:
+        0 0 70px rgba(88,231,255,.08),
+        0 30px 100px rgba(0,0,0,.65);
 }
-
+.boot-icon{
+    width:60px;
+    height:60px;
+    display:grid;
+    place-items:center;
+    border-radius:18px;
+    margin-bottom:20px;
+    color:#041018;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    font-size:25px;
+    font-weight:1000;
+    box-shadow:0 0 35px rgba(88,231,255,.2);
+}
 .boot-title{
-  font-size:17px;
-  font-weight:950;
-  letter-spacing:.08em;
+    font-size:25px;
+    font-weight:950;
 }
-
 .boot-sub{
-  margin-top:8px;
-  color:var(--muted);
-  font-size:12px;
+    margin-top:6px;
+    color:#74859d;
+    font-size:10px;
+    letter-spacing:2px;
 }
-
-.loader{
-  width:100%;
-  height:4px;
-  margin-top:25px;
-  border-radius:99px;
-  overflow:hidden;
-  background:rgba(255,255,255,.06);
+.boot-info{
+    display:flex;
+    justify-content:space-between;
+    margin-top:25px;
+    font-family:monospace;
+    font-size:11px;
+    color:#a7b5c8;
 }
-
-.loader span{
-  display:block;
-  width:35%;
-  height:100%;
-  border-radius:99px;
-  background:linear-gradient(90deg,var(--accent),var(--cyan));
-  animation:load 1.15s ease-in-out infinite;
+.boot-percent{
+    color:var(--accent);
+    font-weight:bold;
 }
-
-@keyframes load{
-  0%{transform:translateX(-120%)}
-  100%{transform:translateX(390%)}
+.boot-track{
+    height:7px;
+    margin-top:9px;
+    overflow:hidden;
+    border-radius:20px;
+    background:#111a28;
 }
-
-/* =========================
-   AUTH
-========================= */
-
-#auth{
-  min-height:100dvh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  padding:20px;
+.boot-progress{
+    width:0;
+    height:100%;
+    border-radius:20px;
+    background:linear-gradient(90deg,var(--accent),var(--accent2));
+    box-shadow:0 0 15px var(--accent);
+    transition:width .15s linear;
 }
-
-.auth-box{
-  width:min(450px,100%);
-  padding:25px;
-  border:1px solid var(--line);
-  border-radius:26px;
-  background:var(--panel);
-  box-shadow:var(--shadow);
-  animation:enter .55s ease;
+.boot-log{
+    min-height:55px;
+    margin-top:18px;
+    padding:12px;
+    border-radius:12px;
+    background:#02050a;
+    color:#6e829b;
+    font:10px/1.7 monospace;
 }
-
-.auth-logo{
-  width:58px;
-  height:58px;
-  border-radius:18px;
-  display:grid;
-  place-items:center;
-  margin-bottom:17px;
-  background:linear-gradient(135deg,var(--accent),var(--cyan));
-  font-weight:1000;
-}
-
-.auth-title{
-  font-size:20px;
-  font-weight:950;
-}
-
-.auth-sub{
-  color:var(--muted);
-  font-size:12px;
-  margin-top:6px;
-  line-height:1.5;
-}
-
-.key-panel{
-  margin-top:22px;
-}
-
-.field{
-  margin-top:12px;
-}
-
-.field label{
-  display:block;
-  color:var(--muted);
-  font-size:11px;
-  font-weight:800;
-  margin-bottom:7px;
-}
-
-.field input,
-.field select{
-  width:100%;
-  height:47px;
-  border:1px solid var(--line);
-  outline:none;
-  border-radius:13px;
-  padding:0 14px;
-  color:var(--text);
-  background:rgba(255,255,255,.045);
-}
-
-.field input:focus,
-.field select:focus{
-  border-color:rgba(108,124,255,.55);
-  box-shadow:0 0 0 3px rgba(108,124,255,.08);
-}
-
-.auth-tabs{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:7px;
-  margin-top:21px;
-}
-
-.auth-tab{
-  border:1px solid var(--line);
-  color:var(--muted);
-  background:transparent;
-  padding:11px;
-  border-radius:12px;
-  font-weight:800;
-}
-
-.auth-tab.active{
-  color:#fff;
-  background:rgba(108,124,255,.12);
-  border-color:rgba(108,124,255,.3);
-}
-
-.error{
-  min-height:18px;
-  color:var(--red);
-  font-size:11px;
-  margin-top:10px;
-}
-
 /* =========================
    APP
 ========================= */
-
-#app{
-  width:100%;
-  min-height:100dvh;
+.app{
+    width:min(1240px,94vw);
+    margin:auto;
+    padding:
+        max(20px,env(safe-area-inset-top))
+        0
+        max(45px,env(safe-area-inset-bottom));
 }
-
-.app-shell{
-  width:min(1180px,calc(100% - 28px));
-  margin:auto;
-  padding-bottom:40px;
+header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    margin-bottom:22px;
 }
-
-/* HEADER */
-
-.topbar{
-  display:grid;
-  grid-template-columns:minmax(0,1fr) auto;
-  align-items:center;
-  gap:18px;
-  min-height:84px;
-  padding:14px 0;
-}
-
 .brand{
-  min-width:0;
-  display:flex;
-  align-items:center;
-  gap:12px;
+    display:flex;
+    align-items:center;
+    gap:13px;
+    min-width:0;
 }
-
 .brand-logo{
-  flex:0 0 48px;
-  width:48px;
-  height:48px;
-  border-radius:15px;
-  display:grid;
-  place-items:center;
-  color:#fff;
-  font-size:15px;
-  font-weight:1000;
-  background:linear-gradient(135deg,var(--accent),var(--cyan));
-  box-shadow:0 10px 30px rgba(108,124,255,.2);
+    width:49px;
+    height:49px;
+    flex:none;
+    display:grid;
+    place-items:center;
+    border-radius:16px;
+    color:#031018;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    box-shadow:
+        0 0 25px rgba(88,231,255,.18),
+        inset 0 0 10px rgba(255,255,255,.45);
+    font-weight:1000;
+    animation:logoPulse 3s ease-in-out infinite;
 }
-
-.brand-text{
-  min-width:0;
+@keyframes logoPulse{
+    0%,100%{transform:scale(1)}
+    50%{transform:scale(1.04)}
 }
-
-.brand-title{
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-  font-size:14px;
-  font-weight:950;
-  letter-spacing:.065em;
+.brand-name{
+    font-size:18px;
+    font-weight:950;
+    white-space:nowrap;
 }
-
 .brand-sub{
-  color:var(--muted);
-  font-size:10px;
-  margin-top:4px;
+    margin-top:3px;
+    color:var(--muted);
+    font-size:9px;
+    letter-spacing:1.5px;
 }
-
 .header-right{
-  display:flex;
-  align-items:center;
-  justify-content:flex-end;
-  gap:8px;
+    display:flex;
+    align-items:center;
+    gap:8px;
 }
-
 .clock{
-  width:125px;
-  min-width:125px;
-  padding:8px 10px;
-  border:1px solid var(--line);
-  border-radius:14px;
-  background:var(--card);
-  text-align:center;
-}
-
-.clock-time{
-  font-size:14px;
-  font-weight:950;
-}
-
-.clock-date{
-  color:var(--muted);
-  font-size:9px;
-  margin-top:2px;
-}
-
-.icon-btn{
-  width:40px;
-  height:40px;
-  border-radius:12px;
-  border:1px solid var(--line);
-  color:var(--text);
-  background:var(--card);
-  transition:.22s ease;
-}
-
-.icon-btn:hover{
-  transform:translateY(-2px);
-  border-color:rgba(108,124,255,.35);
-}
-
-/* HERO */
-
-.hero{
-  position:relative;
-  overflow:hidden;
-  padding:28px;
-  border:1px solid var(--line);
-  border-radius:28px;
-  background:
-    linear-gradient(135deg,rgba(108,124,255,.12),transparent 45%),
-    var(--panel);
-  box-shadow:var(--shadow);
-  animation:enter .6s ease;
-}
-
-.hero:after{
-  content:"";
-  position:absolute;
-  width:240px;
-  height:240px;
-  right:-110px;
-  top:-120px;
-  border-radius:50%;
-  background:rgba(0,229,255,.07);
-  pointer-events:none;
-}
-
-.hero-kicker{
-  color:var(--cyan);
-  font-size:10px;
-  font-weight:900;
-  letter-spacing:.16em;
-}
-
-.hero-title{
-  max-width:750px;
-  margin-top:9px;
-  font-size:clamp(23px,4vw,39px);
-  line-height:1.08;
-  font-weight:1000;
-}
-
-.hero-desc{
-  max-width:720px;
-  margin-top:11px;
-  color:var(--muted);
-  font-size:13px;
-  line-height:1.65;
-}
-
-.hero-badges{
-  display:flex;
-  flex-wrap:wrap;
-  gap:7px;
-  margin-top:18px;
-}
-
-.badge{
-  border:1px solid var(--line);
-  border-radius:99px;
-  padding:7px 10px;
-  color:var(--muted);
-  font-size:10px;
-  background:rgba(255,255,255,.025);
-}
-
-/* TABS */
-
-.tabs{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:8px;
-  margin:16px 0;
-}
-
-.tab{
-  position:relative;
-  overflow:hidden;
-  border:1px solid var(--line);
-  border-radius:14px;
-  background:var(--card);
-  color:var(--muted);
-  padding:12px;
-  font-size:12px;
-  font-weight:900;
-  transition:.22s ease;
-}
-
-.tab.active{
-  color:#fff;
-  border-color:rgba(108,124,255,.32);
-  background:rgba(108,124,255,.1);
-}
-
-.tab.active:after{
-  content:"";
-  position:absolute;
-  left:18%;
-  right:18%;
-  bottom:0;
-  height:2px;
-  background:linear-gradient(90deg,transparent,var(--cyan),transparent);
-  animation:tabline .4s ease;
-}
-
-@keyframes tabline{
-  from{transform:scaleX(.2);opacity:0}
-  to{transform:scaleX(1);opacity:1}
-}
-
-/* CARD */
-
-.card{
-  border:1px solid var(--line);
-  border-radius:22px;
-  background:var(--panel);
-  box-shadow:0 12px 40px rgba(0,0,0,.14);
-  padding:20px;
-  transition:.22s ease;
-}
-
-.card:hover{
-  border-color:rgba(108,124,255,.18);
-}
-
-.card-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  margin-bottom:17px;
-}
-
-.card-title{
-  font-size:15px;
-  font-weight:950;
-}
-
-.card-sub{
-  color:var(--muted);
-  font-size:10px;
-  margin-top:4px;
-}
-
-.status{
-  padding:6px 9px;
-  border-radius:99px;
-  font-size:9px;
-  font-weight:900;
-  white-space:nowrap;
-  border:1px solid var(--line);
-}
-
-.status.ready{
-  color:var(--green);
-}
-
-.status.error{
-  color:var(--red);
-  margin:0;
-}
-
-.status.busy{
-  color:var(--yellow);
-}
-
-/* DROP */
-
-.drop{
-  min-height:185px;
-  border:1px dashed rgba(108,124,255,.35);
-  border-radius:18px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  padding:22px;
-  text-align:center;
-  background:rgba(108,124,255,.025);
-  transition:.25s ease;
-}
-
-.drop.drag{
-  border-color:var(--cyan);
-  background:rgba(0,229,255,.05);
-  transform:scale(1.005);
-}
-
-.drop-img{
-  width:52px;
-  height:52px;
-  border-radius:16px;
-  display:grid;
-  place-items:center;
-  font-size:21px;
-  font-weight:1000;
-  background:rgba(108,124,255,.1);
-  border:1px solid rgba(108,124,255,.2);
-}
-
-.drop-title{
-  margin-top:12px;
-  font-size:13px;
-  font-weight:900;
-}
-
-.drop-sub{
-  margin-top:5px;
-  color:var(--muted);
-  font-size:10px;
-}
-
-input[type=file]{
-  display:none;
-}
-
-/* BUTTONS */
-
-.actions{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-  margin-top:13px;
-}
-
-.btn{
-  position:relative;
-  overflow:hidden;
-  min-height:40px;
-  border-radius:12px;
-  border:1px solid var(--line);
-  padding:0 13px;
-  color:var(--text);
-  background:var(--card);
-  font-size:11px;
-  font-weight:900;
-  transition:.2s ease;
-}
-
-.btn:hover{
-  transform:translateY(-2px);
-  border-color:rgba(108,124,255,.3);
-}
-
-.btn.primary{
-  color:#fff;
-  border:0;
-  background:linear-gradient(135deg,var(--accent),#5264f5);
-}
-
-.btn.success{
-  color:#07120d;
-  border:0;
-  background:linear-gradient(135deg,var(--green),#8af1b9);
-}
-
-.btn.danger{
-  color:#fff;
-  background:rgba(255,95,115,.08);
-  border-color:rgba(255,95,115,.22);
-}
-
-/* STATS */
-
-.stats{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:9px;
-  margin-top:13px;
-}
-
-.stat{
-  min-width:0;
-  padding:13px;
-  border:1px solid var(--line);
-  border-radius:15px;
-  background:var(--card);
-}
-
-.stat-label{
-  color:var(--muted);
-  font-size:9px;
-}
-
-.stat-value{
-  margin-top:5px;
-  font-size:16px;
-  font-weight:950;
-}
-
-/* FILE LIST */
-
-.file-list{
-  display:grid;
-  gap:7px;
-  max-height:310px;
-  overflow:auto;
-  margin-top:13px;
-  padding-right:2px;
-}
-
-.file{
-  display:flex;
-  align-items:center;
-  gap:9px;
-  min-width:0;
-  padding:10px;
-  border:1px solid var(--line);
-  border-radius:12px;
-  background:rgba(255,255,255,.022);
-}
-
-.file-icon{
-  flex:0 0 31px;
-  width:31px;
-  height:31px;
-  display:grid;
-  place-items:center;
-  border-radius:9px;
-  background:rgba(108,124,255,.1);
-  font-size:10px;
-  font-weight:900;
-}
-
-.file-name{
-  min-width:0;
-  flex:1;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-  font-size:11px;
-}
-
-.file-size{
-  color:var(--muted);
-  font-size:9px;
-  white-space:nowrap;
-}
-
-/* ZIP RESULT */
-
-.result{
-  display:none;
-  margin-top:14px;
-  padding:15px;
-  border-radius:16px;
-  border:1px solid rgba(68,224,139,.22);
-  background:rgba(68,224,139,.045);
-}
-
-.result.show{
-  display:block;
-  animation:enter .35s ease;
-}
-
-.result-title{
-  color:var(--green);
-  font-size:12px;
-  font-weight:950;
-}
-
-.result-name{
-  margin-top:5px;
-  font-size:11px;
-  color:var(--muted);
-  word-break:break-all;
-}
-
-/* PROGRESS */
-
-.progress-wrap{
-  display:none;
-  margin-top:14px;
-}
-
-.progress-wrap.show{
-  display:block;
-}
-
-.progress-top{
-  display:flex;
-  justify-content:space-between;
-  color:var(--muted);
-  font-size:10px;
-  margin-bottom:7px;
-}
-
-.progress{
-  width:100%;
-  height:6px;
-  border-radius:99px;
-  overflow:hidden;
-  background:rgba(255,255,255,.06);
-}
-
-.progress span{
-  display:block;
-  width:0%;
-  height:100%;
-  border-radius:99px;
-  background:linear-gradient(90deg,var(--accent),var(--cyan));
-  transition:width .2s ease;
-}
-
-/* GRID */
-
-.grid-2{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:13px;
-}
-
-/* SYSTEM */
-
-.system-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:9px;
-}
-
-.sys{
-  padding:12px;
-  border:1px solid var(--line);
-  border-radius:14px;
-  background:var(--card);
-}
-
-.sys-label{
-  color:var(--muted);
-  font-size:9px;
-}
-
-.sys-value{
-  margin-top:5px;
-  font-size:11px;
-  font-weight:800;
-  overflow-wrap:anywhere;
-}
-
-/* FOOTER */
-
-.footer{
-  text-align:center;
-  padding:28px 10px 5px;
-  color:var(--muted);
-  font-size:9px;
-  line-height:1.8;
-}
-
-.footer strong{
-  color:var(--text);
-  letter-spacing:.08em;
-}
-
-/* MODAL */
-
-.modal-layer{
-  position:fixed;
-  inset:0;
-  z-index:50;
-  display:none;
-  place-items:center;
-  padding:20px;
-  background:rgba(2,5,12,.7);
-}
-
-.modal-layer.show{
-  display:grid;
-}
-
-.modal{
-  width:min(390px,100%);
-  border:1px solid var(--line);
-  border-radius:23px;
-  padding:23px;
-  background:#0e1524;
-  box-shadow:0 25px 90px rgba(0,0,0,.45);
-  animation:modalin .3s ease;
-}
-
-.modal h3{
-  margin:0;
-  font-size:17px;
-}
-
-.modal p{
-  color:var(--muted);
-  font-size:11px;
-  line-height:1.6;
-}
-
-@keyframes modalin{
-  from{opacity:0;transform:translateY(12px) scale(.97)}
-  to{opacity:1;transform:none}
-}
-
-.creator-watermark{
-  position:fixed;
-  left:50%;
-  top:50%;
-  z-index:1;
-  pointer-events:none;
-  user-select:none;
-  white-space:nowrap;
-  transform:translate(-50%,-50%) rotate(-12deg) scale(.94);
-  opacity:0;
-  color:rgba(255,255,255,.018);
-  font-size:clamp(35px,9vw,120px);
-  font-weight:1000;
-  letter-spacing:.13em;
-}
-
-.creator-watermark.show{
-  animation:watermark 3s ease-in-out;
-}
-
-@keyframes watermark{
-  0%{opacity:0;transform:translate(-50%,-50%) rotate(-12deg) scale(.9)}
-  25%{opacity:1}
-  65%{opacity:.55}
-  100%{opacity:0;transform:translate(-50%,-50%) rotate(-12deg) scale(1.04)}
-}
-
-@keyframes enter{
-  from{opacity:0;transform:translateY(10px)}
-  to{opacity:1;transform:none}
-}
-
-/* LIGHT */
-
-body.light{
-  --bg:#eef2f8;
-  --bg2:#e7ecf5;
-  --panel:rgba(255,255,255,.9);
-  --card:rgba(20,30,55,.035);
-  --card2:rgba(20,30,55,.06);
-  --line:rgba(20,30,55,.1);
-  --text:#172036;
-  --muted:#65718b;
-  --shadow:0 18px 55px rgba(40,60,100,.12);
-}
-
-/* RESPONSIVE */
-
-@media(max-width:850px){
-  .grid-2{
-    grid-template-columns:1fr;
-  }
-
-  .stats{
-    grid-template-columns:repeat(2,1fr);
-  }
-}
-
-@media(max-width:680px){
-  .app-shell{
-    width:min(100% - 18px,600px);
-  }
-
-  .topbar{
-    grid-template-columns:1fr;
-    gap:10px;
-    padding-top:12px;
-  }
-
-  .header-right{
-    width:100%;
-    justify-content:flex-end;
-  }
-
-  .clock{
-    margin-left:auto;
-  }
-
-  .hero{
-    padding:21px;
-    border-radius:22px;
-  }
-
-  .tabs{
-    grid-template-columns:1fr 1fr 1fr;
-  }
-
-  .tab{
-    padding:11px 5px;
-    font-size:10px;
-  }
-
-  .card{
-    padding:15px;
-    border-radius:19px;
-  }
-}
-
-@media(max-width:450px){
-  .app-shell{
-    width:calc(100% - 12px);
-  }
-
-  .brand-logo{
+    min-width:100px;
+    padding:10px 13px;
+    text-align:center;
+    border:1px solid var(--line);
+    border-radius:13px;
+    background:var(--panel);
+    font:700 11px monospace;
+    box-shadow:var(--shadow);
+}
+.icon-button{
     width:42px;
     height:42px;
-    flex-basis:42px;
+    border:1px solid var(--line);
     border-radius:13px;
-  }
-
-  .brand-title{
-    font-size:11px;
-    letter-spacing:.04em;
-  }
-
-  .brand-sub{
-    font-size:8px;
-  }
-
-  .header-right{
-    justify-content:space-between;
-  }
-
-  .clock{
-    flex:1;
-    width:auto;
-    min-width:0;
-  }
-
-  .hero-title{
-    font-size:24px;
-  }
-
-  .stats{
-    grid-template-columns:1fr 1fr;
-  }
-
-  .stat{
-    padding:10px;
-  }
-
-  .stat-value{
-    font-size:14px;
-  }
-
-  .actions{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-  }
-
-  .btn{
-    width:100%;
-    padding:0 8px;
-  }
-
-  .card-head{
-    align-items:flex-start;
-  }
-
-  .status{
-    font-size:8px;
-  }
-
-  .system-grid{
-    grid-template-columns:1fr;
-  }
+    color:var(--text);
+    background:var(--panel);
+    transition:.25s ease;
 }
-
-@media(max-width:350px){
-  .tabs{
-    gap:5px;
-  }
-
-  .tab{
+.icon-button:hover{
+    border-color:var(--accent);
+    transform:translateY(-2px);
+}
+/* =========================
+   HERO
+========================= */
+.hero{
+    position:relative;
+    overflow:hidden;
+    padding:30px;
+    border:1px solid var(--line);
+    border-radius:27px;
+    background:var(--panel);
+    box-shadow:var(--shadow);
+    margin-bottom:15px;
+}
+.hero:after{
+    content:"";
+    position:absolute;
+    width:240px;
+    height:240px;
+    right:-100px;
+    top:-100px;
+    border-radius:50%;
+    background:var(--accent);
+    opacity:.06;
+    filter:blur(30px);
+}
+.hero-badge{
+    display:inline-flex;
+    padding:6px 10px;
+    border:1px solid rgba(88,231,255,.2);
+    border-radius:30px;
+    color:var(--accent);
+    background:rgba(88,231,255,.05);
+    font:800 9px monospace;
+    letter-spacing:1px;
+}
+.hero h1{
+    margin:13px 0 9px;
+    font-size:clamp(25px,4vw,42px);
+    letter-spacing:-1.5px;
+}
+.hero p{
+    max-width:800px;
+    margin:0;
+    color:var(--muted);
+    font-size:12px;
+    line-height:1.75;
+}
+/* =========================
+   STATS
+========================= */
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+    margin-bottom:15px;
+}
+.stat{
+    padding:17px;
+    border:1px solid var(--line);
+    border-radius:17px;
+    background:var(--panel);
+    transition:.25s ease;
+}
+.stat:hover{
+    transform:translateY(-3px);
+    border-color:rgba(88,231,255,.28);
+}
+.stat-label{
+    color:var(--muted);
     font-size:9px;
-  }
-
-  .hero-badges{
-    gap:5px;
-  }
-
-  .badge{
+    font-weight:800;
+}
+.stat-value{
+    margin-top:7px;
+    font-size:17px;
+    font-weight:950;
+}
+.status-ready{
+    color:var(--green);
+}
+/* =========================
+   GRID
+========================= */
+.grid{
+    display:grid;
+    grid-template-columns:1.15fr .85fr;
+    gap:15px;
+}
+.panel{
+    padding:20px;
+    border:1px solid var(--line);
+    border-radius:21px;
+    background:var(--panel);
+    box-shadow:var(--shadow);
+    margin-bottom:15px;
+}
+.panel-title{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    margin-bottom:15px;
+}
+.panel-title h2{
+    margin:0;
+    font-size:13px;
+}
+.panel-title span{
+    color:var(--muted);
+    font:9px monospace;
+}
+/* =========================
+   DROP
+========================= */
+.drop{
+    min-height:170px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+    text-align:center;
+    border:1px dashed rgba(88,231,255,.35);
+    border-radius:18px;
+    background:rgba(88,231,255,.025);
+    transition:.25s ease;
+}
+.drop.drag{
+    transform:scale(1.01);
+    border-color:var(--accent);
+    background:rgba(88,231,255,.07);
+    box-shadow:0 0 30px rgba(88,231,255,.08);
+}
+.drop-icon{
+    font-size:40px;
+    margin-bottom:8px;
+    animation:dropFloat 2.5s ease-in-out infinite;
+}
+@keyframes dropFloat{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-7px)}
+}
+.drop h3{
+    margin:0 0 6px;
+    font-size:15px;
+}
+.drop p{
+    margin:0 0 13px;
+    color:var(--muted);
+    font-size:10px;
+}
+/* =========================
+   BUTTONS
+========================= */
+button{
+    -webkit-user-select:none;
+    user-select:none;
+}
+.primary,
+.secondary,
+.danger{
+    border-radius:11px;
+    padding:11px 15px;
+    font-size:10px;
+    font-weight:900;
+    transition:.25s ease;
+}
+.primary{
+    border:0;
+    color:#041018;
+    background:linear-gradient(135deg,var(--accent),#92f2ff);
+    box-shadow:0 7px 20px rgba(88,231,255,.12);
+}
+.primary:hover{
+    transform:translateY(-2px);
+    box-shadow:0 12px 28px rgba(88,231,255,.2);
+}
+.secondary{
+    border:1px solid var(--line);
+    color:var(--text);
+    background:var(--panel2);
+}
+.secondary:hover{
+    border-color:var(--accent);
+}
+.danger{
+    border:1px solid rgba(255,102,130,.2);
+    color:var(--red);
+    background:rgba(255,102,130,.05);
+}
+/* =========================
+   FILE LIST
+========================= */
+.file-list{
+    max-height:250px;
+    margin-top:13px;
+    overflow:auto;
+    display:grid;
+    gap:7px;
+}
+.file-item{
+    display:grid;
+    grid-template-columns:30px 1fr auto;
+    align-items:center;
+    gap:9px;
+    padding:9px 10px;
+    border:1px solid var(--line);
+    border-radius:12px;
+    background:var(--panel2);
+    font-size:10px;
+}
+.file-index{
+    width:25px;
+    height:25px;
+    display:grid;
+    place-items:center;
+    border-radius:8px;
+    background:rgba(88,231,255,.08);
+    color:var(--accent);
+    font:700 9px monospace;
+}
+.file-name{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+.file-size{
+    color:var(--muted);
+    font:9px monospace;
+}
+/* =========================
+   FORM
+========================= */
+.field{
+    margin-bottom:13px;
+}
+.field label{
+    display:block;
+    margin-bottom:6px;
+    color:var(--muted);
+    font-size:9px;
+    font-weight:800;
+}
+select,
+input[type="text"]{
+    width:100%;
+    padding:11px 12px;
+    border:1px solid var(--line);
+    border-radius:11px;
+    outline:none;
+    color:var(--text);
+    background:var(--panel2);
+    font-size:11px;
+}
+select:focus,
+input:focus{
+    border-color:var(--accent);
+    box-shadow:0 0 0 3px rgba(88,231,255,.06);
+}
+.actions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+}
+/* =========================
+   PROGRESS
+========================= */
+.progress-box{
+    margin-top:15px;
+    padding:14px;
+    border:1px solid var(--line);
+    border-radius:15px;
+    background:rgba(0,0,0,.08);
+}
+.progress-top{
+    display:flex;
+    justify-content:space-between;
+    font:9px monospace;
+    color:var(--muted);
+}
+.progress-percent{
+    color:var(--accent);
+    font-weight:bold;
+}
+.progress-track{
+    height:8px;
+    margin-top:9px;
+    overflow:hidden;
+    border-radius:20px;
+    background:rgba(120,150,190,.12);
+}
+.progress-fill{
+    width:0;
+    height:100%;
+    border-radius:20px;
+    background:linear-gradient(90deg,var(--accent),var(--accent2));
+    box-shadow:0 0 15px rgba(88,231,255,.3);
+    transition:width .12s linear;
+}
+/* =========================
+   TERMINAL
+========================= */
+.terminal{
+    height:210px;
+    overflow:auto;
+    padding:14px;
+    border-radius:15px;
+    background:#02050a;
+    color:#8498b1;
+    font:10px/1.65 monospace;
+}
+.log{
+    white-space:pre-wrap;
+    word-break:break-word;
+}
+.log.good{color:#59e8a7}
+.log.warn{color:#ffd166}
+.log.bad{color:#ff6682}
+.log.info{color:#77ddff}
+/* =========================
+   CREDIT
+========================= */
+.credit{
+    position:relative;
+    overflow:hidden;
+    margin-top:5px;
+    padding:25px;
+    text-align:center;
+    border:1px solid rgba(88,231,255,.18);
+    border-radius:22px;
+    background:linear-gradient(
+        135deg,
+        rgba(88,231,255,.04),
+        rgba(140,120,255,.05)
+    );
+}
+.credit small{
+    color:var(--muted);
     font-size:8px;
-  }
+    letter-spacing:2px;
+}
+.credit-name{
+    margin-top:8px;
+    font-size:17px;
+    font-weight:1000;
+    letter-spacing:2px;
+    background:linear-gradient(90deg,var(--accent),#fff,var(--accent2));
+    background-size:200% auto;
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    animation:creditGradient 4s linear infinite;
+}
+@keyframes creditGradient{
+    to{background-position:200% center}
+}
+/* =========================
+   HIDDEN CREDIT
+========================= */
+.hidden-credit{
+    position:fixed;
+    left:50%;
+    bottom:25px;
+    transform:translate(-50%,20px);
+    z-index:8000;
+    pointer-events:none;
+    opacity:0;
+    padding:8px 13px;
+    border:1px solid rgba(88,231,255,.12);
+    border-radius:30px;
+    background:rgba(3,7,13,.72);
+    backdrop-filter:blur(12px);
+    color:rgba(255,255,255,.35);
+    font:8px monospace;
+    letter-spacing:1.5px;
+    transition:
+        opacity .5s ease,
+        transform .5s ease;
+}
+.hidden-credit.show{
+    opacity:1;
+    transform:translate(-50%,0);
+}
+/* =========================
+   MODAL
+========================= */
+.modal{
+    position:fixed;
+    inset:0;
+    z-index:10000;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background:rgba(0,0,0,.68);
+    backdrop-filter:blur(12px);
+}
+.modal.show{
+    display:flex;
+    animation:modalFade .25s ease;
+}
+@keyframes modalFade{
+    from{opacity:0}
+    to{opacity:1}
+}
+.modal-card{
+    width:min(560px,94vw);
+    padding:25px;
+    border:1px solid var(--line);
+    border-radius:23px;
+    background:var(--panel2);
+    box-shadow:0 30px 100px rgba(0,0,0,.55);
+    animation:modalUp .3s cubic-bezier(.2,.8,.2,1);
+}
+@keyframes modalUp{
+    from{
+        opacity:0;
+        transform:translateY(15px) scale(.97);
+    }
+    to{
+        opacity:1;
+        transform:none;
+    }
+}
+.modal-icon{
+    width:48px;
+    height:48px;
+    display:grid;
+    place-items:center;
+    border-radius:15px;
+    background:rgba(78,229,165,.1);
+    color:var(--green);
+    font-size:22px;
+}
+.modal h2{
+    margin:15px 0 7px;
+    font-size:19px;
+}
+.modal p{
+    color:var(--muted);
+    font-size:11px;
+    line-height:1.7;
+}
+.result-info{
+    margin:15px 0;
+    padding:13px;
+    border-radius:13px;
+    background:rgba(88,231,255,.04);
+    border:1px solid var(--line);
+    font:10px/1.7 monospace;
+}
+.modal-actions{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+}
+/* =========================
+   MOBILE
+========================= */
+@media(max-width:850px){
+    .grid{
+        grid-template-columns:1fr;
+    }
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+    header{
+        align-items:flex-start;
+    }
+    .clock{
+        min-width:88px;
+    }
+}
+@media(max-width:560px){
+    .app{
+        width:calc(100vw - 24px);
+        padding-top:15px;
+    }
+    .brand-name{
+        font-size:14px;
+    }
+    .brand-sub{
+        font-size:7px;
+    }
+    .brand-logo{
+        width:43px;
+        height:43px;
+    }
+    .hero{
+        padding:22px;
+    }
+    .panel{
+        padding:16px;
+    }
+    .header-right{
+        flex-shrink:0;
+    }
+    .clock{
+        font-size:9px;
+        min-width:82px;
+        padding:9px 7px;
+    }
 }
 </style>
 </head>
-
 <body>
-
-<div id="creatorWatermark" class="creator-watermark">codedbytdung</div>
-
-<!-- BOOT -->
-<section id="boot">
-  <div class="boot-box">
-    <div class="boot-logo">KT</div>
-    <div class="boot-title">KTOOL AI BINARY ENGINE V30</div>
-    <div class="boot-sub">CYBER MERGE • INITIALIZING ENGINE</div>
-    <div class="loader"><span></span></div>
-  </div>
-</section>
-
-<!-- AUTH -->
-<section id="auth" class="hidden">
-  <div class="auth-box">
-
-    <div class="auth-logo">KT</div>
-
-    <div class="auth-title">KTOOL V30</div>
-    <div class="auth-sub">
-      Local binary & ZIP utility. Dữ liệu tài khoản được lưu
-      trên trình duyệt hiện tại.
-    </div>
-
-    <div id="keyPanel" class="key-panel">
-      <div class="field">
-        <label>ACCESS KEY</label>
-        <input id="accessKey" type="password" autocomplete="off"
-               placeholder="Nhập access key">
-      </div>
-
-      <div id="keyError" class="error"></div>
-
-      <button id="keyBtn" class="btn primary" style="width:100%;margin-top:10px">
-        MỞ KTOOL V30
-      </button>
-    </div>
-
-    <div id="accountPanel" class="hidden">
-
-      <div class="auth-tabs">
-        <button id="loginTab" class="auth-tab active">ĐĂNG NHẬP</button>
-        <button id="registerTab" class="auth-tab">ĐĂNG KÝ</button>
-      </div>
-
-      <form id="loginForm">
-        <div class="field">
-          <label>TÀI KHOẢN</label>
-          <input id="loginUser" autocomplete="username"
-                 placeholder="Tên tài khoản">
-        </div>
-
-        <div class="field">
-          <label>MẬT KHẨU</label>
-          <input id="loginPass" type="password"
-                 autocomplete="current-password"
-                 placeholder="Mật khẩu">
-        </div>
-
-        <div id="loginError" class="error"></div>
-
-        <button class="btn primary" style="width:100%;margin-top:8px">
-          VÀO MENU
-        </button>
-      </form>
-
-      <form id="registerForm" class="hidden">
-        <div class="field">
-          <label>TÀI KHOẢN</label>
-          <input id="registerUser" autocomplete="username"
-                 placeholder="Tối thiểu 3 ký tự">
-        </div>
-
-        <div class="field">
-          <label>MẬT KHẨU</label>
-          <input id="registerPass" type="password"
-                 autocomplete="new-password"
-                 placeholder="Tối thiểu 4 ký tự">
-        </div>
-
-        <div id="registerError" class="error"></div>
-
-        <button class="btn primary" style="width:100%;margin-top:8px">
-          TẠO TÀI KHOẢN
-        </button>
-      </form>
-    </div>
-
-  </div>
-</section>
-
-<!-- APP -->
-<section id="app" class="hidden">
-  <div class="app-shell">
-
-    <header class="topbar">
-
-      <div class="brand">
-        <div class="brand-logo">KT</div>
-
-        <div class="brand-text">
-          <div class="brand-title">KTOOL AI BINARY ENGINE V30</div>
-          <div class="brand-sub">CYBER MERGE • <span id="currentUser">LOCAL USER</span></div>
-        </div>
-      </div>
-
-      <div class="header-right">
-        <div class="clock">
-          <div id="clockTime" class="clock-time">00:00:00</div>
-          <div id="clockDate" class="clock-date">--/--/----</div>
-        </div>
-
-        <button id="themeBtn" class="icon-btn" title="Đổi giao diện">☾</button>
-        <button id="logoutBtn" class="icon-btn" title="Đăng xuất">↪</button>
-      </div>
-
-    </header>
-
-    <main>
-
-      <section class="hero">
-        <div class="hero-kicker">KTOOL • V30</div>
-
-        <div class="hero-title">
-          Binary & ZIP Merge Engine
-        </div>
-
-        <div class="hero-desc">
-          Công cụ xử lý file chạy hoàn toàn phía trình duyệt.
-          ZIP được giải nén, xử lý file và đóng gói lại thành
-          một file ZIP mới mà không reload trang.
-        </div>
-
-        <div class="hero-badges">
-          <span class="badge">NO PAGE RELOAD</span>
-          <span class="badge">ZIP MERGE</span>
-          <span class="badge">.BYTES</span>
-          <span class="badge">RESPONSIVE</span>
-          <span class="badge">LOCAL</span>
-        </div>
-      </section>
-
-      <nav class="tabs">
-        <button class="tab active" data-tab="zipPanel">ZIP MERGE</button>
-        <button class="tab" data-tab="bytesPanel">BYTES MERGE</button>
-        <button class="tab" data-tab="systemPanel">SYSTEM</button>
-      </nav>
-
-      <!-- ================= ZIP ================= -->
-
-      <section id="zipPanel" class="card">
-
-        <div class="card-head">
-          <div>
-            <div class="card-title">ZIP MERGE ENGINE</div>
-            <div class="card-sub">
-              Gộp nhiều ZIP thành một ZIP mới
-            </div>
-          </div>
-
-          <div id="zipStatus" class="status ready">
-            READY
-          </div>
-        </div>
-
-        <div id="zipDrop" class="drop">
-          <div class="drop-img">ZIP</div>
-          <div class="drop-title">Chọn hoặc kéo ZIP vào đây</div>
-          <div class="drop-sub">
-            Có thể chọn nhiều file .zip cùng lúc
-          </div>
-
-          <input id="zipInput" type="file"
-                 accept=".zip,application/zip"
-                 multiple>
-        </div>
-
-        <div class="stats">
-          <div class="stat">
-            <div class="stat-label">ZIP FILES</div>
-            <div id="zipCount" class="stat-value">0</div>
-          </div>
-
-          <div class="stat">
-            <div class="stat-label">ENTRIES</div>
-            <div id="zipEntries" class="stat-value">0</div>
-          </div>
-
-          <div class="stat">
-            <div class="stat-label">DUPLICATES</div>
-            <div id="zipDuplicates" class="stat-value">0</div>
-          </div>
-
-          <div class="stat">
-            <div class="stat-label">SIZE</div>
-            <div id="zipSize" class="stat-value">0 B</div>
-          </div>
-        </div>
-
-        <div id="zipList" class="file-list"></div>
-
-        <div class="grid-2" style="margin-top:13px">
-
-          <div class="field" style="margin-top:0">
-            <label>XỬ LÝ FILE TRÙNG</label>
-
-            <select id="duplicateMode">
-              <option value="last">
-                File sau ghi đè file trước
-              </option>
-              <option value="first">
-                Giữ file đầu tiên
-              </option>
-            </select>
-          </div>
-
-          <div class="field" style="margin-top:0">
-            <label>TÊN FILE XUẤT</label>
-
-            <input id="zipOutputName"
-                   value="KTOOL_V30_MERGED.zip"
-                   spellcheck="false">
-          </div>
-
-        </div>
-
-        <div class="actions">
-          <button id="zipScanBtn" class="btn">
-            QUÉT ZIP
-          </button>
-
-          <button id="zipMergeBtn" class="btn primary">
-            GỘP ZIP
-          </button>
-
-          <button id="zipClearBtn" class="btn danger">
-            XÓA DANH SÁCH
-          </button>
-        </div>
-
-        <div id="zipProgressWrap" class="progress-wrap">
-          <div class="progress-top">
-            <span id="zipProgressText">Đang xử lý...</span>
-            <span id="zipProgressPercent">0%</span>
-          </div>
-
-          <div class="progress">
-            <span id="zipProgressBar"></span>
-          </div>
-        </div>
-
-        <!-- QUAN TRỌNG:
-             KHÔNG TỰ DOWNLOAD.
-             HIỆN NÚT DOWNLOAD SAU KHI GỘP -->
-        <div id="zipResult" class="result">
-
-          <div class="result-title">
-            ✓ GỘP ZIP THÀNH CÔNG
-          </div>
-
-          <div id="zipResultName" class="result-name">
-            KTOOL_V30_MERGED.zip
-          </div>
-
-          <div class="actions">
-            <button id="zipDownloadBtn" class="btn success">
-              TẢI ZIP ĐÃ GỘP
-            </button>
-          </div>
-
-        </div>
-
-      </section>
-
-      <!-- ================= BYTES ================= -->
-
-      <section id="bytesPanel" class="card hidden">
-
-        <div class="card-head">
-          <div>
-            <div class="card-title">BYTES MERGE</div>
-            <div class="card-sub">
-              Ghép tuần tự các file .bytes
-            </div>
-          </div>
-
-          <div id="bytesStatus" class="status ready">
-            READY
-          </div>
-        </div>
-
-        <div id="bytesDrop" class="drop">
-
-          <div class="drop-img">BIN</div>
-
-          <div class="drop-title">
-            Chọn hoặc kéo file .bytes
-          </div>
-
-          <div class="drop-sub">
-            Có thể chọn nhiều file
-          </div>
-
-          <input id="bytesInput"
-                 type="file"
-                 accept=".bytes"
-                 multiple>
-
-        </div>
-
-        <div class="stats">
-
-          <div class="stat">
-            <div class="stat-label">FILES</div>
-            <div id="bytesCount" class="stat-value">0</div>
-          </div>
-
-          <div class="stat">
-            <div class="stat-label">SIZE</div>
-            <div id="bytesSize" class="stat-value">0 B</div>
-          </div>
-
-          <div class="stat">
-            <div class="stat-label">ENTROPY</div>
-            <div id="bytesEntropy" class="stat-value">--</div>
-          </div>
-
-          <div class="stat">
-            <div class="stat-label">TYPE</div>
-            <div id="bytesType" class="stat-value">--</div>
-          </div>
-
-        </div>
-
-        <div id="bytesList" class="file-list"></div>
-
-        <div class="actions">
-
-          <button id="bytesSortBtn" class="btn">
-            SẮP XẾP
-          </button>
-
-          <button id="bytesReverseBtn" class="btn">
-            ĐẢO THỨ TỰ
-          </button>
-
-          <button id="bytesAnalyzeBtn" class="btn">
-            PHÂN TÍCH
-          </button>
-
-          <button id="bytesMergeBtn" class="btn primary">
-            GỘP BYTES
-          </button>
-
-          <button id="bytesClearBtn" class="btn danger">
-            XÓA
-          </button>
-
-        </div>
-
-        <div id="bytesProgressWrap" class="progress-wrap">
-          <div class="progress-top">
-            <span id="bytesProgressText">Đang xử lý...</span>
-            <span id="bytesProgressPercent">0%</span>
-          </div>
-
-          <div class="progress">
-            <span id="bytesProgressBar"></span>
-          </div>
-        </div>
-
-      </section>
-
-      <!-- ================= SYSTEM ================= -->
-
-      <section id="systemPanel" class="card hidden">
-
-        <div class="card-head">
-          <div>
-            <div class="card-title">SYSTEM INFORMATION</div>
-            <div class="card-sub">
-              Thông tin môi trường trình duyệt hiện tại
-            </div>
-          </div>
-        </div>
-
-        <div class="system-grid">
-
-          <div class="sys">
-            <div class="sys-label">BROWSER</div>
-            <div id="sysBrowser" class="sys-value">--</div>
-          </div>
-
-          <div class="sys">
-            <div class="sys-label">LANGUAGE</div>
-            <div id="sysLanguage" class="sys-value">--</div>
-          </div>
-
-          <div class="sys">
-            <div class="sys-label">TIMEZONE</div>
-            <div id="sysTimezone" class="sys-value">--</div>
-          </div>
-
-          <div class="sys">
-            <div class="sys-label">DISPLAY</div>
-            <div id="sysDisplay" class="sys-value">--</div>
-          </div>
-
-          <div class="sys">
-            <div class="sys-label">PIXEL RATIO</div>
-            <div id="sysPixel" class="sys-value">--</div>
-          </div>
-
-          <div class="sys">
-            <div class="sys-label">CPU CORES</div>
-            <div id="sysCPU" class="sys-value">--</div>
-          </div>
-
-          <div class="sys">
-            <div class="sys-label">MEMORY</div>
-            <div id="sysMemory" class="sys-value">Browser dependent</div>
-          </div>
-
-          <div class="sys">
-            <div class="sys-label">ONLINE</div>
-            <div id="sysOnline" class="sys-value">--</div>
-          </div>
-
-          <div class="sys">
-            <div class="sys-label">CONNECTION</div>
-            <div id="sysConnection" class="sys-value">--</div>
-          </div>
-
-          <div class="sys">
-            <div class="sys-label">TOUCH</div>
-            <div id="sysTouch" class="sys-value">--</div>
-          </div>
-
-          <div class="sys">
-            <div class="sys-label">LOCAL STORAGE</div>
-            <div id="sysStorage" class="sys-value">--</div>
-          </div>
-
-          <div class="sys">
-            <div class="sys-label">TEMPERATURE</div>
-            <div class="sys-value">
-              Browser restricted
-            </div>
-          </div>
-
-        </div>
-
-      </section>
-
-    </main>
-
-    <footer class="footer">
-      <strong>CREATED & CODED BY TRONG DUNG</strong><br>
-      KTOOL AI BINARY ENGINE V30 • CYBER MERGE<br>
-      Local browser utility • No server upload
-    </footer>
-
-  </div>
-</section>
-
-<!-- WELCOME -->
-<div id="welcomeLayer" class="modal-layer">
-  <div class="modal">
-    <h3>Chào người dùng 👋</h3>
-    <p>
-      KTOOL V30 đã sẵn sàng. Bạn có thể sử dụng ZIP Merge,
-      Bytes Merge và System ngay trong menu.
-    </p>
-
-    <button id="welcomeClose" class="btn primary" style="width:100%">
-      BẮT ĐẦU
-    </button>
-  </div>
+<div class="background">
+    <div class="orb one"></div>
+    <div class="orb two"></div>
+    <div class="orb three"></div>
 </div>
-
+<!-- BOOT -->
+<div id="boot">
+    <div class="boot-card">
+        <div class="boot-icon">K</div>
+        <div class="boot-title">
+            KTOOL V30.1
+        </div>
+        <div class="boot-sub">
+            ZIP STREAMING / CHUNKED ENGINE
+        </div>
+        <div class="boot-info">
+            <span id="bootStatus">INITIALIZING...</span>
+            <span class="boot-percent" id="bootPercent">0%</span>
+        </div>
+        <div class="boot-track">
+            <div class="boot-progress" id="bootProgress"></div>
+        </div>
+        <div class="boot-log" id="bootLog">
+            &gt; Starting KTOOL...
+        </div>
+    </div>
+</div>
+<div class="app">
+<header>
+    <div class="brand">
+        <div class="brand-logo">K</div>
+        <div>
+            <div class="brand-name">
+                KTOOL ZIP STREAM V30.1
+            </div>
+            <div class="brand-sub">
+                CHUNKED MULTI-ZIP MERGE ENGINE
+            </div>
+        </div>
+    </div>
+    <div class="header-right">
+        <div class="clock" id="clock">
+            00:00:00
+        </div>
+        <button
+            class="icon-button"
+            id="themeButton"
+            title="Dark / Light">
+            ◐
+        </button>
+    </div>
+</header>
+<section class="hero">
+    <div class="hero-badge">
+        STREAM ENGINE ONLINE
+    </div>
+    <h1>
+        Gộp nhiều ZIP thành một file
+    </h1>
+    <p>
+        V30.1 sử dụng cơ chế đọc ZIP theo từng entry,
+        hạn chế việc đưa toàn bộ dữ liệu vào RAM cùng lúc.
+        Không tự reload trang sau khi hoàn tất.
+    </p>
+</section>
+<section class="stats">
+    <div class="stat">
+        <div class="stat-label">
+            ZIP INPUT
+        </div>
+        <div class="stat-value" id="statFiles">
+            0
+        </div>
+    </div>
+    <div class="stat">
+        <div class="stat-label">
+            INPUT SIZE
+        </div>
+        <div class="stat-value" id="statSize">
+            0 B
+        </div>
+    </div>
+    <div class="stat">
+        <div class="stat-label">
+            ENTRIES
+        </div>
+        <div class="stat-value" id="statEntries">
+            0
+        </div>
+    </div>
+    <div class="stat">
+        <div class="stat-label">
+            ENGINE
+        </div>
+        <div
+            class="stat-value status-ready"
+            id="engineStatus">
+            READY
+        </div>
+    </div>
+</section>
+<div class="grid">
+<!-- INPUT -->
+<section class="panel">
+    <div class="panel-title">
+        <h2>
+            ZIP INPUT
+        </h2>
+        <span>
+            .ZIP ONLY
+        </span>
+    </div>
+    <div
+        class="drop"
+        id="drop">
+        <div>
+            <div class="drop-icon">
+                🗜️
+            </div>
+            <h3>
+                Kéo thả nhiều ZIP vào đây
+            </h3>
+            <p>
+                Chỉ nhận file .zip
+            </p>
+            <button
+                class="primary"
+                id="chooseButton">
+                CHỌN FILE ZIP
+            </button>
+            <input
+                id="fileInput"
+                type="file"
+                accept=".zip,application/zip"
+                multiple
+                hidden>
+        </div>
+    </div>
+    <div
+        class="file-list"
+        id="fileList">
+    </div>
+    <div class="actions">
+        <button
+            class="secondary"
+            id="clearButton">
+            XÓA DANH SÁCH
+        </button>
+    </div>
+</section>
+<!-- CONTROL -->
+<section class="panel">
+    <div class="panel-title">
+        <h2>
+            MERGE CONTROL
+        </h2>
+        <span>
+            SAFE MODE
+        </span>
+    </div>
+    <div class="field">
+        <label>
+            CÁCH XỬ LÝ FILE TRÙNG TÊN
+        </label>
+        <select id="duplicateMode">
+            <option value="first">
+                Giữ file đầu tiên
+            </option>
+            <option value="last">
+                Ưu tiên file từ ZIP cuối
+            </option>
+        </select>
+    </div>
+    <div class="field">
+        <label>
+            TÊN FILE XUẤT RA
+        </label>
+        <input
+            id="outputName"
+            type="text"
+            value="KTOOL_MERGED_V30.1.zip"
+            autocomplete="off">
+    </div>
+    <div class="actions">
+        <button
+            class="primary"
+            id="mergeButton">
+            ⚡ GỘP ZIP
+        </button>
+        <button
+            class="secondary"
+            id="clearLogsButton">
+            XÓA LOG
+        </button>
+    </div>
+    <div class="progress-box">
+        <div class="progress-top">
+            <span id="progressText">
+                WAITING
+            </span>
+            <span
+                class="progress-percent"
+                id="progressPercent">
+                0%
+            </span>
+        </div>
+        <div class="progress-track">
+            <div
+                class="progress-fill"
+                id="progressFill">
+            </div>
+        </div>
+    </div>
+</section>
+</div>
+<!-- TERMINAL -->
+<section class="panel">
+    <div class="panel-title">
+        <h2>
+            KTOOL STREAM TERMINAL
+        </h2>
+        <span>
+            REAL-TIME
+        </span>
+    </div>
+    <div
+        class="terminal"
+        id="terminal">
+    </div>
+</section>
+<!-- CREDIT -->
+<section class="credit">
+    <small>
+        KTOOL ZIP STREAM ENGINE
+    </small>
+    <div class="credit-name">
+        CODED BY TRONG DUNG
+    </div>
+</section>
+</div>
+<!-- HIDDEN CREDIT -->
+<div
+    class="hidden-credit"
+    id="hiddenCredit">
+    codedbytdung
+</div>
+<!-- RESULT MODAL -->
+<div
+    class="modal"
+    id="resultModal">
+    <div class="modal-card">
+        <div class="modal-icon">
+            ✓
+        </div>
+        <h2>
+            Gộp ZIP hoàn tất
+        </h2>
+        <p>
+            File kết quả đã được tạo trong bộ nhớ của trình duyệt.
+            Trang không bị reload.
+        </p>
+        <div
+            class="result-info"
+            id="resultInfo">
+        </div>
+        <div class="modal-actions">
+            <button
+                class="primary"
+                id="downloadButton">
+                ⬇ TẢI FILE ZIP
+            </button>
+            <button
+                class="secondary"
+                id="closeModalButton">
+                ĐÓNG
+            </button>
+        </div>
+    </div>
+</div>
 <script>
 "use strict";
-
-/* =========================================================
-   KTOOL V30 CORE
-========================================================= */
-
-document.addEventListener("DOMContentLoaded", function(){
-
-  const ACCESS_KEY = "2812";
-
-  const TARGET_FOLDERS = [
-    "Resources/",
-    "ux Resources/",
-    "1.63.1/",
-    "Ages/",
-    "Prefab_Characters/",
-    "Prefab_Hero/",
-    "assetbundle/",
-    "battle/",
-    "hero/"
-  ];
-
-  const $ = id => document.getElementById(id);
-
-  const state = {
-    user: null,
-    keyUnlocked: false,
-    bytesFiles: [],
-    zipFiles: [],
-    zipEntries: [],
-    zipBlob: null,
-    zipUrl: null
-  };
-
-  /* =======================================================
-     BASIC HELPERS
-  ======================================================= */
-
-  function showOnly(id){
-
-    ["boot","auth","app"].forEach(name => {
-
-      const el = $(name);
-
-      if(el){
-        el.classList.toggle("hidden", name !== id);
-      }
-
-    });
-
-  }
-
-  function safeText(el,value){
-
-    if(el){
-      el.textContent = value == null ? "" : String(value);
-    }
-
-  }
-
-  function formatBytes(bytes){
-
+/* ==========================================
+   BASIC HELPERS
+========================================== */
+const $ = id => document.getElementById(id);
+const state = {
+    files: [],
+    resultBlob: null,
+    resultName: "",
+    busy: false,
+    entryCount: 0,
+    processedEntries: 0,
+    totalInputBytes: 0
+};
+function formatBytes(bytes){
     if(!Number.isFinite(bytes) || bytes <= 0){
-      return "0 B";
+        return "0 B";
     }
-
-    const units = ["B","KB","MB","GB","TB"];
-    const i = Math.min(
-      Math.floor(Math.log(bytes) / Math.log(1024)),
-      units.length - 1
+    const units = [
+        "B",
+        "KB",
+        "MB",
+        "GB"
+    ];
+    let i = 0;
+    let n = bytes;
+    while(
+        n >= 1024 &&
+        i < units.length - 1
+    ){
+        n /= 1024;
+        i++;
+    }
+    return n.toFixed(
+        n >= 100 ? 0 :
+        n >= 10 ? 1 : 2
+    ) + " " + units[i];
+}
+function sleep(ms){
+    return new Promise(resolve =>
+        setTimeout(resolve,ms)
     );
-
-    return (
-      bytes / Math.pow(1024,i)
-    ).toFixed(i === 0 ? 0 : 2) + " " + units[i];
-  }
-
-  function normalizePath(path){
-
-    return String(path || "")
-      .replace(/\\/g,"/")
-      .replace(/^\/+/,"");
-
-  }
-
-  function downloadBlob(blob,name){
-
-    if(!blob){
-      return;
-    }
-
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement("a");
-
-    a.href = url;
-    a.download = name || "download.bin";
-    a.rel = "noopener";
-
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-
-    setTimeout(function(){
-      URL.revokeObjectURL(url);
-    },30000);
-  }
-
-  function setStatus(el,text,type){
-
-    if(!el) return;
-
-    el.textContent = text;
-    el.className = "status " + (type || "ready");
-
-  }
-
-  function setProgress(prefix,value,text){
-
-    const v = Math.max(0,Math.min(100,value));
-
-    safeText(
-      $(prefix+"ProgressPercent"),
-      Math.round(v) + "%"
-    );
-
-    safeText(
-      $(prefix+"ProgressText"),
-      text || "Đang xử lý..."
-    );
-
-    const bar = $(prefix+"ProgressBar");
-
-    if(bar){
-      bar.style.width = v + "%";
-    }
-
-  }
-
-  function showProgress(prefix,show){
-
-    const el = $(prefix+"ProgressWrap");
-
-    if(el){
-      el.classList.toggle("show",show);
-    }
-
-  }
-
-  /* =======================================================
-     LOCAL AUTH
-  ======================================================= */
-
-  function getAccounts(){
-
-    try{
-
-      return JSON.parse(
-        localStorage.getItem("ktool_accounts") || "{}"
-      );
-
-    }catch(e){
-
-      return {};
-
-    }
-
-  }
-
-  async function hashText(text){
-
-    try{
-
-      if(
-        window.crypto &&
-        crypto.subtle &&
-        window.TextEncoder
-      ){
-
-        const data =
-          new TextEncoder().encode(text);
-
-        const hash =
-          await crypto.subtle.digest(
-            "SHA-256",
-            data
-          );
-
-        return Array.from(
-          new Uint8Array(hash)
-        )
-        .map(b => b.toString(16).padStart(2,"0"))
-        .join("");
-
-      }
-
-    }catch(e){}
-
-    let h = 2166136261;
-
-    for(let i=0;i<text.length;i++){
-
-      h ^= text.charCodeAt(i);
-      h +=
-        (h << 1) +
-        (h << 4) +
-        (h << 7) +
-        (h << 8) +
-        (h << 24);
-
-    }
-
-    return (h >>> 0).toString(16);
-
-  }
-
-  function showWelcome(){
-
-    const layer = $("welcomeLayer");
-
-    if(layer){
-      layer.classList.add("show");
-    }
-
-  }
-
-  function enterApp(welcome){
-
-    showOnly("app");
-
-    safeText(
-      $("currentUser"),
-      state.user || "LOCAL USER"
-    );
-
-    updateSystem();
-
-    if(welcome){
-      showWelcome();
-    }
-
-  }
-
-  function routeAfterBoot(){
-
-    const current =
-      localStorage.getItem("ktool_current_user");
-
-    if(current){
-
-      state.user = current;
-      state.keyUnlocked = true;
-
-      enterApp(false);
-
-    }else{
-
-      showOnly("auth");
-
-    }
-
-  }
-
-  /* =======================================================
-     CLOCK
-  ======================================================= */
-
-  function updateClock(){
-
+}
+/* ==========================================
+   CLOCK
+========================================== */
+function updateClock(){
     const now = new Date();
-
-    safeText(
-      $("clockTime"),
-      now.toLocaleTimeString("vi-VN",{
-        hour12:false
-      })
-    );
-
-    safeText(
-      $("clockDate"),
-      now.toLocaleDateString("vi-VN",{
-        day:"2-digit",
-        month:"2-digit",
-        year:"numeric"
-      })
-    );
-
-  }
-
-  updateClock();
-  setInterval(updateClock,1000);
-
-  /* =======================================================
-     AUTH EVENTS
-  ======================================================= */
-
-  $("keyBtn").addEventListener("click",function(){
-
-    const value =
-      String($("accessKey").value || "").trim();
-
-    if(value !== ACCESS_KEY){
-
-      safeText(
-        $("keyError"),
-        "Access key không chính xác."
-      );
-
-      $("accessKey").focus();
-
-      return;
-
-    }
-
-    state.keyUnlocked = true;
-
-    $("keyPanel").classList.add("hidden");
-    $("accountPanel").classList.remove("hidden");
-
-    safeText($("keyError"),"");
-
-  });
-
-  $("accessKey").addEventListener("keydown",function(e){
-
-    if(e.key === "Enter"){
-      $("keyBtn").click();
-    }
-
-  });
-
-  $("loginTab").addEventListener("click",function(){
-
-    $("loginTab").classList.add("active");
-    $("registerTab").classList.remove("active");
-
-    $("loginForm").classList.remove("hidden");
-    $("registerForm").classList.add("hidden");
-
-  });
-
-  $("registerTab").addEventListener("click",function(){
-
-    $("registerTab").classList.add("active");
-    $("loginTab").classList.remove("active");
-
-    $("registerForm").classList.remove("hidden");
-    $("loginForm").classList.add("hidden");
-
-  });
-
-  $("loginForm").addEventListener("submit",async function(e){
-
-    e.preventDefault();
-
-    safeText($("loginError"),"");
-
-    const username =
-      String($("loginUser").value || "").trim();
-
-    const password =
-      String($("loginPass").value || "");
-
-    const accounts = getAccounts();
-
-    if(!username || !password){
-
-      safeText(
-        $("loginError"),
-        "Vui lòng nhập tài khoản và mật khẩu."
-      );
-
-      return;
-
-    }
-
-    if(!accounts[username]){
-
-      safeText(
-        $("loginError"),
-        "Tài khoản chưa tồn tại."
-      );
-
-      return;
-
-    }
-
-    const hashed =
-      await hashText(password);
-
-    if(accounts[username].password !== hashed){
-
-      safeText(
-        $("loginError"),
-        "Mật khẩu không đúng."
-      );
-
-      return;
-
-    }
-
-    state.user = username;
-
-    localStorage.setItem(
-      "ktool_current_user",
-      username
-    );
-
-    enterApp(true);
-
-  });
-
-  $("registerForm").addEventListener("submit",async function(e){
-
-    e.preventDefault();
-
-    safeText($("registerError"),"");
-
-    const username =
-      String($("registerUser").value || "").trim();
-
-    const password =
-      String($("registerPass").value || "");
-
-    if(username.length < 3){
-
-      safeText(
-        $("registerError"),
-        "Tên tài khoản phải có ít nhất 3 ký tự."
-      );
-
-      return;
-
-    }
-
-    if(password.length < 4){
-
-      safeText(
-        $("registerError"),
-        "Mật khẩu phải có ít nhất 4 ký tự."
-      );
-
-      return;
-
-    }
-
-    const accounts = getAccounts();
-
-    if(accounts[username]){
-
-      safeText(
-        $("registerError"),
-        "Tài khoản này đã tồn tại."
-      );
-
-      return;
-
-    }
-
-    accounts[username] = {
-      password:await hashText(password),
-      created:Date.now()
-    };
-
-    localStorage.setItem(
-      "ktool_accounts",
-      JSON.stringify(accounts)
-    );
-
-    localStorage.setItem(
-      "ktool_current_user",
-      username
-    );
-
-    state.user = username;
-
-    enterApp(true);
-
-  });
-
-  $("logoutBtn").addEventListener("click",function(){
-
-    localStorage.removeItem("ktool_current_user");
-
-    state.user = null;
-    state.keyUnlocked = false;
-
-    $("accountPanel").classList.add("hidden");
-    $("keyPanel").classList.remove("hidden");
-
-    $("accessKey").value = "";
-
-    showOnly("auth");
-
-  });
-
-  /* =======================================================
-     THEME
-  ======================================================= */
-
-  function loadTheme(){
-
-    const theme =
-      localStorage.getItem("ktool_theme");
-
-    if(theme === "light"){
-
-      document.body.classList.add("light");
-      $("themeBtn").textContent = "☀";
-
-    }else{
-
-      $("themeBtn").textContent = "☾";
-
-    }
-
-  }
-
-  $("themeBtn").addEventListener("click",function(){
-
-    document.body.classList.toggle("light");
-
-    const light =
-      document.body.classList.contains("light");
-
-    localStorage.setItem(
-      "ktool_theme",
-      light ? "light" : "dark"
-    );
-
-    $("themeBtn").textContent =
-      light ? "☀" : "☾";
-
-  });
-
-  loadTheme();
-
-  /* =======================================================
-     TABS
-  ======================================================= */
-
-  document.querySelectorAll(".tab").forEach(function(tab){
-
-    tab.addEventListener("click",function(){
-
-      const target = tab.dataset.tab;
-
-      document.querySelectorAll(".tab").forEach(function(t){
-        t.classList.remove("active");
-      });
-
-      tab.classList.add("active");
-
-      ["zipPanel","bytesPanel","systemPanel"]
-        .forEach(function(id){
-
-          const panel = $(id);
-
-          if(panel){
-            panel.classList.toggle(
-              "hidden",
-              id !== target
-            );
-          }
-
-        });
-
-    });
-
-  });
-
-  /* =======================================================
-     ZIP DROP / INPUT
-  ======================================================= */
-
-  function addZipFiles(files){
-
-    const arr = Array.from(files || []);
-
-    const valid = arr.filter(function(file){
-
-      return (
-        file &&
-        (
-          /\.zip$/i.test(file.name) ||
-          file.type === "application/zip"
-        )
-      );
-
-    });
-
-    state.zipFiles =
-      state.zipFiles.concat(valid);
-
-    renderZipList();
-    resetZipResult();
-
-  }
-
-  $("zipDrop").addEventListener("click",function(){
-
-    $("zipInput").click();
-
-  });
-
-  $("zipInput").addEventListener("change",function(){
-
-    addZipFiles(this.files);
-    this.value = "";
-
-  });
-
-  ["dragenter","dragover"].forEach(function(eventName){
-
-    $("zipDrop").addEventListener(eventName,function(e){
-
-      e.preventDefault();
-      e.stopPropagation();
-
-      $("zipDrop").classList.add("drag");
-
-    });
-
-  });
-
-  ["dragleave","drop"].forEach(function(eventName){
-
-    $("zipDrop").addEventListener(eventName,function(e){
-
-      e.preventDefault();
-      e.stopPropagation();
-
-      $("zipDrop").classList.remove("drag");
-
-    });
-
-  });
-
-  $("zipDrop").addEventListener("drop",function(e){
-
-    addZipFiles(e.dataTransfer.files);
-
-  });
-
-  /* =======================================================
-     ZIP RENDER
-  ======================================================= */
-
-  function renderZipList(){
-
-    const list = $("zipList");
-
-    list.innerHTML = "";
-
-    let total = 0;
-
-    state.zipFiles.forEach(function(file,index){
-
-      total += file.size;
-
-      const row =
+    const hh = String(
+        now.getHours()
+    ).padStart(2,"0");
+    const mm = String(
+        now.getMinutes()
+    ).padStart(2,"0");
+    const ss = String(
+        now.getSeconds()
+    ).padStart(2,"0");
+    $("clock").textContent =
+        `${hh}:${mm}:${ss}`;
+}
+updateClock();
+setInterval(
+    updateClock,
+    1000
+);
+/* ==========================================
+   LOG
+========================================== */
+function log(
+    message,
+    type="info"
+){
+    const line =
         document.createElement("div");
-
-      row.className = "file";
-
-      row.innerHTML = `
-        <div class="file-icon">ZIP</div>
-        <div class="file-name"></div>
-        <div class="file-size"></div>
-      `;
-
-      row.querySelector(".file-name")
-        .textContent = (index+1) + ". " + file.name;
-
-      row.querySelector(".file-size")
-        .textContent = formatBytes(file.size);
-
-      list.appendChild(row);
-
-    });
-
-    safeText(
-      $("zipCount"),
-      state.zipFiles.length
-    );
-
-    safeText(
-      $("zipSize"),
-      formatBytes(total)
-    );
-
-    if(!state.zipFiles.length){
-
-      safeText($("zipEntries"),"0");
-      safeText($("zipDuplicates"),"0");
-
-    }
-
-  }
-
-  function resetZipResult(){
-
-    state.zipBlob = null;
-
-    if(state.zipUrl){
-
-      URL.revokeObjectURL(state.zipUrl);
-      state.zipUrl = null;
-
-    }
-
-    $("zipResult").classList.remove("show");
-
-  }
-
-  $("zipClearBtn").addEventListener("click",function(){
-
-    resetZipResult();
-
-    state.zipFiles = [];
-    state.zipEntries = [];
-
-    renderZipList();
-
-    safeText($("zipEntries"),"0");
-    safeText($("zipDuplicates"),"0");
-
-    setStatus($("zipStatus"),"READY","ready");
-
-  });
-
-  /* =======================================================
-     ZIP SCAN
-  ======================================================= */
-
-  async function loadZip(file){
-
-    if(!window.JSZip){
-
-      throw new Error(
-        "JSZip chưa tải. Hãy kiểm tra kết nối mạng rồi mở lại trang."
-      );
-
-    }
-
-    return await JSZip.loadAsync(file);
-
-  }
-
-  async function scanZips(){
-
-    if(!state.zipFiles.length){
-
-      setStatus(
-        $("zipStatus"),
-        "NO FILE",
-        "error"
-      );
-
-      return;
-
-    }
-
-    if(!window.JSZip){
-
-      setStatus(
-        $("zipStatus"),
-        "JSZIP ERROR",
-        "error"
-      );
-
-      alert(
-        "JSZip chưa được tải. Hãy kiểm tra Internet và tải lại trang."
-      );
-
-      return;
-
-    }
-
-    setStatus(
-      $("zipStatus"),
-      "SCANNING",
-      "busy"
-    );
-
-    showProgress("zip",true);
-    setProgress("zip",0,"Đang đọc ZIP...");
-
-    const allEntries = [];
-    const pathSet = new Set();
-    let duplicates = 0;
-
-    try{
-
-      for(let i=0;i<state.zipFiles.length;i++){
-
-        const file = state.zipFiles[i];
-
-        const zip = await loadZip(file);
-
-        const names = Object.keys(zip.files);
-
-        for(let j=0;j<names.length;j++){
-
-          const entry = zip.files[names[j]];
-
-          if(entry.dir){
-            continue;
-          }
-
-          const path =
-            normalizePath(entry.name);
-
-          if(pathSet.has(path)){
-            duplicates++;
-          }else{
-            pathSet.add(path);
-          }
-
-          let target = false;
-
-          for(let k=0;k<TARGET_FOLDERS.length;k++){
-
-            if(
-              path === TARGET_FOLDERS[k].replace(/\/$/,"") ||
-              path.indexOf(TARGET_FOLDERS[k]) === 0
-            ){
-
-              target = true;
-              break;
-
-            }
-
-          }
-
-          allEntries.push({
-            path:path,
-            source:file.name,
-            target:target
-          });
-
-        }
-
-        setProgress(
-          "zip",
-          ((i+1)/state.zipFiles.length)*100,
-          "Đang quét " + file.name
+    line.className =
+        "log " + type;
+    line.textContent =
+        `[${new Date().toLocaleTimeString()}] ${message}`;
+    $("terminal").appendChild(line);
+    $("terminal").scrollTop =
+        $("terminal").scrollHeight;
+}
+/* ==========================================
+   THEME
+========================================== */
+function applyTheme(theme){
+    if(theme === "light"){
+        document.documentElement
+            .classList.add("light");
+        localStorage.setItem(
+            "ktool-v30-theme",
+            "light"
         );
-
-      }
-
-      state.zipEntries = allEntries;
-
-      safeText(
-        $("zipEntries"),
-        allEntries.length
-      );
-
-      safeText(
-        $("zipDuplicates"),
-        duplicates
-      );
-
-      setProgress(
-        "zip",
-        100,
-        "Quét hoàn tất"
-      );
-
-      setStatus(
-        $("zipStatus"),
-        "SCANNED",
-        "ready"
-      );
-
-      setTimeout(function(){
-        showProgress("zip",false);
-      },700);
-
-    }catch(error){
-
-      console.error(error);
-
-      setStatus(
-        $("zipStatus"),
-        "ERROR",
-        "error"
-      );
-
-      setProgress(
-        "zip",
-        0,
-        error.message || "Không thể đọc ZIP"
-      );
-
-    }
-
-  }
-
-  $("zipScanBtn").addEventListener(
-    "click",
-    scanZips
-  );
-
-  /* =======================================================
-     ZIP MERGE
-  ======================================================= */
-
-  async function mergeZips(){
-
-    if(!state.zipFiles.length){
-
-      setStatus(
-        $("zipStatus"),
-        "NO FILE",
-        "error"
-      );
-
-      return;
-
-    }
-
-    if(!window.JSZip){
-
-      setStatus(
-        $("zipStatus"),
-        "JSZIP ERROR",
-        "error"
-      );
-
-      alert(
-        "JSZip chưa được tải. Hãy kiểm tra Internet rồi tải lại trang."
-      );
-
-      return;
-
-    }
-
-    resetZipResult();
-
-    setStatus(
-      $("zipStatus"),
-      "MERGING",
-      "busy"
-    );
-
-    showProgress("zip",true);
-    setProgress(
-      "zip",
-      0,
-      "Khởi tạo ZIP mới..."
-    );
-
-    const mode =
-      $("duplicateMode").value;
-
-    const map = new Map();
-
-    try{
-
-      /* ---------------------------------------------------
-         Đọc từng ZIP
-      --------------------------------------------------- */
-
-      for(let i=0;i<state.zipFiles.length;i++){
-
-        const file = state.zipFiles[i];
-
-        setProgress(
-          "zip",
-          (i/state.zipFiles.length)*45,
-          "Đang đọc " + file.name
-        );
-
-        const zip =
-          await loadZip(file);
-
-        const names =
-          Object.keys(zip.files);
-
-        for(let j=0;j<names.length;j++){
-
-          const entry =
-            zip.files[names[j]];
-
-          if(entry.dir){
-            continue;
-          }
-
-          const path =
-            normalizePath(entry.name);
-
-          if(mode === "first"){
-
-            if(!map.has(path)){
-              map.set(path,{
-                entry:entry,
-                source:file.name
-              });
-            }
-
-          }else{
-
-            map.set(path,{
-              entry:entry,
-              source:file.name
-            });
-
-          }
-
-        }
-
-        await new Promise(
-          resolve => setTimeout(resolve,0)
-        );
-
-      }
-
-      if(!map.size){
-
-        throw new Error(
-          "Không tìm thấy file hợp lệ trong ZIP."
-        );
-
-      }
-
-      /* ---------------------------------------------------
-         Tạo ZIP mới
-      --------------------------------------------------- */
-
-      const outputZip = new JSZip();
-
-      const entries =
-        Array.from(map.entries());
-
-      for(let i=0;i<entries.length;i++){
-
-        const path = entries[i][0];
-        const item = entries[i][1];
-
-        const data =
-          await item.entry.async("uint8array");
-
-        outputZip.file(
-          path,
-          data
-        );
-
-        setProgress(
-          "zip",
-          45 + ((i+1)/entries.length)*45,
-          "Đang đóng gói " + path
-        );
-
-        if(i % 15 === 0){
-
-          await new Promise(
-            resolve => setTimeout(resolve,0)
-          );
-
-        }
-
-      }
-
-      /* ---------------------------------------------------
-         Generate blob
-      --------------------------------------------------- */
-
-      setProgress(
-        "zip",
-        93,
-        "Đang tạo file ZIP..."
-      );
-
-      const blob =
-        await outputZip.generateAsync(
-          {
-            type:"blob",
-            compression:"DEFLATE",
-            compressionOptions:{
-              level:6
-            }
-          },
-          function(meta){
-
-            const p =
-              93 + (meta.percent * .07);
-
-            setProgress(
-              "zip",
-              p,
-              "Đang nén ZIP..."
-            );
-
-          }
-        );
-
-      state.zipBlob = blob;
-
-      const outputName =
-        String(
-          $("zipOutputName").value || ""
-        ).trim() ||
-        "KTOOL_V30_MERGED.zip";
-
-      const finalName =
-        /\.zip$/i.test(outputName)
-          ? outputName
-          : outputName + ".zip";
-
-      $("zipResultName").textContent =
-        finalName + " • " + formatBytes(blob.size);
-
-      $("zipResult").classList.add("show");
-
-      setProgress(
-        "zip",
-        100,
-        "Gộp hoàn tất"
-      );
-
-      setStatus(
-        $("zipStatus"),
-        "DONE",
-        "ready"
-      );
-
-      /*
-       * QUAN TRỌNG:
-       * Không location.reload()
-       * Không window.open()
-       * Không tự tải file.
-       *
-       * Người dùng bấm nút DOWNLOAD mới tải.
-       */
-
-      setTimeout(function(){
-        showProgress("zip",false);
-      },900);
-
-    }catch(error){
-
-      console.error(
-        "KTOOL V30 ZIP ERROR:",
-        error
-      );
-
-      state.zipBlob = null;
-
-      setStatus(
-        $("zipStatus"),
-        "ERROR",
-        "error"
-      );
-
-      setProgress(
-        "zip",
-        0,
-        error.message || "Gộp ZIP thất bại"
-      );
-
-    }
-
-  }
-
-  $("zipMergeBtn").addEventListener(
-    "click",
-    mergeZips
-  );
-
-  /* =======================================================
-     ZIP DOWNLOAD
-  ======================================================= */
-
-  $("zipDownloadBtn").addEventListener(
-    "click",
-    function(){
-
-      if(!state.zipBlob){
-
-        setStatus(
-          $("zipStatus"),
-          "NO OUTPUT",
-          "error"
-        );
-
-        return;
-
-      }
-
-      const outputName =
-        String(
-          $("zipOutputName").value || ""
-        ).trim() ||
-        "KTOOL_V30_MERGED.zip";
-
-      const finalName =
-        /\.zip$/i.test(outputName)
-          ? outputName
-          : outputName + ".zip";
-
-      /*
-       * Download trực tiếp từ Blob.
-       * Không reload trang.
-       */
-
-      downloadBlob(
-        state.zipBlob,
-        finalName
-      );
-
-    }
-  );
-
-  /* =======================================================
-     BYTES
-  ======================================================= */
-
-  function addBytesFiles(files){
-
-    const arr =
-      Array.from(files || [])
-        .filter(file => /\.bytes$/i.test(file.name));
-
-    state.bytesFiles =
-      state.bytesFiles.concat(arr);
-
-    renderBytesList();
-
-  }
-
-  $("bytesDrop").addEventListener(
-    "click",
-    function(){
-      $("bytesInput").click();
-    }
-  );
-
-  $("bytesInput").addEventListener(
-    "change",
-    function(){
-
-      addBytesFiles(this.files);
-      this.value = "";
-
-    }
-  );
-
-  ["dragenter","dragover"].forEach(
-    function(eventName){
-
-      $("bytesDrop").addEventListener(
-        eventName,
-        function(e){
-
-          e.preventDefault();
-          e.stopPropagation();
-
-          $("bytesDrop").classList.add("drag");
-
-        }
-      );
-
-    }
-  );
-
-  ["dragleave","drop"].forEach(
-    function(eventName){
-
-      $("bytesDrop").addEventListener(
-        eventName,
-        function(e){
-
-          e.preventDefault();
-          e.stopPropagation();
-
-          $("bytesDrop").classList.remove("drag");
-
-        }
-      );
-
-    }
-  );
-
-  $("bytesDrop").addEventListener(
-    "drop",
-    function(e){
-
-      addBytesFiles(
-        e.dataTransfer.files
-      );
-
-    }
-  );
-
-  function renderBytesList(){
-
-    const list = $("bytesList");
-
-    list.innerHTML = "";
-
-    let total = 0;
-
-    state.bytesFiles.forEach(
-      function(file,index){
-
-        total += file.size;
-
-        const row =
-          document.createElement("div");
-
-        row.className = "file";
-
-        row.innerHTML = `
-          <div class="file-icon">BIN</div>
-          <div class="file-name"></div>
-          <div class="file-size"></div>
-        `;
-
-        row.querySelector(".file-name")
-          .textContent =
-          (index+1) + ". " + file.name;
-
-        row.querySelector(".file-size")
-          .textContent =
-          formatBytes(file.size);
-
-        list.appendChild(row);
-
-      }
-    );
-
-    safeText(
-      $("bytesCount"),
-      state.bytesFiles.length
-    );
-
-    safeText(
-      $("bytesSize"),
-      formatBytes(total)
-    );
-
-  }
-
-  $("bytesSortBtn").addEventListener(
-    "click",
-    function(){
-
-      state.bytesFiles.sort(
-        (a,b) =>
-          a.name.localeCompare(
-            b.name,
-            undefined,
-            {
-              numeric:true,
-              sensitivity:"base"
-            }
-          )
-      );
-
-      renderBytesList();
-
-    }
-  );
-
-  $("bytesReverseBtn").addEventListener(
-    "click",
-    function(){
-
-      state.bytesFiles.reverse();
-
-      renderBytesList();
-
-    }
-  );
-
-  $("bytesClearBtn").addEventListener(
-    "click",
-    function(){
-
-      state.bytesFiles = [];
-
-      renderBytesList();
-
-      safeText(
-        $("bytesEntropy"),
-        "--"
-      );
-
-      safeText(
-        $("bytesType"),
-        "--"
-      );
-
-    }
-  );
-
-  async function analyzeBytes(){
-
-    if(!state.bytesFiles.length){
-
-      setStatus(
-        $("bytesStatus"),
-        "NO FILE",
-        "error"
-      );
-
-      return;
-
-    }
-
-    setStatus(
-      $("bytesStatus"),
-      "ANALYZING",
-      "busy"
-    );
-
-    let totalBytes = 0;
-    let entropyTotal = 0;
-
-    for(let i=0;i<state.bytesFiles.length;i++){
-
-      const file =
-        state.bytesFiles[i];
-
-      const buffer =
-        await file.arrayBuffer();
-
-      const data =
-        new Uint8Array(buffer);
-
-      totalBytes += data.length;
-
-      const sample =
-        data.slice(
-          0,
-          Math.min(65536,data.length)
-        );
-
-      if(sample.length){
-
-        const freq =
-          new Uint32Array(256);
-
-        let printable = 0;
-
-        for(let j=0;j<sample.length;j++){
-
-          const b = sample[j];
-
-          freq[b]++;
-
-          if(
-            (b >= 32 && b <= 126) ||
-            b === 9 ||
-            b === 10 ||
-            b === 13
-          ){
-            printable++;
-          }
-
-        }
-
-        let entropy = 0;
-
-        for(let j=0;j<256;j++){
-
-          if(freq[j]){
-
-            const p =
-              freq[j] / sample.length;
-
-            entropy -= p * Math.log2(p);
-
-          }
-
-        }
-
-        entropyTotal += entropy;
-
-      }
-
-    }
-
-    const avg =
-      entropyTotal /
-      state.bytesFiles.length;
-
-    safeText(
-      $("bytesEntropy"),
-      avg.toFixed(2)
-    );
-
-    let type = "BINARY";
-
-    if(avg < 3.5){
-      type = "LOW ENTROPY";
-    }else if(avg > 7){
-      type = "HIGH ENTROPY";
-    }
-
-    safeText(
-      $("bytesType"),
-      type
-    );
-
-    setStatus(
-      $("bytesStatus"),
-      "ANALYZED",
-      "ready"
-    );
-
-  }
-
-  $("bytesAnalyzeBtn").addEventListener(
-    "click",
-    analyzeBytes
-  );
-
-  async function mergeBytes(){
-
-    if(!state.bytesFiles.length){
-
-      setStatus(
-        $("bytesStatus"),
-        "NO FILE",
-        "error"
-      );
-
-      return;
-
-    }
-
-    try{
-
-      setStatus(
-        $("bytesStatus"),
-        "MERGING",
-        "busy"
-      );
-
-      showProgress("bytes",true);
-
-      const chunks = [];
-
-      for(let i=0;i<state.bytesFiles.length;i++){
-
-        const file =
-          state.bytesFiles[i];
-
-        chunks.push(
-          await file.arrayBuffer()
-        );
-
-        setProgress(
-          "bytes",
-          ((i+1)/state.bytesFiles.length)*90,
-          "Đang ghép " + file.name
-        );
-
-      }
-
-      const blob =
-        new Blob(
-          chunks,
-          {
-            type:"application/octet-stream"
-          }
-        );
-
-      setProgress(
-        "bytes",
-        100,
-        "Hoàn tất"
-      );
-
-      downloadBlob(
-        blob,
-        "KTOOL_V30_MERGED.bytes"
-      );
-
-      setStatus(
-        $("bytesStatus"),
-        "DONE",
-        "ready"
-      );
-
-      setTimeout(function(){
-        showProgress("bytes",false);
-      },800);
-
-    }catch(error){
-
-      console.error(error);
-
-      setStatus(
-        $("bytesStatus"),
-        "ERROR",
-        "error"
-      );
-
-      setProgress(
-        "bytes",
-        0,
-        error.message || "Không thể gộp file"
-      );
-
-    }
-
-  }
-
-  $("bytesMergeBtn").addEventListener(
-    "click",
-    mergeBytes
-  );
-
-  /* =======================================================
-     SYSTEM
-  ======================================================= */
-
-  function updateSystem(){
-
-    safeText(
-      $("sysBrowser"),
-      navigator.userAgent
-    );
-
-    safeText(
-      $("sysLanguage"),
-      navigator.language || "--"
-    );
-
-    try{
-
-      safeText(
-        $("sysTimezone"),
-        Intl.DateTimeFormat().resolvedOptions().timeZone
-      );
-
-    }catch(e){
-
-      safeText(
-        $("sysTimezone"),
-        "--"
-      );
-
-    }
-
-    safeText(
-      $("sysDisplay"),
-      window.screen.width +
-      " × " +
-      window.screen.height
-    );
-
-    safeText(
-      $("sysPixel"),
-      window.devicePixelRatio || 1
-    );
-
-    safeText(
-      $("sysCPU"),
-      navigator.hardwareConcurrency || "Browser restricted"
-    );
-
-    safeText(
-      $("sysOnline"),
-      navigator.onLine ? "ONLINE" : "OFFLINE"
-    );
-
-    safeText(
-      $("sysTouch"),
-      ("ontouchstart" in window) ||
-      navigator.maxTouchPoints > 0
-        ? "YES"
-        : "NO"
-    );
-
-    safeText(
-      $("sysStorage"),
-      "localStorage: " +
-      (function(){
-
-        try{
-          const x="__ktool_test__";
-          localStorage.setItem(x,"1");
-          localStorage.removeItem(x);
-          return "AVAILABLE";
-        }catch(e){
-          return "BLOCKED";
-        }
-
-      })()
-    );
-
-    const connection =
-      navigator.connection ||
-      navigator.mozConnection ||
-      navigator.webkitConnection;
-
-    if(connection){
-
-      safeText(
-        $("sysConnection"),
-        connection.effectiveType ||
-        connection.type ||
-        "Available"
-      );
-
     }else{
-
-      safeText(
-        $("sysConnection"),
-        "Browser dependent"
-      );
-
+        document.documentElement
+            .classList.remove("light");
+        localStorage.setItem(
+            "ktool-v30-theme",
+            "dark"
+        );
     }
-
-    if(
-      navigator.deviceMemory
-    ){
-
-      safeText(
-        $("sysMemory"),
-        navigator.deviceMemory + " GB"
-      );
-
-    }
-
-  }
-
-  /* =======================================================
-     WELCOME
-  ======================================================= */
-
-  $("welcomeClose").addEventListener(
+}
+const savedTheme =
+    localStorage.getItem(
+        "ktool-v30-theme"
+    ) || "dark";
+applyTheme(savedTheme);
+$("themeButton").addEventListener(
     "click",
-    function(){
-
-      $("welcomeLayer")
-        .classList.remove("show");
-
+    () => {
+        const light =
+            document.documentElement
+                .classList
+                .contains("light");
+        applyTheme(
+            light ? "dark" : "light"
+        );
     }
-  );
-
-  $("welcomeLayer").addEventListener(
+);
+/* ==========================================
+   FILE INPUT
+========================================== */
+$("chooseButton").addEventListener(
     "click",
-    function(e){
-
-      if(e.target === $("welcomeLayer")){
-
-        $("welcomeLayer")
-          .classList.remove("show");
-
-      }
-
+    () => {
+        if(state.busy) return;
+        $("fileInput").click();
     }
-  );
-
-  /* =======================================================
-     HIDDEN CREATOR WATERMARK
-  ======================================================= */
-
-  function showCreatorWatermark(){
-
-    const el =
-      $("creatorWatermark");
-
-    if(
-      !el ||
-      document.hidden ||
-      $("welcomeLayer").classList.contains("show")
-    ){
-      return;
+);
+$("fileInput").addEventListener(
+    "change",
+    event => {
+        addFiles(
+            Array.from(
+                event.target.files
+            )
+        );
+        event.target.value = "";
     }
-
-    el.classList.remove("show");
-
-    void el.offsetWidth;
-
-    el.classList.add("show");
-
-    setTimeout(function(){
-
-      el.classList.remove("show");
-
-    },3100);
-
-  }
-
-  setInterval(
-    showCreatorWatermark,
-    28000
-  );
-
-  /* =======================================================
-     KEYBOARD SHORTCUT
-  ======================================================= */
-
-  document.addEventListener(
-    "keydown",
-    function(e){
-
-      if(
-        (e.ctrlKey || e.metaKey) &&
-        e.key === "Enter"
-      ){
-
-        const zipVisible =
-          !$("zipPanel").classList.contains("hidden");
-
-        if(zipVisible){
-          mergeZips();
-        }else{
-          mergeBytes();
+);
+function isZip(file){
+    const name =
+        file.name.toLowerCase();
+    return (
+        name.endsWith(".zip") ||
+        file.type === "application/zip"
+    );
+}
+function addFiles(files){
+    if(state.busy) return;
+    const zipFiles =
+        files.filter(isZip);
+    const rejected =
+        files.length - zipFiles.length;
+    if(rejected > 0){
+        log(
+            `Đã bỏ qua ${rejected} file không phải ZIP.`,
+            "warn"
+        );
+    }
+    if(!zipFiles.length) return;
+    for(const file of zipFiles){
+        const duplicate =
+            state.files.some(
+                f =>
+                    f.name === file.name &&
+                    f.size === file.size &&
+                    f.lastModified === file.lastModified
+            );
+        if(!duplicate){
+            state.files.push(file);
         }
-
-      }
-
-      if(e.key === "Escape"){
-
-        $("welcomeLayer")
-          .classList.remove("show");
-
-      }
-
     }
-  );
-
-  /* =======================================================
-     ONLINE STATUS
-  ======================================================= */
-
-  window.addEventListener(
-    "online",
-    function(){
-      updateSystem();
+    renderFiles();
+    updateStats();
+    log(
+        `Đã thêm ${zipFiles.length} ZIP vào workspace.`,
+        "good"
+    );
+}
+/* ==========================================
+   DRAG DROP
+========================================== */
+const drop = $("drop");
+["dragenter","dragover"].forEach(
+    eventName => {
+        drop.addEventListener(
+            eventName,
+            event => {
+                event.preventDefault();
+                if(!state.busy){
+                    drop.classList.add("drag");
+                }
+            }
+        );
     }
-  );
-
-  window.addEventListener(
-    "offline",
-    function(){
-      updateSystem();
+);
+["dragleave","drop"].forEach(
+    eventName => {
+        drop.addEventListener(
+            eventName,
+            event => {
+                event.preventDefault();
+                drop.classList.remove("drag");
+            }
+        );
     }
-  );
-
-  /* =======================================================
-     GLOBAL ERROR PROTECTION
-     Không để lỗi ZIP làm chết toàn bộ UI
-  ======================================================= */
-
-  window.addEventListener(
-    "error",
-    function(event){
-
-      console.error(
-        "KTOOL V30:",
-        event.error || event.message
-      );
-
+);
+drop.addEventListener(
+    "drop",
+    event => {
+        if(state.busy) return;
+        addFiles(
+            Array.from(
+                event.dataTransfer.files
+            )
+        );
     }
-  );
-
-  window.addEventListener(
-    "unhandledrejection",
-    function(event){
-
-      console.error(
-        "KTOOL V30 Promise:",
-        event.reason
-      );
-
+);
+/* ==========================================
+   RENDER FILES
+========================================== */
+function renderFiles(){
+    const list =
+        $("fileList");
+    list.innerHTML = "";
+    state.files.forEach(
+        (file,index) => {
+            const row =
+                document.createElement("div");
+            row.className =
+                "file-item";
+            const number =
+                document.createElement("div");
+            number.className =
+                "file-index";
+            number.textContent =
+                String(index + 1);
+            const name =
+                document.createElement("div");
+            name.className =
+                "file-name";
+            name.textContent =
+                file.name;
+            const size =
+                document.createElement("div");
+            size.className =
+                "file-size";
+            size.textContent =
+                formatBytes(file.size);
+            row.append(
+                number,
+                name,
+                size
+            );
+            list.appendChild(row);
+        }
+    );
+}
+function updateStats(){
+    state.totalInputBytes =
+        state.files.reduce(
+            (sum,file) =>
+                sum + file.size,
+            0
+        );
+    $("statFiles").textContent =
+        state.files.length;
+    $("statSize").textContent =
+        formatBytes(
+            state.totalInputBytes
+        );
+}
+/* ==========================================
+   CLEAR
+========================================== */
+$("clearButton").addEventListener(
+    "click",
+    () => {
+        if(state.busy) return;
+        state.files = [];
+        state.entryCount = 0;
+        state.processedEntries = 0;
+        renderFiles();
+        updateStats();
+        $("statEntries").textContent =
+            "0";
+        log(
+            "Workspace đã được làm sạch.",
+            "warn"
+        );
     }
-  );
-
-  /* =======================================================
-     BOOT
-  ======================================================= */
-
-  setTimeout(
-    routeAfterBoot,
-    850
-  );
-
-});
+);
+$("clearLogsButton").addEventListener(
+    "click",
+    () => {
+        $("terminal").innerHTML = "";
+        log(
+            "Terminal đã được làm sạch.",
+            "info"
+        );
+    }
+);
+/* ==========================================
+   PROGRESS
+========================================== */
+function setProgress(
+    percent,
+    text
+){
+    const safe =
+        Math.max(
+            0,
+            Math.min(
+                100,
+                percent
+            )
+        );
+    $("progressFill")
+        .style.width =
+        safe + "%";
+    $("progressPercent")
+        .textContent =
+        safe.toFixed(0) + "%";
+    $("progressText")
+        .textContent =
+        text || "PROCESSING";
+}
+/* ==========================================
+   ZIP ENGINE
+========================================== */
+/*
+    Important architecture:
+    ZipReader reads the ZIP central directory
+    and each entry is processed independently.
+    ZipWriter receives one entry at a time.
+    We intentionally DO NOT do:
+        await file.arrayBuffer()
+    for every entire ZIP.
+    This is the important difference from
+    the old implementation.
+*/
+async function mergeZipFiles(){
+    if(state.busy) return;
+    if(state.files.length < 1){
+        log(
+            "Chưa có ZIP nào được chọn.",
+            "bad"
+        );
+        return;
+    }
+    if(
+        typeof zip === "undefined" ||
+        !zip.ZipReader ||
+        !zip.ZipWriter
+    ){
+        log(
+            "ZIP engine chưa tải xong. Kiểm tra kết nối mạng rồi thử lại.",
+            "bad"
+        );
+        return;
+    }
+    state.busy = true;
+    $("mergeButton").disabled =
+        true;
+    $("clearButton").disabled =
+        true;
+    $("chooseButton").disabled =
+        true;
+    $("engineStatus").textContent =
+        "PROCESSING";
+    $("engineStatus")
+        .classList
+        .remove("status-ready");
+    state.resultBlob = null;
+    state.entryCount = 0;
+    state.processedEntries = 0;
+    setProgress(
+        0,
+        "ANALYZING ZIP..."
+    );
+    log(
+        `Bắt đầu STREAM MERGE với ${state.files.length} ZIP.`,
+        "info"
+    );
+    const duplicateMode =
+        $("duplicateMode").value;
+    /*
+       Set này chứa tên entry đã được thêm.
+       Dùng tên đầy đủ bên trong ZIP, ví dụ:
+       Resources/abc.bytes
+       hero/test.assetbundle
+    */
+    const addedEntries =
+        new Set();
+    /*
+       We use a BlobWriter.
+       It avoids building one gigantic
+       Uint8Array manually.
+    */
+    let writer = null;
+    const readers = [];
+    try{
+        writer =
+            new zip.ZipWriter(
+                new zip.BlobWriter(
+                    "application/zip"
+                ),
+                {
+                    bufferedWrite:false,
+                    useWebWorkers:false,
+                    level:0
+                }
+            );
+        /*
+           First pass:
+           read central directories only.
+           We do not extract all data.
+        */
+        const zipReaders = [];
+        let totalEntries = 0;
+        for(
+            let i = 0;
+            i < state.files.length;
+            i++
+        ){
+            const file =
+                state.files[i];
+            log(
+                `Đọc cấu trúc ZIP ${i + 1}/${state.files.length}: ${file.name}`,
+                "info"
+            );
+            /*
+               BlobReader allows zip.js
+               to read the Blob without
+               converting the whole file
+               to ArrayBuffer first.
+            */
+            const reader =
+                new zip.ZipReader(
+                    new zip.BlobReader(file)
+                );
+            readers.push(reader);
+            const entries =
+                await reader.getEntries();
+            zipReaders.push({
+                file,
+                reader,
+                entries
+            });
+            totalEntries +=
+                entries.length;
+            log(
+                `${file.name}: ${entries.length} entries.`,
+                "good"
+            );
+            /*
+               Yield to browser.
+               This is particularly useful
+               on iOS Safari.
+            */
+            await sleep(0);
+        }
+        state.entryCount =
+            totalEntries;
+        $("statEntries").textContent =
+            totalEntries;
+        if(totalEntries === 0){
+            throw new Error(
+                "Không tìm thấy entry nào trong ZIP."
+            );
+        }
+        /*
+           Process order.
+           first:
+             ZIP đầu tiên thắng.
+           last:
+             ZIP cuối cùng thắng.
+           For "last", we process ZIPs
+           in reverse order.
+        */
+        let sources =
+            zipReaders.slice();
+        if(duplicateMode === "last"){
+            sources.reverse();
+        }
+        let processed = 0;
+        for(
+            let sourceIndex = 0;
+            sourceIndex < sources.length;
+            sourceIndex++
+        ){
+            const source =
+                sources[sourceIndex];
+            log(
+                `Processing: ${source.file.name}`,
+                "info"
+            );
+            for(
+                let entryIndex = 0;
+                entryIndex < source.entries.length;
+                entryIndex++
+            ){
+                const entry =
+                    source.entries[entryIndex];
+                const filename =
+                    entry.filename;
+                /*
+                   Ignore unsafe absolute paths.
+                   This prevents path traversal
+                   when creating the result ZIP.
+                */
+                if(
+                    filename.startsWith("/") ||
+                    filename.includes("../") ||
+                    filename.includes("..\\")
+                ){
+                    log(
+                        `Bỏ qua path không an toàn: ${filename}`,
+                        "warn"
+                    );
+                    processed++;
+                    continue;
+                }
+                /*
+                   Directory:
+                   We keep directory entries
+                   only if not already present.
+                */
+                const normalized =
+                    filename.replace(
+                        /\\/g,
+                        "/"
+                    );
+                if(
+                    addedEntries.has(normalized)
+                ){
+                    processed++;
+                    const percent =
+                        processed /
+                        totalEntries *
+                        100;
+                    setProgress(
+                        percent,
+                        `SKIP DUPLICATE ${processed}/${totalEntries}`
+                    );
+                    continue;
+                }
+                /*
+                   Add directory.
+                */
+                if(
+                    entry.directory ||
+                    normalized.endsWith("/")
+                ){
+                    await writer.add(
+                        normalized,
+                        undefined
+                    );
+                    addedEntries.add(
+                        normalized
+                    );
+                }else{
+                    /*
+                       IMPORTANT:
+                       We do NOT call:
+                           entry.getData(new BlobWriter())
+                       and keep the result.
+                       Instead the output writer
+                       consumes the generated data
+                       immediately.
+                       This keeps the application
+                       from maintaining a second
+                       complete copy of every file.
+                    */
+                    const sourceBlob =
+                        await entry.getData(
+                            new zip.BlobWriter(
+                                "application/octet-stream"
+                            )
+                        );
+                    await writer.add(
+                        normalized,
+                        new zip.BlobReader(
+                            sourceBlob
+                        )
+                    );
+                    /*
+                       Release reference as soon
+                       as the entry has been written.
+                    */
+                    addedEntries.add(
+                        normalized
+                    );
+                }
+                processed++;
+                state.processedEntries =
+                    processed;
+                const percent =
+                    processed /
+                    totalEntries *
+                    100;
+                setProgress(
+                    percent,
+                    `MERGING ${processed}/${totalEntries}`
+                );
+                /*
+                   Yield frequently.
+                   This prevents the UI from
+                   becoming completely unresponsive.
+                */
+                if(
+                    processed % 3 === 0
+                ){
+                    await sleep(0);
+                }
+            }
+            log(
+                `Hoàn tất ${source.file.name}.`,
+                "good"
+            );
+        }
+        setProgress(
+            98,
+            "FINALIZING ZIP..."
+        );
+        log(
+            "Đang hoàn tất ZIP output...",
+            "info"
+        );
+        state.resultBlob =
+            await writer.close();
+        writer = null;
+        const customName =
+            $("outputName")
+                .value
+                .trim();
+        state.resultName =
+            customName
+                ? customName
+                    .replace(
+                        /\.zip$/i,
+                        ""
+                    ) + ".zip"
+                : "KTOOL_MERGED_V30.1.zip";
+        setProgress(
+            100,
+            "COMPLETE"
+        );
+        $("engineStatus")
+            .textContent =
+            "SUCCESS";
+        $("engineStatus")
+            .classList
+            .add("status-ready");
+        log(
+            `MERGE SUCCESS — ${formatBytes(state.resultBlob.size)}`,
+            "good"
+        );
+        $("resultInfo").textContent =
+            [
+                `Output : ${state.resultName}`,
+                `Entries: ${addedEntries.size}`,
+                `Size   : ${formatBytes(state.resultBlob.size)}`,
+                `Input  : ${formatBytes(state.totalInputBytes)}`
+            ].join("\n");
+        $("resultModal")
+            .classList
+            .add("show");
+    }catch(error){
+        console.error(error);
+        /*
+           If writer is still open,
+           try to close it so the browser
+           can release resources.
+        */
+        if(writer){
+            try{
+                await writer.close();
+            }catch(_){}
+            writer = null;
+        }
+        state.resultBlob = null;
+        $("engineStatus")
+            .textContent =
+            "ERROR";
+        $("engineStatus")
+            .classList
+            .remove("status-ready");
+        setProgress(
+            0,
+            "ERROR"
+        );
+        log(
+            `MERGE ERROR: ${error.message || error}`,
+            "bad"
+        );
+        /*
+           Common iOS memory message.
+        */
+        if(
+            /memory|allocation|abort/i
+                .test(
+                    String(
+                        error.message || error
+                    )
+                )
+        ){
+            log(
+                "Có thể trình duyệt đã chạm giới hạn bộ nhớ. Hãy thử chia ZIP thành các nhóm nhỏ hơn.",
+                "warn"
+            );
+        }
+    }finally{
+        /*
+           Always close readers.
+           This is extremely important.
+        */
+        for(
+            const reader of readers
+        ){
+            try{
+                await reader.close();
+            }catch(_){}
+        }
+        state.busy = false;
+        $("mergeButton").disabled =
+            false;
+        $("clearButton").disabled =
+            false;
+        $("chooseButton").disabled =
+            false;
+    }
+}
+/* ==========================================
+   MERGE BUTTON
+========================================== */
+$("mergeButton").addEventListener(
+    "click",
+    mergeZipFiles
+);
+/* ==========================================
+   DOWNLOAD
+========================================== */
+$("downloadButton").addEventListener(
+    "click",
+    () => {
+        if(!state.resultBlob){
+            log(
+                "Không có file kết quả.",
+                "bad"
+            );
+            return;
+        }
+        const url =
+            URL.createObjectURL(
+                state.resultBlob
+            );
+        const a =
+            document.createElement("a");
+        a.href = url;
+        a.download =
+            state.resultName;
+        a.style.display =
+            "none";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        /*
+           Do not revoke immediately.
+           Safari can need a little time.
+        */
+        setTimeout(
+            () => {
+                URL.revokeObjectURL(
+                    url
+                );
+            },
+            5000
+        );
+        log(
+            `Đã yêu cầu tải: ${state.resultName}`,
+            "good"
+        );
+    }
+);
+/* ==========================================
+   CLOSE MODAL
+========================================== */
+$("closeModalButton").addEventListener(
+    "click",
+    () => {
+        $("resultModal")
+            .classList
+            .remove("show");
+    }
+);
+$("resultModal").addEventListener(
+    "click",
+    event => {
+        if(
+            event.target ===
+            $("resultModal")
+        ){
+            $("resultModal")
+                .classList
+                .remove("show");
+        }
+    }
+);
+/* ==========================================
+   HIDDEN CREDIT
+========================================== */
+let creditTimer = null;
+function showHiddenCredit(){
+    const el =
+        $("hiddenCredit");
+    el.classList.add("show");
+    clearTimeout(
+        creditTimer
+    );
+    creditTimer =
+        setTimeout(
+            () => {
+                el.classList.remove(
+                    "show"
+                );
+            },
+            2200
+        );
+}
+/*
+   Occasional hidden credit.
+*/
+setInterval(
+    () => {
+        if(
+            !state.busy &&
+            Math.random() > .45
+        ){
+            showHiddenCredit();
+        }
+    },
+    15000
+);
+/* ==========================================
+   BOOT
+========================================== */
+async function boot(){
+    const fill =
+        $("bootProgress");
+    const percent =
+        $("bootPercent");
+    const status =
+        $("bootStatus");
+    const logBox =
+        $("bootLog");
+    const steps = [
+        [
+            15,
+            "Loading interface..."
+        ],
+        [
+            32,
+            "Preparing browser storage..."
+        ],
+        [
+            52,
+            "Loading ZIP stream engine..."
+        ],
+        [
+            73,
+            "Checking chunked reader..."
+        ],
+        [
+            90,
+            "Preparing safe merge pipeline..."
+        ],
+        [
+            100,
+            "ENGINE READY."
+        ]
+    ];
+    for(
+        const [value,text]
+        of steps
+    ){
+        fill.style.width =
+            value + "%";
+        percent.textContent =
+            value + "%";
+        status.textContent =
+            text.toUpperCase();
+        logBox.textContent =
+            "> " + text;
+        await sleep(
+            value === 100
+                ? 500
+                : 350
+        );
+    }
+    await sleep(250);
+    $("boot")
+        .classList
+        .add("hide");
+    setTimeout(
+        () => {
+            $("boot").remove();
+        },
+        600
+    );
+    log(
+        "KTOOL V30.1 đã sẵn sàng.",
+        "good"
+    );
+    log(
+        "ZIP Streaming / Chunked Engine: ONLINE.",
+        "info"
+    );
+    log(
+        "Không tự reload trang sau khi merge.",
+        "info"
+    );
+}
+boot();
+/* ==========================================
+   INITIAL UI
+========================================== */
+renderFiles();
+updateStats();
 </script>
-
 </body>
 </html>
