@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#050810">
-<title>KTOOL V30.1 — ZIP STREAM ENGINE + PATCH 3105</title>
+<title>KTOOL V30.1 — PATCH 3105 BUILDER (FIXED)</title>
 <script src="https://cdn.jsdelivr.net/npm/@zip.js/zip.js@2.7.57/dist/zip.min.js"></script>
 <style>
 :root{
@@ -147,13 +147,6 @@ select,input[type="text"]{width:100%;padding:11px 12px;border:1px solid var(--li
 .credit small{color:var(--muted);font-size:8px;letter-spacing:2px;}
 .credit-name{margin-top:8px;font-size:17px;font-weight:1000;letter-spacing:2px;background:linear-gradient(90deg,var(--accent),#fff,var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent;}
 
-.hidden-credit{
-    position:fixed;left:50%;bottom:25px;transform:translate(-50%,20px);z-index:8000;pointer-events:none;opacity:0;
-    padding:8px 13px;border:1px solid rgba(88,231,255,.12);border-radius:30px;background:rgba(3,7,13,.72);
-    color:rgba(255,255,255,.35);font:8px monospace;transition:opacity .5s ease,transform .5s ease;
-}
-.hidden-credit.show{opacity:1;transform:translate(-50%,0);}
-
 .modal{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.68);}
 .modal.show{display:flex;}
 .modal-card{width:min(560px,94vw);padding:25px;border:1px solid var(--line);border-radius:23px;background:var(--panel2);}
@@ -174,7 +167,7 @@ select,input[type="text"]{width:100%;padding:11px 12px;border:1px solid var(--li
     <div class="boot-card">
         <div class="boot-icon">K</div>
         <div class="boot-title">KTOOL V30.1</div>
-        <div class="boot-sub">ZIP STREAMING / PATCH 3105 ENGINE</div>
+        <div class="boot-sub">PATCH 3105 FIXED BUILDER</div>
         <div class="boot-info"><span id="bootStatus">INITIALIZING...</span><span class="boot-percent" id="bootPercent">0%</span></div>
         <div class="boot-track"><div class="boot-progress" id="bootProgress"></div></div>
         <div class="boot-log" id="bootLog">&gt; Starting KTOOL...</div>
@@ -187,7 +180,7 @@ select,input[type="text"]{width:100%;padding:11px 12px;border:1px solid var(--li
         <div class="brand-logo">K</div>
         <div>
             <div class="brand-name">KTOOL ZIP STREAM V30.1</div>
-            <div class="brand-sub">CHUNKED MULTI-ZIP MERGE & PATCH 3105</div>
+            <div class="brand-sub">FIXED PATCH 3105 FORMAT ENGINE</div>
         </div>
     </div>
     <div class="header-right">
@@ -197,9 +190,9 @@ select,input[type="text"]{width:100%;padding:11px 12px;border:1px solid var(--li
 </header>
 
 <section class="hero">
-    <div class="hero-badge">STREAM ENGINE ONLINE</div>
-    <h1>Gộp nhiều ZIP & Tạo Patch 3105</h1>
-    <p>Tự động tạo cấu trúc <code>com.garena.game.kgvn/Documents/</code> và hỗ trợ xuất file chuẩn định dạng <code>.3105</code> an toàn không lỗi.</p>
+    <div class="hero-badge">FIXED ENGINE ONLINE</div>
+    <h1>Tạo Patch 3105 Vá Lỗi Chuẩn iOS</h1>
+    <p>Đã sửa lỗi cấu trúc định dạng file <code>.3105</code>, tích hợp chuẩn xác tệp <code>settings.json</code>[span_1](start_span)[span_1](end_span) và hệ thống thư mục phân cấp cho app.</p>
 </section>
 
 <section class="stats">
@@ -226,13 +219,10 @@ select,input[type="text"]{width:100%;padding:11px 12px;border:1px solid var(--li
 </section>
 
 <section class="panel">
-    <div class="panel-title"><h2>MERGE & PATCH CONTROL</h2><span>SAFE MODE</span></div>
+    <div class="panel-title"><h2>PATCH 3105 CONFIG</h2><span>FIXED STRUCTURE</span></div>
     <div class="field">
-        <label>CHẾ ĐỘ XUẤT FILE</label>
-        <select id="patchMode">
-            <option value="normal">Gộp ZIP thông thường (Giữ nguyên cấu trúc)</option>
-            <option value="patch3105" selected>Đóng gói chuẩn Patch 3105 (Vào Documents)</option>
-        </select>
+        <label>TÊN THƯ MỤC GỐC PATCH</label>
+        <input id="patchFolderName" type="text" value="Edras VTK fix full" autocomplete="off">
     </div>
     <div class="field">
         <label>CÁCH XỬ LÝ FILE TRÙNG TÊN</label>
@@ -243,11 +233,11 @@ select,input[type="text"]{width:100%;padding:11px 12px;border:1px solid var(--li
         </select>
     </div>
     <div class="field">
-        <label>TÊN FILE XUẤT RA</label>
-        <input id="outputName" type="text" value="patch_3105_kgvn.3105" autocomplete="off">
+        <label>TÊN FILE XUẤT RA (.3105)</label>
+        <input id="outputName" type="text" value="Edras_VTK_fix_full.3105" autocomplete="off">
     </div>
     <div class="actions">
-        <button class="primary" id="mergeButton" type="button">⚡ THỰC THI</button>
+        <button class="primary" id="mergeButton" type="button">⚡ TẠO PATCH 3105 VÁ LỖI</button>
         <button class="secondary" id="clearLogsButton" type="button">XÓA LOG</button>
     </div>
     <div class="progress-box">
@@ -268,16 +258,14 @@ select,input[type="text"]{width:100%;padding:11px 12px;border:1px solid var(--li
 </section>
 </div>
 
-<div class="hidden-credit" id="hiddenCredit">codedbytdung</div>
-
 <div class="modal" id="resultModal">
     <div class="modal-card">
         <div class="modal-icon">✓</div>
-        <h2>Xử lý hoàn tất</h2>
-        <p>File kết quả đã được tạo trong bộ nhớ của trình duyệt.</p>
+        <h2>Tạo Patch 3105 Thành Công</h2>
+        <p>File .3105 đã được vá lỗi định dạng và cấu trúc phân cấp chuẩn iOS.</p>
         <div class="result-info" id="resultInfo"></div>
         <div class="modal-actions">
-            <button class="primary" id="downloadButton" type="button">⬇ TẢI FILE KẾT QUẢ</button>
+            <button class="primary" id="downloadButton" type="button">⬇ TẢI FILE .3105</button>
             <button class="secondary" id="closeModalButton" type="button">ĐÓNG</button>
         </div>
     </div>
@@ -297,7 +285,6 @@ const state = {
     resultName: "",
     busy: false,
     entryCount: 0,
-    processedEntries: 0,
     totalInputBytes: 0
 };
 
@@ -391,7 +378,7 @@ function updateStats(){
 
 $("clearButton").addEventListener("click", () => {
     if(state.busy) return;
-    state.files = []; state.entryCount = 0; state.processedEntries = 0;
+    state.files = []; state.entryCount = 0;
     renderFiles(); updateStats();
     $("statEntries").textContent = "0";
     log("Workspace đã được làm sạch.", "warn");
@@ -406,19 +393,8 @@ function setProgress(percent, text){
     $("progressText").textContent = text || "PROCESSING";
 }
 
-// Dynamic output name change on mode switch
-$("patchMode").addEventListener("change", (e) => {
-    if(e.target.value === "patch3105"){
-        $("outputName").value = "patch_3105_kgvn.3105";
-        log("Đã chuyển sang chế độ tạo Patch 3105 (.3105 trực tiếp).", "info");
-    } else {
-        $("outputName").value = "KTOOL_MERGED_V30.1.zip";
-        log("Đã chuyển về chế độ gộp ZIP thông thường.", "info");
-    }
-});
-
-// Zip Engine Logic with Patch 3105 & Documents Integration
-async function mergeZipFiles(){
+// Zip Engine Logic with Fixed iOS Patch 3105 Structure & Settings JSON
+async function generatePatch3105Fixed(){
     if(state.busy) return;
     if(state.files.length < 1){ log("Chưa có ZIP nào được chọn.", "bad"); return; }
     if(typeof zip === "undefined"){ log("Thư viện ZIP chưa tải xong.", "bad"); return; }
@@ -430,10 +406,10 @@ async function mergeZipFiles(){
     
     state.resultBlob = null;
     setProgress(0, "ANALYZING ZIP...");
-    log(`Bắt đầu tiến trình xử lý với ${state.files.length} ZIP.`, "info");
+    log(`Bắt đầu đóng gói Patch 3105 vá lỗi với ${state.files.length} ZIP.`, "info");
 
     const duplicateMode = $("duplicateMode").value;
-    const patchMode = $("patchMode").value;
+    const rootFolderName = ($("patchFolderName").value.trim() || "Edras VTK fix full").replace(/\/$/, "");
     const addedEntries = new Set();
     let writer = null;
     const readers = [];
@@ -443,18 +419,36 @@ async function mergeZipFiles(){
         const zipReaders = [];
         let totalEntries = 0;
 
-        // Tạo cấu trúc thư mục com.garena.game.kgvn/Documents/ nếu ở chế độ Patch 3105
-        if(patchMode === "patch3105"){
-            await writer.add("com.garena.game.kgvn/", undefined);
-            await writer.add("com.garena.game.kgvn/Documents/", undefined);
-            addedEntries.add("com.garena.game.kgvn/");
-            addedEntries.add("com.garena.game.kgvn/Documents/");
-            log("Đã khởi tạo cấu trúc thư mục: com.garena.game.kgvn/Documents/", "info");
+        // 1. Khởi tạo cây thư mục chuẩn xác cấu trúc iOS
+        const basePath = rootFolderName + "/";
+        const appGroupPath = basePath + "AppGroup/";
+        const appPath = basePath + "Application/";
+        const kgvnPath = appPath + "com.garena.game.kgvn/";
+        const docPath = kgvnPath + "Documents/";
+        const resPath = docPath + "Resources/";
+        const verPath = resPath + "1.63.1/";
+
+        const foldersToCreate = [basePath, appGroupPath, appPath, kgvnPath, docPath, resPath, verPath];
+        for(const folder of foldersToCreate){
+            await writer.add(folder, undefined);
+            addedEntries.add(folder);
         }
 
+        // 2. Tạo tệp settings.json chính xác theo mẫu được cung cấp[span_2](start_span)[span_2](end_span)
+        const settingsData = {
+            "fields": [],
+            "schemaVersion": 1
+        };
+        const settingsContent = JSON.stringify(settingsData, null, 2);
+        const settingsBlob = new Blob([settingsContent], { type: "application/json" });
+        await writer.add(basePath + "settings.json", new zip.BlobReader(settingsBlob));
+        addedEntries.add(basePath + "settings.json");
+        log("Đã nạp tệp settings.json thành công.", "info");
+
+        // 3. Đọc dữ liệu từ các file zip nguồn
         for(let i = 0; i < state.files.length; i++){
             const file = state.files[i];
-            log(`Đọc cấu trúc ZIP ${i + 1}/${state.files.length}: ${file.name}`, "info");
+            log(`Đọc ZIP ${i + 1}/${state.files.length}: ${file.name}`, "info");
             const reader = new zip.ZipReader(new zip.BlobReader(file));
             readers.push(reader);
             const entries = await reader.getEntries();
@@ -469,20 +463,20 @@ async function mergeZipFiles(){
         let sources = duplicateMode === "last" ? zipReaders.slice().reverse() : zipReaders.slice();
         let processed = 0;
 
+        // 4. Lọc bỏ các đường dẫn rác / lồng nhau và đặt thẳng vào thư mục phiên bản 1.63.1
         for(const source of sources){
             for(const entry of source.entries){
                 const filename = entry.filename;
                 if(filename.startsWith("/") || filename.includes("../")){
                     processed++; continue;
                 }
-                let normalized = filename.replace(/\\/g, "/");
+                let cleanName = filename.replace(/\\/g, "/");
 
-                // Đưa toàn bộ tệp tin bên trong các file zip nguồn vào mục Documents
-                if(patchMode === "patch3105"){
-                    normalized = "com.garena.game.kgvn/Documents/" + normalized;
-                }
+                // Loại bỏ bớt các tiền tố thừa nếu file zip nguồn đã bao bọc sẵn thư mục
+                cleanName = cleanName.replace(/^(com\.garena\.game\.kgvn\/Documents\/Resources\/1\.63\.1\/|Resources\/1\.63\.1\/|1\.63\.1\/)/i, "");
 
-                // Xử lý logic trùng tên file
+                let normalized = verPath + cleanName;
+
                 if(addedEntries.has(normalized)){
                     if(duplicateMode === "first"){
                         processed++;
@@ -491,39 +485,42 @@ async function mergeZipFiles(){
                     }
                 }
 
-                if(entry.directory || normalized.endsWith("/")){
-                    await writer.add(normalized, undefined);
+                if(entry.directory || cleanName.endsWith("/") || cleanName === ""){
+                    if(cleanName && cleanName !== "/") {
+                        await writer.add(normalized, undefined);
+                        addedEntries.add(normalized);
+                    }
                 } else {
                     const sourceBlob = await entry.getData(new zip.BlobWriter("application/octet-stream"));
                     await writer.add(normalized, new zip.BlobReader(sourceBlob));
+                    addedEntries.add(normalized);
                 }
-                addedEntries.add(normalized);
+                
                 processed++;
                 if(processed % 3 === 0){
-                    setProgress(processed / totalEntries * 100, `PROCESSING ${processed}/${totalEntries}`);
+                    setProgress(processed / totalEntries * 100, `PACKING ${processed}/${totalEntries}`);
                     await sleep(0);
                 }
             }
         }
 
-        setProgress(98, "FINALIZING ARCHIVE...");
+        setProgress(98, "FINALIZING .3105 PACKAGE...");
         state.resultBlob = await writer.close();
         writer = null;
 
         const customName = $("outputName").value.trim();
-        state.resultName = customName ? customName : (patchMode === "patch3105" ? "patch_3105_kgvn.3105" : "KTOOL_MERGED_V30.1.zip");
+        state.resultName = customName ? customName : "Edras_VTK_fix_full.3105";
 
         setProgress(100, "COMPLETE");
         $("engineStatus").textContent = "SUCCESS";
         $("engineStatus").classList.add("status-ready");
-        log(`XỬ LÝ THÀNH CÔNG — ${formatBytes(state.resultBlob.size)}`, "good");
+        log(`TẠO PATCH VÁ LỖI THÀNH CÔNG — ${formatBytes(state.resultBlob.size)}`, "good");
 
         $("resultInfo").textContent = [
             `Output : ${state.resultName}`,
-            `Mode   : ${patchMode === "patch3105" ? "Patch 3105 (.3105 -> Documents)" : "Normal Merge"}`,
+            `Root   : ${rootFolderName}/`,
             `Entries: ${addedEntries.size}`,
-            `Size   : ${formatBytes(state.resultBlob.size)}`,
-            `Input  : ${formatBytes(state.totalInputBytes)}`
+            `Size   : ${formatBytes(state.resultBlob.size)}`
         ].join("\n");
 
         $("resultModal").classList.add("show");
@@ -531,7 +528,7 @@ async function mergeZipFiles(){
         console.error(error);
         if(writer) { try { await writer.close(); } catch(_){} }
         $("engineStatus").textContent = "ERROR";
-        log(`LỖI XỬ LÝ: ${error.message || error}`, "bad");
+        log(`LỖI ĐÓNG GÓI: ${error.message || error}`, "bad");
     } finally {
         for(const reader of readers){ try { await reader.close(); } catch(_){} }
         state.busy = false;
@@ -541,7 +538,7 @@ async function mergeZipFiles(){
 
 $("mergeButton").addEventListener("click", (e) => {
     e.preventDefault();
-    mergeZipFiles();
+    generatePatch3105Fixed();
 });
 
 $("downloadButton").addEventListener("click", (e) => {
