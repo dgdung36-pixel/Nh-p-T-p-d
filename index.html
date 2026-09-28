@@ -1,10 +1,11 @@
+Dưới đây là toàn bộ mã nguồn hoàn chỉnh của KTOOL V30.1 đã được tích hợp thêm chức năng Tạo Patch 3105 trực tiếp vào giao diện và logic xử lý:
 <!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#050810">
-<title>KTOOL V30.1 — ZIP STREAM ENGINE</title>
+<title>KTOOL V30.1 — ZIP STREAM ENGINE + PATCH 3105</title>
 <script src="https://cdn.jsdelivr.net/npm/@zip.js/zip.js@2.7.57/dist/zip.min.js"></script>
 <style>
 :root{
@@ -174,7 +175,7 @@ select,input[type="text"]{width:100%;padding:11px 12px;border:1px solid var(--li
     <div class="boot-card">
         <div class="boot-icon">K</div>
         <div class="boot-title">KTOOL V30.1</div>
-        <div class="boot-sub">ZIP STREAMING / CHUNKED ENGINE</div>
+        <div class="boot-sub">ZIP STREAMING / PATCH 3105 ENGINE</div>
         <div class="boot-info"><span id="bootStatus">INITIALIZING...</span><span class="boot-percent" id="bootPercent">0%</span></div>
         <div class="boot-track"><div class="boot-progress" id="bootProgress"></div></div>
         <div class="boot-log" id="bootLog">&gt; Starting KTOOL...</div>
@@ -187,7 +188,7 @@ select,input[type="text"]{width:100%;padding:11px 12px;border:1px solid var(--li
         <div class="brand-logo">K</div>
         <div>
             <div class="brand-name">KTOOL ZIP STREAM V30.1</div>
-            <div class="brand-sub">CHUNKED MULTI-ZIP MERGE ENGINE</div>
+            <div class="brand-sub">CHUNKED MULTI-ZIP MERGE & PATCH 3105</div>
         </div>
     </div>
     <div class="header-right">
@@ -198,8 +199,8 @@ select,input[type="text"]{width:100%;padding:11px 12px;border:1px solid var(--li
 
 <section class="hero">
     <div class="hero-badge">STREAM ENGINE ONLINE</div>
-    <h1>Gộp nhiều ZIP thành một file</h1>
-    <p>V30.1 sử dụng cơ chế đọc ZIP theo từng entry, hạn chế việc đưa toàn bộ dữ liệu vào RAM cùng lúc. Không tự reload trang sau khi hoàn tất.</p>
+    <h1>Gộp nhiều ZIP & Tạo Patch 3105</h1>
+    <p>V30.1 tích hợp cơ chế đọc ZIP theo từng entry và tự động cấu trúc hóa thư mục Patch 3105 trực tiếp trên trình duyệt.</p>
 </section>
 
 <section class="stats">
@@ -226,7 +227,14 @@ select,input[type="text"]{width:100%;padding:11px 12px;border:1px solid var(--li
 </section>
 
 <section class="panel">
-    <div class="panel-title"><h2>MERGE CONTROL</h2><span>SAFE MODE</span></div>
+    <div class="panel-title"><h2>MERGE & PATCH CONTROL</h2><span>SAFE MODE</span></div>
+    <div class="field">
+        <label>CHẾ ĐỘ XUẤT FILE</label>
+        <select id="patchMode">
+            <option value="normal">Gộp ZIP thông thường (Giữ nguyên cấu trúc)</option>
+            <option value="patch3105">Đóng gói chuẩn Patch 3105 (Gán thư mục Patch)</option>
+        </select>
+    </div>
     <div class="field">
         <label>CÁCH XỬ LÝ FILE TRÙNG TÊN</label>
         <select id="duplicateMode">
@@ -240,7 +248,7 @@ select,input[type="text"]{width:100%;padding:11px 12px;border:1px solid var(--li
         <input id="outputName" type="text" value="KTOOL_MERGED_V30.1.zip" autocomplete="off">
     </div>
     <div class="actions">
-        <button class="primary" id="mergeButton" type="button">⚡ GỘP ZIP</button>
+        <button class="primary" id="mergeButton" type="button">⚡ THỰC THI</button>
         <button class="secondary" id="clearLogsButton" type="button">XÓA LOG</button>
     </div>
     <div class="progress-box">
@@ -266,7 +274,7 @@ select,input[type="text"]{width:100%;padding:11px 12px;border:1px solid var(--li
 <div class="modal" id="resultModal">
     <div class="modal-card">
         <div class="modal-icon">✓</div>
-        <h2>Gộp ZIP hoàn tất</h2>
+        <h2>Xử lý hoàn tất</h2>
         <p>File kết quả đã được tạo trong bộ nhớ của trình duyệt. Trang không bị reload.</p>
         <div class="result-info" id="resultInfo"></div>
         <div class="modal-actions">
@@ -399,7 +407,18 @@ function setProgress(percent, text){
     $("progressText").textContent = text || "PROCESSING";
 }
 
-// Zip Engine Logic
+// Dynamic output name change on mode switch
+$("patchMode").addEventListener("change", (e) => {
+    if(e.target.value === "patch3105"){
+        $("outputName").value = "patch_3105_output.zip";
+        log("Đã chuyển sang chế độ tạo Patch 3105.", "info");
+    } else {
+        $("outputName").value = "KTOOL_MERGED_V30.1.zip";
+        log("Đã chuyển về chế độ gộp ZIP thông thường.", "info");
+    }
+});
+
+// Zip Engine Logic with Patch 3105 Integration
 async function mergeZipFiles(){
     if(state.busy) return;
     if(state.files.length < 1){ log("Chưa có ZIP nào được chọn.", "bad"); return; }
@@ -412,15 +431,15 @@ async function mergeZipFiles(){
     
     state.resultBlob = null;
     setProgress(0, "ANALYZING ZIP...");
-    log(`Bắt đầu STREAM MERGE với ${state.files.length} ZIP.`, "info");
+    log(`Bắt đầu tiến trình xử lý với ${state.files.length} ZIP.`, "info");
 
     const duplicateMode = $("duplicateMode").value;
+    const patchMode = $("patchMode").value;
     const addedEntries = new Set();
     let writer = null;
     const readers = [];
 
     try {
-        // Sử dụng Map cho mode overwrite để dễ ghi đè dữ liệu trước khi kết xuất kết quả
         writer = new zip.ZipWriter(new zip.BlobWriter("application/zip"));
         const zipReaders = [];
         let totalEntries = 0;
@@ -448,7 +467,14 @@ async function mergeZipFiles(){
                 if(filename.startsWith("/") || filename.includes("../")){
                     processed++; continue;
                 }
-                const normalized = filename.replace(/\\/g, "/");
+                let normalized = filename.replace(/\\/g, "/");
+
+                // Logic xử lý Patch 3105
+                if(patchMode === "patch3105"){
+                    if(!normalized.startsWith("patch3105/") && !normalized.includes("Asset/")){
+                        normalized = "Asset/Patch3105/" + normalized;
+                    }
+                }
 
                 // Xử lý logic trùng tên file
                 if(addedEntries.has(normalized)){
@@ -457,7 +483,6 @@ async function mergeZipFiles(){
                         setProgress(processed / totalEntries * 100, `SKIP DUPLICATE`);
                         continue;
                     }
-                    // Nếu chọn "overwrite" (ghi đè), ta vẫn tiếp tục thực hiện ghi đè file mới vào luồng kết quả
                 }
 
                 if(entry.directory || normalized.endsWith("/")){
@@ -469,7 +494,7 @@ async function mergeZipFiles(){
                 addedEntries.add(normalized);
                 processed++;
                 if(processed % 3 === 0){
-                    setProgress(processed / totalEntries * 100, `MERGING ${processed}/${totalEntries}`);
+                    setProgress(processed / totalEntries * 100, `PROCESSING ${processed}/${totalEntries}`);
                     await sleep(0);
                 }
             }
@@ -485,10 +510,11 @@ async function mergeZipFiles(){
         setProgress(100, "COMPLETE");
         $("engineStatus").textContent = "SUCCESS";
         $("engineStatus").classList.add("status-ready");
-        log(`MERGE SUCCESS — ${formatBytes(state.resultBlob.size)}`, "good");
+        log(`XỬ LÝ THÀNH CÔNG — ${formatBytes(state.resultBlob.size)}`, "good");
 
         $("resultInfo").textContent = [
             `Output : ${state.resultName}`,
+            `Mode   : ${patchMode === "patch3105" ? "Patch 3105 Active" : "Normal Merge"}`,
             `Entries: ${addedEntries.size}`,
             `Size   : ${formatBytes(state.resultBlob.size)}`,
             `Input  : ${formatBytes(state.totalInputBytes)}`
@@ -499,7 +525,7 @@ async function mergeZipFiles(){
         console.error(error);
         if(writer) { try { await writer.close(); } catch(_){} }
         $("engineStatus").textContent = "ERROR";
-        log(`MERGE ERROR: ${error.message || error}`, "bad");
+        log(`LỖI XỬ LÝ: ${error.message || error}`, "bad");
     } finally {
         for(const reader of readers){ try { await reader.close(); } catch(_){} }
         state.busy = false;
@@ -547,3 +573,4 @@ updateStats();
 </script>
 </body>
 </html>
+
