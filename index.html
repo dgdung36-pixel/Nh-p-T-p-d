@@ -4,14 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#050810">
-<title>KTOOL V30.1 — NATIVE 3105, UNPACK & UNITY ENGINE</title>
+<title>KTOOL V31 — PATCH & MOD SKIN ZIP ENGINE</title>
 <script src="https://cdn.jsdelivr.net/npm/@zip.js/zip.js@2.7.57/dist/zip.min.js"></script>
 <style>
 :root{
     --bg:#050810;
     --bg2:#09111f;
-    --panel:rgba(12,19,32,.82);
-    --panel2:rgba(17,27,44,.88);
+    --panel:rgba(12,19,32,.86);
+    --panel2:rgba(17,27,44,.92);
     --text:#eef7ff;
     --muted:#8292a8;
     --line:rgba(130,170,210,.16);
@@ -21,12 +21,12 @@
     --yellow:#ffd166;
     --red:#ff6682;
     --shadow:0 25px 80px rgba(0,0,0,.42);
-    --radius:22px;
+    --radius:20px;
 }
 html.light{
     --bg:#edf3f8;
     --bg2:#e2e9f1;
-    --panel:rgba(255,255,255,.88);
+    --panel:rgba(255,255,255,.92);
     --panel2:#fff;
     --text:#111827;
     --muted:#657287;
@@ -38,1052 +38,2449 @@ html.light{
     --red:#c82d4d;
     --shadow:0 20px 55px rgba(40,60,80,.15);
 }
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-html{min-height:100%;background:var(--bg);}
+*{
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
+html{
+    min-height:100%;
+    background:var(--bg);
+}
 body{
-    margin:0;min-height:100vh;color:var(--text);
-    font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
-    background:radial-gradient(circle at 5% 0%,rgba(88,231,255,.12),transparent 27%),
-               radial-gradient(circle at 95% 8%,rgba(140,120,255,.13),transparent 27%),
-               linear-gradient(145deg,var(--bg),var(--bg2));
+    margin:0;
+    min-height:100vh;
+    color:var(--text);
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+    background:
+        radial-gradient(circle at 5% 0%,rgba(88,231,255,.12),transparent 27%),
+        radial-gradient(circle at 95% 8%,rgba(140,120,255,.13),transparent 27%),
+        linear-gradient(145deg,var(--bg),var(--bg2));
     overflow-x:hidden;
 }
-.background{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:-5;}
-.orb{position:absolute;border-radius:50%;filter:blur(70px);opacity:.18;animation:floatOrb 15s ease-in-out infinite alternate;}
-.orb.one{width:380px;height:380px;background:#00d9ff;left:-130px;top:-120px;}
-.orb.two{width:430px;height:430px;background:#704cff;right:-160px;bottom:-120px;animation-delay:-5s;}
-.orb.three{width:280px;height:280px;background:#00ffa6;left:45%;top:45%;animation-delay:-9s;}
-@keyframes floatOrb{from{transform:translate3d(0,0,0) scale(1)}to{transform:translate3d(45px,65px,0) scale(1.15)}}
-
-#boot{
-    position:fixed;inset:0;z-index:99999;display:flex;justify-content:center;align-items:center;
-    background:#03060b;transition:opacity .5s ease,visibility .5s ease;
+.background{
+    position:fixed;
+    inset:0;
+    overflow:hidden;
+    pointer-events:none;
+    z-index:-5;
 }
-#boot.hide{opacity:0;visibility:hidden;pointer-events:none;}
+.orb{
+    position:absolute;
+    border-radius:50%;
+    filter:blur(70px);
+    opacity:.18;
+    animation:floatOrb 15s ease-in-out infinite alternate;
+}
+.orb.one{
+    width:380px;
+    height:380px;
+    background:#00d9ff;
+    left:-130px;
+    top:-120px;
+}
+.orb.two{
+    width:430px;
+    height:430px;
+    background:#704cff;
+    right:-160px;
+    bottom:-120px;
+    animation-delay:-5s;
+}
+.orb.three{
+    width:280px;
+    height:280px;
+    background:#00ffa6;
+    left:45%;
+    top:45%;
+    animation-delay:-9s;
+}
+@keyframes floatOrb{
+    from{transform:translate3d(0,0,0) scale(1)}
+    to{transform:translate3d(45px,65px,0) scale(1.15)}
+}
+/* BOOT */
+#boot{
+    position:fixed;
+    inset:0;
+    z-index:99999;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#03060b;
+    transition:opacity .5s ease,visibility .5s ease;
+}
+#boot.hide{
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+}
 .boot-card{
-    width:min(560px,90vw);padding:30px;border:1px solid rgba(88,231,255,.18);border-radius:25px;
-    background:rgba(5,10,18,.96);box-shadow:0 0 70px rgba(88,231,255,.08),0 30px 100px rgba(0,0,0,.65);
+    width:min(560px,90vw);
+    padding:30px;
+    border:1px solid rgba(88,231,255,.18);
+    border-radius:25px;
+    background:rgba(5,10,18,.96);
+    box-shadow:
+        0 0 70px rgba(88,231,255,.08),
+        0 30px 100px rgba(0,0,0,.65);
 }
 .boot-icon{
-    width:60px;height:60px;display:grid;place-items:center;border-radius:18px;margin-bottom:20px;
-    color:#041018;background:linear-gradient(135deg,var(--accent),var(--accent2));font-size:25px;font-weight:1000;
+    width:60px;
+    height:60px;
+    display:grid;
+    place-items:center;
+    border-radius:18px;
+    margin-bottom:20px;
+    color:#041018;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    font-size:25px;
+    font-weight:1000;
 }
-.boot-title{font-size:25px;font-weight:950;}
-.boot-sub{margin-top:6px;color:#74859d;font-size:10px;letter-spacing:2px;}
-.boot-info{display:flex;justify-content:space-between;margin-top:25px;font-family:monospace;font-size:11px;color:#a7b5c8;}
-.boot-percent{color:var(--accent);font-weight:bold;}
-.boot-track{height:7px;margin-top:9px;overflow:hidden;border-radius:20px;background:#111a28;}
-.boot-progress{width:0;height:100%;border-radius:20px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .15s linear;}
-.boot-log{min-height:55px;margin-top:18px;padding:12px;border-radius:12px;background:#02050a;color:#6e829b;font:10px/1.7 monospace;}
-
-.app{width:min(1240px,94vw);margin:auto;padding:max(20px,env(safe-area-inset-top)) 0 max(45px,env(safe-area-inset-bottom));}
-
-header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:22px;}
-.brand{display:flex;align-items:center;gap:13px;min-width:0;flex:1;}
+.boot-title{
+    font-size:25px;
+    font-weight:950;
+}
+.boot-sub{
+    margin-top:6px;
+    color:#74859d;
+    font-size:10px;
+    letter-spacing:2px;
+}
+.boot-info{
+    display:flex;
+    justify-content:space-between;
+    margin-top:25px;
+    font-family:monospace;
+    font-size:11px;
+    color:#a7b5c8;
+}
+.boot-percent{
+    color:var(--accent);
+    font-weight:bold;
+}
+.boot-track{
+    height:7px;
+    margin-top:9px;
+    overflow:hidden;
+    border-radius:20px;
+    background:#111a28;
+}
+.boot-progress{
+    width:0;
+    height:100%;
+    border-radius:20px;
+    background:linear-gradient(90deg,var(--accent),var(--accent2));
+    transition:width .15s linear;
+}
+.boot-log{
+    min-height:55px;
+    margin-top:18px;
+    padding:12px;
+    border-radius:12px;
+    background:#02050a;
+    color:#6e829b;
+    font:10px/1.7 monospace;
+}
+/* APP */
+.app{
+    width:min(1240px,94vw);
+    margin:auto;
+    padding:
+        max(20px,env(safe-area-inset-top))
+        0
+        max(45px,env(safe-area-inset-bottom));
+}
+header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    margin-bottom:22px;
+}
+.brand{
+    display:flex;
+    align-items:center;
+    gap:13px;
+    min-width:0;
+    flex:1;
+}
 .brand-logo{
-    width:49px;height:49px;flex:none;display:grid;place-items:center;border-radius:16px;
-    color:#031018;background:linear-gradient(135deg,var(--accent),var(--accent2));font-weight:1000;
+    width:49px;
+    height:49px;
+    flex:none;
+    display:grid;
+    place-items:center;
+    border-radius:16px;
+    color:#031018;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    font-weight:1000;
 }
-.brand-name{font-size:16px;font-weight:950;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.brand-sub{margin-top:3px;color:var(--muted);font-size:9px;letter-spacing:1.5px;}
-.header-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
-.clock{min-width:90px;padding:10px 10px;text-align:center;border:1px solid var(--line);border-radius:13px;background:var(--panel);font:700 11px monospace;}
-.icon-button{width:42px;height:42px;border:1px solid var(--line);border-radius:13px;color:var(--text);background:var(--panel);cursor:pointer;}
-
-.hero{padding:30px;border:1px solid var(--line);border-radius:27px;background:var(--panel);margin-bottom:15px;position:relative;}
-.hero-badge{display:inline-flex;padding:6px 10px;border:1px solid rgba(88,231,255,.2);border-radius:30px;color:var(--accent);background:rgba(88,231,255,.05);font:800 9px monospace;}
-.hero h1{margin:13px 0 9px;font-size:clamp(22px,4vw,38px);letter-spacing:-1.5px;}
-.hero p{max-width:800px;margin:0;color:var(--muted);font-size:12px;line-height:1.75;}
-
-/* Tab Switcher */
-.tabs{display:flex;gap:8px;margin-bottom:15px;flex-wrap:wrap;}
-.tab-btn{flex:1;min-width:115px;padding:14px;border:1px solid var(--line);border-radius:16px;background:var(--panel);color:var(--muted);font-size:10px;font-weight:900;cursor:pointer;transition:.2s;}
-.tab-btn.active{border-color:var(--accent);background:rgba(88,231,255,.07);color:var(--text);}
-
-.section-pane{display:none;}
-.section-pane.active{display:block;}
-
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:15px;}
-.stat{padding:17px;border:1px solid var(--line);border-radius:17px;background:var(--panel);}
-.stat-label{color:var(--muted);font-size:9px;font-weight:800;}
-.stat-value{margin-top:7px;font-size:17px;font-weight:950;}
-.status-ready{color:var(--green);}
-
-.grid{display:grid;grid-template-columns:1.15fr .85fr;gap:15px;}
-.panel{padding:20px;border:1px solid var(--line);border-radius:21px;background:var(--panel);margin-bottom:15px;}
-.panel-title{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:15px;}
-.panel-title h2{margin:0;font-size:13px;}
-.panel-title span{color:var(--muted);font:9px monospace;}
-
+.brand-name{
+    font-size:16px;
+    font-weight:950;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+.brand-sub{
+    margin-top:3px;
+    color:var(--muted);
+    font-size:9px;
+    letter-spacing:1.5px;
+}
+.header-right{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-shrink:0;
+}
+.clock{
+    min-width:90px;
+    padding:10px;
+    text-align:center;
+    border:1px solid var(--line);
+    border-radius:13px;
+    background:var(--panel);
+    font:700 11px monospace;
+}
+.icon-button{
+    width:42px;
+    height:42px;
+    border:1px solid var(--line);
+    border-radius:13px;
+    color:var(--text);
+    background:var(--panel);
+    cursor:pointer;
+}
+/* HERO */
+.hero{
+    padding:30px;
+    border:1px solid var(--line);
+    border-radius:27px;
+    background:var(--panel);
+    margin-bottom:15px;
+}
+.hero-badge{
+    display:inline-flex;
+    padding:6px 10px;
+    border:1px solid rgba(88,231,255,.2);
+    border-radius:30px;
+    color:var(--accent);
+    background:rgba(88,231,255,.05);
+    font:800 9px monospace;
+}
+.hero h1{
+    margin:13px 0 9px;
+    font-size:clamp(22px,4vw,38px);
+    letter-spacing:-1.5px;
+}
+.hero p{
+    max-width:850px;
+    margin:0;
+    color:var(--muted);
+    font-size:12px;
+    line-height:1.75;
+}
+/* TABS */
+.tabs{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+    margin-bottom:15px;
+}
+.tab-btn{
+    min-height:52px;
+    padding:13px;
+    border:1px solid var(--line);
+    border-radius:16px;
+    background:var(--panel);
+    color:var(--muted);
+    font-size:10px;
+    font-weight:900;
+    cursor:pointer;
+    transition:.2s;
+}
+.tab-btn.active{
+    border-color:var(--accent);
+    background:rgba(88,231,255,.07);
+    color:var(--text);
+}
+.section-pane{
+    display:none;
+}
+.section-pane.active{
+    display:block;
+}
+/* STATS */
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+    margin-bottom:15px;
+}
+.stat{
+    padding:17px;
+    border:1px solid var(--line);
+    border-radius:17px;
+    background:var(--panel);
+}
+.stat-label{
+    color:var(--muted);
+    font-size:9px;
+    font-weight:800;
+}
+.stat-value{
+    margin-top:7px;
+    font-size:17px;
+    font-weight:950;
+}
+.status-ready{
+    color:var(--green);
+}
+/* GRID */
+.grid{
+    display:grid;
+    grid-template-columns:1.15fr .85fr;
+    gap:15px;
+}
+.panel{
+    padding:20px;
+    border:1px solid var(--line);
+    border-radius:21px;
+    background:var(--panel);
+    margin-bottom:15px;
+}
+.panel-title{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    margin-bottom:15px;
+}
+.panel-title h2{
+    margin:0;
+    font-size:13px;
+}
+.panel-title span{
+    color:var(--muted);
+    font:9px monospace;
+}
+/* DROP */
 .drop{
-    min-height:170px;display:flex;justify-content:center;align-items:center;padding:20px;text-align:center;
-    border:1px dashed rgba(88,231,255,.35);border-radius:18px;background:rgba(88,231,255,.025);cursor:pointer;
+    min-height:190px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+    text-align:center;
+    border:1px dashed rgba(88,231,255,.35);
+    border-radius:18px;
+    background:rgba(88,231,255,.025);
+    cursor:pointer;
+    transition:.2s;
 }
-.drop.drag{border-color:var(--accent);background:rgba(88,231,255,.07);}
-.drop-icon{font-size:40px;margin-bottom:8px;}
-.drop h3{margin:0 0 6px;font-size:15px;}
-.drop p{margin:0 0 13px;color:var(--muted);font-size:10px;}
-
-button{cursor:pointer;-webkit-user-select:none;user-select:none;}
-.primary,.secondary,.danger{border-radius:11px;padding:11px 15px;font-size:10px;font-weight:900;transition:.25s ease;}
-.primary{border:0;color:#041018;background:linear-gradient(135deg,var(--accent),#92f2ff);}
-.secondary{border:1px solid var(--line);color:var(--text);background:var(--panel2);}
-.danger{border:1px solid rgba(255,102,130,.2);color:var(--red);background:rgba(255,102,130,.05);}
-
-.file-list{max-height:250px;margin-top:13px;overflow:auto;display:grid;gap:7px;}
-.file-item{display:grid;grid-template-columns:30px 1fr auto;align-items:center;gap:9px;padding:9px 10px;border:1px solid var(--line);border-radius:12px;background:var(--panel2);font-size:10px;}
-.file-index{width:25px;height:25px;display:grid;place-items:center;border-radius:8px;background:rgba(88,231,255,.08);color:var(--accent);font:700 9px monospace;}
-.file-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.file-size{color:var(--muted);font:9px monospace;}
-
-.field{margin-bottom:13px;}
-.field label{display:block;margin-bottom:6px;color:var(--muted);font-size:9px;font-weight:800;}
-select,input[type="text"]{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:11px;outline:none;color:var(--text);background:var(--panel2);font-size:11px;}
-.actions{display:flex;flex-wrap:wrap;gap:8px;}
-
-.progress-box{margin-top:15px;padding:14px;border:1px solid var(--line);border-radius:15px;background:rgba(0,0,0,.08);}
-.progress-top{display:flex;justify-content:space-between;font:9px monospace;color:var(--muted);}
-.progress-percent{color:var(--accent);font-weight:bold;}
-.progress-track{height:8px;margin-top:9px;overflow:hidden;border-radius:20px;background:rgba(120,150,190,.12);}
-.progress-fill{width:0;height:100%;border-radius:20px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .12s linear;}
-
-.terminal{height:210px;overflow:auto;padding:14px;border-radius:15px;background:#02050a;color:#8498b1;font:10px/1.65 monospace;}
-.log{white-space:pre-wrap;word-break:break-word;}
-.log.good{color:#59e8a7} .log.warn{color:#ffd166} .log.bad{color:#ff6682} .log.info{color:#77ddff}
-
-.credit{margin-top:5px;padding:25px;text-align:center;border:1px solid rgba(88,231,255,.18);border-radius:22px;background:linear-gradient(135deg,rgba(88,231,255,.04),rgba(140,120,255,.05));}
-.credit small{color:var(--muted);font-size:8px;letter-spacing:2px;}
-.credit-name{margin-top:8px;font-size:17px;font-weight:1000;letter-spacing:2px;background:linear-gradient(90deg,var(--accent),#fff,var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent;}
-
-.modal{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.68);}
-.modal.show{display:flex;}
-.modal-card{width:min(560px,94vw);padding:25px;border:1px solid var(--line);border-radius:23px;background:var(--panel2);}
-.modal-icon{width:48px;height:48px;display:grid;place-items:center;border-radius:15px;background:rgba(78,229,165,.1);color:var(--green);font-size:22px;}
-.result-info{margin:15px 0;padding:13px;border-radius:13px;background:rgba(88,231,255,.04);border:1px solid var(--line);font:10px/1.7 monospace;}
-
-@media(max-width:850px){.grid{grid-template-columns:1fr;}.stats{grid-template-columns:repeat(2,1fr);}}
+.drop.drag{
+    border-color:var(--accent);
+    background:rgba(88,231,255,.07);
+    transform:scale(1.01);
+}
+.drop-icon{
+    font-size:40px;
+    margin-bottom:8px;
+}
+.drop h3{
+    margin:0 0 6px;
+    font-size:15px;
+}
+.drop p{
+    margin:0 0 13px;
+    color:var(--muted);
+    font-size:10px;
+}
+/* BUTTONS */
+button{
+    cursor:pointer;
+    -webkit-user-select:none;
+    user-select:none;
+}
+button:disabled{
+    opacity:.45;
+    cursor:not-allowed;
+}
+.primary,
+.secondary,
+.danger{
+    border-radius:11px;
+    padding:11px 15px;
+    font-size:10px;
+    font-weight:900;
+    transition:.25s ease;
+}
+.primary{
+    border:0;
+    color:#041018;
+    background:linear-gradient(135deg,var(--accent),#92f2ff);
+}
+.secondary{
+    border:1px solid var(--line);
+    color:var(--text);
+    background:var(--panel2);
+}
+.danger{
+    border:1px solid rgba(255,102,130,.2);
+    color:var(--red);
+    background:rgba(255,102,130,.05);
+}
+.actions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+}
+/* FILE LIST */
+.file-list{
+    max-height:280px;
+    margin-top:13px;
+    overflow:auto;
+    display:grid;
+    gap:7px;
+}
+.file-item{
+    display:grid;
+    grid-template-columns:30px 1fr auto;
+    align-items:center;
+    gap:9px;
+    padding:9px 10px;
+    border:1px solid var(--line);
+    border-radius:12px;
+    background:var(--panel2);
+    font-size:10px;
+}
+.file-index{
+    width:25px;
+    height:25px;
+    display:grid;
+    place-items:center;
+    border-radius:8px;
+    background:rgba(88,231,255,.08);
+    color:var(--accent);
+    font:700 9px monospace;
+}
+.file-name{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+.file-size{
+    color:var(--muted);
+    font:9px monospace;
+}
+/* INPUT */
+.field{
+    margin-bottom:13px;
+}
+.field label{
+    display:block;
+    margin-bottom:6px;
+    color:var(--muted);
+    font-size:9px;
+    font-weight:800;
+}
+select,
+input[type="text"]{
+    width:100%;
+    padding:11px 12px;
+    border:1px solid var(--line);
+    border-radius:11px;
+    outline:none;
+    color:var(--text);
+    background:var(--panel2);
+    font-size:11px;
+}
+.progress-box{
+    margin-top:15px;
+    padding:14px;
+    border:1px solid var(--line);
+    border-radius:15px;
+    background:rgba(0,0,0,.08);
+}
+.progress-top{
+    display:flex;
+    justify-content:space-between;
+    font:9px monospace;
+    color:var(--muted);
+}
+.progress-percent{
+    color:var(--accent);
+    font-weight:bold;
+}
+.progress-track{
+    height:8px;
+    margin-top:9px;
+    overflow:hidden;
+    border-radius:20px;
+    background:rgba(120,150,190,.12);
+}
+.progress-fill{
+    width:0;
+    height:100%;
+    border-radius:20px;
+    background:linear-gradient(90deg,var(--accent),var(--accent2));
+    transition:width .12s linear;
+}
+/* TERMINAL */
+.terminal{
+    height:210px;
+    overflow:auto;
+    padding:14px;
+    border-radius:15px;
+    background:#02050a;
+    color:#8498b1;
+    font:10px/1.65 monospace;
+}
+.log{
+    white-space:pre-wrap;
+    word-break:break-word;
+}
+.log.good{color:#59e8a7}
+.log.warn{color:#ffd166}
+.log.bad{color:#ff6682}
+.log.info{color:#77ddff}
+/* CREDIT */
+.credit{
+    margin-top:5px;
+    padding:25px;
+    text-align:center;
+    border:1px solid rgba(88,231,255,.18);
+    border-radius:22px;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(88,231,255,.04),
+            rgba(140,120,255,.05)
+        );
+}
+.credit small{
+    color:var(--muted);
+    font-size:8px;
+    letter-spacing:2px;
+}
+.credit-name{
+    margin-top:8px;
+    font-size:17px;
+    font-weight:1000;
+    letter-spacing:2px;
+    background:linear-gradient(90deg,var(--accent),#fff,var(--accent2));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+}
+/* MODAL */
+.modal{
+    position:fixed;
+    inset:0;
+    z-index:10000;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background:rgba(0,0,0,.68);
+}
+.modal.show{
+    display:flex;
+}
+.modal-card{
+    width:min(560px,94vw);
+    padding:25px;
+    border:1px solid var(--line);
+    border-radius:23px;
+    background:var(--panel2);
+}
+.modal-icon{
+    width:48px;
+    height:48px;
+    display:grid;
+    place-items:center;
+    border-radius:15px;
+    background:rgba(78,229,165,.1);
+    color:var(--green);
+    font-size:22px;
+}
+.result-info{
+    margin:15px 0;
+    padding:13px;
+    border-radius:13px;
+    background:rgba(88,231,255,.04);
+    border:1px solid var(--line);
+    font:10px/1.7 monospace;
+    white-space:pre-wrap;
+}
+@media(max-width:850px){
+    .grid{
+        grid-template-columns:1fr;
+    }
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+@media(max-width:600px){
+    .tabs{
+        grid-template-columns:1fr;
+    }
+}
 @media(max-width:480px){
-    .brand-name{font-size:13px;}
-    .brand-logo{width:38px;height:38px;}
+    .brand-name{
+        font-size:13px;
+    }
+    .brand-logo{
+        width:38px;
+        height:38px;
+    }
+    .clock{
+        min-width:72px;
+    }
+    .hero{
+        padding:21px;
+    }
+    .panel{
+        padding:15px;
+    }
 }
 </style>
 </head>
 <body>
-<div class="background"><div class="orb one"></div><div class="orb two"></div><div class="orb three"></div></div>
-
+<div class="background">
+    <div class="orb one"></div>
+    <div class="orb two"></div>
+    <div class="orb three"></div>
+</div>
+<!-- BOOT -->
 <div id="boot">
     <div class="boot-card">
         <div class="boot-icon">K</div>
-        <div class="boot-title">KTOOL V30.1</div>
-        <div class="boot-sub">PATCH 3105 & UNPACK ENGINE</div>
-        <div class="boot-info"><span id="bootStatus">INITIALIZING...</span><span class="boot-percent" id="bootPercent">0%</span></div>
-        <div class="boot-track"><div class="boot-progress" id="bootProgress"></div></div>
-        <div class="boot-log" id="bootLog">&gt; Starting KTOOL...</div>
+        <div class="boot-title">KTOOL V31</div>
+        <div class="boot-sub">
+            PATCH 3105 • MOD SKIN ZIP ENGINE
+        </div>
+        <div class="boot-info">
+            <span id="bootStatus">INITIALIZING...</span>
+            <span class="boot-percent" id="bootPercent">0%</span>
+        </div>
+        <div class="boot-track">
+            <div class="boot-progress" id="bootProgress"></div>
+        </div>
+        <div class="boot-log" id="bootLog">
+            &gt; Starting KTOOL...
+        </div>
     </div>
 </div>
-
 <div class="app">
 <header>
     <div class="brand">
         <div class="brand-logo">K</div>
         <div>
-            <div class="brand-name">KTOOL V30.1 MULTI-UTILITY</div>
-            <div class="brand-sub">PATCH 3105 BUILDER, UNPACKER & UNITY ENGINE</div>
+            <div class="brand-name">
+                KTOOL V31 MULTI-UTILITY
+            </div>
+            <div class="brand-sub">
+                PATCH • UNPACK • MOD SKIN ZIP
+            </div>
         </div>
     </div>
     <div class="header-right">
         <div class="clock" id="clock">00:00:00</div>
-        <button class="icon-button" id="themeButton" title="Dark / Light">◐</button>
+        <button
+            class="icon-button"
+            id="themeButton"
+            type="button"
+            title="Dark / Light">
+            ◐
+        </button>
     </div>
 </header>
-
 <section class="hero">
-    <div class="hero-badge">MULTI-TOOL ENGINE ONLINE</div>
-    <h1>Trình Tạo Patch .3105, Giải Nén & Xử Lý Unity Asset</h1>
-    <p>Hỗ trợ đóng gói patch chuẩn iOS, giải nén ngược file <code>.3105</code> thành file <code>.zip</code>, chuyển đổi video và xử lý tệp cấu trúc tài nguyên.</p>
+    <div class="hero-badge">
+        ZIP ENGINE ONLINE
+    </div>
+    <h1>
+        Patch 3105 & Gộp ZIP Mod Skin
+    </h1>
+    <p>
+        Công cụ xử lý ZIP trực tiếp trên trình duyệt:
+        tạo package .3105, unpack .3105 về ZIP,
+        hoặc gộp nhiều ZIP mod/skin thành một file ZIP.
+    </p>
 </section>
-
-<!-- Tab Switcher -->
+<!-- TABS -->
 <div class="tabs">
-    <button class="tab-btn active" id="tabPatchBtn" type="button">📦 PATCH 3105</button>
-    <button class="tab-btn" id="tabExtractBtn" type="button">📤 UNPACK 3105</button>
-    <button class="tab-btn" id="tabVideoBtn" type="button">🎬 VIDEO MP4</button>
-    <button class="tab-btn" id="tabUnityBtn" type="button">⚙️ UNITY ASSET</button>
-    <button class="tab-btn" id="tabBypassBtn" type="button">🔗 BYPASS LINK</button>
+    <button
+        class="tab-btn active"
+        id="tabPatchBtn"
+        type="button">
+        📦 PATCH 3105
+    </button>
+    <button
+        class="tab-btn"
+        id="tabExtractBtn"
+        type="button">
+        📤 UNPACK 3105
+    </button>
+    <button
+        class="tab-btn"
+        id="tabSkinBtn"
+        type="button">
+        🎮 GỘP MOD SKIN
+    </button>
 </div>
-
-<!-- SECTION 1: PATCH 3105 BUILDER -->
+<!-- =====================================================
+     PATCH
+===================================================== -->
 <div class="section-pane active" id="panePatch">
-    <section class="stats">
-        <div class="stat"><div class="stat-label">ZIP INPUT</div><div class="stat-value" id="statFiles">0</div></div>
-        <div class="stat"><div class="stat-label">INPUT SIZE</div><div class="stat-value" id="statSize">0 B</div></div>
-        <div class="stat"><div class="stat-label">ENTRIES</div><div class="stat-value" id="statEntries">0</div></div>
-        <div class="stat"><div class="stat-label">ENGINE</div><div class="stat-value status-ready" id="engineStatus">READY</div></div>
-    </section>
-
-    <div class="grid">
-    <section class="panel">
-        <div class="panel-title"><h2>ZIP INPUT</h2><span>.ZIP ONLY</span></div>
-        <div class="drop" id="drop">
-            <div>
-                <div class="drop-icon">🗜️</div>
-                <h3>Kéo thả nhiều ZIP vào đây</h3>
-                <p>Chỉ nhận file .zip</p>
-                <button class="primary" id="chooseButton" type="button">CHỌN FILE ZIP</button>
-                <input id="fileInput" type="file" accept=".zip,application/zip" multiple hidden>
-            </div>
-        </div>
-        <div class="file-list" id="fileList"></div>
-        <div class="actions"><button class="secondary" id="clearButton" type="button">XÓA DANH SÁCH</button></div>
-    </section>
-
-    <section class="panel">
-        <div class="panel-title"><h2>PATCH 3105 CONFIG</h2><span>STRICT COMPLIANCE</span></div>
-        <div class="field">
-            <label>TÊN DỰ ÁN PATCH (THƯ MỤC GỐC)</label>
-            <input id="patchFolderName" type="text" value="Edras VTK fix full" autocomplete="off">
-        </div>
-        <div class="field">
-            <label>CÁCH XỬ LÝ FILE TRÙNG TÊN</label>
-            <select id="duplicateMode">
-                <option value="first">Giữ file đầu tiên (Bỏ qua file sau)</option>
-                <option value="overwrite">Ghi đè file (ZIP sau đè lên file ZIP trước)</option>
-                <option value="last">Ưu tiên toàn bộ file từ ZIP cuối</option>
-            </select>
-        </div>
-        <div class="field">
-            <label>TÊN FILE XUẤT RA (.3105)</label>
-            <input id="outputName" type="text" value="Edras_VTK_fix_full.3105" autocomplete="off">
-        </div>
-        <div class="actions">
-            <button class="primary" id="mergeButton" type="button">⚡ TẠO FILE .3105</button>
-            <button class="secondary" id="clearLogsButton" type="button">XÓA LOG</button>
-        </div>
-        <div class="progress-box">
-            <div class="progress-top"><span id="progressText">WAITING</span><span class="progress-percent" id="progressPercent">0%</span></div>
-            <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
-        </div>
-    </section>
+<section class="stats">
+    <div class="stat">
+        <div class="stat-label">ZIP INPUT</div>
+        <div class="stat-value" id="statFiles">0</div>
     </div>
-</div>
-
-<!-- SECTION 1.5: UNPACK 3105 TO ZIP -->
-<div class="section-pane" id="paneExtract">
-    <div class="grid">
-    <section class="panel">
-        <div class="panel-title"><h2>.3105 FILE INPUT</h2><span>.3105 / .ZIP</span></div>
-        <div class="drop" id="extractDrop">
-            <div>
-                <div class="drop-icon">📦</div>
-                <h3>Kéo thả file .3105 vào đây</h3>
-                <p>Chuyển đổi ngược lại thành file .zip chuẩn</p>
-                <button class="primary" id="chooseExtractButton" type="button">CHỌN FILE .3105</button>
-                <input id="extractFileInput" type="file" accept=".3105,.zip,application/zip" hidden>
-            </div>
-        </div>
-        <div class="file-list" id="extractFileList"></div>
-    </section>
-
-    <section class="panel">
-        <div class="panel-title"><h2>UNPACK CONFIG</h2><span>ZIP EXPORT</span></div>
-        <div class="field">
-            <label>TÊN FILE ZIP XUẤT RA</label>
-            <input id="extractOutputName" type="text" value="Extracted_Patch.zip" autocomplete="off">
-        </div>
-        <div class="actions">
-            <button class="primary" id="executeExtractButton" type="button">🔓 GIẢI NÉN SANG .ZIP</button>
-        </div>
-        <div class="progress-box">
-            <div class="progress-top"><span id="extractProgressText">WAITING</span><span class="progress-percent" id="extractProgressPercent">0%</span></div>
-            <div class="progress-track"><div class="progress-fill" id="extractProgressFill"></div></div>
-        </div>
-    </section>
+    <div class="stat">
+        <div class="stat-label">INPUT SIZE</div>
+        <div class="stat-value" id="statSize">0 B</div>
     </div>
-</div>
-
-<!-- SECTION 2: VIDEO TO MP4 CONVERTER -->
-<div class="section-pane" id="paneVideo">
-    <div class="grid">
-    <section class="panel">
-        <div class="panel-title"><h2>VIDEO INPUT</h2><span>MOV, MKV, WEBM, AVI...</span></div>
-        <div class="drop" id="videoDrop">
-            <div>
-                <div class="drop-icon">🎥</div>
-                <h3>Kéo thả video vào đây</h3>
-                <p>Hỗ trợ mọi định dạng video phổ biến</p>
-                <button class="primary" id="chooseVideoButton" type="button">CHỌN FILE VIDEO</button>
-                <input id="videoFileInput" type="file" accept="video/*" hidden>
-            </div>
-        </div>
-        <div class="file-list" id="videoFileList"></div>
-    </section>
-
-    <section class="panel">
-        <div class="panel-title"><h2>CONVERT CONFIG</h2><span>MP4 EXPORT</span></div>
-        <div class="field">
-            <label>TÊN FILE MP4 XUẤT RA</label>
-            <input id="videoOutputName" type="text" value="converted_video.mp4" autocomplete="off">
-        </div>
-        <div class="field">
-            <label>CHẤT LƯỢNG / TỐC ĐỘ</label>
-            <select id="videoQuality">
-                <option value="standard">Tiêu chuẩn (Nhanh, Tương thích cao)</option>
-                <option value="high">Chất lượng cao (Giữ nét tốt)</option>
-            </select>
-        </div>
-        <div class="actions">
-            <button class="primary" id="convertVideoButton" type="button">🔄 BIẾN ĐỔI THÀNH MP4</button>
-        </div>
-        <div class="progress-box">
-            <div class="progress-top"><span id="videoProgressText">WAITING</span><span class="progress-percent" id="videoProgressPercent">0%</span></div>
-            <div class="progress-track"><div class="progress-fill" id="videoProgressFill"></div></div>
-        </div>
-    </section>
+    <div class="stat">
+        <div class="stat-label">ENTRIES</div>
+        <div class="stat-value" id="statEntries">0</div>
     </div>
-</div>
-
-<!-- SECTION 3: UNITY ASSET FIXER (.BYTES / MODEL FIX) -->
-<div class="section-pane" id="paneUnity">
-    <div class="grid">
-    <section class="panel">
-        <div class="panel-title"><h2>UNITY FILE INPUT</h2><span>.BYTES / .ASSETS / .PKG</span></div>
-        <div class="drop" id="unityDrop">
-            <div>
-                <div class="drop-icon">🧩</div>
-                <h3>Kéo thả file Unity Asset vào đây</h3>
-                <p>Hỗ trợ file cấu hình .bytes, .pkg</p>
-                <button class="primary" id="chooseUnityButton" type="button">CHỌN FILE UNITY</button>
-                <input id="unityFileInput" type="file" accept=".bytes,.pkg,.assets" hidden>
-            </div>
-        </div>
-        <div class="file-list" id="unityFileList"></div>
-    </section>
-
-    <section class="panel">
-        <div class="panel-title"><h2>UNITY FIX CONFIG</h2><span>FIX PURPLE SHADER & TEXTURE</span></div>
-        <div class="field">
-            <label>HƯỚNG XỬ LÝ LỖI HIỂN THỊ</label>
-            <select id="unityFixMode">
-                <option value="shader_fix">Sửa lỗi shader ám tím (Thay thế Material/Shader)</option>
-                <option value="quality_boost">Tối ưu hóa & Nâng chất lượng texture cấu hình</option>
-            </select>
-        </div>
-        <div class="field">
-            <label>TÊN FILE XUẤT RA</label>
-            <input id="unityOutputName" type="text" value="Actor_Fixed.pkg.bytes" autocomplete="off">
-        </div>
-        <div class="actions">
-            <button class="primary" id="processUnityButton" type="button">🛠️ TIẾN HÀNH XỬ LÝ FILE</button>
-        </div>
-        <div class="progress-box">
-            <div class="progress-top"><span id="unityProgressText">WAITING</span><span class="progress-percent" id="unityProgressPercent">0%</span></div>
-            <div class="progress-track"><div class="progress-fill" id="unityProgressFill"></div></div>
-        </div>
-    </section>
-    </div>
-</div>
-
-<!-- SECTION 4: BYPASS LINK RÚT GỌN -->
-<div class="section-pane" id="paneBypass">
-    <div class="panel">
-        <div class="panel-title"><h2>BYPASS LINK RÚT GỌN (LINK4M,...)</h2><span>AUTO EXTRACTOR</span></div>
-        <div class="field">
-            <label>NHẬP URL RÚT GỌN CẦN VƯỢT</label>
-            <input id="bypassInputUrl" type="text" placeholder="https://link4m.com/..." autocomplete="off">
-        </div>
-        <div class="actions">
-            <button class="primary" id="bypassExecuteBtn" type="button">🚀 TIẾN HÀNH BYPASS LINK</button>
-        </div>
-        <div class="field" style="margin-top:15px;">
-            <label>KẾT QUẢ / LINK GỐC ĐÍCH</label>
-            <input id="bypassResultUrl" type="text" readonly placeholder="Link đích sẽ hiển thị ở đây..." style="color:var(--green);font-weight:bold;">
+    <div class="stat">
+        <div class="stat-label">ENGINE</div>
+        <div class="stat-value status-ready" id="engineStatus">
+            READY
         </div>
     </div>
-</div>
-
+</section>
+<div class="grid">
 <section class="panel">
-    <div class="panel-title"><h2>KTOOL STREAM TERMINAL</h2><span>REAL-TIME</span></div>
-    <div class="terminal" id="terminal"></div>
+    <div class="panel-title">
+        <h2>ZIP INPUT</h2>
+        <span>.ZIP ONLY</span>
+    </div>
+    <div class="drop" id="drop">
+        <div>
+            <div class="drop-icon">🗜️</div>
+            <h3>
+                Kéo thả nhiều ZIP vào đây
+            </h3>
+            <p>
+                Có thể chọn nhiều file cùng lúc
+            </p>
+            <button
+                class="primary"
+                id="chooseButton"
+                type="button">
+                CHỌN FILE ZIP
+            </button>
+            <input
+                id="fileInput"
+                type="file"
+                accept=".zip,application/zip"
+                multiple
+                hidden>
+        </div>
+    </div>
+    <div class="file-list" id="fileList"></div>
+    <div class="actions">
+        <button
+            class="secondary"
+            id="clearButton"
+            type="button">
+            XÓA DANH SÁCH
+        </button>
+    </div>
 </section>
-
-<section class="credit">
-    <small>KTOOL ZIP & UNITY STREAM ENGINE</small>
-    <div class="credit-name">CODED BY TRONG DUNG</div>
+<section class="panel">
+    <div class="panel-title">
+        <h2>PATCH 3105 CONFIG</h2>
+        <span>PACKAGE BUILDER</span>
+    </div>
+    <div class="field">
+        <label>
+            TÊN THƯ MỤC GỐC
+        </label>
+        <input
+            id="patchFolderName"
+            type="text"
+            value="Edras VTK fix full"
+            autocomplete="off">
+    </div>
+    <div class="field">
+        <label>
+            FILE TRÙNG TÊN
+        </label>
+        <select id="duplicateMode">
+            <option value="first">
+                Giữ file đầu tiên
+            </option>
+            <option value="overwrite">
+                ZIP sau ghi đè
+            </option>
+            <option value="last">
+                Ưu tiên ZIP cuối
+            </option>
+        </select>
+    </div>
+    <div class="field">
+        <label>
+            TÊN FILE .3105
+        </label>
+        <input
+            id="outputName"
+            type="text"
+            value="Edras_VTK_fix_full.3105"
+            autocomplete="off">
+    </div>
+    <div class="actions">
+        <button
+            class="primary"
+            id="mergeButton"
+            type="button">
+            ⚡ TẠO FILE .3105
+        </button>
+        <button
+            class="secondary"
+            id="clearLogsButton"
+            type="button">
+            XÓA LOG
+        </button>
+    </div>
+    <div class="progress-box">
+        <div class="progress-top">
+            <span id="progressText">WAITING</span>
+            <span
+                class="progress-percent"
+                id="progressPercent">
+                0%
+            </span>
+        </div>
+        <div class="progress-track">
+            <div
+                class="progress-fill"
+                id="progressFill">
+            </div>
+        </div>
+    </div>
 </section>
 </div>
-
-<div class="modal" id="resultModal">
+</div>
+<!-- =====================================================
+     UNPACK
+===================================================== -->
+<div class="section-pane" id="paneExtract">
+<div class="grid">
+<section class="panel">
+    <div class="panel-title">
+        <h2>.3105 INPUT</h2>
+        <span>.3105 / .ZIP</span>
+    </div>
+    <div class="drop" id="extractDrop">
+        <div>
+            <div class="drop-icon">📦</div>
+            <h3>
+                Kéo thả file .3105
+            </h3>
+            <p>
+                Chuyển package về ZIP
+            </p>
+            <button
+                class="primary"
+                id="chooseExtractButton"
+                type="button">
+                CHỌN FILE .3105
+            </button>
+            <input
+                id="extractFileInput"
+                type="file"
+                accept=".3105,.zip,application/zip"
+                hidden>
+        </div>
+    </div>
+    <div
+        class="file-list"
+        id="extractFileList">
+    </div>
+</section>
+<section class="panel">
+    <div class="panel-title">
+        <h2>UNPACK CONFIG</h2>
+        <span>ZIP EXPORT</span>
+    </div>
+    <div class="field">
+        <label>
+            TÊN ZIP XUẤT RA
+        </label>
+        <input
+            id="extractOutputName"
+            type="text"
+            value="Extracted_Patch.zip"
+            autocomplete="off">
+    </div>
+    <div class="actions">
+        <button
+            class="primary"
+            id="executeExtractButton"
+            type="button">
+            🔓 GIẢI NÉN SANG ZIP
+        </button>
+    </div>
+    <div class="progress-box">
+        <div class="progress-top">
+            <span id="extractProgressText">
+                WAITING
+            </span>
+            <span
+                class="progress-percent"
+                id="extractProgressPercent">
+                0%
+            </span>
+        </div>
+        <div class="progress-track">
+            <div
+                class="progress-fill"
+                id="extractProgressFill">
+            </div>
+        </div>
+    </div>
+</section>
+</div>
+</div>
+<!-- =====================================================
+     MOD SKIN
+===================================================== -->
+<div class="section-pane" id="paneSkin">
+<section class="stats">
+    <div class="stat">
+        <div class="stat-label">MOD ZIP</div>
+        <div class="stat-value" id="skinCount">
+            0
+        </div>
+    </div>
+    <div class="stat">
+        <div class="stat-label">TOTAL SIZE</div>
+        <div class="stat-value" id="skinSize">
+            0 B
+        </div>
+    </div>
+    <div class="stat">
+        <div class="stat-label">ENTRIES</div>
+        <div class="stat-value" id="skinEntries">
+            0
+        </div>
+    </div>
+    <div class="stat">
+        <div class="stat-label">ENGINE</div>
+        <div
+            class="stat-value status-ready"
+            id="skinStatus">
+            READY
+        </div>
+    </div>
+</section>
+<div class="grid">
+<section class="panel">
+    <div class="panel-title">
+        <h2>MOD / SKIN ZIP INPUT</h2>
+        <span>ZIP ONLY</span>
+    </div>
+    <div class="drop" id="skinDrop">
+        <div>
+            <div class="drop-icon">🎮</div>
+            <h3>
+                Kéo thả ZIP mod / skin
+            </h3>
+            <p>
+                Gộp nhiều ZIP thành một ZIP duy nhất
+            </p>
+            <button
+                class="primary"
+                id="chooseSkinButton"
+                type="button">
+                CHỌN ZIP MOD SKIN
+            </button>
+            <input
+                id="skinFileInput"
+                type="file"
+                accept=".zip,application/zip"
+                multiple
+                hidden>
+        </div>
+    </div>
+    <div
+        class="file-list"
+        id="skinFileList">
+    </div>
+    <div class="actions">
+        <button
+            class="secondary"
+            id="clearSkinButton"
+            type="button">
+            XÓA DANH SÁCH
+        </button>
+    </div>
+</section>
+<section class="panel">
+    <div class="panel-title">
+        <h2>MOD SKIN ZIP CONFIG</h2>
+        <span>ZIP MERGER</span>
+    </div>
+    <div class="field">
+        <label>
+            THƯ MỤC GỐC TRONG ZIP
+        </label>
+        <input
+            id="skinRootName"
+            type="text"
+            value="Liên Quân Mod Skin"
+            autocomplete="off">
+    </div>
+    <div class="field">
+        <label>
+            FILE TRÙNG TÊN
+        </label>
+        <select id="skinDuplicateMode">
+            <option value="first">
+                Giữ file đầu tiên
+            </option>
+            <option value="overwrite">
+                ZIP sau ghi đè
+            </option>
+            <option value="last">
+                Ưu tiên ZIP cuối
+            </option>
+        </select>
+    </div>
+    <div class="field">
+        <label>
+            TÊN ZIP XUẤT RA
+        </label>
+        <input
+            id="skinOutputName"
+            type="text"
+            value="LienQuan_Mod_Skin_Merged.zip"
+            autocomplete="off">
+    </div>
+    <div class="actions">
+        <button
+            class="primary"
+            id="mergeSkinButton"
+            type="button">
+            🎮 GỘP ZIP MOD SKIN
+        </button>
+    </div>
+    <div class="progress-box">
+        <div class="progress-top">
+            <span id="skinProgressText">
+                WAITING
+            </span>
+            <span
+                class="progress-percent"
+                id="skinProgressPercent">
+                0%
+            </span>
+        </div>
+        <div class="progress-track">
+            <div
+                class="progress-fill"
+                id="skinProgressFill">
+            </div>
+        </div>
+    </div>
+</section>
+</div>
+</div>
+<!-- TERMINAL -->
+<section class="panel">
+    <div class="panel-title">
+        <h2>KTOOL STREAM TERMINAL</h2>
+        <span>REAL-TIME</span>
+    </div>
+    <div
+        class="terminal"
+        id="terminal">
+    </div>
+</section>
+<section class="credit">
+    <small>
+        KTOOL ZIP & PATCH ENGINE
+    </small>
+    <div class="credit-name">
+        CODED BY TRONG DUNG
+    </div>
+</section>
+</div>
+<!-- RESULT MODAL -->
+<div
+    class="modal"
+    id="resultModal">
     <div class="modal-card">
-        <div class="modal-icon">✓</div>
-        <h2 id="modalTitle">Xử Lý Thành Công</h2>
-        <p id="modalDesc">File đã sẵn sàng để tải về.</p>
-        <div class="result-info" id="resultInfo"></div>
-        <div class="modal-actions">
-            <button class="primary" id="downloadButton" type="button">⬇ TẢI FILE XUẤT</button>
-            <button class="secondary" id="closeModalButton" type="button">ĐÓNG</button>
+        <div class="modal-icon">
+            ✓
+        </div>
+        <h2 id="modalTitle">
+            Xử Lý Thành Công
+        </h2>
+        <p id="modalDesc">
+            File đã sẵn sàng.
+        </p>
+        <div
+            class="result-info"
+            id="resultInfo">
+        </div>
+        <div class="actions">
+            <button
+                class="primary"
+                id="downloadButton"
+                type="button">
+                ⬇ TẢI FILE XUẤT
+            </button>
+            <button
+                class="secondary"
+                id="closeModalButton"
+                type="button">
+                ĐÓNG
+            </button>
         </div>
     </div>
 </div>
-
 <script>
 "use strict";
-
-if (typeof zip !== 'undefined') {
-    zip.configure({ useWebWorkers: false });
-}
-
-const $ = id => document.getElementById(id);
-
-// Tab switching
-$("tabPatchBtn").addEventListener("click", () => switchTab("Patch"));
-$("tabExtractBtn").addEventListener("click", () => switchTab("Extract"));
-$("tabVideoBtn").addEventListener("click", () => switchTab("Video"));
-$("tabUnityBtn").addEventListener("click", () => switchTab("Unity"));
-$("tabBypassBtn").addEventListener("click", () => switchTab("Bypass"));
-
-function switchTab(name){
-    ["Patch", "Extract", "Video", "Unity", "Bypass"].forEach(t => {
-        $("tab" + t + "Btn").classList.toggle("active", t === name);
-        $("pane" + t).classList.toggle("active", t === name);
+/* ======================================================
+   ZIP.JS
+====================================================== */
+if(typeof zip !== "undefined"){
+    zip.configure({
+        useWebWorkers:false
     });
-    log(`Đã chuyển sang tab ${name}.`, "info");
 }
-
-const state = {
-    files: [],
-    extractFile: null,
-    videoFile: null,
-    unityFile: null,
-    resultBlob: null,
-    resultName: "",
-    busy: false,
-    entryCount: 0,
-    totalInputBytes: 0
-};
-
+/* ======================================================
+   HELPERS
+====================================================== */
+const $ = id => document.getElementById(id);
+function sleep(ms){
+    return new Promise(resolve => setTimeout(resolve,ms));
+}
 function formatBytes(bytes){
-    if(!Number.isFinite(bytes) || bytes <= 0) return "0 B";
-    const units = ["B", "KB", "MB", "GB"];
-    let i = 0, n = bytes;
-    while(n >= 1024 && i < units.length - 1){ n /= 1024; i++; }
-    return n.toFixed(n >= 100 ? 0 : n >= 10 ? 1 : 2) + " " + units[i];
+    if(!Number.isFinite(bytes) || bytes <= 0){
+        return "0 B";
+    }
+    const units = ["B","KB","MB","GB"];
+    let i = 0;
+    let value = bytes;
+    while(
+        value >= 1024 &&
+        i < units.length - 1
+    ){
+        value /= 1024;
+        i++;
+    }
+    return value.toFixed(
+        value >= 100 ? 0 :
+        value >= 10 ? 1 : 2
+    ) + " " + units[i];
 }
-
-function sleep(ms){ return new Promise(resolve => setTimeout(resolve, ms)); }
-
+/* ======================================================
+   STATE
+====================================================== */
+const state = {
+    busy:false,
+    files:[],
+    skinFiles:[],
+    extractFile:null,
+    resultBlob:null,
+    resultName:"",
+    entryCount:0,
+    skinEntryCount:0,
+    totalInputBytes:0,
+    totalSkinBytes:0
+};
+/* ======================================================
+   LOG
+====================================================== */
+function log(message,type="info"){
+    const line =
+        document.createElement("div");
+    line.className =
+        "log " + type;
+    line.textContent =
+        `[${new Date().toLocaleTimeString()}] ${message}`;
+    $("terminal").appendChild(line);
+    $("terminal").scrollTop =
+        $("terminal").scrollHeight;
+}
+/* ======================================================
+   CLOCK
+====================================================== */
 function updateClock(){
     const now = new Date();
-    $("clock").textContent = [now.getHours(), now.getMinutes(), now.getSeconds()].map(v => String(v).padStart(2,"0")).join(":");
+    $("clock").textContent =
+        [
+            now.getHours(),
+            now.getMinutes(),
+            now.getSeconds()
+        ]
+        .map(v => String(v).padStart(2,"0"))
+        .join(":");
 }
-setInterval(updateClock, 1000);
+setInterval(updateClock,1000);
 updateClock();
-
-function log(message, type="info"){
-    const line = document.createElement("div");
-    line.className = "log " + type;
-    line.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
-    $("terminal").appendChild(line);
-    $("terminal").scrollTop = $("terminal").scrollHeight;
-}
-
-// Theme
+/* ======================================================
+   THEME
+====================================================== */
 function applyTheme(theme){
     if(theme === "light"){
-        document.documentElement.classList.add("light");
-        localStorage.setItem("ktool-v30-theme", "light");
+        document.documentElement
+            .classList.add("light");
+        localStorage.setItem(
+            "ktool-v31-theme",
+            "light"
+        );
     }else{
-        document.documentElement.classList.remove("light");
-        localStorage.setItem("ktool-v30-theme", "dark");
+        document.documentElement
+            .classList.remove("light");
+        localStorage.setItem(
+            "ktool-v31-theme",
+            "dark"
+        );
     }
 }
-applyTheme(localStorage.getItem("ktool-v30-theme") || "dark");
-$("themeButton").addEventListener("click", () => {
-    applyTheme(document.documentElement.classList.contains("light") ? "dark" : "light");
-});
-
-// File Management (ZIP)
-$("chooseButton").addEventListener("click", () => { if(!state.busy) $("fileInput").click(); });
-$("fileInput").addEventListener("change", event => { addFiles(Array.from(event.target.files)); event.target.value = ""; });
-
-function isZip(file){
-    const name = file.name.toLowerCase();
-    return name.endsWith(".zip") || file.type === "application/zip";
+applyTheme(
+    localStorage.getItem("ktool-v31-theme")
+    || "dark"
+);
+$("themeButton").addEventListener(
+    "click",
+    () => {
+        applyTheme(
+            document.documentElement
+                .classList
+                .contains("light")
+                ? "dark"
+                : "light"
+        );
+    }
+);
+/* ======================================================
+   TABS
+====================================================== */
+function switchTab(name){
+    [
+        "Patch",
+        "Extract",
+        "Skin"
+    ].forEach(tab => {
+        $("tab" + tab + "Btn")
+            .classList
+            .toggle(
+                "active",
+                tab === name
+            );
+        $("pane" + tab)
+            .classList
+            .toggle(
+                "active",
+                tab === name
+            );
+    });
+    log(
+        `Đã chuyển sang module ${name}.`,
+        "info"
+    );
 }
-
-function addFiles(files){
+$("tabPatchBtn")
+    .addEventListener(
+        "click",
+        () => switchTab("Patch")
+    );
+$("tabExtractBtn")
+    .addEventListener(
+        "click",
+        () => switchTab("Extract")
+    );
+$("tabSkinBtn")
+    .addEventListener(
+        "click",
+        () => switchTab("Skin")
+    );
+/* ======================================================
+   PATCH ZIP INPUT
+====================================================== */
+function isZip(file){
+    return (
+        file.name
+            .toLowerCase()
+            .endsWith(".zip")
+        ||
+        file.type === "application/zip"
+    );
+}
+$("chooseButton")
+    .addEventListener(
+        "click",
+        () => {
+            if(!state.busy){
+                $("fileInput").click();
+            }
+        }
+    );
+$("fileInput")
+    .addEventListener(
+        "change",
+        event => {
+            addPatchFiles(
+                Array.from(
+                    event.target.files
+                )
+            );
+            event.target.value = "";
+        }
+    );
+function addPatchFiles(files){
     if(state.busy) return;
-    const zipFiles = files.filter(isZip);
-    if(zipFiles.length < files.length) log(`Đã bỏ qua ${files.length - zipFiles.length} file không phải ZIP.`, "warn");
-    if(!zipFiles.length) return;
-
+    const zipFiles =
+        files.filter(isZip);
+    if(zipFiles.length !== files.length){
+        log(
+            `Bỏ qua ${
+                files.length - zipFiles.length
+            } file không phải ZIP.`,
+            "warn"
+        );
+    }
     for(const file of zipFiles){
-        if(!state.files.some(f => f.name === file.name && f.size === file.size)){
+        const exists =
+            state.files.some(
+                old =>
+                    old.name === file.name &&
+                    old.size === file.size &&
+                    old.lastModified === file.lastModified
+            );
+        if(!exists){
             state.files.push(file);
         }
     }
-    renderFiles();
-    updateStats();
-    log(`Đã thêm ${zipFiles.length} ZIP vào workspace.`, "good");
+    renderPatchFiles();
+    updatePatchStats();
+    log(
+        `Đã thêm ${zipFiles.length} ZIP vào Patch workspace.`,
+        "good"
+    );
 }
-
-const drop = $("drop");
-["dragenter", "dragover"].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); if(!state.busy) drop.classList.add("drag"); }));
-["dragleave", "drop"].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove("drag"); }));
-drop.addEventListener("drop", e => { if(!state.busy) addFiles(Array.from(e.dataTransfer.files)); });
-
-function renderFiles(){
-    const list = $("fileList");
+function renderPatchFiles(){
+    const list =
+        $("fileList");
     list.innerHTML = "";
-    state.files.forEach((file, index) => {
-        const row = document.createElement("div");
-        row.className = "file-item";
-        row.innerHTML = `<div class="file-index">${index + 1}</div><div class="file-name">${file.name}</div><div class="file-size">${formatBytes(file.size)}</div>`;
-        list.appendChild(row);
-    });
+    state.files.forEach(
+        (file,index) => {
+            const row =
+                document.createElement("div");
+            row.className =
+                "file-item";
+            row.innerHTML = `
+                <div class="file-index">
+                    ${index + 1}
+                </div>
+                <div class="file-name">
+                    ${escapeHtml(file.name)}
+                </div>
+                <div class="file-size">
+                    ${formatBytes(file.size)}
+                </div>
+            `;
+            list.appendChild(row);
+        }
+    );
 }
-
-function updateStats(){
-    state.totalInputBytes = state.files.reduce((sum, f) => sum + f.size, 0);
-    $("statFiles").textContent = state.files.length;
-    $("statSize").textContent = formatBytes(state.totalInputBytes);
+function updatePatchStats(){
+    state.totalInputBytes =
+        state.files.reduce(
+            (sum,file) =>
+                sum + file.size,
+            0
+        );
+    $("statFiles").textContent =
+        state.files.length;
+    $("statSize").textContent =
+        formatBytes(
+            state.totalInputBytes
+        );
 }
-
-$("clearButton").addEventListener("click", () => {
-    if(state.busy) return;
-    state.files = []; state.entryCount = 0;
-    renderFiles(); updateStats();
-    $("statEntries").textContent = "0";
-    log("Workspace ZIP đã được làm sạch.", "warn");
-});
-
-$("clearLogsButton").addEventListener("click", () => { $("terminal").innerHTML = ""; log("Terminal đã được làm sạch.", "info"); });
-
-// Extract .3105 to ZIP Logic
-$("chooseExtractButton").addEventListener("click", () => { if(!state.busy) $("extractFileInput").click(); });
-$("extractFileInput").addEventListener("change", event => {
-    const file = event.target.files[0];
-    if(file){
-        state.extractFile = file;
-        renderExtractFile();
-        const baseName = file.name.substring(0, file.name.lastIndexOf('.')) || "Extracted_Patch";
-        $("extractOutputName").value = baseName + ".zip";
-        log(`Đã chọn file .3105: ${file.name} (${formatBytes(file.size)})`, "good");
-    }
-    event.target.value = "";
-});
-
-const extractDrop = $("extractDrop");
-["dragenter", "dragover"].forEach(ev => extractDrop.addEventListener(ev, e => { e.preventDefault(); if(!state.busy) extractDrop.classList.add("drag"); }));
-["dragleave", "drop"].forEach(ev => extractDrop.addEventListener(ev, e => { e.preventDefault(); extractDrop.classList.remove("drag"); }));
-extractDrop.addEventListener("drop", e => {
-    if(state.busy) return;
-    const file = e.dataTransfer.files[0];
-    if(file){
-        state.extractFile = file;
-        renderExtractFile();
-        const baseName = file.name.substring(0, file.name.lastIndexOf('.')) || "Extracted_Patch";
-        $("extractOutputName").value = baseName + ".zip";
-        log(`Đã thả file .3105: ${file.name} (${formatBytes(file.size)})`, "good");
-    }
-});
-
+$("clearButton")
+    .addEventListener(
+        "click",
+        () => {
+            if(state.busy) return;
+            state.files = [];
+            state.entryCount = 0;
+            renderPatchFiles();
+            updatePatchStats();
+            $("statEntries").textContent =
+                "0";
+            log(
+                "Đã xóa toàn bộ ZIP Patch.",
+                "warn"
+            );
+        }
+    );
+/* ======================================================
+   PATCH DROP
+====================================================== */
+function setupDropZone(
+    element,
+    callback
+){
+    ["dragenter","dragover"]
+        .forEach(eventName => {
+            element.addEventListener(
+                eventName,
+                event => {
+                    event.preventDefault();
+                    if(!state.busy){
+                        element.classList.add("drag");
+                    }
+                }
+            );
+        });
+    ["dragleave","drop"]
+        .forEach(eventName => {
+            element.addEventListener(
+                eventName,
+                event => {
+                    event.preventDefault();
+                    element.classList.remove(
+                        "drag"
+                    );
+                }
+            );
+        });
+    element.addEventListener(
+        "drop",
+        event => {
+            if(state.busy) return;
+            callback(
+                Array.from(
+                    event.dataTransfer.files
+                )
+            );
+        }
+    );
+}
+setupDropZone(
+    $("drop"),
+    addPatchFiles
+);
+/* ======================================================
+   PATCH PROGRESS
+====================================================== */
+function setProgress(
+    percent,
+    text
+){
+    const safe =
+        Math.max(
+            0,
+            Math.min(100,percent)
+        );
+    $("progressFill")
+        .style.width =
+        safe + "%";
+    $("progressPercent")
+        .textContent =
+        safe.toFixed(0) + "%";
+    $("progressText")
+        .textContent =
+        text || "PROCESSING";
+}
+/* ======================================================
+   EXTRACT INPUT
+====================================================== */
+function selectExtractFile(file){
+    if(!file) return;
+    state.extractFile =
+        file;
+    const base =
+        file.name
+            .replace(/\.[^.]+$/,"");
+    $("extractOutputName")
+        .value =
+        (base || "Extracted_Patch")
+        + ".zip";
+    renderExtractFile();
+    log(
+        `Đã chọn ${file.name} (${formatBytes(file.size)}).`,
+        "good"
+    );
+}
+$("chooseExtractButton")
+    .addEventListener(
+        "click",
+        () => {
+            if(!state.busy){
+                $("extractFileInput").click();
+            }
+        }
+    );
+$("extractFileInput")
+    .addEventListener(
+        "change",
+        event => {
+            selectExtractFile(
+                event.target.files[0]
+            );
+            event.target.value = "";
+        }
+    );
+setupDropZone(
+    $("extractDrop"),
+    files => selectExtractFile(files[0])
+);
 function renderExtractFile(){
-    const list = $("extractFileList");
+    const list =
+        $("extractFileList");
     list.innerHTML = "";
-    if(!state.extractFile) return;
-    const row = document.createElement("div");
-    row.className = "file-item";
-    row.innerHTML = `<div class="file-index">1</div><div class="file-name">${state.extractFile.name}</div><div class="file-size">${formatBytes(state.extractFile.size)}</div>`;
+    if(!state.extractFile){
+        return;
+    }
+    const row =
+        document.createElement("div");
+    row.className =
+        "file-item";
+    row.innerHTML = `
+        <div class="file-index">1</div>
+        <div class="file-name">
+            ${escapeHtml(state.extractFile.name)}
+        </div>
+        <div class="file-size">
+            ${formatBytes(state.extractFile.size)}
+        </div>
+    `;
     list.appendChild(row);
 }
-
+/* ======================================================
+   UNPACK
+====================================================== */
 async function executeExtract3105(){
     if(state.busy) return;
-    if(!state.extractFile){ log("Chưa chọn file .3105 nào để giải nén.", "bad"); return; }
-
+    if(!state.extractFile){
+        log(
+            "Chưa chọn file .3105.",
+            "bad"
+        );
+        return;
+    }
+    if(typeof zip === "undefined"){
+        log(
+            "Zip.js chưa tải xong.",
+            "bad"
+        );
+        return;
+    }
     state.busy = true;
-    $("executeExtractButton").disabled = true;
-
-    const fill = $("extractProgressFill");
-    const percentElem = $("extractProgressPercent");
-    const textElem = $("extractProgressText");
-
-    const setExtractProgress = (p, t) => {
-        const safe = Math.max(0, Math.min(100, p));
-        fill.style.width = safe + "%";
-        percentElem.textContent = safe.toFixed(0) + "%";
-        textElem.textContent = t || "PROCESSING";
-    };
-
-    setExtractProgress(10, "READING .3105...");
-    log(`Bắt đầu giải nén tệp .3105 thành .zip: ${state.extractFile.name}`, "info");
-
+    const button =
+        $("executeExtractButton");
+    button.disabled = true;
     let reader = null;
     let writer = null;
-
-    try {
-        reader = new zip.ZipReader(new zip.BlobReader(state.extractFile));
-        const entries = await reader.getEntries();
-        setExtractProgress(30, `FOUND ${entries.length} ENTRIES`);
-
-        writer = new zip.ZipWriter(new zip.BlobWriter("application/octet-stream"));
+    try{
+        setExtractProgress(
+            5,
+            "OPENING PACKAGE..."
+        );
+        reader =
+            new zip.ZipReader(
+                new zip.BlobReader(
+                    state.extractFile
+                )
+            );
+        const entries =
+            await reader.getEntries();
+        log(
+            `Phát hiện ${entries.length} entries.`,
+            "info"
+        );
+        setExtractProgress(
+            20,
+            `FOUND ${entries.length} ENTRIES`
+        );
+        writer =
+            new zip.ZipWriter(
+                new zip.BlobWriter(
+                    "application/zip"
+                )
+            );
         let count = 0;
-
         for(const entry of entries){
             if(entry.directory){
-                await writer.add(entry.filename, undefined);
-            } else {
-                const data = await entry.getData(new zip.BlobWriter("application/octet-stream"));
-                await writer.add(entry.filename, new zip.BlobReader(data));
+                await writer.add(
+                    entry.filename,
+                    undefined
+                );
+            }else{
+                /*
+                 * Không giữ nhiều entry
+                 * trong state cùng lúc.
+                 */
+                const blob =
+                    await entry.getData(
+                        new zip.BlobWriter(
+                            "application/octet-stream"
+                        )
+                    );
+                await writer.add(
+                    entry.filename,
+                    new zip.BlobReader(blob)
+                );
             }
             count++;
-            if(count % 5 === 0 || count === entries.length){
-                setExtractProgress(30 + (count / entries.length) * 60, `UNPACKING ${count}/${entries.length}`);
-            }
-        }
-
-        setExtractProgress(95, "FINALIZING ZIP...");
-        state.resultBlob = await writer.close();
-        writer = null;
-
-        state.resultName = $("extractOutputName").value.trim() || "Extracted_Patch.zip";
-
-        setExtractProgress(100, "COMPLETE");
-        log(`GIẢI NÉN .3105 THÀNH CÔNG — ${formatBytes(state.resultBlob.size)}`, "good");
-
-        $("modalTitle").textContent = "Giải Nén .3105 Thành Công";
-        $("modalDesc").textContent = "Tệp .zip chuẩn đã được xuất thành công.";
-        $("resultInfo").textContent = [
-            `File Name: ${state.resultName}`,
-            `Entries  : ${entries.length}`,
-            `File Size: ${formatBytes(state.resultBlob.size)}`
-        ].join("\n");
-
-        $("resultModal").classList.add("show");
-    } catch(err) {
-        log(`Lỗi giải nén tệp .3105: ${err.message}`, "bad");
-    } finally {
-        if(reader) { try { await reader.close(); } catch(_){} }
-        if(writer) { try { await writer.close(); } catch(_){} }
-        state.busy = false;
-        $("executeExtractButton").disabled = false;
-    }
-}
-
-$("executeExtractButton").addEventListener("click", (e) => {
-    e.preventDefault();
-    executeExtract3105();
-});
-
-// Unity File Management & Processing Logic
-$("chooseUnityButton").addEventListener("click", () => { if(!state.busy) $("unityFileInput").click(); });
-$("unityFileInput").addEventListener("change", event => {
-    const file = event.target.files[0];
-    if(file){
-        state.unityFile = file;
-        renderUnityFile();
-        $("unityOutputName").value = file.name.includes("_Fixed") ? file.name : file.name.replace(/(\.[^.]+)$/, "_Fixed$1");
-        log(`Đã chọn file Unity: ${file.name} (${formatBytes(file.size)})`, "good");
-    }
-    event.target.value = "";
-});
-
-const unityDrop = $("unityDrop");
-["dragenter", "dragover"].forEach(ev => unityDrop.addEventListener(ev, e => { e.preventDefault(); if(!state.busy) unityDrop.classList.add("drag"); }));
-["dragleave", "drop"].forEach(ev => unityDrop.addEventListener(ev, e => { e.preventDefault(); unityDrop.classList.remove("drag"); }));
-unityDrop.addEventListener("drop", e => {
-    if(state.busy) return;
-    const file = e.dataTransfer.files[0];
-    if(file){
-        state.unityFile = file;
-        renderUnityFile();
-        $("unityOutputName").value = file.name.includes("_Fixed") ? file.name : file.name.replace(/(\.[^.]+)$/, "_Fixed$1");
-        log(`Đã thả file Unity: ${file.name} (${formatBytes(file.size)})`, "good");
-    }
-});
-
-function renderUnityFile(){
-    const list = $("unityFileList");
-    list.innerHTML = "";
-    if(!state.unityFile) return;
-    const row = document.createElement("div");
-    row.className = "file-item";
-    row.innerHTML = `<div class="file-index">1</div><div class="file-name">${state.unityFile.name}</div><div class="file-size">${formatBytes(state.unityFile.size)}</div>`;
-    list.appendChild(row);
-}
-
-async function processUnityAssetFile(){
-    if(state.busy) return;
-    if(!state.unityFile){ log("Chưa chọn file Unity nào để xử lý.", "bad"); return; }
-
-    state.busy = true;
-    $("processUnityButton").disabled = true;
-    
-    const fill = $("unityProgressFill");
-    const percentElem = $("unityProgressPercent");
-    const textElem = $("unityProgressText");
-
-    const setUnityProgress = (p, t) => {
-        const safe = Math.max(0, Math.min(100, p));
-        fill.style.width = safe + "%";
-        percentElem.textContent = safe.toFixed(0) + "%";
-        textElem.textContent = t || "PROCESSING";
-    };
-
-    setUnityProgress(10, "READING BINARY...");
-    log(`Bắt đầu phân tích và sửa lỗi file Unity: ${state.unityFile.name}`, "info");
-
-    try {
-        const buffer = await state.unityFile.arrayBuffer();
-        setUnityProgress(40, "PARSING ASSETS & SHADERS...");
-        await sleep(400);
-
-        const bytes = new Uint8Array(buffer);
-        setUnityProgress(75, "RE-BUILDING HEADERS...");
-        await sleep(400);
-
-        state.resultBlob = new Blob([bytes], { type: "application/octet-stream" });
-        state.resultName = $("unityOutputName").value.trim() || "Actor_Fixed.pkg.bytes";
-
-        setUnityProgress(100, "COMPLETE");
-        log(`XỬ LÝ UNITY ASSET THÀNH CÔNG — ${formatBytes(state.resultBlob.size)}`, "good");
-
-        $("modalTitle").textContent = "Xử Lý Unity Asset Thành Công";
-        $("modalDesc").textContent = "File cấu hình đã được vá lỗi hiển thị và sẵn sàng tải về.";
-        $("resultInfo").textContent = [
-            `File Name: ${state.resultName}`,
-            `Mode     : ${$("unityFixMode").value}`,
-            `File Size: ${formatBytes(state.resultBlob.size)}`
-        ].join("\n");
-
-        $("resultModal").classList.add("show");
-    } catch(err) {
-        log(`Lỗi xử lý file Unity: ${err.message}`, "bad");
-    } finally {
-        state.busy = false;
-        $("processUnityButton").disabled = false;
-    }
-}
-
-$("processUnityButton").addEventListener("click", (e) => {
-    e.preventDefault();
-    processUnityAssetFile();
-});
-
-// Video Management & Conversion Logic
-$("chooseVideoButton").addEventListener("click", () => { if(!state.busy) $("videoFileInput").click(); });
-$("videoFileInput").addEventListener("change", event => {
-    const file = event.target.files[0];
-    if(file){
-        state.videoFile = file;
-        renderVideoFile();
-        const baseName = file.name.substring(0, file.name.lastIndexOf('.')) || "converted_video";
-        $("videoOutputName").value = baseName + ".mp4";
-        log(`Đã chọn video: ${file.name} (${formatBytes(file.size)})`, "good");
-    }
-    event.target.value = "";
-});
-
-const videoDrop = $("videoDrop");
-["dragenter", "dragover"].forEach(ev => videoDrop.addEventListener(ev, e => { e.preventDefault(); if(!state.busy) videoDrop.classList.add("drag"); }));
-["dragleave", "drop"].forEach(ev => videoDrop.addEventListener(ev, e => { e.preventDefault(); videoDrop.classList.remove("drag"); }));
-videoDrop.addEventListener("drop", e => {
-    if(state.busy) return;
-    const file = e.dataTransfer.files[0];
-    if(file && file.type.startsWith("video/")){
-        state.videoFile = file;
-        renderVideoFile();
-        const baseName = file.name.substring(0, file.name.lastIndexOf('.')) || "converted_video";
-        $("videoOutputName").value = baseName + ".mp4";
-        log(`Đã chọn video thả vào: ${file.name} (${formatBytes(file.size)})`, "good");
-    } else {
-        log("Vui lòng chọn một tệp video hợp lệ.", "bad");
-    }
-});
-
-function renderVideoFile(){
-    const list = $("videoFileList");
-    list.innerHTML = "";
-    if(!state.videoFile) return;
-    const row = document.createElement("div");
-    row.className = "file-item";
-    row.innerHTML = `<div class="file-index">1</div><div class="file-name">${state.videoFile.name}</div><div class="file-size">${formatBytes(state.videoFile.size)}</div>`;
-    list.appendChild(row);
-}
-
-// Bypass Link logic
-$("bypassExecuteBtn").addEventListener("click", async () => {
-    const url = $("bypassInputUrl").value.trim();
-    if(!url){ log("Vuint lòng nhập URL cần bypass.", "bad"); return; }
-    log(`Đang tiến hành xử lý yêu cầu bypass link: ${url}`, "info");
-    $("bypassResultUrl").value = "Đang xử lý kết nối...";
-    setTimeout(() => {
-        $("bypassResultUrl").value = url;
-        log("Hoàn tất tiến trình kiểm tra link.", "good");
-    }, 1500);
-});
-
-// Video to MP4 conversion
-async function convertVideoToMp4(){
-    if(state.busy) return;
-    if(!state.videoFile){ log("Chưa chọn file video nào để biến đổi.", "bad"); return; }
-
-    state.busy = true;
-    $("convertVideoButton").disabled = true;
-    setVideoProgress(0, "PREPARING VIDEO...");
-    log(`Bắt đầu tiến trình biến đổi video: ${state.videoFile.name}`, "info");
-
-    try {
-        const videoUrl = URL.createObjectURL(state.videoFile);
-        const videoElem = document.createElement("video");
-        videoElem.src = videoUrl;
-        videoElem.muted = true;
-        videoElem.playsInline = true;
-
-        await new Promise((resolve, reject) => {
-            videoElem.onloadedmetadata = () => resolve();
-            videoElem.onerror = () => reject(new Error("Không thể đọc metadata của video."));
-        });
-
-        const duration = videoElem.duration;
-        const canvas = document.createElement("canvas");
-        canvas.width = videoElem.videoWidth || 1280;
-        canvas.height = videoElem.videoHeight || 720;
-        const ctx = canvas.getContext("2d");
-
-        const stream = canvas.captureStream(30);
-        let options = { mimeType: "video/webm;codecs=vp9" };
-        if (!MediaRecorder.isTypeSupported(options.mimeType)) options = { mimeType: "video/webm" };
-        if (!MediaRecorder.isTypeSupported(options.mimeType)) options = { mimeType: "" };
-
-        const mediaRecorder = new MediaRecorder(stream, options);
-        const chunks = [];
-        mediaRecorder.ondataavailable = e => { if(e.data.size > 0) chunks.push(e.data); };
-
-        const conversionDone = new Promise((resolve) => { mediaRecorder.onstop = () => resolve(); });
-
-        mediaRecorder.start();
-        videoElem.play();
-
-        const updateInterval = setInterval(() => {
-            if(videoElem.ended || videoElem.paused){
-                clearInterval(updateInterval);
-                return;
-            }
-            ctx.drawImage(videoElem, 0, 0, canvas.width, canvas.height);
-            const percent = Math.min(95, (videoElem.currentTime / duration) * 100);
-            setVideoProgress(percent, `CONVERTING ${percent.toFixed(0)}%`);
-        }, 100);
-
-        videoElem.onended = () => {
-            clearInterval(updateInterval);
-            videoElem.pause();
-            mediaRecorder.stop();
-        };
-
-        await conversionDone;
-        URL.revokeObjectURL(videoUrl);
-
-        setVideoProgress(98, "FINALIZING MP4...");
-        const outBlob = new Blob(chunks, { type: "video/mp4" });
-        state.resultBlob = outBlob;
-        state.resultName = $("videoOutputName").value.trim() || "converted_video.mp4";
-
-        setVideoProgress(100, "COMPLETE");
-        log(`BIẾN ĐỔI VIDEO THÀNH CÔNG — ${formatBytes(outBlob.size)}`, "good");
-
-        $("modalTitle").textContent = "Biến Đổi Video Thành Công";
-        $("modalDesc").textContent = "Tệp MP4 của bạn đã được chuyển đổi hoàn tất.";
-        $("resultInfo").textContent = [
-            `File Name: ${state.resultName}`,
-            `MimeType : video/mp4`,
-            `File Size: ${formatBytes(outBlob.size)}`
-        ].join("\n");
-
-        $("resultModal").classList.add("show");
-    } catch(error) {
-        log(`LỖI BIẾN ĐỔI VIDEO: ${error.message || error}`, "bad");
-    } finally {
-        state.busy = false;
-        $("convertVideoButton").disabled = false;
-    }
-}
-
-function setVideoProgress(percent, text){
-    const safe = Math.max(0, Math.min(100, percent));
-    $("videoProgressFill").style.width = safe + "%";
-    $("videoProgressPercent").textContent = safe.toFixed(0) + "%";
-    $("videoProgressText").textContent = text || "PROCESSING";
-}
-
-// Native .3105 Generator Logic
-async function generateNativePatch3105(){
-    if(state.busy) return;
-    if(state.files.length < 1){ log("Chưa có ZIP nào được chọn.", "bad"); return; }
-    if(typeof zip === "undefined"){ log("Thư viện ZIP chưa tải xong.", "bad"); return; }
-
-    state.busy = true;
-    $("mergeButton").disabled = $("clearButton").disabled = $("chooseButton").disabled = true;
-    $("engineStatus").textContent = "PROCESSING";
-    $("engineStatus").classList.remove("status-ready");
-    
-    state.resultBlob = null;
-    setProgress(0, "BUILDING 3105 ARCHIVE...");
-    log(`Bắt đầu đóng gói chuẩn gốc .3105 với ${state.files.length} ZIP.`, "info");
-
-    const duplicateMode = $("duplicateMode").value;
-    const rootFolderName = ($("patchFolderName").value.trim() || "Edras VTK fix full").replace(/\/$/, "");
-    const addedEntries = new Set();
-    let writer = null;
-    const readers = [];
-
-    try {
-        writer = new zip.ZipWriter(new zip.BlobWriter("application/octet-stream"));
-        const zipReaders = [];
-        let totalEntries = 0;
-
-        const basePath = rootFolderName + "/";
-        const appGroupPath = basePath + "AppGroup/";
-        const appPath = basePath + "Application/";
-        const kgvnPath = appPath + "com.garena.game.kgvn/";
-        const docPath = kgvnPath + "Documents/";
-        const resPath = docPath + "Resources/";
-        const verPath = resPath + "1.63.1/";
-
-        const foldersToCreate = [basePath, appGroupPath, appPath, kgvnPath, docPath, resPath, verPath];
-        for(const folder of foldersToCreate){
-            await writer.add(folder, undefined);
-            addedEntries.add(folder);
-        }
-
-        const settingsData = { "fields": [], "schemaVersion": 1 };
-        const settingsBlob = new Blob([JSON.stringify(settingsData, null, 2)], { type: "application/json" });
-        await writer.add(basePath + "settings.json", new zip.BlobReader(settingsBlob));
-        addedEntries.add(basePath + "settings.json");
-
-        for(let i = 0; i < state.files.length; i++){
-            const file = state.files[i];
-            const reader = new zip.ZipReader(new zip.BlobReader(file));
-            readers.push(reader);
-            const entries = await reader.getEntries();
-            zipReaders.push({ file, reader, entries });
-            totalEntries += entries.length;
+            setExtractProgress(
+                20 +
+                (count /
+                    Math.max(entries.length,1)
+                ) * 70,
+                `WRITING ${count}/${entries.length}`
+            );
             await sleep(0);
         }
-
-        state.entryCount = totalEntries;
-        $("statEntries").textContent = totalEntries;
-
-        let sources = duplicateMode === "last" ? zipReaders.slice().reverse() : zipReaders.slice();
+        setExtractProgress(
+            95,
+            "FINALIZING ZIP..."
+        );
+        state.resultBlob =
+            await writer.close();
+        writer = null;
+        state.resultName =
+            sanitizeOutputName(
+                $("extractOutputName").value,
+                "Extracted_Patch.zip"
+            );
+        setExtractProgress(
+            100,
+            "COMPLETE"
+        );
+        log(
+            `UNPACK thành công: ${formatBytes(state.resultBlob.size)}.`,
+            "good"
+        );
+        showResult(
+            "Unpack .3105 Thành Công",
+            "Package đã được đóng gói lại thành ZIP.",
+            [
+                `File: ${state.resultName}`,
+                `Entries: ${entries.length}`,
+                `Size: ${formatBytes(state.resultBlob.size)}`
+            ].join("\n")
+        );
+    }catch(error){
+        log(
+            `Lỗi unpack: ${error.message || error}`,
+            "bad"
+        );
+    }finally{
+        if(reader){
+            try{
+                await reader.close();
+            }catch(_){}
+        }
+        if(writer){
+            try{
+                await writer.close();
+            }catch(_){}
+        }
+        state.busy = false;
+        button.disabled = false;
+    }
+}
+function setExtractProgress(
+    percent,
+    text
+){
+    const safe =
+        Math.max(
+            0,
+            Math.min(100,percent)
+        );
+    $("extractProgressFill")
+        .style.width =
+        safe + "%";
+    $("extractProgressPercent")
+        .textContent =
+        safe.toFixed(0) + "%";
+    $("extractProgressText")
+        .textContent =
+        text || "PROCESSING";
+}
+$("executeExtractButton")
+    .addEventListener(
+        "click",
+        executeExtract3105
+    );
+/* ======================================================
+   PATCH BUILDER
+====================================================== */
+$("mergeButton")
+    .addEventListener(
+        "click",
+        generateNativePatch3105
+    );
+async function generateNativePatch3105(){
+    if(state.busy) return;
+    if(!state.files.length){
+        log(
+            "Chưa có ZIP nào.",
+            "bad"
+        );
+        return;
+    }
+    if(typeof zip === "undefined"){
+        log(
+            "Zip.js chưa tải xong.",
+            "bad"
+        );
+        return;
+    }
+    state.busy = true;
+    $("mergeButton").disabled = true;
+    $("clearButton").disabled = true;
+    $("chooseButton").disabled = true;
+    $("engineStatus")
+        .textContent =
+        "PROCESSING";
+    $("engineStatus")
+        .classList
+        .remove("status-ready");
+    let writer = null;
+    const readers = [];
+    try{
+        state.resultBlob = null;
+        setProgress(
+            2,
+            "BUILDING 3105..."
+        );
+        const root =
+            normalizeFolder(
+                $("patchFolderName").value
+                || "Edras VTK fix full"
+            );
+        const duplicateMode =
+            $("duplicateMode").value;
+        const rootPath =
+            root + "/";
+        const appGroup =
+            rootPath + "AppGroup/";
+        const app =
+            rootPath + "Application/";
+        const game =
+            app +
+            "com.garena.game.kgvn/";
+        const docs =
+            game + "Documents/";
+        const resources =
+            docs + "Resources/";
+        const version =
+            resources + "1.63.1/";
+        writer =
+            new zip.ZipWriter(
+                new zip.BlobWriter(
+                    "application/octet-stream"
+                )
+            );
+        const added =
+            new Set();
+        const folders = [
+            rootPath,
+            appGroup,
+            app,
+            game,
+            docs,
+            resources,
+            version
+        ];
+        for(const folder of folders){
+            await writer.add(
+                folder,
+                undefined
+            );
+            added.add(folder);
+        }
+        const settings =
+            new Blob(
+                [
+                    JSON.stringify(
+                        {
+                            fields:[],
+                            schemaVersion:1
+                        },
+                        null,
+                        2
+                    )
+                ],
+                {
+                    type:"application/json"
+                }
+            );
+        await writer.add(
+            rootPath + "settings.json",
+            new zip.BlobReader(settings)
+        );
+        added.add(
+            rootPath + "settings.json"
+        );
+        const sources = [];
+        let totalEntries = 0;
+        for(const file of state.files){
+            const reader =
+                new zip.ZipReader(
+                    new zip.BlobReader(file)
+                );
+            readers.push(reader);
+            const entries =
+                await reader.getEntries();
+            sources.push({
+                file,
+                reader,
+                entries
+            });
+            totalEntries +=
+                entries.length;
+        }
+        state.entryCount =
+            totalEntries;
+        $("statEntries")
+            .textContent =
+            totalEntries;
+        let orderedSources =
+            duplicateMode === "last"
+            ? sources.slice().reverse()
+            : sources;
         let processed = 0;
-
-        for(const source of sources){
+        for(const source of orderedSources){
             for(const entry of source.entries){
-                const filename = entry.filename;
-                if(filename.startsWith("/") || filename.includes("../")){
-                    processed++; continue;
+                if(
+                    entry.filename.startsWith("/") ||
+                    entry.filename.includes("../")
+                ){
+                    processed++;
+                    continue;
                 }
-                let cleanName = filename.replace(/\\/g, "/");
-                cleanName = cleanName.replace(/^(com\.garena\.game\.kgvn\/Documents\/Resources\/1\.63\.1\/|Resources\/1\.63\.1\/|1\.63\.1\/)/i, "");
-
-                let normalized = verPath + cleanName;
-
-                if(addedEntries.has(normalized) && duplicateMode === "first"){
-                    processed++; continue;
+                let name =
+                    entry.filename
+                        .replace(/\\/g,"/")
+                        .replace(/^\/+/,"");
+                name =
+                    name.replace(
+                        /^(com\.garena\.game\.kgvn\/Documents\/Resources\/1\.63\.1\/|Resources\/1\.63\.1\/|1\.63\.1\/)/i,
+                        ""
+                    );
+                if(!name){
+                    processed++;
+                    continue;
                 }
-
-                if(entry.directory || cleanName.endsWith("/") || cleanName === ""){
-                    if(cleanName && cleanName !== "/") {
-                        await writer.add(normalized, undefined);
-                        addedEntries.add(normalized);
-                    }
-                } else {
-                    const sourceBlob = await entry.getData(new zip.BlobWriter("application/octet-stream"));
-                    await writer.add(normalized, new zip.BlobReader(sourceBlob));
-                    addedEntries.add(normalized);
+                const output =
+                    version + name;
+                if(
+                    added.has(output) &&
+                    duplicateMode === "first"
+                ){
+                    processed++;
+                    continue;
                 }
-                
+                if(
+                    entry.directory ||
+                    name.endsWith("/")
+                ){
+                    await writer.add(
+                        output,
+                        undefined
+                    );
+                    added.add(output);
+                }else{
+                    const blob =
+                        await entry.getData(
+                            new zip.BlobWriter(
+                                "application/octet-stream"
+                            )
+                        );
+                    await writer.add(
+                        output,
+                        new zip.BlobReader(blob)
+                    );
+                    added.add(output);
+                }
                 processed++;
-                if(processed % 3 === 0){
-                    setProgress(processed / totalEntries * 100, `WRITING ${processed}/${totalEntries}`);
-                    await sleep(0);
-                }
+                setProgress(
+                    (processed /
+                        Math.max(totalEntries,1)
+                    ) * 94,
+                    `WRITING ${processed}/${totalEntries}`
+                );
+                await sleep(0);
             }
         }
-
-        setProgress(98, "FINALIZING .3105 FILE...");
-        state.resultBlob = await writer.close();
+        setProgress(
+            97,
+            "FINALIZING .3105..."
+        );
+        state.resultBlob =
+            await writer.close();
         writer = null;
-
-        state.resultName = $("outputName").value.trim() || "Edras_VTK_fix_full.3105";
-
-        setProgress(100, "COMPLETE");
-        $("engineStatus").textContent = "SUCCESS";
-        $("engineStatus").classList.add("status-ready");
-        log(`TẠO GÓI .3105 THÀNH CÔNG — ${formatBytes(state.resultBlob.size)}`, "good");
-
-        $("modalTitle").textContent = "Tạo Gói .3105 Thành Công";
-        $("modalDesc").textContent = "File định dạng chuẩn .3105 đã sẵn sàng tải về.";
-        $("resultInfo").textContent = [
-            `File Name: ${state.resultName}`,
-            `Root Dir : ${rootFolderName}/`,
-            `Total Entries: ${addedEntries.size}`,
-            `Package Size: ${formatBytes(state.resultBlob.size)}`
-        ].join("\n");
-
-        $("resultModal").classList.add("show");
-    } catch(error) {
-        if(writer) { try { await writer.close(); } catch(_){} }
-        $("engineStatus").textContent = "ERROR";
-        log(`LỖI TẠO FILE: ${error.message || error}`, "bad");
-    } finally {
-        for(const reader of readers){ try { await reader.close(); } catch(_){} }
+        state.resultName =
+            sanitizeOutputName(
+                $("outputName").value,
+                "Edras_VTK_fix_full.3105"
+            );
+        setProgress(
+            100,
+            "COMPLETE"
+        );
+        $("engineStatus")
+            .textContent =
+            "SUCCESS";
+        $("engineStatus")
+            .classList
+            .add("status-ready");
+        log(
+            `Tạo .3105 thành công: ${formatBytes(state.resultBlob.size)}.`,
+            "good"
+        );
+        showResult(
+            "Tạo .3105 Thành Công",
+            "Package đã sẵn sàng để tải.",
+            [
+                `File: ${state.resultName}`,
+                `Root: ${root}/`,
+                `Entries: ${added.size}`,
+                `Size: ${formatBytes(state.resultBlob.size)}`
+            ].join("\n")
+        );
+    }catch(error){
+        $("engineStatus")
+            .textContent =
+            "ERROR";
+        log(
+            `Lỗi tạo .3105: ${error.message || error}`,
+            "bad"
+        );
+    }finally{
+        for(const reader of readers){
+            try{
+                await reader.close();
+            }catch(_){}
+        }
+        if(writer){
+            try{
+                await writer.close();
+            }catch(_){}
+        }
         state.busy = false;
-        $("mergeButton").disabled = $("clearButton").disabled = $("chooseButton").disabled = false;
+        $("mergeButton").disabled = false;
+        $("clearButton").disabled = false;
+        $("chooseButton").disabled = false;
     }
 }
-
-function setProgress(percent, text){
-    const safe = Math.max(0, Math.min(100, percent));
-    $("progressFill").style.width = safe + "%";
-    $("progressPercent").textContent = safe.toFixed(0) + "%";
-    $("progressText").textContent = text || "PROCESSING";
+/* ======================================================
+   MOD SKIN ZIP
+====================================================== */
+$("chooseSkinButton")
+    .addEventListener(
+        "click",
+        () => {
+            if(!state.busy){
+                $("skinFileInput").click();
+            }
+        }
+    );
+$("skinFileInput")
+    .addEventListener(
+        "change",
+        event => {
+            addSkinFiles(
+                Array.from(
+                    event.target.files
+                )
+            );
+            event.target.value = "";
+        }
+    );
+function addSkinFiles(files){
+    if(state.busy) return;
+    const zipFiles =
+        files.filter(isZip);
+    if(!zipFiles.length){
+        log(
+            "Không có ZIP hợp lệ.",
+            "bad"
+        );
+        return;
+    }
+    for(const file of zipFiles){
+        const exists =
+            state.skinFiles.some(
+                old =>
+                    old.name === file.name &&
+                    old.size === file.size &&
+                    old.lastModified === file.lastModified
+            );
+        if(!exists){
+            state.skinFiles.push(file);
+        }
+    }
+    renderSkinFiles();
+    updateSkinStats();
+    log(
+        `Đã thêm ${zipFiles.length} ZIP mod/skin.`,
+        "good"
+    );
 }
-
-$("mergeButton").addEventListener("click", (e) => { e.preventDefault(); generateNativePatch3105(); });
-$("convertVideoButton").addEventListener("click", (e) => { e.preventDefault(); convertVideoToMp4(); });
-
-$("downloadButton").addEventListener("click", (e) => {
-    e.preventDefault();
-    if(!state.resultBlob) return;
-    const url = URL.createObjectURL(state.resultBlob);
-    const a = document.createElement("a");
-    a.href = url; a.download = state.resultName;
-    document.body.appendChild(a); a.click(); a.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 5000);
-    log(`Đã tải xuống thành công: ${state.resultName}`, "good");
-});
-
-$("closeModalButton").addEventListener("click", (e) => {
-    e.preventDefault();
-    $("resultModal").classList.remove("show");
-});
-
+setupDropZone(
+    $("skinDrop"),
+    addSkinFiles
+);
+function renderSkinFiles(){
+    const list =
+        $("skinFileList");
+    list.innerHTML = "";
+    state.skinFiles.forEach(
+        (file,index) => {
+            const row =
+                document.createElement("div");
+            row.className =
+                "file-item";
+            row.innerHTML = `
+                <div class="file-index">
+                    ${index + 1}
+                </div>
+                <div class="file-name">
+                    ${escapeHtml(file.name)}
+                </div>
+                <div class="file-size">
+                    ${formatBytes(file.size)}
+                </div>
+            `;
+            list.appendChild(row);
+        }
+    );
+}
+function updateSkinStats(){
+    state.totalSkinBytes =
+        state.skinFiles.reduce(
+            (sum,file) =>
+                sum + file.size,
+            0
+        );
+    $("skinCount")
+        .textContent =
+        state.skinFiles.length;
+    $("skinSize")
+        .textContent =
+        formatBytes(
+            state.totalSkinBytes
+        );
+}
+$("clearSkinButton")
+    .addEventListener(
+        "click",
+        () => {
+            if(state.busy) return;
+            state.skinFiles = [];
+            state.skinEntryCount = 0;
+            renderSkinFiles();
+            updateSkinStats();
+            $("skinEntries")
+                .textContent =
+                "0";
+            log(
+                "Đã xóa danh sách mod/skin.",
+                "warn"
+            );
+        }
+    );
+/* ======================================================
+   MOD SKIN MERGER
+====================================================== */
+$("mergeSkinButton")
+    .addEventListener(
+        "click",
+        mergeSkinZip
+    );
+async function mergeSkinZip(){
+    if(state.busy) return;
+    if(!state.skinFiles.length){
+        log(
+            "Chưa có ZIP mod/skin.",
+            "bad"
+        );
+        return;
+    }
+    if(typeof zip === "undefined"){
+        log(
+            "Zip.js chưa tải xong.",
+            "bad"
+        );
+        return;
+    }
+    state.busy = true;
+    const button =
+        $("mergeSkinButton");
+    button.disabled = true;
+    $("skinStatus")
+        .textContent =
+        "PROCESSING";
+    $("skinStatus")
+        .classList
+        .remove("status-ready");
+    let writer = null;
+    const readers = [];
+    try{
+        const root =
+            normalizeFolder(
+                $("skinRootName").value
+                || "Lien Quan Mod Skin"
+            );
+        const duplicateMode =
+            $("skinDuplicateMode").value;
+        const outputName =
+            sanitizeOutputName(
+                $("skinOutputName").value,
+                "LienQuan_Mod_Skin_Merged.zip"
+            );
+        writer =
+            new zip.ZipWriter(
+                new zip.BlobWriter(
+                    "application/zip"
+                )
+            );
+        const added =
+            new Set();
+        await writer.add(
+            root + "/",
+            undefined
+        );
+        added.add(
+            root + "/"
+        );
+        const sources = [];
+        let totalEntries = 0;
+        for(const file of state.skinFiles){
+            const reader =
+                new zip.ZipReader(
+                    new zip.BlobReader(file)
+                );
+            readers.push(reader);
+            const entries =
+                await reader.getEntries();
+            sources.push({
+                file,
+                reader,
+                entries
+            });
+            totalEntries +=
+                entries.length;
+        }
+        state.skinEntryCount =
+            totalEntries;
+        $("skinEntries")
+            .textContent =
+            totalEntries;
+        const ordered =
+            duplicateMode === "last"
+            ? sources.slice().reverse()
+            : sources;
+        let processed = 0;
+        for(const source of ordered){
+            for(const entry of source.entries){
+                if(
+                    entry.filename.startsWith("/") ||
+                    entry.filename.includes("../")
+                ){
+                    processed++;
+                    continue;
+                }
+                let name =
+                    entry.filename
+                        .replace(/\\/g,"/")
+                        .replace(/^\/+/,"");
+                if(!name){
+                    processed++;
+                    continue;
+                }
+                const target =
+                    root + "/" + name;
+                if(
+                    added.has(target) &&
+                    duplicateMode === "first"
+                ){
+                    processed++;
+                    continue;
+                }
+                if(
+                    entry.directory ||
+                    name.endsWith("/")
+                ){
+                    await writer.add(
+                        target,
+                        undefined
+                    );
+                }else{
+                    const blob =
+                        await entry.getData(
+                            new zip.BlobWriter(
+                                "application/octet-stream"
+                            )
+                        );
+                    await writer.add(
+                        target,
+                        new zip.BlobReader(blob)
+                    );
+                }
+                added.add(target);
+                processed++;
+                setSkinProgress(
+                    (processed /
+                        Math.max(totalEntries,1)
+                    ) * 96,
+                    `MERGING ${processed}/${totalEntries}`
+                );
+                await sleep(0);
+            }
+        }
+        setSkinProgress(
+            98,
+            "FINALIZING ZIP..."
+        );
+        state.resultBlob =
+            await writer.close();
+        writer = null;
+        state.resultName =
+            outputName;
+        setSkinProgress(
+            100,
+            "COMPLETE"
+        );
+        $("skinStatus")
+            .textContent =
+            "SUCCESS";
+        $("skinStatus")
+            .classList
+            .add("status-ready");
+        log(
+            `Gộp mod/skin thành công: ${formatBytes(state.resultBlob.size)}.`,
+            "good"
+        );
+        showResult(
+            "Gộp ZIP Mod / Skin Thành Công",
+            "File ZIP tổng hợp đã sẵn sàng.",
+            [
+                `File: ${state.resultName}`,
+                `Root: ${root}/`,
+                `Entries: ${added.size}`,
+                `Size: ${formatBytes(state.resultBlob.size)}`
+            ].join("\n")
+        );
+    }catch(error){
+        $("skinStatus")
+            .textContent =
+            "ERROR";
+        log(
+            `Lỗi gộp ZIP mod/skin: ${error.message || error}`,
+            "bad"
+        );
+    }finally{
+        for(const reader of readers){
+            try{
+                await reader.close();
+            }catch(_){}
+        }
+        if(writer){
+            try{
+                await writer.close();
+            }catch(_){}
+        }
+        state.busy = false;
+        button.disabled = false;
+    }
+}
+function setSkinProgress(
+    percent,
+    text
+){
+    const safe =
+        Math.max(
+            0,
+            Math.min(100,percent)
+        );
+    $("skinProgressFill")
+        .style.width =
+        safe + "%";
+    $("skinProgressPercent")
+        .textContent =
+        safe.toFixed(0) + "%";
+    $("skinProgressText")
+        .textContent =
+        text || "PROCESSING";
+}
+/* ======================================================
+   RESULT
+====================================================== */
+function showResult(
+    title,
+    description,
+    info
+){
+    $("modalTitle")
+        .textContent =
+        title;
+    $("modalDesc")
+        .textContent =
+        description;
+    $("resultInfo")
+        .textContent =
+        info;
+    $("resultModal")
+        .classList
+        .add("show");
+}
+$("downloadButton")
+    .addEventListener(
+        "click",
+        () => {
+            if(!state.resultBlob){
+                return;
+            }
+            const url =
+                URL.createObjectURL(
+                    state.resultBlob
+                );
+            const a =
+                document.createElement("a");
+            a.href = url;
+            a.download =
+                state.resultName;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            setTimeout(
+                () => URL.revokeObjectURL(url),
+                5000
+            );
+            log(
+                `Đã tải file: ${state.resultName}`,
+                "good"
+            );
+        }
+    );
+$("closeModalButton")
+    .addEventListener(
+        "click",
+        () => {
+            $("resultModal")
+                .classList
+                .remove("show");
+        }
+    );
+/* ======================================================
+   UTILITY
+====================================================== */
+function normalizeFolder(value){
+    return String(value || "")
+        .trim()
+        .replace(/\\/g,"/")
+        .replace(/^\/+/,"")
+        .replace(/\/+$/,"")
+        .replace(/\.\./g,"_")
+        || "KTOOL";
+}
+function sanitizeOutputName(
+    value,
+    fallback
+){
+    let name =
+        String(value || "")
+            .trim()
+            .replace(/[<>:"/\\|?*\x00-\x1F]/g,"_");
+    return name || fallback;
+}
+function escapeHtml(value){
+    return String(value)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+}
+/* ======================================================
+   LOG CLEAR
+====================================================== */
+$("clearLogsButton")
+    .addEventListener(
+        "click",
+        () => {
+            $("terminal")
+                .innerHTML = "";
+            log(
+                "Terminal đã được làm sạch.",
+                "info"
+            );
+        }
+    );
+/* ======================================================
+   BOOT
+====================================================== */
 async function boot(){
-    const steps = [[30, "Loading UI..."], [70, "Initializing Engine..."], [100, "ENGINE READY."]];
-    for(const [val, text] of steps){
-        $("bootProgress").style.width = val + "%";
-        $("bootPercent").textContent = val + "%";
-        $("bootStatus").textContent = text;
-        await sleep(250);
+    const steps = [
+        [25,"Loading interface..."],
+        [50,"Loading ZIP engine..."],
+        [75,"Initializing Patch Engine..."],
+        [100,"ENGINE READY."]
+    ];
+    for(
+        const [percent,text]
+        of steps
+    ){
+        $("bootProgress")
+            .style.width =
+            percent + "%";
+        $("bootPercent")
+            .textContent =
+            percent + "%";
+        $("bootStatus")
+            .textContent =
+            text;
+        $("bootLog")
+            .textContent =
+            "> " + text;
+        await sleep(220);
     }
-    $("boot").classList.add("hide");
-    setTimeout(() => $("boot").remove(), 500);
-    log("KTOOL V30.1 đã sẵn sàng.", "good");
+    $("boot")
+        .classList
+        .add("hide");
+    setTimeout(
+        () => $("boot").remove(),
+        500
+    );
+    log(
+        "KTOOL V31 đã sẵn sàng.",
+        "good"
+    );
 }
+/* ======================================================
+   INITIALIZE
+====================================================== */
+renderPatchFiles();
+updatePatchStats();
+renderSkinFiles();
+updateSkinStats();
 boot();
-renderFiles();
-updateStats();
 </script>
 </body>
 </html>
