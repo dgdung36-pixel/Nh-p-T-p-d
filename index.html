@@ -78,7 +78,6 @@ body{
 
 .app{width:min(1240px,94vw);margin:auto;padding:max(20px,env(safe-area-inset-top)) 0 max(45px,env(safe-area-inset-bottom));}
 
-/* Sửa phần Header chống đè chữ */
 header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:22px;}
 .brand{display:flex;align-items:center;gap:13px;min-width:0;flex:1;}
 .brand-logo{
@@ -231,8 +230,9 @@ select,input[type="text"]{width:100%;padding:11px 12px;border:1px solid var(--li
     <div class="field">
         <label>CÁCH XỬ LÝ FILE TRÙNG TÊN</label>
         <select id="duplicateMode">
-            <option value="first">Giữ file đầu tiên</option>
-            <option value="last">Ưu tiên file từ ZIP cuối</option>
+            <option value="first">Giữ file đầu tiên (Bỏ qua file sau)</option>
+            <option value="overwrite">Ghi đè file (ZIP sau đè lên file ZIP trước)</option>
+            <option value="last">Ưu tiên toàn bộ file từ ZIP cuối</option>
         </select>
     </div>
     <div class="field">
@@ -420,6 +420,7 @@ async function mergeZipFiles(){
     const readers = [];
 
     try {
+        // Sử dụng Map cho mode overwrite để dễ ghi đè dữ liệu trước khi kết xuất kết quả
         writer = new zip.ZipWriter(new zip.BlobWriter("application/zip"));
         const zipReaders = [];
         let totalEntries = 0;
@@ -448,10 +449,15 @@ async function mergeZipFiles(){
                     processed++; continue;
                 }
                 const normalized = filename.replace(/\\/g, "/");
+
+                // Xử lý logic trùng tên file
                 if(addedEntries.has(normalized)){
-                    processed++;
-                    setProgress(processed / totalEntries * 100, `SKIP DUPLICATE`);
-                    continue;
+                    if(duplicateMode === "first"){
+                        processed++;
+                        setProgress(processed / totalEntries * 100, `SKIP DUPLICATE`);
+                        continue;
+                    }
+                    // Nếu chọn "overwrite" (ghi đè), ta vẫn tiếp tục thực hiện ghi đè file mới vào luồng kết quả
                 }
 
                 if(entry.directory || normalized.endsWith("/")){
@@ -501,7 +507,6 @@ async function mergeZipFiles(){
     }
 }
 
-// Chặn hành vi submit mặc định gây reload trang
 $("mergeButton").addEventListener("click", (e) => {
     e.preventDefault();
     mergeZipFiles();
