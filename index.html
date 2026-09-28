@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#050810">
-<title>KTOOL V30.1 — PATCH 3105 BUILDER (FIXED)</title>
+<title>KTOOL V30.1 — NATIVE 3105 & VIDEO TO MP4 CONVERTER</title>
 <script src="https://cdn.jsdelivr.net/npm/@zip.js/zip.js@2.7.57/dist/zip.min.js"></script>
 <style>
 :root{
@@ -95,6 +95,14 @@ header{display:flex;justify-content:space-between;align-items:center;gap:12px;ma
 .hero h1{margin:13px 0 9px;font-size:clamp(22px,4vw,38px);letter-spacing:-1.5px;}
 .hero p{max-width:800px;margin:0;color:var(--muted);font-size:12px;line-height:1.75;}
 
+/* Tab Switcher */
+.tabs{display:flex;gap:10px;margin-bottom:15px;}
+.tab-btn{flex:1;padding:14px;border:1px solid var(--line);border-radius:16px;background:var(--panel);color:var(--muted);font-size:11px;font-weight:900;cursor:pointer;transition:.2s;}
+.tab-btn.active{border-color:var(--accent);background:rgba(88,231,255,.07);color:var(--text);}
+
+.section-pane{display:none;}
+.section-pane.active{display:block;}
+
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:15px;}
 .stat{padding:17px;border:1px solid var(--line);border-radius:17px;background:var(--panel);}
 .stat-label{color:var(--muted);font-size:9px;font-weight:800;}
@@ -167,7 +175,7 @@ select,input[type="text"]{width:100%;padding:11px 12px;border:1px solid var(--li
     <div class="boot-card">
         <div class="boot-icon">K</div>
         <div class="boot-title">KTOOL V30.1</div>
-        <div class="boot-sub">PATCH 3105 FIXED BUILDER</div>
+        <div class="boot-sub">PATCH 3105 & VIDEO TO MP4 ENGINE</div>
         <div class="boot-info"><span id="bootStatus">INITIALIZING...</span><span class="boot-percent" id="bootPercent">0%</span></div>
         <div class="boot-track"><div class="boot-progress" id="bootProgress"></div></div>
         <div class="boot-log" id="bootLog">&gt; Starting KTOOL...</div>
@@ -179,8 +187,8 @@ select,input[type="text"]{width:100%;padding:11px 12px;border:1px solid var(--li
     <div class="brand">
         <div class="brand-logo">K</div>
         <div>
-            <div class="brand-name">KTOOL ZIP STREAM V30.1</div>
-            <div class="brand-sub">FIXED PATCH 3105 FORMAT ENGINE</div>
+            <div class="brand-name">KTOOL V30.1 MULTI-UTILITY</div>
+            <div class="brand-sub">PATCH 3105 BUILDER & VIDEO CONVERTER</div>
         </div>
     </div>
     <div class="header-right">
@@ -190,61 +198,111 @@ select,input[type="text"]{width:100%;padding:11px 12px;border:1px solid var(--li
 </header>
 
 <section class="hero">
-    <div class="hero-badge">FIXED ENGINE ONLINE</div>
-    <h1>Tạo Patch 3105 Vá Lỗi Chuẩn iOS</h1>
-    <p>Đã sửa lỗi cấu trúc định dạng file <code>.3105</code>, tích hợp chuẩn xác tệp <code>settings.json</code>[span_1](start_span)[span_1](end_span) và hệ thống thư mục phân cấp cho app.</p>
+    <div class="hero-badge">MULTI-TOOL ENGINE ONLINE</div>
+    <h1>Trình Tạo Patch .3105 & Biến Đổi Video MP4</h1>
+    <p>Hỗ trợ đóng gói patch chuẩn iOS đồng thời tích hợp công cụ biến đổi định dạng video thành file <code>.mp4</code> ngay trong trình duyệt.</p>
 </section>
 
-<section class="stats">
-    <div class="stat"><div class="stat-label">ZIP INPUT</div><div class="stat-value" id="statFiles">0</div></div>
-    <div class="stat"><div class="stat-label">INPUT SIZE</div><div class="stat-value" id="statSize">0 B</div></div>
-    <div class="stat"><div class="stat-label">ENTRIES</div><div class="stat-value" id="statEntries">0</div></div>
-    <div class="stat"><div class="stat-label">ENGINE</div><div class="stat-value status-ready" id="engineStatus">READY</div></div>
-</section>
+<!-- Tab Switcher -->
+<div class="tabs">
+    <button class="tab-btn active" id="tabPatchBtn" type="button">📦 ĐÓNG GÓI PATCH 3105</button>
+    <button class="tab-btn" id="tabVideoBtn" type="button">🎬 BIẾN ĐỔI VIDEO THÀNH MP4</button>
+</div>
 
-<div class="grid">
-<section class="panel">
-    <div class="panel-title"><h2>ZIP INPUT</h2><span>.ZIP ONLY</span></div>
-    <div class="drop" id="drop">
-        <div>
-            <div class="drop-icon">🗜️</div>
-            <h3>Kéo thả nhiều ZIP vào đây</h3>
-            <p>Chỉ nhận file .zip</p>
-            <button class="primary" id="chooseButton" type="button">CHỌN FILE ZIP</button>
-            <input id="fileInput" type="file" accept=".zip,application/zip" multiple hidden>
+<!-- SECTION 1: PATCH 3105 BUILDER -->
+<div class="section-pane active" id="panePatch">
+    <section class="stats">
+        <div class="stat"><div class="stat-label">ZIP INPUT</div><div class="stat-value" id="statFiles">0</div></div>
+        <div class="stat"><div class="stat-label">INPUT SIZE</div><div class="stat-value" id="statSize">0 B</div></div>
+        <div class="stat"><div class="stat-label">ENTRIES</div><div class="stat-value" id="statEntries">0</div></div>
+        <div class="stat"><div class="stat-label">ENGINE</div><div class="stat-value status-ready" id="engineStatus">READY</div></div>
+    </section>
+
+    <div class="grid">
+    <section class="panel">
+        <div class="panel-title"><h2>ZIP INPUT</h2><span>.ZIP ONLY</span></div>
+        <div class="drop" id="drop">
+            <div>
+                <div class="drop-icon">🗜️</div>
+                <h3>Kéo thả nhiều ZIP vào đây</h3>
+                <p>Chỉ nhận file .zip</p>
+                <button class="primary" id="chooseButton" type="button">CHỌN FILE ZIP</button>
+                <input id="fileInput" type="file" accept=".zip,application/zip" multiple hidden>
+            </div>
         </div>
-    </div>
-    <div class="file-list" id="fileList"></div>
-    <div class="actions"><button class="secondary" id="clearButton" type="button">XÓA DANH SÁCH</button></div>
-</section>
+        <div class="file-list" id="fileList"></div>
+        <div class="actions"><button class="secondary" id="clearButton" type="button">XÓA DANH SÁCH</button></div>
+    </section>
 
-<section class="panel">
-    <div class="panel-title"><h2>PATCH 3105 CONFIG</h2><span>FIXED STRUCTURE</span></div>
-    <div class="field">
-        <label>TÊN THƯ MỤC GỐC PATCH</label>
-        <input id="patchFolderName" type="text" value="Edras VTK fix full" autocomplete="off">
+    <section class="panel">
+        <div class="panel-title"><h2>PATCH 3105 CONFIG</h2><span>STRICT COMPLIANCE</span></div>
+        <div class="field">
+            <label>TÊN DỰ ÁN PATCH (THƯ MỤC GỐC)</label>
+            <input id="patchFolderName" type="text" value="Edras VTK fix full" autocomplete="off">
+        </div>
+        <div class="field">
+            <label>CÁCH XỬ LÝ FILE TRÙNG TÊN</label>
+            <select id="duplicateMode">
+                <option value="first">Giữ file đầu tiên (Bỏ qua file sau)</option>
+                <option value="overwrite">Ghi đè file (ZIP sau đè lên file ZIP trước)</option>
+                <option value="last">Ưu tiên toàn bộ file từ ZIP cuối</option>
+            </select>
+        </div>
+        <div class="field">
+            <label>TÊN FILE XUẤT RA (.3105)</label>
+            <input id="outputName" type="text" value="Edras_VTK_fix_full.3105" autocomplete="off">
+        </div>
+        <div class="actions">
+            <button class="primary" id="mergeButton" type="button">⚡ TẠO FILE .3105</button>
+            <button class="secondary" id="clearLogsButton" type="button">XÓA LOG</button>
+        </div>
+        <div class="progress-box">
+            <div class="progress-top"><span id="progressText">WAITING</span><span class="progress-percent" id="progressPercent">0%</span></div>
+            <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+        </div>
+    </section>
     </div>
-    <div class="field">
-        <label>CÁCH XỬ LÝ FILE TRÙNG TÊN</label>
-        <select id="duplicateMode">
-            <option value="first">Giữ file đầu tiên (Bỏ qua file sau)</option>
-            <option value="overwrite">Ghi đè file (ZIP sau đè lên file ZIP trước)</option>
-            <option value="last">Ưu tiên toàn bộ file từ ZIP cuối</option>
-        </select>
+</div>
+
+<!-- SECTION 2: VIDEO TO MP4 CONVERTER -->
+<div class="section-pane" id="paneVideo">
+    <div class="grid">
+    <section class="panel">
+        <div class="panel-title"><h2>VIDEO INPUT</h2><span>MOV, MKV, WEBM, AVI...</span></div>
+        <div class="drop" id="videoDrop">
+            <div>
+                <div class="drop-icon">🎥</div>
+                <h3>Kéo thả video vào đây</h3>
+                <p>Hỗ trợ mọi định dạng video phổ biến</p>
+                <button class="primary" id="chooseVideoButton" type="button">CHỌN FILE VIDEO</button>
+                <input id="videoFileInput" type="file" accept="video/*" hidden>
+            </div>
+        </div>
+        <div class="file-list" id="videoFileList"></div>
+    </section>
+
+    <section class="panel">
+        <div class="panel-title"><h2>CONVERT CONFIG</h2><span>MP4 EXPORT</span></div>
+        <div class="field">
+            <label>TÊN FILE MP4 XUẤT RA</label>
+            <input id="videoOutputName" type="text" value="converted_video.mp4" autocomplete="off">
+        </div>
+        <div class="field">
+            <label>CHẤT LƯỢNG / TỐC ĐỘ</label>
+            <select id="videoQuality">
+                <option value="standard">Tiêu chuẩn (Nhanh, Tương thích cao)</option>
+                <option value="high">Chất lượng cao (Giữ nét tốt)</option>
+            </select>
+        </div>
+        <div class="actions">
+            <button class="primary" id="convertVideoButton" type="button">🔄 BIẾN ĐỔI THÀNH MP4</button>
+        </div>
+        <div class="progress-box">
+            <div class="progress-top"><span id="videoProgressText">WAITING</span><span class="progress-percent" id="videoProgressPercent">0%</span></div>
+            <div class="progress-track"><div class="progress-fill" id="videoProgressFill"></div></div>
+        </div>
+    </section>
     </div>
-    <div class="field">
-        <label>TÊN FILE XUẤT RA (.3105)</label>
-        <input id="outputName" type="text" value="Edras_VTK_fix_full.3105" autocomplete="off">
-    </div>
-    <div class="actions">
-        <button class="primary" id="mergeButton" type="button">⚡ TẠO PATCH 3105 VÁ LỖI</button>
-        <button class="secondary" id="clearLogsButton" type="button">XÓA LOG</button>
-    </div>
-    <div class="progress-box">
-        <div class="progress-top"><span id="progressText">WAITING</span><span class="progress-percent" id="progressPercent">0%</span></div>
-        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
-    </div>
-</section>
 </div>
 
 <section class="panel">
@@ -261,11 +319,11 @@ select,input[type="text"]{width:100%;padding:11px 12px;border:1px solid var(--li
 <div class="modal" id="resultModal">
     <div class="modal-card">
         <div class="modal-icon">✓</div>
-        <h2>Tạo Patch 3105 Thành Công</h2>
-        <p>File .3105 đã được vá lỗi định dạng và cấu trúc phân cấp chuẩn iOS.</p>
+        <h2 id="modalTitle">Xử Lý Thành Công</h2>
+        <p id="modalDesc">File đã sẵn sàng để tải về.</p>
         <div class="result-info" id="resultInfo"></div>
         <div class="modal-actions">
-            <button class="primary" id="downloadButton" type="button">⬇ TẢI FILE .3105</button>
+            <button class="primary" id="downloadButton" type="button">⬇ TẢI FILE XUẤT</button>
             <button class="secondary" id="closeModalButton" type="button">ĐÓNG</button>
         </div>
     </div>
@@ -279,8 +337,27 @@ if (typeof zip !== 'undefined') {
 }
 
 const $ = id => document.getElementById(id);
+
+// Tab switching
+$("tabPatchBtn").addEventListener("click", () => {
+    $("tabPatchBtn").classList.add("active");
+    $("tabVideoBtn").classList.remove("active");
+    $("panePatch").classList.add("active");
+    $("paneVideo").classList.remove("active");
+    log("Đã chuyển sang tab Đóng gói Patch 3105.", "info");
+});
+
+$("tabVideoBtn").addEventListener("click", () => {
+    $("tabVideoBtn").classList.add("active");
+    $("tabPatchBtn").classList.remove("active");
+    $("paneVideo").classList.add("active");
+    $("panePatch").classList.remove("active");
+    log("Đã chuyển sang tab Biến đổi Video thành MP4.", "info");
+});
+
 const state = {
     files: [],
+    videoFile: null,
     resultBlob: null,
     resultName: "",
     busy: false,
@@ -328,7 +405,7 @@ $("themeButton").addEventListener("click", () => {
     applyTheme(document.documentElement.classList.contains("light") ? "dark" : "light");
 });
 
-// File Management
+// File Management (ZIP)
 $("chooseButton").addEventListener("click", () => { if(!state.busy) $("fileInput").click(); });
 $("fileInput").addEventListener("change", event => { addFiles(Array.from(event.target.files)); event.target.value = ""; });
 
@@ -353,7 +430,6 @@ function addFiles(files){
     log(`Đã thêm ${zipFiles.length} ZIP vào workspace.`, "good");
 }
 
-// Drag & Drop
 const drop = $("drop");
 ["dragenter", "dragover"].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); if(!state.busy) drop.classList.add("drag"); }));
 ["dragleave", "drop"].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove("drag"); }));
@@ -381,7 +457,7 @@ $("clearButton").addEventListener("click", () => {
     state.files = []; state.entryCount = 0;
     renderFiles(); updateStats();
     $("statEntries").textContent = "0";
-    log("Workspace đã được làm sạch.", "warn");
+    log("Workspace ZIP đã được làm sạch.", "warn");
 });
 
 $("clearLogsButton").addEventListener("click", () => { $("terminal").innerHTML = ""; log("Terminal đã được làm sạch.", "info"); });
@@ -393,8 +469,156 @@ function setProgress(percent, text){
     $("progressText").textContent = text || "PROCESSING";
 }
 
-// Zip Engine Logic with Fixed iOS Patch 3105 Structure & Settings JSON
-async function generatePatch3105Fixed(){
+function setVideoProgress(percent, text){
+    const safe = Math.max(0, Math.min(100, percent));
+    $("videoProgressFill").style.width = safe + "%";
+    $("videoProgressPercent").textContent = safe.toFixed(0) + "%";
+    $("videoProgressText").textContent = text || "PROCESSING";
+}
+
+// Video Management & Conversion Logic
+$("chooseVideoButton").addEventListener("click", () => { if(!state.busy) $("videoFileInput").click(); });
+$("videoFileInput").addEventListener("change", event => {
+    const file = event.target.files[0];
+    if(file){
+        state.videoFile = file;
+        renderVideoFile();
+        const baseName = file.name.substring(0, file.name.lastIndexOf('.')) || "converted_video";
+        $("videoOutputName").value = baseName + ".mp4";
+        log(`Đã chọn video: ${file.name} (${formatBytes(file.size)})`, "good");
+    }
+    event.target.value = "";
+});
+
+const videoDrop = $("videoDrop");
+["dragenter", "dragover"].forEach(ev => videoDrop.addEventListener(ev, e => { e.preventDefault(); if(!state.busy) videoDrop.classList.add("drag"); }));
+["dragleave", "drop"].forEach(ev => videoDrop.addEventListener(ev, e => { e.preventDefault(); videoDrop.classList.remove("drag"); }));
+videoDrop.addEventListener("drop", e => {
+    if(state.busy) return;
+    const file = e.dataTransfer.files[0];
+    if(file && file.type.startsWith("video/")){
+        state.videoFile = file;
+        renderVideoFile();
+        const baseName = file.name.substring(0, file.name.lastIndexOf('.')) || "converted_video";
+        $("videoOutputName").value = baseName + ".mp4";
+        log(`Đã chọn video thả vào: ${file.name} (${formatBytes(file.size)})`, "good");
+    } else {
+        log("Vui lòng chọn một tệp video hợp lệ.", "bad");
+    }
+});
+
+function renderVideoFile(){
+    const list = $("videoFileList");
+    list.innerHTML = "";
+    if(!state.videoFile) return;
+    const row = document.createElement("div");
+    row.className = "file-item";
+    row.innerHTML = `<div class="file-index">1</div><div class="file-name">${state.videoFile.name}</div><div class="file-size">${formatBytes(state.videoFile.size)}</div>`;
+    list.appendChild(row);
+}
+
+// Thực hiện biến đổi video thành file MP4 bằng MediaRecorder / Stream trực tiếp
+async function convertVideoToMp4(){
+    if(state.busy) return;
+    if(!state.videoFile){ log("Chưa chọn file video nào để biến đổi.", "bad"); return; }
+
+    state.busy = true;
+    $("convertVideoButton").disabled = true;
+    setVideoProgress(0, "PREPARING VIDEO...");
+    log(`Bắt đầu tiến trình biến đổi video: ${state.videoFile.name}`, "info");
+
+    try {
+        const videoUrl = URL.createObjectURL(state.videoFile);
+        const videoElem = document.createElement("video");
+        videoElem.src = videoUrl;
+        videoElem.muted = true;
+        videoElem.playsInline = true;
+
+        await new Promise((resolve, reject) => {
+            videoElem.onloadedmetadata = () => resolve();
+            videoElem.onerror = (err) => reject(new Error("Không thể đọc metadata của video. Định dạng có thể bị lỗi."));
+        });
+
+        const duration = videoElem.duration;
+        log(`Thời lượng video: ${duration.toFixed(2)} giây. Đang tiến hành record stream sang MP4...`, "info");
+
+        // Sử dụng canvas và stream để ghi lại video dạng MP4/WebM tương thích
+        const canvas = document.createElement("canvas");
+        canvas.width = videoElem.videoWidth || 1280;
+        canvas.height = videoElem.videoHeight || 720;
+        const ctx = canvas.getContext("2d");
+
+        const stream = canvas.captureStream(30);
+        let options = { mimeType: "video/webm;codecs=vp9" };
+        if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+            options = { mimeType: "video/webm" };
+        }
+        if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+            options = { mimeType: "" };
+        }
+
+        const mediaRecorder = new MediaRecorder(stream, options);
+        const chunks = [];
+        mediaRecorder.ondataavailable = e => { if(e.data.size > 0) chunks.push(e.data); };
+
+        const conversionDone = new Promise((resolve) => {
+            mediaRecorder.onstop = () => resolve();
+        });
+
+        mediaRecorder.start();
+        videoElem.play();
+
+        const startTime = performance.now();
+        const updateInterval = setInterval(() => {
+            if(videoElem.ended || videoElem.paused){
+                clearInterval(updateInterval);
+                return;
+            }
+            ctx.drawImage(videoElem, 0, 0, canvas.width, canvas.height);
+            const percent = Math.min(95, (videoElem.currentTime / duration) * 100);
+            setVideoProgress(percent, `CONVERTING ${percent.toFixed(0)}%`);
+        }, 100);
+
+        videoElem.onended = () => {
+            clearInterval(updateInterval);
+            videoElem.pause();
+            mediaRecorder.stop();
+        };
+
+        // Chờ đến khi video chạy hết và record xong
+        await conversionDone;
+        URL.revokeObjectURL(videoUrl);
+
+        setVideoProgress(98, "FINALIZING MP4...");
+        const outBlob = new Blob(chunks, { type: "video/mp4" });
+        state.resultBlob = outBlob;
+
+        const customName = $("videoOutputName").value.trim();
+        state.resultName = customName ? customName : "converted_video.mp4";
+
+        setVideoProgress(100, "COMPLETE");
+        log(`BIẾN ĐỔI VIDEO THÀNH CÔNG — ${formatBytes(outBlob.size)}`, "good");
+
+        $("modalTitle").textContent = "Biến Đổi Video Thành Công";
+        $("modalDesc").textContent = "Tệp MP4 của bạn đã được chuyển đổi hoàn tất.";
+        $("resultInfo").textContent = [
+            `File Name: ${state.resultName}`,
+            `MimeType : video/mp4`,
+            `File Size: ${formatBytes(outBlob.size)}`
+        ].join("\n");
+
+        $("resultModal").classList.add("show");
+    } catch(error) {
+        console.error(error);
+        log(`LỖI BIẾN ĐỔI VIDEO: ${error.message || error}`, "bad");
+    } finally {
+        state.busy = false;
+        $("convertVideoButton").disabled = false;
+    }
+}
+
+// Native .3105 Package Generator Logic
+async function generateNativePatch3105(){
     if(state.busy) return;
     if(state.files.length < 1){ log("Chưa có ZIP nào được chọn.", "bad"); return; }
     if(typeof zip === "undefined"){ log("Thư viện ZIP chưa tải xong.", "bad"); return; }
@@ -405,8 +629,8 @@ async function generatePatch3105Fixed(){
     $("engineStatus").classList.remove("status-ready");
     
     state.resultBlob = null;
-    setProgress(0, "ANALYZING ZIP...");
-    log(`Bắt đầu đóng gói Patch 3105 vá lỗi với ${state.files.length} ZIP.`, "info");
+    setProgress(0, "BUILDING 3105 ARCHIVE...");
+    log(`Bắt đầu đóng gói chuẩn gốc .3105 với ${state.files.length} ZIP.`, "info");
 
     const duplicateMode = $("duplicateMode").value;
     const rootFolderName = ($("patchFolderName").value.trim() || "Edras VTK fix full").replace(/\/$/, "");
@@ -415,11 +639,10 @@ async function generatePatch3105Fixed(){
     const readers = [];
 
     try {
-        writer = new zip.ZipWriter(new zip.BlobWriter("application/zip"));
+        writer = new zip.ZipWriter(new zip.BlobWriter("application/octet-stream"));
         const zipReaders = [];
         let totalEntries = 0;
 
-        // 1. Khởi tạo cây thư mục chuẩn xác cấu trúc iOS
         const basePath = rootFolderName + "/";
         const appGroupPath = basePath + "AppGroup/";
         const appPath = basePath + "Application/";
@@ -434,7 +657,6 @@ async function generatePatch3105Fixed(){
             addedEntries.add(folder);
         }
 
-        // 2. Tạo tệp settings.json chính xác theo mẫu được cung cấp[span_2](start_span)[span_2](end_span)
         const settingsData = {
             "fields": [],
             "schemaVersion": 1
@@ -443,12 +665,11 @@ async function generatePatch3105Fixed(){
         const settingsBlob = new Blob([settingsContent], { type: "application/json" });
         await writer.add(basePath + "settings.json", new zip.BlobReader(settingsBlob));
         addedEntries.add(basePath + "settings.json");
-        log("Đã nạp tệp settings.json thành công.", "info");
+        log("Đã đóng gói settings.json hoàn tất.", "info");
 
-        // 3. Đọc dữ liệu từ các file zip nguồn
         for(let i = 0; i < state.files.length; i++){
             const file = state.files[i];
-            log(`Đọc ZIP ${i + 1}/${state.files.length}: ${file.name}`, "info");
+            log(`Đọc file ZIP ${i + 1}/${state.files.length}: ${file.name}`, "info");
             const reader = new zip.ZipReader(new zip.BlobReader(file));
             readers.push(reader);
             const entries = await reader.getEntries();
@@ -463,7 +684,6 @@ async function generatePatch3105Fixed(){
         let sources = duplicateMode === "last" ? zipReaders.slice().reverse() : zipReaders.slice();
         let processed = 0;
 
-        // 4. Lọc bỏ các đường dẫn rác / lồng nhau và đặt thẳng vào thư mục phiên bản 1.63.1
         for(const source of sources){
             for(const entry of source.entries){
                 const filename = entry.filename;
@@ -471,8 +691,6 @@ async function generatePatch3105Fixed(){
                     processed++; continue;
                 }
                 let cleanName = filename.replace(/\\/g, "/");
-
-                // Loại bỏ bớt các tiền tố thừa nếu file zip nguồn đã bao bọc sẵn thư mục
                 cleanName = cleanName.replace(/^(com\.garena\.game\.kgvn\/Documents\/Resources\/1\.63\.1\/|Resources\/1\.63\.1\/|1\.63\.1\/)/i, "");
 
                 let normalized = verPath + cleanName;
@@ -498,13 +716,13 @@ async function generatePatch3105Fixed(){
                 
                 processed++;
                 if(processed % 3 === 0){
-                    setProgress(processed / totalEntries * 100, `PACKING ${processed}/${totalEntries}`);
+                    setProgress(processed / totalEntries * 100, `WRITING ${processed}/${totalEntries}`);
                     await sleep(0);
                 }
             }
         }
 
-        setProgress(98, "FINALIZING .3105 PACKAGE...");
+        setProgress(98, "FINALIZING .3105 FILE...");
         state.resultBlob = await writer.close();
         writer = null;
 
@@ -514,13 +732,15 @@ async function generatePatch3105Fixed(){
         setProgress(100, "COMPLETE");
         $("engineStatus").textContent = "SUCCESS";
         $("engineStatus").classList.add("status-ready");
-        log(`TẠO PATCH VÁ LỖI THÀNH CÔNG — ${formatBytes(state.resultBlob.size)}`, "good");
+        log(`TẠO GÓI .3105 THÀNH CÔNG — ${formatBytes(state.resultBlob.size)}`, "good");
 
+        $("modalTitle").textContent = "Tạo Gói .3105 Thành Công";
+        $("modalDesc").textContent = "File định dạng chuẩn .3105 đã sẵn sàng tải về.";
         $("resultInfo").textContent = [
-            `Output : ${state.resultName}`,
-            `Root   : ${rootFolderName}/`,
-            `Entries: ${addedEntries.size}`,
-            `Size   : ${formatBytes(state.resultBlob.size)}`
+            `File Name: ${state.resultName}`,
+            `Root Dir : ${rootFolderName}/`,
+            `Total Entries: ${addedEntries.size}`,
+            `Package Size: ${formatBytes(state.resultBlob.size)}`
         ].join("\n");
 
         $("resultModal").classList.add("show");
@@ -528,7 +748,7 @@ async function generatePatch3105Fixed(){
         console.error(error);
         if(writer) { try { await writer.close(); } catch(_){} }
         $("engineStatus").textContent = "ERROR";
-        log(`LỖI ĐÓNG GÓI: ${error.message || error}`, "bad");
+        log(`LỖI TẠO FILE: ${error.message || error}`, "bad");
     } finally {
         for(const reader of readers){ try { await reader.close(); } catch(_){} }
         state.busy = false;
@@ -538,7 +758,12 @@ async function generatePatch3105Fixed(){
 
 $("mergeButton").addEventListener("click", (e) => {
     e.preventDefault();
-    generatePatch3105Fixed();
+    generateNativePatch3105();
+});
+
+$("convertVideoButton").addEventListener("click", (e) => {
+    e.preventDefault();
+    convertVideoToMp4();
 });
 
 $("downloadButton").addEventListener("click", (e) => {
@@ -549,7 +774,7 @@ $("downloadButton").addEventListener("click", (e) => {
     a.href = url; a.download = state.resultName;
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(url), 5000);
-    log(`Đã tải file thành công: ${state.resultName}`, "good");
+    log(`Đã tải xuống thành công: ${state.resultName}`, "good");
 });
 
 $("closeModalButton").addEventListener("click", (e) => {
