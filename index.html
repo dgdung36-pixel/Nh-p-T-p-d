@@ -2,54 +2,54 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-
-<meta name="theme-color" content="#05060a">
-<title>CYBER MERGE V25 — AI BINARY WORKSPACE</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#05070d">
+<title>TOOL AI BINARY ENGINE V26</title>
 
 <style>
 :root{
-    --bg:#05060a;
-    --panel:rgba(15,18,27,.78);
-    --panel2:#0c0f17;
-    --border:rgba(255,255,255,.12);
-    --text:#fff;
-    --muted:#8e99aa;
-    --cyan:#00f2fe;
-    --purple:#8b5cf6;
-    --green:#36e37b;
-    --yellow:#ffc857;
-    --red:#ff4d6d;
-    --shadow:rgba(0,0,0,.55);
-    --mono:"JetBrains Mono",monospace;
-    --font:Inter,system-ui,sans-serif;
-}
-
-[data-theme="light"]{
-    --bg:#eef2f7;
-    --panel:rgba(255,255,255,.84);
-    --panel2:#fff;
-    --border:rgba(0,0,0,.12);
-    --text:#111827;
-    --muted:#64748b;
-    --shadow:rgba(0,0,0,.12);
+    --bg:#05070d;
+    --panel:rgba(12,17,28,.82);
+    --panel2:rgba(17,24,39,.92);
+    --line:rgba(120,150,190,.16);
+    --text:#edf5ff;
+    --muted:#8290a8;
+    --cyan:#35e8ff;
+    --blue:#4f8cff;
+    --green:#48f0a0;
+    --yellow:#ffd166;
+    --red:#ff5577;
+    --shadow:0 20px 70px rgba(0,0,0,.42);
+    --radius:20px;
 }
 
 *{
     box-sizing:border-box;
     margin:0;
     padding:0;
-    -webkit-tap-highlight-color:transparent;
 }
 
 body{
     min-height:100vh;
-    padding:16px;
-    background:var(--bg);
     color:var(--text);
-    font-family:var(--font);
+    background:
+        radial-gradient(circle at 10% 0%,rgba(53,232,255,.08),transparent 30%),
+        radial-gradient(circle at 90% 10%,rgba(79,140,255,.08),transparent 30%),
+        linear-gradient(145deg,#03050a,#070b14 55%,#04060b);
+    font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
     overflow-x:hidden;
+}
+
+body:before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    opacity:.18;
+    background-image:
+        linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+    background-size:32px 32px;
 }
 
 button,input,select{
@@ -57,754 +57,725 @@ button,input,select{
 }
 
 button{
+    border:0;
     cursor:pointer;
 }
 
-button:disabled{
-    cursor:not-allowed;
+.app{
+    width:min(1500px,calc(100% - 28px));
+    margin:auto;
+    padding:18px 0 40px;
 }
 
-.background{
-    position:fixed;
-    inset:0;
-    z-index:-5;
-    overflow:hidden;
-}
-
-.grid{
-    position:absolute;
-    inset:0;
-    opacity:.15;
-    background-image:
-        linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),
-        linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);
-    background-size:42px 42px;
-}
-
-.blob{
-    position:absolute;
-    width:420px;
-    height:420px;
-    border-radius:50%;
-    filter:blur(120px);
-    opacity:.24;
-    animation:float 15s ease-in-out infinite alternate;
-}
-
-.blob.a{
-    background:#00f2fe;
-    left:-180px;
-    top:-170px;
-}
-
-.blob.b{
-    background:#8b5cf6;
-    right:-180px;
-    bottom:-150px;
-    animation-delay:-5s;
-}
-
-.blob.c{
-    background:#ff007f;
-    width:300px;
-    height:300px;
-    left:40%;
-    top:42%;
-    opacity:.1;
-    animation-delay:-9s;
-}
-
-@keyframes float{
-    to{
-        transform:translate(70px,80px) scale(1.12);
-    }
-}
-
-/* HEADER */
-
-header{
-    width:min(1120px,100%);
-    margin:0 auto 18px;
+.topbar{
     display:flex;
-    justify-content:space-between;
     align-items:center;
-    gap:15px;
-    flex-wrap:wrap;
+    justify-content:space-between;
+    gap:20px;
+    padding:18px 22px;
+    border:1px solid var(--line);
+    border-radius:24px;
+    background:rgba(7,11,19,.82);
+    backdrop-filter:blur(20px);
+    box-shadow:var(--shadow);
+    position:sticky;
+    top:12px;
+    z-index:20;
 }
 
 .brand{
     display:flex;
     align-items:center;
-    gap:12px;
+    gap:14px;
 }
 
-.logo{
+.brand-icon{
     width:48px;
     height:48px;
     display:grid;
     place-items:center;
-    border-radius:16px;
+    border-radius:15px;
+    color:#031018;
+    background:linear-gradient(135deg,var(--cyan),var(--blue));
     font-size:23px;
-    background:linear-gradient(135deg,var(--cyan),var(--purple));
-    box-shadow:0 0 30px rgba(0,242,254,.3);
+    font-weight:1000;
+    box-shadow:0 0 30px rgba(53,232,255,.25);
 }
 
-.brand-title{
-    font:900 16px var(--mono);
-    letter-spacing:1px;
+.brand h1{
+    font-size:17px;
+    letter-spacing:.8px;
 }
 
-.brand-title span{
-    color:var(--cyan);
-}
-
-.brand-sub{
+.brand p{
+    margin-top:4px;
     color:var(--muted);
-    margin-top:3px;
-    font:9px var(--mono);
-    letter-spacing:2px;
+    font-size:11px;
+    letter-spacing:1.5px;
 }
 
-.header-actions{
+.top-actions{
     display:flex;
-    align-items:center;
     gap:8px;
 }
 
-.clock,
-.action{
-    height:42px;
-    border:1px solid var(--border);
-    border-radius:22px;
-    background:var(--panel);
+.icon-btn{
+    min-width:40px;
+    height:40px;
+    border:1px solid var(--line);
+    border-radius:12px;
     color:var(--text);
-    backdrop-filter:blur(20px);
-    box-shadow:0 8px 25px var(--shadow);
+    background:rgba(255,255,255,.035);
 }
 
-.clock{
-    display:flex;
-    align-items:center;
-    padding:0 14px;
-    font:700 11px var(--mono);
-}
-
-.action{
-    min-width:42px;
-    padding:0 13px;
-}
-
-.action:hover{
-    border-color:var(--cyan);
-}
-
-.owner{
-    padding:10px 14px;
-    border:1px solid var(--border);
-    border-radius:22px;
-    background:var(--panel);
-    font:900 10px var(--mono);
-}
-
-/* LAYOUT */
-
-.container{
-    width:min(1120px,100%);
-    margin:auto;
-}
-
-.hero,
-.panel{
-    border:1px solid var(--border);
-    background:var(--panel);
-    backdrop-filter:blur(30px) saturate(140%);
-    box-shadow:0 20px 60px var(--shadow);
+.icon-btn:hover{
+    border-color:rgba(53,232,255,.45);
+    background:rgba(53,232,255,.08);
 }
 
 .hero{
-    padding:26px;
+    margin-top:20px;
+    padding:34px;
+    border:1px solid var(--line);
     border-radius:28px;
-    margin-bottom:18px;
+    background:
+        linear-gradient(135deg,rgba(15,25,42,.96),rgba(7,11,20,.92));
+    box-shadow:var(--shadow);
+    overflow:hidden;
+    position:relative;
 }
 
-.hero h1{
-    font-size:clamp(27px,5vw,43px);
-    line-height:1.03;
+.hero:after{
+    content:"";
+    position:absolute;
+    width:420px;
+    height:420px;
+    right:-180px;
+    top:-220px;
+    border-radius:50%;
+    background:rgba(53,232,255,.08);
+    filter:blur(10px);
+}
+
+.hero-label{
+    color:var(--cyan);
+    font-size:11px;
     font-weight:900;
-    letter-spacing:-1.8px;
+    letter-spacing:3px;
+    margin-bottom:12px;
 }
 
-.gradient{
-    background:linear-gradient(90deg,var(--text),var(--cyan),#a78bfa);
+.hero h2{
+    font-size:clamp(30px,5vw,58px);
+    line-height:1;
+    letter-spacing:-2px;
+}
+
+.hero h2 span{
+    background:linear-gradient(90deg,var(--cyan),#fff,var(--blue));
     -webkit-background-clip:text;
     color:transparent;
 }
 
-.hero p{
-    max-width:780px;
-    margin-top:11px;
+.hero-desc{
+    max-width:850px;
+    margin-top:15px;
     color:var(--muted);
-    font-size:12px;
     line-height:1.7;
+    font-size:14px;
 }
 
-.chips{
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px;
+.creator{
+    margin-top:24px;
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:11px 16px;
+    border:1px solid rgba(53,232,255,.35);
+    border-radius:14px;
+    background:linear-gradient(135deg,rgba(53,232,255,.12),rgba(79,140,255,.08));
+    box-shadow:0 0 30px rgba(53,232,255,.08);
+}
+
+.creator small{
+    color:#8ea0b8;
+    letter-spacing:1px;
+}
+
+.creator strong{
+    color:#fff;
+    letter-spacing:1.5px;
+    text-shadow:0 0 16px rgba(53,232,255,.7);
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
     margin-top:18px;
 }
 
-.chip{
-    padding:7px 10px;
-    border:1px solid var(--border);
-    border-radius:20px;
-    background:rgba(255,255,255,.035);
+.stat{
+    padding:18px;
+    border:1px solid var(--line);
+    border-radius:18px;
+    background:var(--panel);
+}
+
+.stat-label{
     color:var(--muted);
-    font:700 9px var(--mono);
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:1.5px;
 }
 
-.layout{
-    display:grid;
-    grid-template-columns:1.08fr .92fr;
-    gap:18px;
-}
-
-.panel{
-    padding:22px;
-    border-radius:25px;
-}
-
-.panel-header{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:10px;
-    margin-bottom:16px;
-}
-
-.panel-header h2{
-    font-size:18px;
+.stat-value{
+    margin-top:8px;
+    font-size:23px;
     font-weight:900;
 }
 
-.badge{
-    padding:6px 8px;
-    border-radius:8px;
-    color:var(--cyan);
-    background:rgba(0,242,254,.07);
-    border:1px solid rgba(0,242,254,.2);
-    font:700 9px var(--mono);
+.workspace{
+    display:grid;
+    grid-template-columns:minmax(0,1.35fr) minmax(340px,.65fr);
+    gap:16px;
+    margin-top:16px;
 }
 
-/* DROP */
+.panel{
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    background:var(--panel);
+    backdrop-filter:blur(16px);
+    box-shadow:var(--shadow);
+    overflow:hidden;
+}
+
+.panel-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    padding:18px 20px;
+    border-bottom:1px solid var(--line);
+}
+
+.panel-title{
+    font-weight:900;
+    letter-spacing:.5px;
+}
+
+.panel-sub{
+    color:var(--muted);
+    font-size:11px;
+    margin-top:4px;
+}
+
+.panel-body{
+    padding:20px;
+}
 
 .drop{
     min-height:190px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    padding:25px;
-    border:2px dashed var(--border);
+    border:1px dashed rgba(53,232,255,.4);
     border-radius:20px;
-    background:rgba(0,0,0,.1);
-    transition:.25s;
+    display:grid;
+    place-items:center;
+    text-align:center;
+    padding:30px;
+    background:
+        radial-gradient(circle,rgba(53,232,255,.06),transparent 60%),
+        rgba(53,232,255,.015);
+    transition:.2s;
 }
 
-.drop:hover,
 .drop.drag{
     border-color:var(--cyan);
-    background:rgba(0,242,254,.06);
+    background:rgba(53,232,255,.08);
+    transform:scale(1.01);
 }
 
 .drop-icon{
-    width:66px;
-    height:66px;
-    display:grid;
-    place-items:center;
-    border-radius:20px;
-    margin-bottom:12px;
-    font-size:28px;
-    background:linear-gradient(135deg,var(--cyan),#4facfe);
-    box-shadow:0 10px 30px rgba(0,242,254,.25);
+    font-size:40px;
+    margin-bottom:10px;
 }
 
-.drop-title{
-    font-size:14px;
-    font-weight:800;
+.drop strong{
+    display:block;
+    font-size:15px;
 }
 
-.drop-sub{
-    margin-top:6px;
+.drop span{
+    display:block;
     color:var(--muted);
-    font-size:10px;
+    font-size:12px;
+    margin-top:7px;
 }
 
-/* FILE LIST */
-
-.files{
-    display:flex;
-    flex-direction:column;
-    gap:8px;
-    margin-top:12px;
+.primary{
+    margin-top:16px;
+    width:100%;
+    padding:14px 18px;
+    border-radius:14px;
+    color:#021017;
+    background:linear-gradient(90deg,var(--cyan),#66b8ff);
+    font-weight:950;
+    box-shadow:0 10px 35px rgba(53,232,255,.15);
 }
 
-.file{
-    display:flex;
+.primary:disabled{
+    opacity:.35;
+    cursor:not-allowed;
+}
+
+.file-list{
+    margin-top:16px;
+    display:grid;
+    gap:9px;
+}
+
+.file-card{
+    display:grid;
+    grid-template-columns:auto 1fr auto;
     align-items:center;
-    gap:10px;
-    padding:12px;
-    border:1px solid var(--border);
+    gap:12px;
+    padding:13px;
+    border:1px solid var(--line);
     border-radius:15px;
-    background:rgba(0,0,0,.13);
+    background:rgba(255,255,255,.025);
 }
 
-.file-icon{
-    width:38px;
-    height:38px;
+.file-num{
+    width:32px;
+    height:32px;
+    border-radius:10px;
     display:grid;
     place-items:center;
-    border-radius:11px;
-    background:rgba(0,242,254,.08);
-}
-
-.file-info{
-    flex:1;
-    min-width:0;
+    color:#041017;
+    background:linear-gradient(135deg,var(--cyan),var(--blue));
+    font-weight:900;
 }
 
 .file-name{
     overflow:hidden;
-    white-space:nowrap;
     text-overflow:ellipsis;
-    font-size:11px;
-    font-weight:800;
+    white-space:nowrap;
+    font-size:13px;
+    font-weight:700;
 }
 
-.file-size{
-    margin-top:3px;
-    color:var(--cyan);
-    font:9px var(--mono);
+.file-meta{
+    color:var(--muted);
+    font-size:10px;
+    margin-top:4px;
 }
 
-.remove{
+.file-actions{
+    display:flex;
+    gap:5px;
+}
+
+.mini{
     width:31px;
     height:31px;
-    border:0;
     border-radius:9px;
-    color:var(--red);
-    background:rgba(255,77,109,.08);
+    color:var(--text);
+    border:1px solid var(--line);
+    background:rgba(255,255,255,.035);
 }
 
-/* CONTROLS */
-
-.form{
-    margin-top:16px;
+.mini:hover{
+    border-color:var(--cyan);
 }
 
-.label{
-    display:block;
-    margin-bottom:7px;
-    color:var(--muted);
-    font:800 9px var(--mono);
+.controls{
+    margin-top:18px;
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
 }
 
 .control{
+    display:grid;
+    gap:7px;
+}
+
+.control.full{
+    grid-column:1/-1;
+}
+
+.control label{
+    color:var(--muted);
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:1px;
+    text-transform:uppercase;
+}
+
+.control input,
+.control select{
     width:100%;
-    padding:13px;
-    border:1px solid var(--border);
-    border-radius:14px;
-    background:rgba(0,0,0,.14);
+    height:44px;
+    padding:0 12px;
     color:var(--text);
+    background:#090e18;
+    border:1px solid var(--line);
+    border-radius:12px;
     outline:none;
 }
 
-.control:focus{
-    border-color:var(--cyan);
-    box-shadow:0 0 16px rgba(0,242,254,.12);
+.control input:focus,
+.control select:focus{
+    border-color:rgba(53,232,255,.55);
+    box-shadow:0 0 0 3px rgba(53,232,255,.06);
 }
 
-.button{
-    width:100%;
-    margin-top:12px;
-    padding:16px;
-    border-radius:16px;
-    border:1px solid transparent;
-    font-size:12px;
-    font-weight:900;
-    letter-spacing:.8px;
-    transition:.25s;
-}
-
-.primary{
-    color:#000;
-    background:linear-gradient(135deg,#fff,#dffcff);
-}
-
-.primary:hover:not(:disabled){
-    transform:translateY(-2px);
-    box-shadow:0 0 25px rgba(0,242,254,.2);
-}
-
-.primary:disabled{
-    color:var(--muted);
-    background:rgba(255,255,255,.06);
-    border-color:var(--border);
-}
-
-.secondary{
-    color:var(--muted);
-    background:transparent;
-    border-color:var(--border);
-}
-
-/* AI ANALYZER */
-
-.ai-box{
-    margin-top:15px;
-    padding:15px;
-    border:1px solid rgba(139,92,246,.25);
-    border-radius:18px;
-    background:linear-gradient(
-        135deg,
-        rgba(139,92,246,.08),
-        rgba(0,242,254,.04)
-    );
-}
-
-.ai-title{
+.check{
     display:flex;
     align-items:center;
-    justify-content:space-between;
-    gap:8px;
-    font-weight:900;
+    gap:10px;
+    min-height:44px;
+    padding:0 12px;
+    border:1px solid var(--line);
+    border-radius:12px;
+    background:#090e18;
     font-size:12px;
+}
+
+.check input{
+    width:16px;
+    height:16px;
+    accent-color:var(--cyan);
+}
+
+.buttons{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:9px;
+    margin-top:14px;
+}
+
+.action{
+    min-height:43px;
+    border-radius:12px;
+    color:var(--text);
+    border:1px solid var(--line);
+    background:rgba(255,255,255,.04);
+    font-weight:800;
+}
+
+.action:hover{
+    border-color:rgba(53,232,255,.5);
+    background:rgba(53,232,255,.07);
+}
+
+.action.danger:hover{
+    border-color:rgba(255,85,119,.6);
+}
+
+.progress{
+    margin-top:16px;
+    height:8px;
+    border-radius:999px;
+    background:#080c14;
+    overflow:hidden;
+}
+
+.progress-bar{
+    height:100%;
+    width:0%;
+    border-radius:inherit;
+    background:linear-gradient(90deg,var(--cyan),var(--blue));
+    transition:width .15s;
+}
+
+.ai-box{
+    padding:20px;
 }
 
 .ai-status{
-    font:700 9px var(--mono);
-    color:var(--muted);
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:15px;
+    border:1px solid rgba(53,232,255,.2);
+    border-radius:16px;
+    background:rgba(53,232,255,.035);
 }
 
-.ai-summary{
-    margin-top:10px;
+.ai-orb{
+    width:43px;
+    height:43px;
+    border-radius:50%;
+    display:grid;
+    place-items:center;
+    background:radial-gradient(circle,#fff 0 5%,var(--cyan) 6% 30%,rgba(53,232,255,.15) 31%);
+    box-shadow:0 0 25px rgba(53,232,255,.5);
+}
+
+.ai-status strong{
+    display:block;
+    font-size:13px;
+}
+
+.ai-status span{
+    display:block;
     color:var(--muted);
     font-size:10px;
-    line-height:1.7;
+    margin-top:4px;
 }
 
 .confidence{
-    margin-top:12px;
+    margin-top:16px;
 }
 
 .conf-top{
     display:flex;
     justify-content:space-between;
-    margin-bottom:6px;
-    font:700 9px var(--mono);
+    color:var(--muted);
+    font-size:11px;
+}
+
+.conf-top strong{
+    color:var(--text);
 }
 
 .conf-track{
-    height:6px;
+    height:9px;
+    margin-top:8px;
+    background:#080c14;
+    border-radius:99px;
     overflow:hidden;
-    border-radius:10px;
-    background:rgba(255,255,255,.08);
 }
 
-.conf-bar{
-    width:0;
+.conf-fill{
+    width:0%;
     height:100%;
-    border-radius:10px;
-    background:linear-gradient(90deg,var(--purple),var(--cyan));
-    transition:width .5s;
+    background:linear-gradient(90deg,var(--yellow),var(--green));
+    transition:.4s;
 }
 
-/* STATS */
-
-.stats{
+.analysis-grid{
+    margin-top:16px;
     display:grid;
     grid-template-columns:1fr 1fr;
     gap:8px;
-    margin-top:14px;
 }
 
-.stat{
-    padding:11px;
-    border:1px solid var(--border);
-    border-radius:13px;
-    background:rgba(255,255,255,.025);
-}
-
-.stat-label{
-    color:var(--muted);
-    font-size:8px;
-}
-
-.stat-value{
-    margin-top:4px;
-    font:700 11px var(--mono);
-}
-
-/* TERMINAL */
-
-.terminal{
-    overflow:hidden;
-    border:1px solid rgba(255,255,255,.1);
-    border-radius:18px;
-    background:#0d1117;
-}
-
-.terminal-head{
-    display:flex;
-    align-items:center;
-    gap:6px;
-    padding:11px;
-    border-bottom:1px solid rgba(255,255,255,.08);
-}
-
-.dot{
-    width:9px;
-    height:9px;
-    border-radius:50%;
-}
-
-.red{background:#ff5f56}
-.yellow{background:#ffbd2e}
-.green{background:#27c93f}
-
-.term-name{
-    flex:1;
-    margin-left:5px;
-    color:#8b949e;
-    font:9px var(--mono);
-}
-
-.clear{
-    padding:5px 8px;
-    border:1px solid rgba(255,255,255,.1);
-    border-radius:7px;
-    background:rgba(255,255,255,.04);
-    color:#aaa;
-    font:8px var(--mono);
-}
-
-.logs{
-    height:280px;
-    overflow-y:auto;
+.metric{
     padding:12px;
-    color:#c9d1d9;
-    font:9px/1.65 var(--mono);
+    border:1px solid var(--line);
+    border-radius:13px;
+    background:rgba(255,255,255,.02);
 }
 
-.log{
-    word-break:break-word;
+.metric small{
+    color:var(--muted);
+    display:block;
+    font-size:9px;
+    text-transform:uppercase;
+    letter-spacing:1px;
 }
 
-.log.ok{color:#56d364}
-.log.info{color:#58a6ff}
-.log.warn{color:#d29922}
-.log.error{color:#ff7b72}
+.metric b{
+    display:block;
+    margin-top:5px;
+    font-size:13px;
+}
 
-/* BINARY PREVIEW */
+.warning{
+    margin-top:14px;
+    padding:13px;
+    border-radius:13px;
+    border:1px solid rgba(255,209,102,.2);
+    background:rgba(255,209,102,.035);
+    color:#d9c895;
+    font-size:11px;
+    line-height:1.6;
+}
 
 .preview{
-    margin-top:15px;
+    margin-top:16px;
 }
 
 .preview-title{
-    margin-bottom:7px;
     color:var(--muted);
-    font:800 9px var(--mono);
+    font-size:10px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    margin-bottom:8px;
 }
 
 .hex{
-    height:100px;
+    min-height:100px;
+    max-height:190px;
     overflow:auto;
-    padding:10px;
-    border:1px solid var(--border);
+    padding:13px;
+    border:1px solid var(--line);
     border-radius:13px;
-    background:#080a0f;
-    color:#8b949e;
-    font:9px/1.7 var(--mono);
-    white-space:pre;
+    background:#03050a;
+    color:#90f5ff;
+    font:11px/1.65 ui-monospace,SFMono-Regular,Menlo,monospace;
+    white-space:pre-wrap;
+    word-break:break-all;
 }
 
-/* PROGRESS */
-
-.progress{
-    display:none;
-    margin-top:13px;
+.terminal{
+    margin-top:16px;
 }
 
-.progress.active{
-    display:block;
+.terminal-body{
+    height:270px;
+    overflow:auto;
+    padding:15px;
+    background:#020407;
+    font:11px/1.7 ui-monospace,SFMono-Regular,Menlo,monospace;
 }
 
-.progress-top{
-    display:flex;
-    justify-content:space-between;
-    margin-bottom:6px;
-    color:var(--muted);
-    font:700 9px var(--mono);
+.log{
+    margin-bottom:3px;
 }
 
-.track{
-    height:7px;
-    overflow:hidden;
-    border-radius:10px;
-    background:rgba(255,255,255,.08);
+.log .time{
+    color:#4f6078;
 }
 
-.bar{
-    width:0;
-    height:100%;
-    border-radius:10px;
-    background:linear-gradient(90deg,var(--purple),var(--cyan));
-    box-shadow:0 0 12px var(--cyan);
-    transition:width .12s;
+.log.info{
+    color:#9ab0ca;
 }
 
-/* MODAL */
-
-.overlay{
-    position:fixed;
-    inset:0;
-    z-index:1000;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
-    background:rgba(0,0,0,.7);
-    backdrop-filter:blur(15px);
-    opacity:0;
-    pointer-events:none;
-    transition:.25s;
+.log.good{
+    color:#55efaa;
 }
 
-.overlay.active{
-    opacity:1;
-    pointer-events:auto;
+.log.warn{
+    color:#ffd166;
+}
+
+.log.error{
+    color:#ff6684;
+}
+
+.report{
+    margin-top:16px;
+}
+
+textarea{
+    resize:vertical;
 }
 
 .modal{
-    width:min(430px,100%);
-    padding:27px;
-    text-align:center;
-    border:1px solid var(--border);
-    border-radius:25px;
-    background:var(--panel2);
-    box-shadow:0 30px 90px rgba(0,0,0,.55);
-    transform:scale(.9);
-    transition:.3s;
-}
-
-.overlay.active .modal{
-    transform:scale(1);
-}
-
-.modal-icon{
-    width:68px;
-    height:68px;
-    display:grid;
-    place-items:center;
-    margin:auto;
-    border-radius:50%;
-    background:linear-gradient(135deg,var(--green),#30b0c7);
-    color:white;
-    font-size:30px;
-}
-
-.modal h3{
-    margin-top:15px;
-    font-size:20px;
-}
-
-.modal p{
-    margin:10px 0 18px;
-    color:var(--muted);
-    font-size:11px;
-    line-height:1.7;
-}
-
-.modal button{
-    width:100%;
-    padding:13px;
-    border:0;
-    border-radius:14px;
-    background:var(--text);
-    color:var(--bg);
-    font-weight:900;
-}
-
-/* TOAST */
-
-.toasts{
     position:fixed;
-    z-index:2000;
-    right:15px;
-    bottom:15px;
-    display:flex;
-    flex-direction:column;
-    gap:7px;
-    max-width:330px;
+    inset:0;
+    z-index:100;
+    display:none;
+    place-items:center;
+    padding:20px;
+    background:rgba(0,0,0,.7);
+    backdrop-filter:blur(10px);
 }
 
-.toast{
-    padding:11px 13px;
-    border:1px solid var(--border);
+.modal.show{
+    display:grid;
+}
+
+.modal-card{
+    width:min(600px,100%);
+    max-height:90vh;
+    overflow:auto;
+    padding:25px;
+    border:1px solid rgba(53,232,255,.25);
+    border-radius:23px;
+    background:#080d17;
+    box-shadow:0 30px 100px rgba(0,0,0,.65);
+}
+
+.modal-card h3{
+    font-size:22px;
+}
+
+.result-grid{
+    margin-top:17px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:9px;
+}
+
+.result{
+    padding:13px;
+    border:1px solid var(--line);
     border-radius:13px;
-    background:var(--panel2);
-    color:var(--text);
-    box-shadow:0 12px 35px var(--shadow);
-    font-size:10px;
-    animation:toast .25s ease;
 }
 
-@keyframes toast{
-    from{
-        opacity:0;
-        transform:translateX(15px);
-    }
-}
-
-/* FOOTER */
-
-footer{
-    padding:20px 0 5px;
-    text-align:center;
+.result small{
     color:var(--muted);
-    font:8px var(--mono);
-    letter-spacing:1.5px;
+    font-size:9px;
 }
 
-@media(max-width:820px){
-    .layout{
+.result b{
+    display:block;
+    margin-top:5px;
+    word-break:break-all;
+    font-size:12px;
+}
+
+.modal-buttons{
+    display:flex;
+    gap:9px;
+    margin-top:17px;
+}
+
+.modal-buttons button{
+    flex:1;
+}
+
+.footer{
+    margin-top:22px;
+    text-align:center;
+    color:#526178;
+    font-size:10px;
+    letter-spacing:1px;
+}
+
+.footer strong{
+    color:#8defff;
+}
+
+@media(max-width:1000px){
+    .workspace{
         grid-template-columns:1fr;
     }
 }
 
-@media(max-width:520px){
-    body{
-        padding:11px;
+@media(max-width:700px){
+    .app{
+        width:min(100% - 16px,1500px);
     }
 
-    .hero,
-    .panel{
-        padding:18px;
+    .topbar{
+        padding:13px;
     }
 
-    .owner{
-        display:none;
-    }
-
-    .clock{
-        margin-right:auto;
+    .hero{
+        padding:24px 18px;
     }
 
     .stats{
         grid-template-columns:1fr 1fr;
+    }
+
+    .controls,
+    .buttons{
+        grid-template-columns:1fr;
+    }
+
+    .buttons .action{
+        min-height:46px;
+    }
+
+    .creator{
+        display:flex;
+        flex-wrap:wrap;
     }
 }
 </style>
@@ -812,1935 +783,2078 @@ footer{
 
 <body>
 
-<div class="background">
-    <div class="grid"></div>
-    <div class="blob a"></div>
-    <div class="blob b"></div>
-    <div class="blob c"></div>
-</div>
+<div class="app">
 
-<header>
-
+<header class="topbar">
     <div class="brand">
-
-        <div class="logo">🔮</div>
-
+        <div class="brand-icon">K</div>
         <div>
-            <div class="brand-title">
-                CYBER <span>MERGE</span>
-            </div>
-
-            <div class="brand-sub">
-                AI BINARY WORKSPACE V25
-            </div>
+            <h1>KTOOL AI BINARY ENGINE</h1>
+            <p>LOCAL .BYTES ANALYSIS / MERGE LAB</p>
         </div>
-
     </div>
 
-    <div class="header-actions">
-
-        <div class="clock" id="clock">
-            00:00:00
-        </div>
-
-        <button class="action"
-                id="themeBtn"
-                onclick="toggleTheme()">
-            ☀️
-        </button>
-
-        <button class="action"
-                id="langBtn"
-                onclick="toggleLanguage()">
-            🇻🇳 VN
-        </button>
-
-        <div class="owner">
-            TRONG DUNG
-        </div>
-
+    <div class="top-actions">
+        <button class="icon-btn" id="themeBtn" title="Đổi giao diện">◐</button>
+        <button class="icon-btn" id="clearLogBtn" title="Xóa terminal">⌫</button>
     </div>
-
 </header>
 
-<main class="container">
-
 <section class="hero">
+    <div class="hero-label">V26 • BINARY INTELLIGENCE CORE</div>
 
-    <h1>
-        <span class="gradient">
-            AI BINARY
-        </span>
-        <br>
-        MERGE WORKSPACE
-    </h1>
+    <h2>
+        KTOOL <span>AI BINARY</span> ENGINE
+    </h2>
 
-    <p>
-        Phân tích cấu trúc binary, so sánh hai file,
-        đánh giá khả năng tương thích và thực hiện
-        ghép dữ liệu theo quy trình kiểm tra nhiều bước.
-        Tất cả được xử lý cục bộ trên trình duyệt.
+    <p class="hero-desc">
+        Công cụ phân tích và ghép file .bytes chạy hoàn toàn trên trình duyệt.
+        Engine sẽ kiểm tra cấu trúc, common-prefix, entropy, duplicate,
+        kích thước và mức độ tin cậy trước khi quyết định cách merge.
     </p>
 
-    <div class="chips">
-
-        <div class="chip">
-            🧠 AI ANALYZER
-        </div>
-
-        <div class="chip">
-            🔍 COMPATIBILITY SCAN
-        </div>
-
-        <div class="chip">
-            🔐 SHA-256
-        </div>
-
-        <div class="chip">
-            🧪 VALIDATION
-        </div>
-
-        <div class="chip">
-            ⚡ WEB WORKER
-        </div>
-
+    <div class="creator">
+        <small>CREATED & CODED BY</small>
+        <strong>⚡ TRONG DUNG ⚡</strong>
     </div>
-
 </section>
 
-<section class="layout">
+<section class="stats">
+    <div class="stat">
+        <div class="stat-label">Files</div>
+        <div class="stat-value" id="statFiles">0</div>
+    </div>
 
-<!-- LEFT -->
+    <div class="stat">
+        <div class="stat-label">Input Size</div>
+        <div class="stat-value" id="statSize">0 B</div>
+    </div>
+
+    <div class="stat">
+        <div class="stat-label">AI Confidence</div>
+        <div class="stat-value" id="statConfidence">—</div>
+    </div>
+
+    <div class="stat">
+        <div class="stat-label">Engine</div>
+        <div class="stat-value">V26</div>
+    </div>
+</section>
+
+<main class="workspace">
+
+<section>
 
 <div class="panel">
 
-    <div class="panel-header">
+<div class="panel-head">
+    <div>
+        <div class="panel-title">INPUT FILES</div>
+        <div class="panel-sub">Chọn 2–8 file .bytes</div>
+    </div>
 
-        <h2>
-            BINARY MERGER
-        </h2>
+    <span id="fileCounter" class="panel-sub">0 / 8</span>
+</div>
 
-        <span class="badge">
-            V25 ENGINE
+<div class="panel-body">
+
+<div class="drop" id="dropZone">
+
+    <div>
+        <div class="drop-icon">⬡</div>
+
+        <strong>Kéo & thả file .bytes vào đây</strong>
+
+        <span>
+            hoặc chọn file từ thiết bị
         </span>
 
+        <button
+            class="primary"
+            id="pickBtn"
+            type="button">
+            + CHỌN FILE
+        </button>
     </div>
 
-    <div class="drop"
-         id="dropZone"
-         tabindex="0">
+</div>
 
-        <div class="drop-icon">
-            📦
-        </div>
+<input
+    type="file"
+    id="filePicker"
+    multiple
+    accept=".bytes"
+    hidden>
 
-        <div class="drop-title">
-            Chạm hoặc kéo thả file .bytes
-        </div>
+<div class="file-list" id="fileList"></div>
 
-        <div class="drop-sub">
-            Tối đa 2 file
-        </div>
+<div class="controls">
+
+    <div class="control">
+        <label>Merge Mode</label>
+
+        <select id="mergeMode">
+            <option value="smart">SMART — AI HEURISTIC</option>
+            <option value="safe">SAFE — NO DESTRUCTIVE PATCH</option>
+            <option value="raw">RAW — EXACT APPEND</option>
+        </select>
+    </div>
+
+    <div class="control">
+        <label>Header Strategy</label>
+
+        <select id="headerStrategy">
+            <option value="auto">AUTO DETECTION</option>
+            <option value="none">KEEP ALL BYTES</option>
+            <option value="manual">MANUAL OFFSET</option>
+        </select>
+    </div>
+
+    <div class="control">
+        <label>Manual Header Offset</label>
 
         <input
-            id="fileInput"
-            type="file"
-            accept=".bytes"
-            multiple
-            hidden>
-
+            id="manualOffset"
+            type="number"
+            min="0"
+            max="1048576"
+            value="0"
+            placeholder="Ví dụ: 32">
     </div>
 
-    <div class="files"
-         id="fileList">
-    </div>
-
-    <div class="ai-box">
-
-        <div class="ai-title">
-
-            <span>
-                🧠 AI BINARY ANALYZER
-            </span>
-
-            <span
-                class="ai-status"
-                id="aiStatus">
-                WAITING
-            </span>
-
-        </div>
-
-        <div class="ai-summary"
-             id="aiSummary">
-            Chọn đủ 2 file để bắt đầu
-            phân tích cấu trúc binary.
-        </div>
-
-        <div class="confidence">
-
-            <div class="conf-top">
-
-                <span>
-                    COMPATIBILITY CONFIDENCE
-                </span>
-
-                <span id="confidenceText">
-                    0%
-                </span>
-
-            </div>
-
-            <div class="conf-track">
-                <div
-                    class="conf-bar"
-                    id="confidenceBar">
-                </div>
-            </div>
-
-        </div>
-
-    </div>
-
-    <div class="form">
-
-        <label class="label">
-            OUTPUT FILE
-        </label>
+    <div class="control">
+        <label>Output Filename</label>
 
         <input
             id="outputName"
-            class="control"
-            placeholder="merged.bytes"
-            maxlength="120">
-
+            type="text"
+            value="KTOOL_MERGED_V26.bytes">
     </div>
 
-    <div class="form">
+    <div class="control full">
+        <label>Integrity Options</label>
 
-        <label class="label">
-            MERGE STRATEGY
+        <label class="check">
+            <input id="checksumToggle" type="checkbox" checked>
+            Tính SHA-256 cho file kết quả
         </label>
-
-        <select
-            id="mergeMode"
-            class="control">
-
-            <option value="append">
-                Sequential Append
-            </option>
-
-            <option value="separator">
-                Append + Safe Separator
-            </option>
-
-        </select>
-
     </div>
 
-    <button
-        id="analyzeBtn"
-        class="button secondary"
-        disabled>
-        🧠 ANALYZE FILES
-    </button>
+    <div class="control full">
+        <label>Conservative Size-Field Patch</label>
 
-    <button
-        id="mergeBtn"
-        class="button primary"
-        disabled>
-        SELECT 2 FILES
-    </button>
-
-    <button
-        id="resetBtn"
-        class="button secondary">
-        ↻ RESET WORKSPACE
-    </button>
-
-    <div class="progress"
-         id="progress">
-
-        <div class="progress-top">
-
-            <span id="progressText">
-                READY
-            </span>
-
-            <span id="progressPercent">
-                0%
-            </span>
-
-        </div>
-
-        <div class="track">
-
-            <div
-                class="bar"
-                id="progressBar">
-            </div>
-
-        </div>
-
-    </div>
-
-    <div class="stats">
-
-        <div class="stat">
-
-            <div class="stat-label">
-                FILES
-            </div>
-
-            <div
-                class="stat-value"
-                id="statFiles">
-                0 / 2
-            </div>
-
-        </div>
-
-        <div class="stat">
-
-            <div class="stat-label">
-                TOTAL
-            </div>
-
-            <div
-                class="stat-value"
-                id="statSize">
-                0 B
-            </div>
-
-        </div>
-
-        <div class="stat">
-
-            <div class="stat-label">
-                SHA STATUS
-            </div>
-
-            <div
-                class="stat-value"
-                id="statHash">
-                —
-            </div>
-
-        </div>
-
-        <div class="stat">
-
-            <div class="stat-label">
-                ENGINE
-            </div>
-
-            <div class="stat-value">
-                LOCAL
-            </div>
-
-        </div>
-
+        <label class="check">
+            <input id="sizePatchToggle" type="checkbox">
+            Chỉ patch nếu engine tìm thấy DUY NHẤT trường 32-bit LE
+            trùng kích thước file đầu tiên
+        </label>
     </div>
 
 </div>
 
-<!-- RIGHT -->
+<div class="buttons">
 
-<div class="panel">
+    <button class="action" id="analyzeBtn">
+        ◉ PHÂN TÍCH AI
+    </button>
 
-    <div class="panel-header">
+    <button class="action" id="mergeBtn" disabled>
+        ⚡ MERGE
+    </button>
 
-        <h2>
-            KTOOL AI TERMINAL
-        </h2>
+    <button class="action danger" id="resetBtn">
+        ↻ RESET
+    </button>
 
-        <span class="badge">
-            ONLINE
-        </span>
+</div>
 
+<div class="progress">
+    <div class="progress-bar" id="progressBar"></div>
+</div>
+
+</div>
+</div>
+
+<div class="panel terminal">
+
+<div class="panel-head">
+    <div>
+        <div class="panel-title">KTOOL AI TERMINAL</div>
+        <div class="panel-sub">
+            Binary analysis console
+        </div>
     </div>
+</div>
 
-    <div class="terminal">
-
-        <div class="terminal-head">
-
-            <span class="dot red"></span>
-            <span class="dot yellow"></span>
-            <span class="dot green"></span>
-
-            <span class="term-name">
-                cybermerge@local ~ analyzer
-            </span>
-
-            <button
-                class="clear"
-                onclick="clearLogs()">
-                CLEAR
-            </button>
-
-        </div>
-
-        <div
-            class="logs"
-            id="logs">
-        </div>
-
-    </div>
-
-    <div class="preview">
-
-        <div class="preview-title">
-            BINARY PREVIEW — FIRST 128 BYTES
-        </div>
-
-        <pre
-            class="hex"
-            id="hexPreview">
-No file selected.
-        </pre>
-
-    </div>
-
-    <div class="stats">
-
-        <div class="stat">
-
-            <div class="stat-label">
-                FORMAT
-            </div>
-
-            <div
-                class="stat-value"
-                id="formatStat">
-                UNKNOWN
-            </div>
-
-        </div>
-
-        <div class="stat">
-
-            <div class="stat-label">
-                ENTROPY
-            </div>
-
-            <div
-                class="stat-value"
-                id="entropyStat">
-                —
-            </div>
-
-        </div>
-
-        <div class="stat">
-
-            <div class="stat-label">
-                HEADER
-            </div>
-
-            <div
-                class="stat-value"
-                id="headerStat">
-                —
-            </div>
-
-        </div>
-
-        <div class="stat">
-
-            <div class="stat-label">
-                VALIDATION
-            </div>
-
-            <div
-                class="stat-value"
-                id="validationStat">
-                WAITING
-            </div>
-
-        </div>
-
-    </div>
+<div class="terminal-body" id="terminal"></div>
 
 </div>
 
 </section>
 
+<aside>
+
+<div class="panel">
+
+<div class="panel-head">
+    <div>
+        <div class="panel-title">AI BINARY ANALYZER</div>
+        <div class="panel-sub">
+            Local heuristic engine
+        </div>
+    </div>
+</div>
+
+<div class="ai-box">
+
+<div class="ai-status">
+
+    <div class="ai-orb">AI</div>
+
+    <div>
+        <strong id="aiStatus">
+            Waiting for files
+        </strong>
+
+        <span id="aiDetail">
+            Chưa có dữ liệu phân tích
+        </span>
+    </div>
+
+</div>
+
+<div class="confidence">
+
+    <div class="conf-top">
+        <span>Merge confidence</span>
+        <strong id="confidenceText">0%</strong>
+    </div>
+
+    <div class="conf-track">
+        <div class="conf-fill" id="confidenceFill"></div>
+    </div>
+
+</div>
+
+<div class="analysis-grid">
+
+    <div class="metric">
+        <small>Common Prefix</small>
+        <b id="commonPrefix">—</b>
+    </div>
+
+    <div class="metric">
+        <small>Recommended Offset</small>
+        <b id="recommendedOffset">—</b>
+    </div>
+
+    <div class="metric">
+        <small>Structure</small>
+        <b id="structureState">—</b>
+    </div>
+
+    <div class="metric">
+        <small>Duplicates</small>
+        <b id="duplicateState">—</b>
+    </div>
+
+    <div class="metric">
+        <small>Magic</small>
+        <b id="magicState">—</b>
+    </div>
+
+    <div class="metric">
+        <small>Entropy</small>
+        <b id="entropyState">—</b>
+    </div>
+
+</div>
+
+<div class="warning" id="aiWarning">
+    AI không tự giả định một header cố định.
+    Khi confidence thấp, engine sẽ giữ nguyên dữ liệu thay vì
+    tự ý cắt byte.
+</div>
+
+<div class="preview">
+
+    <div class="preview-title">
+        HEX / ASCII PREVIEW
+    </div>
+
+    <pre class="hex" id="hexPreview">
+Chưa có file.
+    </pre>
+
+</div>
+
+</div>
+</div>
+
+<div class="panel report">
+
+<div class="panel-head">
+    <div>
+        <div class="panel-title">ANALYSIS REPORT</div>
+        <div class="panel-sub">
+            Có thể copy hoặc xuất JSON
+        </div>
+    </div>
+</div>
+
+<div class="panel-body">
+
+<textarea
+    id="reportBox"
+    rows="10"
+    readonly
+    style="
+        width:100%;
+        padding:13px;
+        color:#9cefff;
+        background:#03050a;
+        border:1px solid var(--line);
+        border-radius:13px;
+        font:10px/1.6 ui-monospace,monospace;
+        outline:none;
+    ">Chưa có report.</textarea>
+
+<div class="buttons">
+
+    <button class="action" id="copyReportBtn">
+        COPY REPORT
+    </button>
+
+    <button class="action" id="downloadReportBtn">
+        EXPORT JSON
+    </button>
+
+</div>
+
+</div>
+</div>
+
+</aside>
+
 </main>
 
-<footer>
-    CYBER MERGE V25 · LOCAL AI BINARY WORKSPACE
+<footer class="footer">
+    KTOOL AI BINARY ENGINE V26
+    • LOCAL PROCESSING
+    •
+    <strong>CREATED & CODED BY TRONG DUNG</strong>
 </footer>
 
-<!-- MODAL -->
+</div>
 
-<div
-    class="overlay"
-    id="overlay">
+<div class="modal" id="resultModal">
 
-    <div class="modal">
+<div class="modal-card">
 
-        <div class="modal-icon">
-            ✓
+    <h3>✓ MERGE COMPLETED</h3>
+
+    <div class="result-grid">
+
+        <div class="result">
+            <small>OUTPUT</small>
+            <b id="resultName">—</b>
         </div>
 
-        <h3 id="modalTitle">
-            Merge Complete
-        </h3>
+        <div class="result">
+            <small>SIZE</small>
+            <b id="resultSize">—</b>
+        </div>
 
-        <p id="modalText">
-            File đã được tạo thành công.
-        </p>
+        <div class="result">
+            <small>MODE</small>
+            <b id="resultMode">—</b>
+        </div>
 
-        <button onclick="closeModal()">
-            OK
+        <div class="result">
+            <small>HEADER OFFSET</small>
+            <b id="resultOffset">—</b>
+        </div>
+
+        <div class="result" style="grid-column:1/-1">
+            <small>SHA-256</small>
+            <b id="resultHash">—</b>
+        </div>
+
+    </div>
+
+    <div class="modal-buttons">
+
+        <button class="primary" id="downloadBtn">
+            ↓ DOWNLOAD
+        </button>
+
+        <button class="action" id="closeModalBtn">
+            CLOSE
         </button>
 
     </div>
 
 </div>
-
-<div
-    class="toasts"
-    id="toasts">
 </div>
 
 <script>
 "use strict";
 
-/* ==========================================================
-   STATE
-========================================================== */
+/* =========================================================
+   KTOOL AI BINARY ENGINE V26
+   CREATED & CODED BY TRONG DUNG
+   ---------------------------------------------------------
+   Local-only binary analyzer/merger.
+
+   IMPORTANT:
+   This engine deliberately avoids assuming that every .bytes
+   file has a 32-byte header or a specific proprietary format.
+   ========================================================= */
+
+const MAX_FILES = 8;
+const SAMPLE_SIZE = 4096;
+const MAX_MANUAL_OFFSET = 1048576;
 
 const state = {
     files: [],
-    analyzed: false,
     analysis: null,
-    processing: false,
-    language:
-        localStorage.getItem("cm25_lang") || "vi",
-    theme:
-        localStorage.getItem("cm25_theme") || "dark"
+    outputBlob: null,
+    outputName: "",
+    busy: false,
+    theme: "dark"
 };
-
-/* ==========================================================
-   DOM
-========================================================== */
 
 const $ = id => document.getElementById(id);
 
-const fileInput = $("fileInput");
+const filePicker = $("filePicker");
 const dropZone = $("dropZone");
 const fileList = $("fileList");
-const analyzeBtn = $("analyzeBtn");
-const mergeBtn = $("mergeBtn");
-const resetBtn = $("resetBtn");
+const terminal = $("terminal");
 
-const outputName = $("outputName");
-const mergeMode = $("mergeMode");
+/* =========================================================
+   UTILITY
+   ========================================================= */
 
-const logs = $("logs");
-const progress = $("progress");
-const progressBar = $("progressBar");
-const progressText = $("progressText");
-const progressPercent = $("progressPercent");
+function formatBytes(bytes){
+    if (!Number.isFinite(bytes)) return "—";
 
-const aiStatus = $("aiStatus");
-const aiSummary = $("aiSummary");
-const confidenceBar = $("confidenceBar");
-const confidenceText = $("confidenceText");
+    const units = ["B","KB","MB","GB","TB"];
+    let i = 0;
+    let n = bytes;
 
-const hexPreview = $("hexPreview");
+    while(n >= 1024 && i < units.length - 1){
+        n /= 1024;
+        i++;
+    }
 
-const overlay = $("overlay");
-const toasts = $("toasts");
-
-/* ==========================================================
-   CLOCK
-========================================================== */
-
-function clock(){
-
-    $("clock").textContent =
-        new Date().toLocaleTimeString(
-            "vi-VN",
-            {
-                hour12:false
-            }
-        );
+    return `${n.toFixed(i ? 2 : 0)} ${units[i]}`;
 }
 
-clock();
-setInterval(clock,1000);
+function now(){
+    return new Date().toLocaleTimeString("vi-VN",{
+        hour12:false
+    });
+}
 
-/* ==========================================================
-   UTILITIES
-========================================================== */
+function clamp(v,min,max){
+    return Math.max(min,Math.min(max,v));
+}
 
-function bytes(n){
+function sleep(ms){
+    return new Promise(resolve => setTimeout(resolve,ms));
+}
 
-    if(!n)
-        return "0 B";
+function setProgress(value){
+    $("progressBar").style.width = `${clamp(value,0,100)}%`;
+}
 
-    const units =
-        ["B","KB","MB","GB"];
+function log(message,type="info"){
+    const row = document.createElement("div");
+    row.className = `log ${type}`;
 
-    const i =
-        Math.min(
-            Math.floor(
-                Math.log(n)/Math.log(1024)
-            ),
-            units.length-1
+    const time = document.createElement("span");
+    time.className = "time";
+    time.textContent = `[${now()}] `;
+
+    const text = document.createElement("span");
+    text.textContent = message;
+
+    row.append(time,text);
+    terminal.appendChild(row);
+
+    terminal.scrollTop = terminal.scrollHeight;
+}
+
+function clearTerminal(){
+    terminal.replaceChildren();
+    log("KTOOL AI TERMINAL initialized.","good");
+    log("Local binary engine ready.");
+}
+
+function arrayEqual(a,b){
+    if(a.length !== b.length) return false;
+
+    for(let i=0;i<a.length;i++){
+        if(a[i] !== b[i]) return false;
+    }
+
+    return true;
+}
+
+function commonPrefixLength(buffers){
+    if(!buffers.length) return 0;
+
+    const limit = Math.min(
+        SAMPLE_SIZE,
+        ...buffers.map(b => b.length)
+    );
+
+    let i = 0;
+
+    outer:
+    for(;i<limit;i++){
+        const value = buffers[0][i];
+
+        for(let j=1;j<buffers.length;j++){
+            if(buffers[j][i] !== value){
+                break outer;
+            }
+        }
+    }
+
+    return i;
+}
+
+function hexLine(buffer,offset=0){
+    const hex = Array.from(buffer)
+        .map(v => v.toString(16).padStart(2,"0"))
+        .join(" ");
+
+    const ascii = Array.from(buffer)
+        .map(v => v >= 32 && v <= 126
+            ? String.fromCharCode(v)
+            : ".")
+        .join("");
+
+    return `${offset.toString(16).padStart(6,"0")}  ${hex.padEnd(47," ")}  ${ascii}`;
+}
+
+function makeHexPreview(buffer){
+    const first = buffer.slice(0,64);
+
+    const lines = [];
+
+    for(let i=0;i<first.length;i+=16){
+        lines.push(
+            hexLine(first.slice(i,i+16),i)
         );
+    }
+
+    return lines.join("\n");
+}
+
+function printableRatio(buffer){
+    if(!buffer.length) return 0;
+
+    let count = 0;
+
+    for(const v of buffer){
+        if(
+            v === 9 ||
+            v === 10 ||
+            v === 13 ||
+            (v >= 32 && v <= 126)
+        ){
+            count++;
+        }
+    }
+
+    return count / buffer.length;
+}
+
+function zeroRatio(buffer){
+    if(!buffer.length) return 0;
+
+    let count = 0;
+
+    for(const v of buffer){
+        if(v === 0) count++;
+    }
+
+    return count / buffer.length;
+}
+
+function entropy(buffer){
+    if(!buffer.length) return 0;
+
+    const freq = new Uint32Array(256);
+
+    for(const v of buffer){
+        freq[v]++;
+    }
+
+    let result = 0;
+
+    for(const n of freq){
+        if(!n) continue;
+
+        const p = n / buffer.length;
+        result -= p * Math.log2(p);
+    }
+
+    return result;
+}
+
+function detectMagic(buffer){
+    if(buffer.length < 4) return "NONE";
+
+    const first = Array.from(
+        buffer.slice(0,16)
+    ).map(v => v.toString(16).padStart(2,"0"));
+
+    const ascii = Array.from(
+        buffer.slice(0,16)
+    )
+    .map(v => v >= 32 && v <= 126
+        ? String.fromCharCode(v)
+        : ".")
+    .join("");
+
+    return `${first.join(" ")} | ${ascii}`;
+}
+
+function readUint32LE(buffer,offset){
+    if(offset < 0 || offset + 4 > buffer.length){
+        return null;
+    }
 
     return (
-        n /
-        Math.pow(1024,i)
-    ).toFixed(
-        i === 0 ? 0 : 2
-    ) + " " + units[i];
+        buffer[offset] |
+        (buffer[offset+1] << 8) |
+        (buffer[offset+2] << 16) |
+        (buffer[offset+3] * 0x1000000)
+    ) >>> 0;
 }
 
-function escapeHTML(s){
+async function sha256Blob(blob){
+    const data = await blob.arrayBuffer();
 
-    return String(s)
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
+    const digest = await crypto.subtle.digest(
+        "SHA-256",
+        data
+    );
+
+    return Array.from(
+        new Uint8Array(digest)
+    )
+    .map(v => v.toString(16).padStart(2,"0"))
+    .join("");
 }
 
-function toast(message){
+/* =========================================================
+   FILE ANALYSIS
+   ========================================================= */
 
-    const el =
-        document.createElement("div");
+async function sampleFile(file){
+    const head = await file.slice(
+        0,
+        SAMPLE_SIZE
+    ).arrayBuffer();
 
-    el.className = "toast";
-    el.textContent = message;
+    const tailStart = Math.max(
+        0,
+        file.size - SAMPLE_SIZE
+    );
 
-    toasts.appendChild(el);
+    const tail = await file.slice(
+        tailStart,
+        file.size
+    ).arrayBuffer();
 
-    setTimeout(()=>{
-        el.remove();
-    },2800);
+    return {
+        head:new Uint8Array(head),
+        tail:new Uint8Array(tail)
+    };
 }
 
-/* ==========================================================
-   TERMINAL
-========================================================== */
+function detectSizeField(buffer,fileSize){
+    const candidates = [];
 
-function log(message,type=""){
+    /*
+      Search only first 128 bytes.
 
-    const row =
-        document.createElement("div");
+      We patch only when exactly ONE field equals
+      the original file size. This is intentionally
+      conservative.
+    */
 
-    row.className =
-        `log ${type}`;
+    const limit = Math.min(
+        128,
+        buffer.length - 3
+    );
 
-    const time =
-        new Date().toLocaleTimeString(
-            "vi-VN",
-            {
-                hour12:false
-            }
+    for(let offset=0;offset<=limit;offset++){
+        const value = readUint32LE(
+            buffer,
+            offset
         );
 
-    row.textContent =
-        `[${time}] ${message}`;
+        if(value === fileSize){
+            candidates.push(offset);
+        }
+    }
 
-    logs.appendChild(row);
-
-    logs.scrollTop =
-        logs.scrollHeight;
+    return candidates;
 }
 
-function clearLogs(){
+function calculateHeaderConfidence(
+    buffers,
+    prefixLength,
+    files
+){
+    if(buffers.length < 2){
+        return 0;
+    }
 
-    logs.innerHTML = "";
+    if(prefixLength < 8){
+        return 0;
+    }
+
+    const minSize = Math.min(
+        ...files.map(f => f.file.size)
+    );
+
+    if(prefixLength > minSize * .25){
+        return 0;
+    }
+
+    let score = 0;
+
+    if(prefixLength >= 16) score += .28;
+    else if(prefixLength >= 8) score += .10;
+
+    if(prefixLength <= 256){
+        score += .20;
+    }else if(prefixLength <= 1024){
+        score += .08;
+    }
+
+    const prefix = buffers[0].slice(
+        0,
+        prefixLength
+    );
+
+    const pRatio = printableRatio(prefix);
+    const zRatio = zeroRatio(prefix);
+
+    if(pRatio > .25) score += .14;
+    if(zRatio > .15) score += .10;
+
+    let difference = 0;
+    let compared = 0;
+
+    const compareLength = Math.min(
+        64,
+        ...buffers.map(
+            b => Math.max(
+                0,
+                b.length - prefixLength
+            )
+        )
+    );
+
+    for(let i=0;i<compareLength;i++){
+        compared++;
+
+        if(
+            buffers.some(
+                b => b[prefixLength+i] !==
+                     buffers[0][prefixLength+i]
+            )
+        ){
+            difference++;
+        }
+    }
+
+    const divergence =
+        compared ? difference / compared : 0;
+
+    if(divergence >= .75) score += .22;
+    else if(divergence >= .5) score += .12;
+
+    /*
+      Very small common prefixes are often just magic bytes,
+      so avoid automatically treating them as headers.
+    */
+    if(prefixLength < 16){
+        score -= .25;
+    }
+
+    return clamp(score,0,1);
+}
+
+async function analyzeFiles(){
+    if(state.files.length < 2){
+        throw new Error(
+            "Cần ít nhất 2 file để phân tích."
+        );
+    }
 
     log(
-        "Terminal cleared.",
+        `Starting analysis for ${state.files.length} files...`,
         "info"
     );
-}
 
-log(
-    "CYBER MERGE V25 booting...",
-    "info"
-);
+    setProgress(5);
 
-log(
-    "Local AI binary analyzer loaded.",
-    "ok"
-);
+    const samples = [];
 
-log(
-    "Web Crypto SHA-256 available.",
-    "ok"
-);
+    for(let i=0;i<state.files.length;i++){
+        const item = state.files[i];
 
-log(
-    "Waiting for two .bytes files...",
-    "info"
-);
+        const sample = await sampleFile(
+            item.file
+        );
 
-/* ==========================================================
-   THEME
-========================================================== */
+        samples.push(sample);
 
-function applyTheme(){
+        const e = entropy(sample.head);
+
+        item.analysis = {
+            size:item.file.size,
+            entropy:e,
+            printable:printableRatio(sample.head),
+            zeros:zeroRatio(sample.head),
+            magic:detectMagic(sample.head),
+            sizeFields:detectSizeField(
+                sample.head,
+                item.file.size
+            )
+        };
+
+        log(
+            `Analyzed ${item.file.name} | ${formatBytes(item.file.size)} | entropy ${e.toFixed(2)}`,
+            "info"
+        );
+
+        setProgress(
+            5 + ((i+1)/state.files.length)*35
+        );
+
+        await sleep(0);
+    }
+
+    const buffers = samples.map(
+        x => x.head
+    );
+
+    const prefixLength =
+        commonPrefixLength(buffers);
+
+    const confidence =
+        calculateHeaderConfidence(
+            buffers,
+            prefixLength,
+            state.files
+        );
+
+    let duplicate = false;
+
+    /*
+      Fast duplicate heuristic:
+      same size + identical first and last sample.
+    */
+    for(let i=0;i<state.files.length;i++){
+        for(let j=i+1;j<state.files.length;j++){
+
+            if(
+                state.files[i].file.size ===
+                state.files[j].file.size &&
+                arrayEqual(
+                    samples[i].head,
+                    samples[j].head
+                ) &&
+                arrayEqual(
+                    samples[i].tail,
+                    samples[j].tail
+                )
+            ){
+                duplicate = true;
+            }
+        }
+    }
+
+    let recommendedOffset = 0;
 
     if(
-        state.theme === "light"
+        confidence >= .78 &&
+        prefixLength >= 16 &&
+        prefixLength <= 1024
     ){
-
-        document.body.dataset.theme =
-            "light";
-
-        $("themeBtn").textContent =
-            "🌙";
-
-    }else{
-
-        delete document.body.dataset.theme;
-
-        $("themeBtn").textContent =
-            "☀️";
+        recommendedOffset = prefixLength;
     }
 
-    localStorage.setItem(
-        "cm25_theme",
-        state.theme
-    );
-}
+    let structure =
+        confidence >= .78
+            ? "HIGH CONFIDENCE"
+            : confidence >= .5
+                ? "AMBIGUOUS"
+                : "UNKNOWN";
 
-function toggleTheme(){
+    const avgEntropy =
+        state.files.reduce(
+            (sum,item) =>
+                sum + item.analysis.entropy,
+            0
+        ) / state.files.length;
 
-    state.theme =
-        state.theme === "dark"
-            ? "light"
-            : "dark";
+    const magicSame =
+        state.files.every(
+            item =>
+                item.analysis.magic.split("|")[0] ===
+                state.files[0].analysis.magic.split("|")[0]
+        );
 
-    applyTheme();
+    state.analysis = {
+        files:state.files.length,
+        totalSize:state.files.reduce(
+            (sum,item) => sum + item.file.size,
+            0
+        ),
+        commonPrefix:prefixLength,
+        recommendedOffset,
+        confidence,
+        structure,
+        duplicate,
+        magicSame,
+        avgEntropy,
+        generatedAt:new Date().toISOString()
+    };
 
-    log(
-        `Theme changed: ${state.theme}`,
-        "info"
-    );
-}
+    renderAnalysis();
 
-applyTheme();
-
-/* ==========================================================
-   LANGUAGE
-========================================================== */
-
-function toggleLanguage(){
-
-    state.language =
-        state.language === "vi"
-            ? "en"
-            : "vi";
-
-    $("langBtn").textContent =
-        state.language === "vi"
-            ? "🇻🇳 VN"
-            : "🇬🇧 EN";
-
-    localStorage.setItem(
-        "cm25_lang",
-        state.language
-    );
+    setProgress(100);
 
     log(
-        `Language: ${state.language}`,
-        "info"
+        `Analysis complete | prefix=${prefixLength} | confidence=${Math.round(confidence*100)}%`,
+        confidence >= .78 ? "good" : "warn"
+    );
+
+    return state.analysis;
+}
+
+/* =========================================================
+   RENDER
+   ========================================================= */
+
+function renderFiles(){
+    fileList.replaceChildren();
+
+    state.files.forEach((item,index)=>{
+
+        const card = document.createElement("div");
+        card.className = "file-card";
+
+        const number = document.createElement("div");
+        number.className = "file-num";
+        number.textContent = String(index+1);
+
+        const center = document.createElement("div");
+
+        const name = document.createElement("div");
+        name.className = "file-name";
+        name.textContent = item.file.name;
+
+        const meta = document.createElement("div");
+        meta.className = "file-meta";
+        meta.textContent =
+            `${formatBytes(item.file.size)} • .bytes`;
+
+        center.append(name,meta);
+
+        const actions = document.createElement("div");
+        actions.className = "file-actions";
+
+        const up = document.createElement("button");
+        up.className = "mini";
+        up.textContent = "↑";
+        up.title = "Move up";
+        up.disabled = index === 0;
+
+        up.onclick = ()=>{
+            if(index === 0) return;
+
+            [
+                state.files[index-1],
+                state.files[index]
+            ] = [
+                state.files[index],
+                state.files[index-1]
+            ];
+
+            invalidateAnalysis();
+            renderFiles();
+        };
+
+        const down = document.createElement("button");
+        down.className = "mini";
+        down.textContent = "↓";
+        down.title = "Move down";
+        down.disabled =
+            index === state.files.length-1;
+
+        down.onclick = ()=>{
+            if(index === state.files.length-1){
+                return;
+            }
+
+            [
+                state.files[index+1],
+                state.files[index]
+            ] = [
+                state.files[index],
+                state.files[index+1]
+            ];
+
+            invalidateAnalysis();
+            renderFiles();
+        };
+
+        const remove = document.createElement("button");
+        remove.className = "mini";
+        remove.textContent = "×";
+        remove.title = "Remove";
+
+        remove.onclick = ()=>{
+            log(
+                `Removed ${item.file.name}`,
+                "warn"
+            );
+
+            state.files.splice(index,1);
+
+            invalidateAnalysis();
+            renderFiles();
+            updateUI();
+        };
+
+        actions.append(up,down,remove);
+
+        card.append(
+            number,
+            center,
+            actions
+        );
+
+        fileList.appendChild(card);
+    });
+
+    $("fileCounter").textContent =
+        `${state.files.length} / ${MAX_FILES}`;
+}
+
+function renderAnalysis(){
+    const a = state.analysis;
+
+    if(!a) return;
+
+    $("statFiles").textContent = a.files;
+    $("statSize").textContent =
+        formatBytes(a.totalSize);
+
+    const percent =
+        Math.round(a.confidence*100);
+
+    $("statConfidence").textContent =
+        `${percent}%`;
+
+    $("confidenceText").textContent =
+        `${percent}%`;
+
+    $("confidenceFill").style.width =
+        `${percent}%`;
+
+    $("commonPrefix").textContent =
+        `${a.commonPrefix} bytes`;
+
+    $("recommendedOffset").textContent =
+        a.recommendedOffset
+            ? `${a.recommendedOffset} bytes`
+            : "KEEP";
+
+    $("structureState").textContent =
+        a.structure;
+
+    $("duplicateState").textContent =
+        a.duplicate
+            ? "POSSIBLE DUPLICATE"
+            : "NONE";
+
+    $("magicState").textContent =
+        a.magicSame
+            ? "MATCH"
+            : "DIFFERENT";
+
+    $("entropyState").textContent =
+        a.avgEntropy.toFixed(2);
+
+    $("aiStatus").textContent =
+        a.confidence >= .78
+            ? "High-confidence structure"
+            : a.confidence >= .5
+                ? "Ambiguous structure"
+                : "No safe structure detected";
+
+    $("aiDetail").textContent =
+        `Prefix ${a.commonPrefix} bytes • recommended ${a.recommendedOffset} bytes`;
+
+    $("aiWarning").textContent =
+        a.confidence >= .78
+            ? "Engine tìm thấy common-prefix có độ tin cậy cao. SMART có thể loại prefix khỏi các file sau file đầu tiên."
+            : "Confidence thấp. Engine sẽ KHÔNG tự ý cắt header. Đây là cơ chế bảo vệ dữ liệu khỏi heuristic sai.";
+
+    const first =
+        state.files[0]?.analysis;
+
+    if(first){
+        $("hexPreview").textContent =
+            makeHexPreview(
+                new Uint8Array(
+                    []
+                )
+            );
+    }
+
+    /*
+      Preview is refreshed separately because analysis samples
+      are intentionally not retained as large buffers.
+    */
+    previewFirstFile();
+
+    updateReport();
+}
+
+async function previewFirstFile(){
+    if(!state.files.length){
+        $("hexPreview").textContent =
+            "Chưa có file.";
+
+        return;
+    }
+
+    const buf =
+        new Uint8Array(
+            await state.files[0].file
+                .slice(0,64)
+                .arrayBuffer()
+        );
+
+    $("hexPreview").textContent =
+        makeHexPreview(buf);
+}
+
+function updateUI(){
+    $("statFiles").textContent =
+        state.files.length;
+
+    const total =
+        state.files.reduce(
+            (sum,x)=>sum+x.file.size,
+            0
+        );
+
+    $("statSize").textContent =
+        formatBytes(total);
+
+    $("mergeBtn").disabled =
+        state.files.length < 2 ||
+        state.busy;
+
+    if(!state.files.length){
+        $("statConfidence").textContent = "—";
+    }
+}
+
+function invalidateAnalysis(){
+    state.analysis = null;
+
+    $("confidenceText").textContent = "0%";
+    $("confidenceFill").style.width = "0%";
+    $("statConfidence").textContent = "—";
+
+    $("commonPrefix").textContent = "—";
+    $("recommendedOffset").textContent = "—";
+    $("structureState").textContent = "—";
+    $("duplicateState").textContent = "—";
+    $("magicState").textContent = "—";
+    $("entropyState").textContent = "—";
+
+    $("reportBox").value =
+        "Chưa có report.";
+
+    updateUI();
+}
+
+/* =========================================================
+   FILE INPUT
+   ========================================================= */
+
+function addFiles(fileArray){
+
+    const incoming =
+        Array.from(fileArray);
+
+    if(!incoming.length) return;
+
+    for(const file of incoming){
+
+        if(state.files.length >= MAX_FILES){
+            log(
+                `Maximum ${MAX_FILES} files reached.`,
+                "warn"
+            );
+            break;
+        }
+
+        const lower =
+            file.name.toLowerCase();
+
+        if(!lower.endsWith(".bytes")){
+            log(
+                `Skipped non-.bytes file: ${file.name}`,
+                "warn"
+            );
+            continue;
+        }
+
+        const duplicateName =
+            state.files.some(
+                x =>
+                    x.file.name === file.name &&
+                    x.file.size === file.size &&
+                    x.file.lastModified === file.lastModified
+            );
+
+        if(duplicateName){
+            log(
+                `Skipped duplicate selection: ${file.name}`,
+                "warn"
+            );
+            continue;
+        }
+
+        state.files.push({
+            file,
+            analysis:null
+        });
+
+        log(
+            `Loaded ${file.name} (${formatBytes(file.size)})`,
+            "good"
+        );
+    }
+
+    filePicker.value = "";
+
+    invalidateAnalysis();
+    renderFiles();
+    updateUI();
+}
+
+/* =========================================================
+   MERGE ENGINE
+   ========================================================= */
+
+function getSelectedOffset(){
+    const strategy =
+        $("headerStrategy").value;
+
+    if(strategy === "none"){
+        return 0;
+    }
+
+    if(strategy === "manual"){
+        const value =
+            Number(
+                $("manualOffset").value
+            );
+
+        if(
+            !Number.isInteger(value) ||
+            value < 0 ||
+            value > MAX_MANUAL_OFFSET
+        ){
+            throw new Error(
+                "Manual offset không hợp lệ."
+            );
+        }
+
+        return value;
+    }
+
+    if(!state.analysis){
+        return 0;
+    }
+
+    return state.analysis.recommendedOffset;
+}
+
+async function buildMergedBlob(){
+
+    const mode =
+        $("mergeMode").value;
+
+    let offset = 0;
+
+    if(mode === "raw"){
+        log(
+            "RAW mode: exact append selected.",
+            "warn"
+        );
+
+        const parts =
+            state.files.map(
+                item => item.file
+            );
+
+        return {
+            blob:new Blob(parts,{
+                type:"application/octet-stream"
+            }),
+            offset:0
+        };
+    }
+
+    offset = getSelectedOffset();
+
+    if(
+        offset > 0 &&
+        state.files.some(
+            item => item.file.size <= offset
+        )
+    ){
+        throw new Error(
+            `Header offset ${offset} lớn hơn kích thước một file.`
+        );
+    }
+
+    if(
+        mode === "safe" &&
+        $("headerStrategy").value === "auto"
+    ){
+        /*
+          SAFE never performs automatic destructive stripping.
+        */
+        offset = 0;
+
+        log(
+            "SAFE mode: automatic header stripping disabled.",
+            "warn"
+        );
+    }
+
+    const parts = [];
+
+    /*
+      First file remains complete.
+    */
+    parts.push(state.files[0].file);
+
+    /*
+      Subsequent files may have a detected common prefix removed.
+    */
+    for(let i=1;i<state.files.length;i++){
+
+        const file =
+            state.files[i].file;
+
+        if(offset === 0){
+            parts.push(file);
+        }else{
+            parts.push(
+                file.slice(
+                    offset,
+                    file.size
+                )
+            );
+        }
+    }
+
+    /*
+      Optional conservative size-field patch.
+    */
+    let firstPart = parts[0];
+
+    if($("sizePatchToggle").checked){
+
+        const head =
+            new Uint8Array(
+                await state.files[0].file
+                    .slice(0,128)
+                    .arrayBuffer()
+            );
+
+        const candidates =
+            detectSizeField(
+                head,
+                state.files[0].file.size
+            );
+
+        if(candidates.length === 1){
+
+            const fieldOffset =
+                candidates[0];
+
+            const preliminarySize =
+                parts.reduce(
+                    (sum,p)=>sum+p.size,
+                    0
+                );
+
+            if(
+                preliminarySize <= 0xffffffff
+            ){
+
+                const bytes =
+                    new Uint8Array(4);
+
+                new DataView(bytes.buffer)
+                    .setUint32(
+                        0,
+                        preliminarySize,
+                        true
+                    );
+
+                /*
+                  Replace only four bytes without loading
+                  the entire first file into memory.
+                */
+                firstPart =
+                    new Blob([
+                        state.files[0].file.slice(
+                            0,
+                            fieldOffset
+                        ),
+                        bytes,
+                        state.files[0].file.slice(
+                            fieldOffset + 4
+                        )
+                    ]);
+
+                parts[0] = firstPart;
+
+                log(
+                    `Conservative size-field patch at offset ${fieldOffset}.`,
+                    "good"
+                );
+
+            }else{
+                log(
+                    "Output exceeds 32-bit size-field range; patch skipped.",
+                    "warn"
+                );
+            }
+
+        }else if(candidates.length === 0){
+
+            log(
+                "No unique size field found; patch skipped.",
+                "warn"
+            );
+
+        }else{
+
+            log(
+                `${candidates.length} possible size fields found; patch skipped for safety.`,
+                "warn"
+            );
+        }
+    }
+
+    const blob =
+        new Blob(parts,{
+            type:"application/octet-stream"
+        });
+
+    return {
+        blob,
+        offset
+    };
+}
+
+/* =========================================================
+   MERGE
+   ========================================================= */
+
+async function mergeFiles(){
+
+    if(state.busy) return;
+
+    if(state.files.length < 2){
+        alert("Cần ít nhất 2 file .bytes.");
+        return;
+    }
+
+    state.busy = true;
+    updateUI();
+
+    try{
+
+        setProgress(0);
+
+        log(
+            "========== MERGE SESSION ==========",
+            "good"
+        );
+
+        if(!state.analysis){
+            await analyzeFiles();
+        }
+
+        setProgress(50);
+
+        const result =
+            await buildMergedBlob();
+
+        state.outputBlob =
+            result.blob;
+
+        state.outputName =
+            sanitizeFilename(
+                $("outputName").value ||
+                "KTOOL_MERGED_V26.bytes"
+            );
+
+        if(
+            !state.outputName
+                .toLowerCase()
+                .endsWith(".bytes")
+        ){
+            state.outputName += ".bytes";
+        }
+
+        log(
+            `Output size: ${formatBytes(result.blob.size)}`,
+            "good"
+        );
+
+        setProgress(75);
+
+        let hash = "SHA-256 disabled";
+
+        if($("checksumToggle").checked){
+            log(
+                "Calculating SHA-256...",
+                "info"
+            );
+
+            hash =
+                await sha256Blob(
+                    result.blob
+                );
+
+            log(
+                `SHA-256: ${hash}`,
+                "good"
+            );
+        }
+
+        setProgress(100);
+
+        $("resultName").textContent =
+            state.outputName;
+
+        $("resultSize").textContent =
+            formatBytes(
+                result.blob.size
+            );
+
+        $("resultMode").textContent =
+            $("mergeMode")
+                .selectedOptions[0]
+                .textContent;
+
+        $("resultOffset").textContent =
+            `${result.offset} bytes`;
+
+        $("resultHash").textContent =
+            hash;
+
+        $("resultModal")
+            .classList
+            .add("show");
+
+        log(
+            "Merge completed successfully.",
+            "good"
+        );
+
+    }catch(error){
+
+        console.error(error);
+
+        log(
+            error.message ||
+            "Merge failed.",
+            "error"
+        );
+
+        alert(
+            error.message ||
+            "Merge failed."
+        );
+
+    }finally{
+
+        state.busy = false;
+        updateUI();
+
+        setTimeout(
+            ()=>setProgress(0),
+            900
+        );
+    }
+}
+
+function sanitizeFilename(name){
+    return String(name)
+        .replace(/[<>:"/\\|?*\x00-\x1F]/g,"_")
+        .trim()
+        .slice(0,180);
+}
+
+/* =========================================================
+   DOWNLOAD
+   ========================================================= */
+
+function downloadBlob(blob,name){
+
+    if(!blob) return;
+
+    const url =
+        URL.createObjectURL(blob);
+
+    const a =
+        document.createElement("a");
+
+    a.href = url;
+    a.download = name;
+
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    setTimeout(
+        ()=>URL.revokeObjectURL(url),
+        1000
+    );
+
+    log(
+        `Download started: ${name}`,
+        "good"
     );
 }
 
-$("langBtn").textContent =
-    state.language === "vi"
-        ? "🇻🇳 VN"
-        : "🇬🇧 EN";
+/* =========================================================
+   REPORT
+   ========================================================= */
 
-/* ==========================================================
-   DRAG / DROP
-========================================================== */
+function buildReport(){
 
-dropZone.addEventListener(
-    "click",
-    ()=>{
-        if(!state.processing)
-            fileInput.click();
+    const report = {
+        engine:"KTOOL AI BINARY ENGINE V26",
+        creator:"TRONG DUNG",
+        localProcessing:true,
+        timestamp:new Date().toISOString(),
+
+        settings:{
+            mergeMode:$("mergeMode").value,
+            headerStrategy:$("headerStrategy").value,
+            manualOffset:Number(
+                $("manualOffset").value
+            ),
+            sizePatch:$("sizePatchToggle").checked,
+            sha256:$("checksumToggle").checked
+        },
+
+        analysis:state.analysis,
+
+        files:state.files.map(
+            item => ({
+                name:item.file.name,
+                size:item.file.size,
+                type:item.file.type || "application/octet-stream",
+                lastModified:item.file.lastModified,
+                analysis:item.analysis
+            })
+        )
+    };
+
+    return report;
+}
+
+function updateReport(){
+
+    if(!state.analysis){
+        $("reportBox").value =
+            "Chưa có report.";
+
+        return;
+    }
+
+    $("reportBox").value =
+        JSON.stringify(
+            buildReport(),
+            null,
+            2
+        );
+}
+
+async function copyReport(){
+
+    const text =
+        $("reportBox").value;
+
+    try{
+
+        await navigator.clipboard.writeText(
+            text
+        );
+
+        log(
+            "Report copied to clipboard.",
+            "good"
+        );
+
+    }catch{
+
+        $("reportBox").select();
+
+        document.execCommand("copy");
+
+        log(
+            "Report copied.",
+            "good"
+        );
+    }
+}
+
+function exportReport(){
+
+    const report =
+        JSON.stringify(
+            buildReport(),
+            null,
+            2
+        );
+
+    const blob =
+        new Blob(
+            [report],
+            {type:"application/json"}
+        );
+
+    downloadBlob(
+        blob,
+        "KTOOL_V26_ANALYSIS.json"
+    );
+}
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+function resetAll(){
+
+    if(state.busy){
+        return;
+    }
+
+    state.files = [];
+    state.analysis = null;
+    state.outputBlob = null;
+    state.outputName = "";
+
+    $("manualOffset").value = "0";
+    $("outputName").value =
+        "KTOOL_MERGED_V26.bytes";
+
+    filePicker.value = "";
+
+    fileList.replaceChildren();
+
+    $("hexPreview").textContent =
+        "Chưa có file.";
+
+    $("aiStatus").textContent =
+        "Waiting for files";
+
+    $("aiDetail").textContent =
+        "Chưa có dữ liệu phân tích";
+
+    $("aiWarning").textContent =
+        "AI không tự giả định một header cố định.";
+
+    $("reportBox").value =
+        "Chưa có report.";
+
+    invalidateAnalysis();
+    updateUI();
+
+    setProgress(0);
+
+    log(
+        "Workspace reset.",
+        "warn"
+    );
+}
+
+/* =========================================================
+   EVENTS
+   ========================================================= */
+
+$("pickBtn").onclick = ()=>{
+    filePicker.click();
+};
+
+filePicker.addEventListener(
+    "change",
+    e => addFiles(e.target.files)
+);
+
+["dragenter","dragover"].forEach(
+    event => {
+        dropZone.addEventListener(
+            event,
+            e=>{
+                e.preventDefault();
+                dropZone.classList.add("drag");
+            }
+        );
     }
 );
 
-dropZone.addEventListener(
-    "dragover",
-    e=>{
-        e.preventDefault();
-
-        if(!state.processing)
-            dropZone.classList.add("drag");
-    }
-);
-
-dropZone.addEventListener(
-    "dragleave",
-    ()=>{
-        dropZone.classList.remove("drag");
+["dragleave","drop"].forEach(
+    event => {
+        dropZone.addEventListener(
+            event,
+            e=>{
+                e.preventDefault();
+                dropZone.classList.remove("drag");
+            }
+        );
     }
 );
 
 dropZone.addEventListener(
     "drop",
     e=>{
-
-        e.preventDefault();
-
-        dropZone.classList.remove("drag");
-
-        if(!state.processing)
-            addFiles(e.dataTransfer.files);
+        addFiles(e.dataTransfer.files);
     }
 );
 
-fileInput.addEventListener(
-    "change",
+$("analyzeBtn").onclick = async ()=>{
+    try{
+        await analyzeFiles();
+    }catch(error){
+        log(
+            error.message,
+            "error"
+        );
+
+        alert(error.message);
+    }
+};
+
+$("mergeBtn").onclick =
+    mergeFiles;
+
+$("resetBtn").onclick =
+    resetAll;
+
+$("clearLogBtn").onclick =
+    clearTerminal;
+
+$("copyReportBtn").onclick =
+    copyReport;
+
+$("downloadReportBtn").onclick =
+    exportReport;
+
+$("downloadBtn").onclick = ()=>{
+    downloadBlob(
+        state.outputBlob,
+        state.outputName
+    );
+};
+
+$("closeModalBtn").onclick = ()=>{
+    $("resultModal")
+        .classList
+        .remove("show");
+};
+
+$("resultModal").addEventListener(
+    "click",
     e=>{
-
-        addFiles(e.target.files);
-
-        fileInput.value = "";
+        if(e.target === $("resultModal")){
+            $("resultModal")
+                .classList
+                .remove("show");
+        }
     }
 );
 
-/* ==========================================================
-   FILE MANAGEMENT
-========================================================== */
+$("headerStrategy").addEventListener(
+    "change",
+    ()=>{
+        const manual =
+            $("headerStrategy").value === "manual";
 
-function addFiles(list){
+        $("manualOffset").disabled =
+            !manual;
 
-    const incoming =
-        Array.from(list);
-
-    for(const file of incoming){
-
-        if(
-            !file.name
-                .toLowerCase()
-                .endsWith(".bytes")
-        ){
-
+        if(manual){
             log(
-                `Ignored non-bytes file: ${file.name}`,
+                "Manual header offset enabled.",
                 "warn"
             );
+        }
+    }
+);
 
-            continue;
+$("mergeMode").addEventListener(
+    "change",
+    ()=>{
+        const mode =
+            $("mergeMode").value;
+
+        if(mode === "raw"){
+            log(
+                "RAW mode selected: bytes will be appended exactly.",
+                "warn"
+            );
         }
 
-        if(
-            state.files.length >= 2
-        )
-            break;
-
-        const duplicate =
-            state.files.some(
-                f =>
-                    f.name === file.name &&
-                    f.size === file.size &&
-                    f.lastModified ===
-                        file.lastModified
+        if(mode === "safe"){
+            log(
+                "SAFE mode selected: destructive automatic stripping disabled.",
+                "good"
             );
+        }
 
-        if(duplicate)
-            continue;
+        if(mode === "smart"){
+            log(
+                "SMART mode selected: heuristic structure detection enabled.",
+                "good"
+            );
+        }
+    }
+);
 
-        state.files.push(file);
+$("themeBtn").onclick = ()=>{
+
+    const root =
+        document.documentElement;
+
+    if(state.theme === "dark"){
+
+        state.theme = "dim";
+
+        root.style.setProperty(
+            "--bg",
+            "#0b1018"
+        );
 
         log(
-            `Loaded: ${file.name} (${bytes(file.size)})`,
-            "ok"
+            "Dim theme enabled."
         );
-    }
 
-    state.analyzed = false;
-    state.analysis = null;
+    }else{
 
-    renderFiles();
-    resetAnalyzerUI();
-    updateButtons();
-}
+        state.theme = "dark";
 
-function removeFile(index){
+        root.style.setProperty(
+            "--bg",
+            "#05070d"
+        );
 
-    if(state.processing)
-        return;
-
-    const file =
-        state.files[index];
-
-    if(file)
         log(
-            `Removed: ${file.name}`,
-            "warn"
-        );
-
-    state.files.splice(index,1);
-
-    state.analyzed = false;
-    state.analysis = null;
-
-    renderFiles();
-    resetAnalyzerUI();
-    updateButtons();
-}
-
-function renderFiles(){
-
-    fileList.innerHTML = "";
-
-    state.files.forEach(
-        (file,index)=>{
-
-            const item =
-                document.createElement("div");
-
-            item.className = "file";
-
-            item.innerHTML = `
-                <div class="file-icon">📄</div>
-
-                <div class="file-info">
-
-                    <div class="file-name">
-                        ${escapeHTML(file.name)}
-                    </div>
-
-                    <div class="file-size">
-                        ${bytes(file.size)}
-                    </div>
-
-                </div>
-
-                <button
-                    class="remove"
-                    aria-label="Remove">
-                    ×
-                </button>
-            `;
-
-            item
-                .querySelector(".remove")
-                .onclick = () =>
-                    removeFile(index);
-
-            fileList.appendChild(item);
-        }
-    );
-
-    const total =
-        state.files.reduce(
-            (sum,f)=>sum+f.size,
-            0
-        );
-
-    $("statFiles").textContent =
-        `${state.files.length} / 2`;
-
-    $("statSize").textContent =
-        bytes(total);
-}
-
-/* ==========================================================
-   ANALYZER
-========================================================== */
-
-function resetAnalyzerUI(){
-
-    aiStatus.textContent =
-        state.files.length === 2
-            ? "READY"
-            : "WAITING";
-
-    aiSummary.textContent =
-        state.files.length === 2
-            ? "Hai file đã sẵn sàng để phân tích."
-            : "Chọn đủ 2 file để bắt đầu phân tích.";
-
-    confidenceBar.style.width =
-        "0%";
-
-    confidenceText.textContent =
-        "0%";
-
-    $("statHash").textContent =
-        "—";
-
-    $("formatStat").textContent =
-        "UNKNOWN";
-
-    $("entropyStat").textContent =
-        "—";
-
-    $("headerStat").textContent =
-        "—";
-
-    $("validationStat").textContent =
-        "WAITING";
-
-    hexPreview.textContent =
-        "No file selected.";
-}
-
-function setProgress(value,text){
-
-    value =
-        Math.max(
-            0,
-            Math.min(100,value)
-        );
-
-    progress.classList.add("active");
-
-    progressBar.style.width =
-        `${value}%`;
-
-    progressPercent.textContent =
-        `${Math.round(value)}%`;
-
-    progressText.textContent =
-        text;
-}
-
-/* ==========================================================
-   WEB WORKER
-========================================================== */
-
-const workerCode = `
-
-self.onmessage = async function(event){
-
-    const {
-        type,
-        buffer
-    } = event.data;
-
-    const data =
-        new Uint8Array(buffer);
-
-    if(type === "analyze"){
-
-        let entropy = 0;
-
-        const counts =
-            new Array(256).fill(0);
-
-        for(
-            let i=0;
-            i<data.length;
-            i++
-        ){
-
-            counts[data[i]]++;
-        }
-
-        const length =
-            data.length;
-
-        if(length){
-
-            for(
-                let i=0;
-                i<256;
-                i++
-            ){
-
-                if(!counts[i])
-                    continue;
-
-                const p =
-                    counts[i]/length;
-
-                entropy -=
-                    p*Math.log2(p);
-            }
-        }
-
-        const preview =
-            Array.from(
-                data.slice(0,128)
-            );
-
-        const ascii =
-            preview.map(
-                b =>
-                    b >= 32 && b <= 126
-                        ? String.fromCharCode(b)
-                        : "."
-            ).join("");
-
-        self.postMessage({
-            entropy,
-            preview,
-            ascii,
-            size:length
-        });
-    }
-
-    if(type === "merge"){
-
-        const a =
-            new Uint8Array(
-                event.data.bufferA
-            );
-
-        const b =
-            new Uint8Array(
-                event.data.bufferB
-            );
-
-        const separator =
-            new TextEncoder()
-                .encode("CYBER_MERGE_V25");
-
-        const useSeparator =
-            event.data.separator;
-
-        const extra =
-            useSeparator
-                ? separator.length
-                : 0;
-
-        const output =
-            new Uint8Array(
-                a.length +
-                b.length +
-                extra
-            );
-
-        output.set(a,0);
-
-        let offset =
-            a.length;
-
-        if(useSeparator){
-
-            output.set(
-                separator,
-                offset
-            );
-
-            offset +=
-                separator.length;
-        }
-
-        output.set(
-            b,
-            offset
-        );
-
-        self.postMessage(
-            {
-                output:output.buffer
-            },
-            [output.buffer]
+            "Dark theme enabled."
         );
     }
 };
-`;
 
-const workerURL =
-    URL.createObjectURL(
-        new Blob(
-            [workerCode],
-            {
-                type:"application/javascript"
-            }
-        )
-    );
-
-const worker =
-    new Worker(workerURL);
-
-/* ==========================================================
-   ANALYSIS
-========================================================== */
-
-async function analyzeFile(file){
-
-    const buffer =
-        await file.arrayBuffer();
-
-    return new Promise(
-        resolve=>{
-
-            const handler =
-                event=>{
-
-                    worker.removeEventListener(
-                        "message",
-                        handler
-                    );
-
-                    resolve(event.data);
-                };
-
-            worker.addEventListener(
-                "message",
-                handler
-            );
-
-            worker.postMessage(
-                {
-                    type:"analyze",
-                    buffer
-                },
-                [buffer]
-            );
-        }
-    );
-}
-
-async function sha256(file){
-
-    const buffer =
-        await file.arrayBuffer();
-
-    const digest =
-        await crypto.subtle.digest(
-            "SHA-256",
-            buffer
-        );
-
-    return Array
-        .from(
-            new Uint8Array(digest)
-        )
-        .map(
-            b =>
-                b.toString(16)
-                 .padStart(2,"0")
-        )
-        .join("");
-}
-
-function detectFormat(bytesArray){
-
-    if(
-        bytesArray.length >= 4 &&
-        bytesArray[0] === 0x50 &&
-        bytesArray[1] === 0x4b
-    )
-        return "ZIP / PK";
-
-    if(
-        bytesArray.length >= 4 &&
-        bytesArray[0] === 0x1f &&
-        bytesArray[1] === 0x8b
-    )
-        return "GZIP";
-
-    if(
-        bytesArray.length >= 4 &&
-        bytesArray[0] === 0x28 &&
-        bytesArray[1] === 0xb5 &&
-        bytesArray[2] === 0x2f &&
-        bytesArray[3] === 0xfd
-    )
-        return "ZSTD";
-
-    if(
-        bytesArray.length >= 4 &&
-        bytesArray[0] === 0x7f &&
-        bytesArray[1] === 0x45 &&
-        bytesArray[2] === 0x4c &&
-        bytesArray[3] === 0x46
-    )
-        return "ELF";
-
-    return "RAW / UNKNOWN";
-}
-
-function hexDump(arr){
-
-    let result = "";
-
-    for(
-        let i=0;
-        i<arr.length;
-        i+=16
-    ){
-
-        const chunk =
-            arr.slice(i,i+16);
-
-        const hex =
-            chunk
-                .map(
-                    b =>
-                        b.toString(16)
-                         .padStart(2,"0")
-                )
-                .join(" ")
-                .padEnd(47," ");
-
-        const ascii =
-            chunk
-                .map(
-                    b =>
-                        b >= 32 &&
-                        b <= 126
-                            ? String.fromCharCode(b)
-                            : "."
-                )
-                .join("");
-
-        result +=
-            `${i.toString(16).padStart(8,"0")}  ${hex}  ${ascii}\n`;
-    }
-
-    return result;
-}
-
-analyzeBtn.addEventListener(
-    "click",
-    runAnalysis
-);
-
-async function runAnalysis(){
-
-    if(
-        state.files.length !== 2 ||
-        state.processing
-    )
-        return;
-
-    state.processing = true;
-
-    analyzeBtn.disabled = true;
-    mergeBtn.disabled = true;
-
-    aiStatus.textContent =
-        "ANALYZING";
-
-    setProgress(
-        5,
-        "READING BINARY..."
-    );
-
-    try{
-
-        log(
-            "Starting AI binary analysis...",
-            "info"
-        );
-
-        const a =
-            await analyzeFile(
-                state.files[0]
-            );
-
-        setProgress(
-            35,
-            "ANALYZING FILE 1..."
-        );
-
-        const b =
-            await analyzeFile(
-                state.files[1]
-            );
-
-        setProgress(
-            55,
-            "ANALYZING FILE 2..."
-        );
-
-        const hashA =
-            await sha256(
-                state.files[0]
-            );
-
-        const hashB =
-            await sha256(
-                state.files[1]
-            );
-
-        setProgress(
-            70,
-            "COMPARING STRUCTURES..."
-        );
-
-        const dataA =
-            new Uint8Array(
-                await state.files[0]
-                    .arrayBuffer()
-            );
-
-        const dataB =
-            new Uint8Array(
-                await state.files[1]
-                    .arrayBuffer()
-            );
-
-        const formatA =
-            detectFormat(dataA);
-
-        const formatB =
-            detectFormat(dataB);
-
-        const headerMatch =
-            dataA
-                .slice(0,32)
-                .every(
-                    (v,i) =>
-                        dataB[i] === v
-                );
-
-        const sizeRatio =
-            Math.min(
-                state.files[0].size,
-                state.files[1].size
-            ) /
-            Math.max(
-                state.files[0].size,
-                state.files[1].size
-            );
-
-        /*
-         * Confidence chỉ là heuristic.
-         * Nó không chứng minh rằng hai file có thể
-         * chạy trong một phần mềm cụ thể.
-         */
-
-        let confidence = 45;
-
-        if(
-            formatA === formatB
-        )
-            confidence += 20;
-
-        if(headerMatch)
-            confidence += 15;
-
-        if(sizeRatio > .5)
-            confidence += 10;
-
-        if(
-            Math.abs(
-                a.entropy - b.entropy
-            ) < 1.0
-        )
-            confidence += 5;
-
-        confidence =
-            Math.min(95,confidence);
-
-        state.analysis = {
-            a,
-            b,
-            hashA,
-            hashB,
-            formatA,
-            formatB,
-            headerMatch,
-            confidence
-        };
-
-        state.analyzed = true;
-
-        confidenceBar.style.width =
-            `${confidence}%`;
-
-        confidenceText.textContent =
-            `${confidence}%`;
-
-        aiStatus.textContent =
-            "ANALYSIS COMPLETE";
-
-        aiSummary.textContent =
-            `Format: ${formatA} / ${formatB}. ` +
-            `Header similarity: ${headerMatch ? "detected" : "different"}. ` +
-            `Confidence: ${confidence}%. ` +
-            `Confidence là chỉ số heuristic, không đảm bảo tương thích với ứng dụng cụ thể.`;
-
-        $("statHash").textContent =
-            hashA.slice(0,12);
-
-        $("formatStat").textContent =
-            formatA === formatB
-                ? formatA
-                : "MIXED";
-
-        $("entropyStat").textContent =
-            `${a.entropy.toFixed(2)} / ${b.entropy.toFixed(2)}`;
-
-        $("headerStat").textContent =
-            headerMatch
-                ? "SIMILAR"
-                : "DIFFERENT";
-
-        $("validationStat").textContent =
-            "READY";
-
-        hexPreview.textContent =
-            hexDump(
-                dataA.slice(0,128)
-            );
-
-        log(
-            `File 1 format: ${formatA}`,
-            "ok"
-        );
-
-        log(
-            `File 2 format: ${formatB}`,
-            "ok"
-        );
-
-        log(
-            `Entropy: ${a.entropy.toFixed(3)} / ${b.entropy.toFixed(3)}`,
-            "info"
-        );
-
-        log(
-            `SHA-256 #1: ${hashA}`,
-            "info"
-        );
-
-        log(
-            `SHA-256 #2: ${hashB}`,
-            "info"
-        );
-
-        log(
-            `Compatibility heuristic: ${confidence}%`,
-            confidence >= 70
-                ? "ok"
-                : "warn"
-        );
-
-        setProgress(
-            100,
-            "ANALYSIS COMPLETE"
-        );
-
-        updateButtons();
-
-    }catch(error){
-
-        log(
-            `Analysis error: ${error.message}`,
-            "error"
-        );
-
-        aiStatus.textContent =
-            "ERROR";
-
-    }finally{
-
-        state.processing = false;
-
-        analyzeBtn.disabled =
-            state.files.length !== 2;
-
-        updateButtons();
-    }
-}
-
-/* ==========================================================
-   MERGE
-========================================================== */
-
-mergeBtn.addEventListener(
-    "click",
-    merge
-);
-
-async function merge(){
-
-    if(
-        state.processing ||
-        state.files.length !== 2 ||
-        !state.analyzed
-    ){
-
-        toast(
-            "Hãy chạy AI Analyzer trước."
-        );
-
-        return;
-    }
-
-    state.processing = true;
-
-    mergeBtn.disabled = true;
-    analyzeBtn.disabled = true;
-
-    try{
-
-        log(
-            "Starting validated merge...",
-            "info"
-        );
-
-        setProgress(
-            5,
-            "LOADING INPUT..."
-        );
-
-        const bufferA =
-            await state.files[0]
-                .arrayBuffer();
-
-        const bufferB =
-            await state.files[1]
-                .arrayBuffer();
-
-        setProgress(
-            25,
-            "RUNNING MERGE WORKER..."
-        );
-
-        const result =
-            await new Promise(
-                resolve=>{
-
-                    const handler =
-                        event=>{
-
-                            worker.removeEventListener(
-                                "message",
-                                handler
-                            );
-
-                            resolve(
-                                event.data.output
-                            );
-                        };
-
-                    worker.addEventListener(
-                        "message",
-                        handler
-                    );
-
-                    worker.postMessage(
-                        {
-                            type:"merge",
-                            bufferA,
-                            bufferB,
-                            separator:
-                                mergeMode.value ===
-                                "separator"
-                        },
-                        [
-                            bufferA,
-                            bufferB
-                        ]
-                    );
-                }
-            );
-
-        setProgress(
-            70,
-            "VALIDATING OUTPUT..."
-        );
-
-        const output =
-            new Uint8Array(result);
-
-        const expected =
-            state.files[0].size +
-            state.files[1].size +
-            (
-                mergeMode.value === "separator"
-                    ? new TextEncoder()
-                        .encode("CYBER_MERGE_V25")
-                        .length
-                    : 0
-            );
-
-        if(
-            output.byteLength !== expected
-        ){
-
-            throw new Error(
-                "Output size validation failed."
-            );
-        }
-
-        const outputHash =
-            await crypto.subtle.digest(
-                "SHA-256",
-                output
-            );
-
-        const hashHex =
-            Array.from(
-                new Uint8Array(outputHash)
-            )
-            .map(
-                b =>
-                    b.toString(16)
-                     .padStart(2,"0")
-            )
-            .join("");
-
-        setProgress(
-            88,
-            "CREATING DOWNLOAD..."
-        );
-
-        let name =
-            outputName.value.trim();
-
-        if(!name){
-
-            name =
-                state.files[0]
-                    .name
-                    .replace(
-                        /\.bytes$/i,
-                        ""
-                    )
-                    + "_merged.bytes";
-        }
-
-        if(
-            !name
-                .toLowerCase()
-                .endsWith(".bytes")
-        )
-            name += ".bytes";
-
-        const blob =
-            new Blob(
-                [output],
-                {
-                    type:
-                        "application/octet-stream"
-                }
-            );
-
-        const url =
-            URL.createObjectURL(blob);
-
-        const anchor =
-            document.createElement("a");
-
-        anchor.href = url;
-        anchor.download = name;
-
-        document.body.appendChild(anchor);
-
-        anchor.click();
-
-        anchor.remove();
-
-        setTimeout(
-            ()=>{
-                URL.revokeObjectURL(url);
-            },
-            1000
-        );
-
-        setProgress(
-            100,
-            "VALIDATION COMPLETE"
-        );
-
-        $("validationStat").textContent =
-            "PASSED";
-
-        log(
-            `Output: ${name}`,
-            "ok"
-        );
-
-        log(
-            `Output size: ${bytes(output.length)}`,
-            "ok"
-        );
-
-        log(
-            `Output SHA-256: ${hashHex}`,
-            "info"
-        );
-
-        log(
-            "Merge + validation completed.",
-            "ok"
-        );
-
-        $("modalTitle").textContent =
-            "Merge Complete";
-
-        $("modalText").textContent =
-            `${name}\n${bytes(output.length)}\nSHA-256: ${hashHex.slice(0,24)}...`;
-
-        overlay.classList.add("active");
-
-    }catch(error){
-
-        $("validationStat").textContent =
-            "FAILED";
-
-        log(
-            `Merge failed: ${error.message}`,
-            "error"
-        );
-
-        toast(
-            "Validation thất bại — file không được xuất."
-        );
-
-    }finally{
-
-        state.processing = false;
-
-        analyzeBtn.disabled =
-            state.files.length !== 2;
-
-        updateButtons();
-    }
-}
-
-/* ==========================================================
-   BUTTON STATE
-========================================================== */
-
-function updateButtons(){
-
-    if(
-        state.files.length === 2
-    ){
-
-        analyzeBtn.disabled =
-            state.processing;
-
-        analyzeBtn.textContent =
-            state.analyzed
-                ? "✓ RE-ANALYZE FILES"
-                : "🧠 ANALYZE FILES";
-
-    }else{
-
-        analyzeBtn.disabled =
-            true;
-
-        analyzeBtn.textContent =
-            "🧠 ANALYZE FILES";
-    }
-
-    if(
-        state.files.length === 2 &&
-        state.analyzed &&
-        !state.processing
-    ){
-
-        mergeBtn.disabled = false;
-        mergeBtn.textContent =
-            "⚡ MERGE + VALIDATE";
-
-    }else{
-
-        mergeBtn.disabled = true;
-
-        mergeBtn.textContent =
-            state.files.length < 2
-                ? "SELECT 2 FILES"
-                : "RUN AI ANALYZER FIRST";
-    }
-}
-
-/* ==========================================================
-   RESET
-========================================================== */
-
-resetBtn.addEventListener(
-    "click",
-    ()=>{
-
-        if(state.processing)
-            return;
-
-        state.files = [];
-        state.analysis = null;
-        state.analyzed = false;
-
-        outputName.value = "";
-
-        progress.classList.remove("active");
-
-        progressBar.style.width =
-            "0%";
-
-        confidenceBar.style.width =
-            "0%";
-
-        confidenceText.textContent =
-            "0%";
-
-        resetAnalyzerUI();
-
-        renderFiles();
-        updateButtons();
-
-        log(
-            "Workspace reset.",
-            "warn"
-        );
-    }
-);
-
-/* ==========================================================
-   MODAL
-========================================================== */
-
-function closeModal(){
-
-    overlay.classList.remove(
-        "active"
-    );
-}
-
-overlay.addEventListener(
-    "click",
-    event=>{
-
-        if(
-            event.target === overlay
-        )
-            closeModal();
-    }
-);
+/* =========================================================
+   KEYBOARD SHORTCUTS
+   ========================================================= */
 
 document.addEventListener(
     "keydown",
-    event=>{
+    e=>{
 
-        if(
-            event.key === "Escape"
-        )
-            closeModal();
+        if(e.ctrlKey && e.key.toLowerCase()==="o"){
+            e.preventDefault();
+            filePicker.click();
+        }
+
+        if(e.ctrlKey && e.key.toLowerCase()==="r"){
+            e.preventDefault();
+
+            if(!state.busy){
+                analyzeFiles().catch(
+                    error => log(
+                        error.message,
+                        "error"
+                    )
+                );
+            }
+        }
+
+        if(e.ctrlKey && e.key === "Enter"){
+            e.preventDefault();
+
+            if(!state.busy){
+                mergeFiles();
+            }
+        }
+
+        if(e.key === "Escape"){
+            $("resultModal")
+                .classList
+                .remove("show");
+        }
     }
 );
 
-/* ==========================================================
-   INITIALIZATION
-========================================================== */
+/* =========================================================
+   INITIALIZE
+   ========================================================= */
 
+clearTerminal();
 renderFiles();
-resetAnalyzerUI();
-updateButtons();
+updateUI();
 
-window.addEventListener(
-    "beforeunload",
-    ()=>{
-        worker.terminate();
-        URL.revokeObjectURL(workerURL);
-    }
+$("manualOffset").disabled = true;
+
+log(
+    "Engine version V26 loaded.",
+    "good"
+);
+
+log(
+    "Safety rule: no hard-coded 32-byte header stripping.",
+    "good"
+);
+
+log(
+    "AI mode: deterministic local binary heuristics.",
+    "info"
+);
+
+log(
+    "Created & Coded by TRONG DUNG.",
+    "good"
 );
 </script>
 
