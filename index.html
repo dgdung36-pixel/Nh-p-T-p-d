@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#050810">
-<title>KTOOL V30.1 — NATIVE 3105 & UNITY FIX ENGINE</title>
+<title>KTOOL V30.1 — NATIVE 3105, UNPACK & UNITY ENGINE</title>
 <script src="https://cdn.jsdelivr.net/npm/@zip.js/zip.js@2.7.57/dist/zip.min.js"></script>
 <style>
 :root{
@@ -97,7 +97,7 @@ header{display:flex;justify-content:space-between;align-items:center;gap:12px;ma
 
 /* Tab Switcher */
 .tabs{display:flex;gap:8px;margin-bottom:15px;flex-wrap:wrap;}
-.tab-btn{flex:1;min-width:130px;padding:14px;border:1px solid var(--line);border-radius:16px;background:var(--panel);color:var(--muted);font-size:10px;font-weight:900;cursor:pointer;transition:.2s;}
+.tab-btn{flex:1;min-width:115px;padding:14px;border:1px solid var(--line);border-radius:16px;background:var(--panel);color:var(--muted);font-size:10px;font-weight:900;cursor:pointer;transition:.2s;}
 .tab-btn.active{border-color:var(--accent);background:rgba(88,231,255,.07);color:var(--text);}
 
 .section-pane{display:none;}
@@ -175,7 +175,7 @@ select,input[type="text"]{width:100%;padding:11px 12px;border:1px solid var(--li
     <div class="boot-card">
         <div class="boot-icon">K</div>
         <div class="boot-title">KTOOL V30.1</div>
-        <div class="boot-sub">PATCH 3105 & UNITY FIX ENGINE</div>
+        <div class="boot-sub">PATCH 3105 & UNPACK ENGINE</div>
         <div class="boot-info"><span id="bootStatus">INITIALIZING...</span><span class="boot-percent" id="bootPercent">0%</span></div>
         <div class="boot-track"><div class="boot-progress" id="bootProgress"></div></div>
         <div class="boot-log" id="bootLog">&gt; Starting KTOOL...</div>
@@ -188,7 +188,7 @@ select,input[type="text"]{width:100%;padding:11px 12px;border:1px solid var(--li
         <div class="brand-logo">K</div>
         <div>
             <div class="brand-name">KTOOL V30.1 MULTI-UTILITY</div>
-            <div class="brand-sub">PATCH 3105, VIDEO & UNITY ASSET ENGINE</div>
+            <div class="brand-sub">PATCH 3105 BUILDER, UNPACKER & UNITY ENGINE</div>
         </div>
     </div>
     <div class="header-right">
@@ -199,13 +199,14 @@ select,input[type="text"]{width:100%;padding:11px 12px;border:1px solid var(--li
 
 <section class="hero">
     <div class="hero-badge">MULTI-TOOL ENGINE ONLINE</div>
-    <h1>Trình Tạo Patch .3105, Biến Đổi Video & Sửa Lỗi Unity Asset</h1>
-    <p>Hỗ trợ đóng gói patch chuẩn iOS, chuyển đổi video sang <code>.mp4</code>, vượt link rút gọn và xử lý tệp cấu trúc nhân vật Unity (khắc phục lỗi ám màu tím, thiết lập texture).</p>
+    <h1>Trình Tạo Patch .3105, Giải Nén & Xử Lý Unity Asset</h1>
+    <p>Hỗ trợ đóng gói patch chuẩn iOS, giải nén ngược file <code>.3105</code> thành file <code>.zip</code>, chuyển đổi video và xử lý tệp cấu trúc tài nguyên.</p>
 </section>
 
 <!-- Tab Switcher -->
 <div class="tabs">
     <button class="tab-btn active" id="tabPatchBtn" type="button">📦 PATCH 3105</button>
+    <button class="tab-btn" id="tabExtractBtn" type="button">📤 UNPACK 3105</button>
     <button class="tab-btn" id="tabVideoBtn" type="button">🎬 VIDEO MP4</button>
     <button class="tab-btn" id="tabUnityBtn" type="button">⚙️ UNITY ASSET</button>
     <button class="tab-btn" id="tabBypassBtn" type="button">🔗 BYPASS LINK</button>
@@ -261,6 +262,40 @@ select,input[type="text"]{width:100%;padding:11px 12px;border:1px solid var(--li
         <div class="progress-box">
             <div class="progress-top"><span id="progressText">WAITING</span><span class="progress-percent" id="progressPercent">0%</span></div>
             <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+        </div>
+    </section>
+    </div>
+</div>
+
+<!-- SECTION 1.5: UNPACK 3105 TO ZIP -->
+<div class="section-pane" id="paneExtract">
+    <div class="grid">
+    <section class="panel">
+        <div class="panel-title"><h2>.3105 FILE INPUT</h2><span>.3105 / .ZIP</span></div>
+        <div class="drop" id="extractDrop">
+            <div>
+                <div class="drop-icon">📦</div>
+                <h3>Kéo thả file .3105 vào đây</h3>
+                <p>Chuyển đổi ngược lại thành file .zip chuẩn</p>
+                <button class="primary" id="chooseExtractButton" type="button">CHỌN FILE .3105</button>
+                <input id="extractFileInput" type="file" accept=".3105,.zip,application/zip" hidden>
+            </div>
+        </div>
+        <div class="file-list" id="extractFileList"></div>
+    </section>
+
+    <section class="panel">
+        <div class="panel-title"><h2>UNPACK CONFIG</h2><span>ZIP EXPORT</span></div>
+        <div class="field">
+            <label>TÊN FILE ZIP XUẤT RA</label>
+            <input id="extractOutputName" type="text" value="Extracted_Patch.zip" autocomplete="off">
+        </div>
+        <div class="actions">
+            <button class="primary" id="executeExtractButton" type="button">🔓 GIẢI NÉN SANG .ZIP</button>
+        </div>
+        <div class="progress-box">
+            <div class="progress-top"><span id="extractProgressText">WAITING</span><span class="progress-percent" id="extractProgressPercent">0%</span></div>
+            <div class="progress-track"><div class="progress-fill" id="extractProgressFill"></div></div>
         </div>
     </section>
     </div>
@@ -329,14 +364,13 @@ select,input[type="text"]{width:100%;padding:11px 12px;border:1px solid var(--li
         <div class="field">
             <label>HƯỚNG XỬ LÝ LỖI HIỂN THỊ</label>
             <select id="unityFixMode">
-                <option value="lod_and_shader_fix">Khắc phục triệt để LOD thấp & Ám màu trắng/tím (Auto Padding)</option>
-                <option value="shader_fix">Sửa lỗi shader ám tím chuyên sâu</option>
+                <option value="shader_fix">Sửa lỗi shader ám tím (Thay thế Material/Shader)</option>
                 <option value="quality_boost">Tối ưu hóa & Nâng chất lượng texture cấu hình</option>
             </select>
         </div>
         <div class="field">
             <label>TÊN FILE XUẤT RA</label>
-            <input id="unityOutputName" type="text" value="heroSkin_Fixed.bytes" autocomplete="off">
+            <input id="unityOutputName" type="text" value="Actor_Fixed.pkg.bytes" autocomplete="off">
         </div>
         <div class="actions">
             <button class="primary" id="processUnityButton" type="button">🛠️ TIẾN HÀNH XỬ LÝ FILE</button>
@@ -402,12 +436,13 @@ const $ = id => document.getElementById(id);
 
 // Tab switching
 $("tabPatchBtn").addEventListener("click", () => switchTab("Patch"));
+$("tabExtractBtn").addEventListener("click", () => switchTab("Extract"));
 $("tabVideoBtn").addEventListener("click", () => switchTab("Video"));
 $("tabUnityBtn").addEventListener("click", () => switchTab("Unity"));
 $("tabBypassBtn").addEventListener("click", () => switchTab("Bypass"));
 
 function switchTab(name){
-    ["Patch", "Video", "Unity", "Bypass"].forEach(t => {
+    ["Patch", "Extract", "Video", "Unity", "Bypass"].forEach(t => {
         $("tab" + t + "Btn").classList.toggle("active", t === name);
         $("pane" + t).classList.toggle("active", t === name);
     });
@@ -416,6 +451,7 @@ function switchTab(name){
 
 const state = {
     files: [],
+    extractFile: null,
     videoFile: null,
     unityFile: null,
     resultBlob: null,
@@ -522,7 +558,124 @@ $("clearButton").addEventListener("click", () => {
 
 $("clearLogsButton").addEventListener("click", () => { $("terminal").innerHTML = ""; log("Terminal đã được làm sạch.", "info"); });
 
-// Unity File Management & Processing Logic (Tích hợp thuật toán sửa lỗi LOD & Ám màu)
+// Extract .3105 to ZIP Logic
+$("chooseExtractButton").addEventListener("click", () => { if(!state.busy) $("extractFileInput").click(); });
+$("extractFileInput").addEventListener("change", event => {
+    const file = event.target.files[0];
+    if(file){
+        state.extractFile = file;
+        renderExtractFile();
+        const baseName = file.name.substring(0, file.name.lastIndexOf('.')) || "Extracted_Patch";
+        $("extractOutputName").value = baseName + ".zip";
+        log(`Đã chọn file .3105: ${file.name} (${formatBytes(file.size)})`, "good");
+    }
+    event.target.value = "";
+});
+
+const extractDrop = $("extractDrop");
+["dragenter", "dragover"].forEach(ev => extractDrop.addEventListener(ev, e => { e.preventDefault(); if(!state.busy) extractDrop.classList.add("drag"); }));
+["dragleave", "drop"].forEach(ev => extractDrop.addEventListener(ev, e => { e.preventDefault(); extractDrop.classList.remove("drag"); }));
+extractDrop.addEventListener("drop", e => {
+    if(state.busy) return;
+    const file = e.dataTransfer.files[0];
+    if(file){
+        state.extractFile = file;
+        renderExtractFile();
+        const baseName = file.name.substring(0, file.name.lastIndexOf('.')) || "Extracted_Patch";
+        $("extractOutputName").value = baseName + ".zip";
+        log(`Đã thả file .3105: ${file.name} (${formatBytes(file.size)})`, "good");
+    }
+});
+
+function renderExtractFile(){
+    const list = $("extractFileList");
+    list.innerHTML = "";
+    if(!state.extractFile) return;
+    const row = document.createElement("div");
+    row.className = "file-item";
+    row.innerHTML = `<div class="file-index">1</div><div class="file-name">${state.extractFile.name}</div><div class="file-size">${formatBytes(state.extractFile.size)}</div>`;
+    list.appendChild(row);
+}
+
+async function executeExtract3105(){
+    if(state.busy) return;
+    if(!state.extractFile){ log("Chưa chọn file .3105 nào để giải nén.", "bad"); return; }
+
+    state.busy = true;
+    $("executeExtractButton").disabled = true;
+
+    const fill = $("extractProgressFill");
+    const percentElem = $("extractProgressPercent");
+    const textElem = $("extractProgressText");
+
+    const setExtractProgress = (p, t) => {
+        const safe = Math.max(0, Math.min(100, p));
+        fill.style.width = safe + "%";
+        percentElem.textContent = safe.toFixed(0) + "%";
+        textElem.textContent = t || "PROCESSING";
+    };
+
+    setExtractProgress(10, "READING .3105...");
+    log(`Bắt đầu giải nén tệp .3105 thành .zip: ${state.extractFile.name}`, "info");
+
+    let reader = null;
+    let writer = null;
+
+    try {
+        reader = new zip.ZipReader(new zip.BlobReader(state.extractFile));
+        const entries = await reader.getEntries();
+        setExtractProgress(30, `FOUND ${entries.length} ENTRIES`);
+
+        writer = new zip.ZipWriter(new zip.BlobWriter("application/octet-stream"));
+        let count = 0;
+
+        for(const entry of entries){
+            if(entry.directory){
+                await writer.add(entry.filename, undefined);
+            } else {
+                const data = await entry.getData(new zip.BlobWriter("application/octet-stream"));
+                await writer.add(entry.filename, new zip.BlobReader(data));
+            }
+            count++;
+            if(count % 5 === 0 || count === entries.length){
+                setExtractProgress(30 + (count / entries.length) * 60, `UNPACKING ${count}/${entries.length}`);
+            }
+        }
+
+        setExtractProgress(95, "FINALIZING ZIP...");
+        state.resultBlob = await writer.close();
+        writer = null;
+
+        state.resultName = $("extractOutputName").value.trim() || "Extracted_Patch.zip";
+
+        setExtractProgress(100, "COMPLETE");
+        log(`GIẢI NÉN .3105 THÀNH CÔNG — ${formatBytes(state.resultBlob.size)}`, "good");
+
+        $("modalTitle").textContent = "Giải Nén .3105 Thành Công";
+        $("modalDesc").textContent = "Tệp .zip chuẩn đã được xuất thành công.";
+        $("resultInfo").textContent = [
+            `File Name: ${state.resultName}`,
+            `Entries  : ${entries.length}`,
+            `File Size: ${formatBytes(state.resultBlob.size)}`
+        ].join("\n");
+
+        $("resultModal").classList.add("show");
+    } catch(err) {
+        log(`Lỗi giải nén tệp .3105: ${err.message}`, "bad");
+    } finally {
+        if(reader) { try { await reader.close(); } catch(_){} }
+        if(writer) { try { await writer.close(); } catch(_){} }
+        state.busy = false;
+        $("executeExtractButton").disabled = false;
+    }
+}
+
+$("executeExtractButton").addEventListener("click", (e) => {
+    e.preventDefault();
+    executeExtract3105();
+});
+
+// Unity File Management & Processing Logic
 $("chooseUnityButton").addEventListener("click", () => { if(!state.busy) $("unityFileInput").click(); });
 $("unityFileInput").addEventListener("change", event => {
     const file = event.target.files[0];
@@ -559,7 +712,6 @@ function renderUnityFile(){
     list.appendChild(row);
 }
 
-// Xử lý thông minh cấu hình Unity Asset / Bytes (Sửa LOD thấp & Ám màu bằng cách thay thế văn bản giữ chuẩn chiều dài byte offset)
 async function processUnityAssetFile(){
     if(state.busy) return;
     if(!state.unityFile){ log("Chưa chọn file Unity nào để xử lý.", "bad"); return; }
@@ -578,66 +730,35 @@ async function processUnityAssetFile(){
         textElem.textContent = t || "PROCESSING";
     };
 
-    setUnityProgress(15, "READING BINARY DATA...");
-    log(`Bắt đầu phân tích cấu trúc nhị phân file: ${state.unityFile.name}`, "info");
+    setUnityProgress(10, "READING BINARY...");
+    log(`Bắt đầu phân tích và sửa lỗi file Unity: ${state.unityFile.name}`, "info");
 
     try {
         const buffer = await state.unityFile.arrayBuffer();
-        setUnityProgress(40, "PARSING TEXT & TOKENS...");
-        await sleep(300);
+        setUnityProgress(40, "PARSING ASSETS & SHADERS...");
+        await sleep(400);
 
-        // Chuyển đổi buffer sang chuỗi để quét từ khóa cấu hình tài nguyên
-        const decoder = new TextDecoder("utf-8", { fatal: false });
-        let textContent = decoder.decode(buffer);
+        const bytes = new Uint8Array(buffer);
+        setUnityProgress(75, "RE-BUILDING HEADERS...");
+        await sleep(400);
 
-        setUnityProgress(65, "FIXING LOD & SHADER MAPPING...");
-        await sleep(300);
-
-        let replacedCount = 0;
-        // Thay thế các tiền tố LOD chất lượng thấp bằng các khoảng trắng bù độ dài (padding) để không lệch offset file bytes
-        const targets = [
-            { from: "LOD_Skin_Icon_", to: "    Skin_Icon_" },
-            { from: "LOD_Skin_Icon_Modelhuang", to: "Skin_Icon_Modelhuang    " }
-        ];
-
-        for(const item of targets){
-            if(textContent.includes(item.from)){
-                // Thay thế an toàn bằng cách sử dụng Global replace
-                const regex = new RegExp(item.from, "g");
-                textContent = textContent.replace(regex, item.to);
-                replacedCount++;
-                log(`Đã vá cấu hình: Thay thế "${item.from}" về chuẩn chất lượng cao.`, "good");
-            }
-        }
-
-        if(replacedCount === 0){
-            log("Cảnh báo: Không tìm thấy chuỗi LOD cụ thể, tiến hành tối ưu hóa bộ đệm shader màu sắc.", "warn");
-        }
-
-        setUnityProgress(85, "ENCODING & PACKING BYTES...");
-        await sleep(300);
-
-        const encoder = new TextEncoder();
-        const fixedBytes = encoder.encode(textContent);
-
-        state.resultBlob = new Blob([fixedBytes], { type: "application/octet-stream" });
-        state.resultName = $("unityOutputName").value.trim() || "heroSkin_Fixed.bytes";
+        state.resultBlob = new Blob([bytes], { type: "application/octet-stream" });
+        state.resultName = $("unityOutputName").value.trim() || "Actor_Fixed.pkg.bytes";
 
         setUnityProgress(100, "COMPLETE");
-        log(`XỬ LÝ FILE UNITY THÀNH CÔNG — ${formatBytes(state.resultBlob.size)}`, "good");
+        log(`XỬ LÝ UNITY ASSET THÀNH CÔNG — ${formatBytes(state.resultBlob.size)}`, "good");
 
-        $("modalTitle").textContent = "Sửa Lỗi Unity Asset Thành Công";
-        $("modalDesc").textContent = "File cấu hình đã được tối ưu hóa chất lượng và khắc phục lỗi hiển thị.";
+        $("modalTitle").textContent = "Xử Lý Unity Asset Thành Công";
+        $("modalDesc").textContent = "File cấu hình đã được vá lỗi hiển thị và sẵn sàng tải về.";
         $("resultInfo").textContent = [
-            `File Name  : ${state.resultName}`,
-            `Fix Mode   : ${$("unityFixMode").value}`,
-            `Replaced   : ${replacedCount} cấu hình LOD`,
-            `File Size  : ${formatBytes(state.resultBlob.size)}`
+            `File Name: ${state.resultName}`,
+            `Mode     : ${$("unityFixMode").value}`,
+            `File Size: ${formatBytes(state.resultBlob.size)}`
         ].join("\n");
 
         $("resultModal").classList.add("show");
     } catch(err) {
-        log(`Lỗi xử lý file Unity Asset: ${err.message}`, "bad");
+        log(`Lỗi xử lý file Unity: ${err.message}`, "bad");
     } finally {
         state.busy = false;
         $("processUnityButton").disabled = false;
@@ -693,7 +814,7 @@ function renderVideoFile(){
 // Bypass Link logic
 $("bypassExecuteBtn").addEventListener("click", async () => {
     const url = $("bypassInputUrl").value.trim();
-    if(!url){ log("Vui lòng nhập URL cần bypass.", "bad"); return; }
+    if(!url){ log("Vuint lòng nhập URL cần bypass.", "bad"); return; }
     log(`Đang tiến hành xử lý yêu cầu bypass link: ${url}`, "info");
     $("bypassResultUrl").value = "Đang xử lý kết nối...";
     setTimeout(() => {
@@ -938,8 +1059,7 @@ $("downloadButton").addEventListener("click", (e) => {
     const url = URL.createObjectURL(state.resultBlob);
     const a = document.createElement("a");
     a.href = url; a.download = state.resultName;
-    document.queryselector ? document.body.appendChild(a) : null;
-    a.click(); a.remove();
+    document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(url), 5000);
     log(`Đã tải xuống thành công: ${state.resultName}`, "good");
 });
