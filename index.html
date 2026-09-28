@@ -199,7 +199,7 @@ select,input[type="text"]{width:100%;padding:11px 12px;border:1px solid var(--li
 <section class="hero">
     <div class="hero-badge">STREAM ENGINE ONLINE</div>
     <h1>Gộp nhiều ZIP & Tạo Patch 3105</h1>
-    <p>V30.1 tích hợp cơ chế đọc ZIP theo từng entry và tự động cấu trúc thư mục <code>com.garena.game.kgvn/Documents/</code> chuẩn cho Liên Quân.</p>
+    <p>Tự động tạo cấu trúc <code>com.garena.game.kgvn/Documents/</code> và hỗ trợ xuất file chuẩn định dạng <code>.3105</code> an toàn không lỗi.</p>
 </section>
 
 <section class="stats">
@@ -231,7 +231,7 @@ select,input[type="text"]{width:100%;padding:11px 12px;border:1px solid var(--li
         <label>CHẾ ĐỘ XUẤT FILE</label>
         <select id="patchMode">
             <option value="normal">Gộp ZIP thông thường (Giữ nguyên cấu trúc)</option>
-            <option value="patch3105">Đóng gói chuẩn Patch 3105 (Vào Documents)</option>
+            <option value="patch3105" selected>Đóng gói chuẩn Patch 3105 (Vào Documents)</option>
         </select>
     </div>
     <div class="field">
@@ -244,7 +244,7 @@ select,input[type="text"]{width:100%;padding:11px 12px;border:1px solid var(--li
     </div>
     <div class="field">
         <label>TÊN FILE XUẤT RA</label>
-        <input id="outputName" type="text" value="KTOOL_MERGED_V30.1.zip" autocomplete="off">
+        <input id="outputName" type="text" value="patch_3105_kgvn.3105" autocomplete="off">
     </div>
     <div class="actions">
         <button class="primary" id="mergeButton" type="button">⚡ THỰC THI</button>
@@ -274,10 +274,10 @@ select,input[type="text"]{width:100%;padding:11px 12px;border:1px solid var(--li
     <div class="modal-card">
         <div class="modal-icon">✓</div>
         <h2>Xử lý hoàn tất</h2>
-        <p>File kết quả đã được tạo trong bộ nhớ của trình duyệt. Trang không bị reload.</p>
+        <p>File kết quả đã được tạo trong bộ nhớ của trình duyệt.</p>
         <div class="result-info" id="resultInfo"></div>
         <div class="modal-actions">
-            <button class="primary" id="downloadButton" type="button">⬇ TẢI FILE ZIP</button>
+            <button class="primary" id="downloadButton" type="button">⬇ TẢI FILE KẾT QUẢ</button>
             <button class="secondary" id="closeModalButton" type="button">ĐÓNG</button>
         </div>
     </div>
@@ -409,8 +409,8 @@ function setProgress(percent, text){
 // Dynamic output name change on mode switch
 $("patchMode").addEventListener("change", (e) => {
     if(e.target.value === "patch3105"){
-        $("outputName").value = "patch_3105_kgvn.zip";
-        log("Đã chuyển sang chế độ tạo Patch 3105 (com.garena.game.kgvn/Documents).", "info");
+        $("outputName").value = "patch_3105_kgvn.3105";
+        log("Đã chuyển sang chế độ tạo Patch 3105 (.3105 trực tiếp).", "info");
     } else {
         $("outputName").value = "KTOOL_MERGED_V30.1.zip";
         log("Đã chuyển về chế độ gộp ZIP thông thường.", "info");
@@ -443,13 +443,13 @@ async function mergeZipFiles(){
         const zipReaders = [];
         let totalEntries = 0;
 
-        // Nếu là chế độ patch3105, tạo thư mục gốc yêu cầu trước trong file ZIP kết quả
+        // Tạo cấu trúc thư mục com.garena.game.kgvn/Documents/ nếu ở chế độ Patch 3105
         if(patchMode === "patch3105"){
             await writer.add("com.garena.game.kgvn/", undefined);
             await writer.add("com.garena.game.kgvn/Documents/", undefined);
             addedEntries.add("com.garena.game.kgvn/");
             addedEntries.add("com.garena.game.kgvn/Documents/");
-            log("Đã tạo cấu trúc: com.garena.game.kgvn/Documents/", "info");
+            log("Đã khởi tạo cấu trúc thư mục: com.garena.game.kgvn/Documents/", "info");
         }
 
         for(let i = 0; i < state.files.length; i++){
@@ -477,9 +477,8 @@ async function mergeZipFiles(){
                 }
                 let normalized = filename.replace(/\\/g, "/");
 
-                // Nếu file bên trong ZIP bị trùng thư mục gốc rác, loại bỏ bớt phần đầu nếu cần hoặc chuyển vào Documents
+                // Đưa toàn bộ tệp tin bên trong các file zip nguồn vào mục Documents
                 if(patchMode === "patch3105"){
-                    // Đưa toàn bộ tệp tin giải nén vào trong thư mục Documents
                     normalized = "com.garena.game.kgvn/Documents/" + normalized;
                 }
 
@@ -507,12 +506,12 @@ async function mergeZipFiles(){
             }
         }
 
-        setProgress(98, "FINALIZING ZIP...");
+        setProgress(98, "FINALIZING ARCHIVE...");
         state.resultBlob = await writer.close();
         writer = null;
 
         const customName = $("outputName").value.trim();
-        state.resultName = customName ? customName.replace(/\.zip$/i, "") + ".zip" : "KTOOL_MERGED_V30.1.zip";
+        state.resultName = customName ? customName : (patchMode === "patch3105" ? "patch_3105_kgvn.3105" : "KTOOL_MERGED_V30.1.zip");
 
         setProgress(100, "COMPLETE");
         $("engineStatus").textContent = "SUCCESS";
@@ -521,7 +520,7 @@ async function mergeZipFiles(){
 
         $("resultInfo").textContent = [
             `Output : ${state.resultName}`,
-            `Mode   : ${patchMode === "patch3105" ? "Patch 3105 (com.garena.game.kgvn/Documents)" : "Normal Merge"}`,
+            `Mode   : ${patchMode === "patch3105" ? "Patch 3105 (.3105 -> Documents)" : "Normal Merge"}`,
             `Entries: ${addedEntries.size}`,
             `Size   : ${formatBytes(state.resultBlob.size)}`,
             `Input  : ${formatBytes(state.totalInputBytes)}`
@@ -553,7 +552,7 @@ $("downloadButton").addEventListener("click", (e) => {
     a.href = url; a.download = state.resultName;
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(url), 5000);
-    log(`Đã tải file: ${state.resultName}`, "good");
+    log(`Đã tải file thành công: ${state.resultName}`, "good");
 });
 
 $("closeModalButton").addEventListener("click", (e) => {
