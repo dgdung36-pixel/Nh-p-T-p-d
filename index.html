@@ -3,10 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TRONG DUNG - FILE MOD LQ</title>
+    <title>TRONG DUNG - FILE MOD LQ (REALTIME CLOUD)</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <script>
         tailwind.config = {
             theme: {
@@ -100,12 +104,18 @@
                 </h2>
             </div>
 
-            <!-- Realtime Clock Widget -->
-            <div class="flex items-center space-x-2 bg-slate-900/90 border border-slate-800 px-3 py-1 rounded-full text-xs font-mono text-cyber-cyan shadow-inner">
-                <i class="fa-solid fa-clock text-cyber-pink animate-spin" style="animation-duration: 8s;"></i>
-                <span id="realtime-clock" class="font-bold">00:00:00</span>
-                <span class="text-slate-600">|</span>
-                <span id="realtime-date" class="text-slate-400 text-[11px]">00/00/2026</span>
+            <!-- Realtime Clock & Cloud Status -->
+            <div class="flex items-center space-x-2.5">
+                <div class="flex items-center space-x-1.5 bg-slate-900/90 border border-slate-800 px-3 py-1 rounded-full text-xs font-mono text-cyber-cyan shadow-inner">
+                    <i class="fa-solid fa-clock text-cyber-pink animate-spin" style="animation-duration: 8s;"></i>
+                    <span id="realtime-clock" class="font-bold">00:00:00</span>
+                    <span class="text-slate-600">|</span>
+                    <span id="realtime-date" class="text-slate-400 text-[11px]">00/00/2026</span>
+                </div>
+                <!-- Realtime Cloud Status Indicator -->
+                <div id="cloud-sync-status" class="bg-emerald-950/80 border border-emerald-500/50 text-emerald-400 text-[10px] font-bold px-2 py-1 rounded-full flex items-center gap-1 shadow">
+                    <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-ping"></span> CLOUD LIVE
+                </div>
             </div>
         </div>
     </div>
@@ -140,10 +150,10 @@
         <div class="text-center my-2 w-full">
             <div class="relative inline-block mb-3">
                 <div id="avatar-container" class="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-gradient-to-tr from-cyber-neonRed via-cyber-purple to-cyber-cyan p-1 glow-box-cyan mx-auto transition duration-300">
-                    <img id="site-logo-img" src="" alt="Logo" class="w-full h-full object-cover rounded-xl bg-cyber-dark">
+                    <img id="site-logo-img" src="" alt="Trong Dung Logo" class="w-full h-full object-cover rounded-xl bg-cyber-dark">
                 </div>
                 <span class="absolute -bottom-1 -right-1 bg-emerald-500 text-black text-[10px] font-extrabold px-2 py-0.5 rounded-full border-2 border-cyber-dark flex items-center gap-1 shadow">
-                    <span class="w-1.5 h-1.5 bg-white rounded-full animate-ping"></span> ONLINE
+                    <span class="w-1.5 h-1.5 bg-white rounded-full animate-ping"></span> REALTIME
                 </span>
             </div>
 
@@ -182,7 +192,7 @@
 
         <!-- CATEGORIES & LINKS DISPLAY CONTAINER -->
         <div id="links-display-container" class="w-full space-y-5 min-h-[220px]">
-            <!-- Dynamic Content -->
+            <!-- Dynamic Realtime Content -->
         </div>
 
     </main>
@@ -191,19 +201,18 @@
     <footer class="mt-8 py-5 border-t border-slate-800/80 text-center text-xs text-slate-500 bg-cyber-dark/95">
         <div class="max-w-2xl mx-auto px-4 space-y-1.5">
             <p class="font-orbitron tracking-wider text-slate-400">&copy; <span id="year-display"></span> <span id="footer-site-title">FILE MOD LQ</span> - Designed for <span class="text-cyber-pink font-bold">TRONG DUNG</span></p>
-            <p class="text-[11px] text-slate-600">Hệ thống tổng hợp link vượt an toàn & uy tín</p>
+            <p class="text-[11px] text-slate-600">Hệ thống đồng bộ đám mây Cloud Realtime</p>
         </div>
     </footer>
 
-
-    <!-- ACCOUNT & PASSWORD LOGIN MODAL (Tài Khoản & Mật Khẩu) -->
+    <!-- ACCOUNT & PASSWORD LOGIN MODAL -->
     <div id="account-auth-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300">
         <div class="bg-cyber-card border border-slate-700/80 w-full max-w-sm rounded-2xl p-6 shadow-2xl text-center transform scale-95 transition-transform duration-300" id="login-modal-content">
             <div class="w-12 h-12 bg-gradient-to-tr from-cyber-neonRed to-cyber-cyan rounded-2xl flex items-center justify-center text-black text-xl mx-auto mb-3 shadow-lg glow-box-pink">
                 <i class="fa-solid fa-lock"></i>
             </div>
             <h3 class="font-orbitron font-black text-white text-lg">ĐĂNG NHẬP QUẢN TRỊ</h3>
-            <p class="text-xs text-slate-400 mt-1 mb-4">Vui lòng nhập Tài khoản và Mật khẩu chủ web</p>
+            <p class="text-xs text-slate-400 mt-1 mb-4">Nhập Tài khoản và Mật khẩu chủ web</p>
             
             <form onsubmit="handleVerifyLogin(event)" class="space-y-3.5 text-left">
                 <div>
@@ -229,7 +238,6 @@
             </form>
         </div>
     </div>
-
 
     <!-- FULL ADMIN PANEL MODAL -->
     <div id="admin-panel-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-2 sm:p-4 hidden opacity-0 transition-opacity duration-300">
@@ -270,7 +278,7 @@
                     <div class="bg-slate-900/80 rounded-xl p-4 border border-slate-800">
                         <div class="flex justify-between items-center mb-3 pb-2 border-b border-slate-800">
                             <h4 id="link-form-title" class="font-rajdhani font-bold text-cyber-cyan text-sm sm:text-base flex items-center gap-2">
-                                <i class="fa-solid fa-plus-circle"></i> THÊM LINK MOD MỚI
+                                <i class="fa-solid fa-plus-circle"></i> THÊM LINK MOD MỚI (CLOUD)
                             </h4>
                             <button id="link-cancel-edit-btn" onclick="resetLinkForm()" class="text-xs text-rose-400 hover:underline hidden">
                                 <i class="fa-solid fa-xmark mr-1"></i> Hủy sửa
@@ -342,7 +350,7 @@
                             </div>
 
                             <button type="submit" id="form-link-submit-btn" class="w-full py-2.5 bg-gradient-to-r from-cyber-cyan to-blue-500 hover:brightness-110 text-black font-rajdhani font-extrabold text-sm rounded-lg shadow transition flex items-center justify-center gap-1">
-                                <i class="fa-solid fa-floppy-disk"></i> LƯU LINK MOD VÀO MỤC
+                                <i class="fa-solid fa-cloud-arrow-up"></i> ĐĂNG LINK LÊN CLOUD REALTIME
                             </button>
                         </form>
                     </div>
@@ -350,7 +358,7 @@
                     <!-- List of Existing Links -->
                     <div>
                         <h5 class="font-rajdhani font-bold text-white text-sm mb-2 flex items-center gap-1.5">
-                            <i class="fa-solid fa-list text-cyber-cyan"></i> DANH SÁCH LINK ĐÃ TẠO
+                            <i class="fa-solid fa-list text-cyber-cyan"></i> DANH SÁCH LINK TRÊN CLOUD
                         </h5>
                         <div id="adm-links-list" class="space-y-2 max-h-[220px] overflow-y-auto pr-1">
                             <!-- Rendered by JS -->
@@ -364,7 +372,7 @@
                     <div class="bg-slate-900/80 rounded-xl p-4 border border-slate-800">
                         <div class="flex justify-between items-center mb-3 pb-2 border-b border-slate-800">
                             <h4 id="cat-form-title" class="font-rajdhani font-bold text-cyber-cyan text-sm sm:text-base flex items-center gap-2">
-                                <i class="fa-solid fa-folder-plus"></i> THÊM MỤC MỚI (TẠO KHU)
+                                <i class="fa-solid fa-folder-plus"></i> THÊM MỤC MỚI (CLOUD)
                             </h4>
                             <button id="cat-cancel-edit-btn" onclick="resetCatForm()" class="text-xs text-rose-400 hover:underline hidden">
                                 <i class="fa-solid fa-xmark mr-1"></i> Hủy sửa
@@ -411,7 +419,7 @@
                             </div>
 
                             <button type="submit" id="form-cat-submit-btn" class="w-full py-2.5 bg-gradient-to-r from-cyber-cyan to-blue-500 hover:brightness-110 text-black font-rajdhani font-extrabold text-sm rounded-lg shadow transition flex items-center justify-center gap-1">
-                                <i class="fa-solid fa-folder-plus"></i> TẠO MỤC MỚI
+                                <i class="fa-solid fa-folder-plus"></i> LƯU MỤC LÊN CLOUD
                             </button>
                         </form>
                     </div>
@@ -419,7 +427,7 @@
                     <!-- Category List -->
                     <div>
                         <h5 class="font-rajdhani font-bold text-white text-sm mb-2 flex items-center gap-1.5">
-                            <i class="fa-solid fa-folder-tree text-cyber-cyan"></i> DANH SÁCH MỤC HIỆN CÓ
+                            <i class="fa-solid fa-folder-tree text-cyber-cyan"></i> DANH SÁCH MỤC CLOUD
                         </h5>
                         <div id="adm-cats-list" class="space-y-2 max-h-[220px] overflow-y-auto pr-1">
                             <!-- Rendered by JS -->
@@ -446,7 +454,7 @@
                                 <input type="password" id="input-new-pass" required placeholder="Nhập mật khẩu mới..." class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-amber-400">
                             </div>
                             <button type="submit" class="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-black font-bold font-rajdhani rounded-lg transition">
-                                CẬP NHẬT TÀI KHOẢN & MẬT KHẨU
+                                CẬP NHẬT TÀI KHOẢN & MẬT KHẨU CLOUD
                             </button>
                         </form>
                     </div>
@@ -501,16 +509,9 @@
                             </div>
 
                             <button type="submit" class="w-full py-2 bg-gradient-to-r from-cyber-cyan to-blue-500 hover:brightness-110 text-black font-rajdhani font-extrabold rounded-lg transition">
-                                LƯU CẤU HÌNH TRANG
+                                LƯU CẤU HÌNH LÊN CLOUD
                             </button>
                         </form>
-                    </div>
-
-                    <!-- Factory Reset -->
-                    <div class="pt-2 flex justify-between items-center">
-                        <button onclick="handleRestoreDefaultData()" class="text-rose-400 hover:underline flex items-center gap-1 text-[11px]">
-                            <i class="fa-solid fa-rotate-left"></i> Khôi phục dữ liệu mẫu ban đầu
-                        </button>
                     </div>
 
                 </div>
@@ -532,15 +533,30 @@
         <span id="toast-msg">Thông báo...</span>
     </div>
 
+    <!-- FIREBASE MODULE & APPLICATION LOGIC -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-    <!-- JAVASCRIPT APP LOGIC -->
-    <script>
-        // Default SVG Fallback Data URLs
-        const defaultLogoBase64 = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23101622'/><circle cx='50' cy='50' r='35' fill='%2300f2fe'/><text x='50' y='57' font-size='22' font-weight='bold' text-anchor='middle' fill='%23000'>LQ</text></svg>";
+        // Global environment fallbacks
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'file-mod-lq-cloud-v1';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
+            apiKey: "AIzaSyDemoKeyForFileModLQBuild999",
+            authDomain: "file-mod-lq.firebaseapp.com",
+            projectId: "file-mod-lq",
+            storageBucket: "file-mod-lq.appspot.com",
+            messagingSenderId: "1234567890",
+            appId: "1:1234567890:web:abcdef123456"
+        };
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        // User Avatar Image & Fallbacks
+        const defaultUserAvatar = "input_file_0.png";
         const defaultLinkImgBase64 = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23182030'/><path d='M30 65 L50 35 L70 65 Z' fill='%2300f2fe'/></svg>";
 
         // INITIAL DEFAULT DATA TEMPLATE
-        const defaultState = {
+        const defaultDataTemplate = {
             adminAccount: {
                 username: "admin",
                 password: "2812"
@@ -549,10 +565,10 @@
                 title: "FILE MOD LQ",
                 ownerName: "TRONG DUNG",
                 bio: "Kênh tổng hợp Link Mod Liên Quân VIP - Vượt link an toàn & tốc độ cao.",
-                logo: defaultLogoBase64,
+                logo: defaultUserAvatar,
                 zalo: "https://zalo.me",
                 telegram: "https://t.me",
-                youtube: "https://youtube.com"
+                youtube: "https://youtube.com/@trdunxx?si=tGWPnDMwmzyX1BaU"
             },
             categories: [
                 { id: "cat-ios-1", platform: "ios", name: "MOD SKIN VIP IOS", icon: "fa-shield-halved", iconImg: "" },
@@ -604,20 +620,108 @@
             ]
         };
 
-        // Active State variables
-        let appState = {};
-        let currentTab = 'ios';
-        let currentAdminTab = 'links';
+        // State & Firebase Instances
+        let app = null;
+        let auth = null;
+        let db = null;
+        let appState = JSON.parse(JSON.stringify(defaultDataTemplate));
+        let isAuthReady = false;
 
-        // Window Init
+        // Initialize Firebase Realtime Cloud Synchronization
+        async function initFirebaseCloud() {
+            try {
+                app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+
+                // Authenticate
+                if (initialAuthToken) {
+                    await signInWithCustomToken(auth, initialAuthToken);
+                } else {
+                    await signInAnonymously(auth);
+                }
+
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        isAuthReady = true;
+                        subscribeRealtimeCloud();
+                    }
+                });
+            } catch (err) {
+                console.warn('Fallback Local Storage Enabled:', err);
+                loadFallbackLocalStorage();
+            }
+        }
+
+        // Firestore Strict Path: /artifacts/{appId}/public/data/hubData
+        function subscribeRealtimeCloud() {
+            if (!isAuthReady || !db) return;
+
+            const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'hubData');
+
+            onSnapshot(docRef, (snapshot) => {
+                if (snapshot.exists()) {
+                    const data = snapshot.data();
+                    if (data) {
+                        appState = {
+                            adminAccount: data.adminAccount || defaultDataTemplate.adminAccount,
+                            siteConfig: data.siteConfig || defaultDataTemplate.siteConfig,
+                            categories: data.categories || defaultDataTemplate.categories,
+                            links: data.links || defaultDataTemplate.links
+                        };
+                        window.renderApp();
+                        window.renderAdminLinksList();
+                        window.renderAdminCatsList();
+                    }
+                } else {
+                    // Document doesn't exist yet, push initial state
+                    saveAppStateToCloud();
+                }
+            }, (error) => {
+                console.error("Firestore Listen Error:", error);
+                loadFallbackLocalStorage();
+            });
+        }
+
+        // Save State to Cloud Firestore
+        async function saveAppStateToCloud() {
+            if (db && isAuthReady) {
+                try {
+                    const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'hubData');
+                    await setDoc(docRef, appState, { merge: true });
+                } catch (err) {
+                    console.error("Error writing to cloud:", err);
+                    window.showToast("Lỗi lưu Cloud! Đã sao lưu bộ nhớ tạm.", "error");
+                }
+            }
+            // Always update local fallback
+            try {
+                localStorage.setItem('file_mod_lq_v6_cloud_fallback', JSON.stringify(appState));
+            } catch(e) {}
+        }
+
+        function loadFallbackLocalStorage() {
+            const saved = localStorage.getItem('file_mod_lq_v6_cloud_fallback');
+            if (saved) {
+                try {
+                    appState = JSON.parse(saved);
+                } catch(e) {}
+            }
+            window.renderApp();
+        }
+
+        // Expose functions globally for UI bindings
+        window.saveAppStateToCloud = saveAppStateToCloud;
+        window.getAppState = () => appState;
+        window.setAppState = (newState) => { appState = newState; };
+
+        // Start Clock & Firebase on Load
         window.addEventListener('DOMContentLoaded', () => {
             document.getElementById('year-display').textContent = new Date().getFullYear();
-            loadAppState();
             startRealtimeClock();
-            renderApp();
+            initFirebaseCloud();
         });
 
-        // Realtime Clock Functionality
         function startRealtimeClock() {
             function updateClock() {
                 const now = new Date();
@@ -636,37 +740,23 @@
             updateClock();
             setInterval(updateClock, 1000);
         }
+    </script>
 
-        // Load state from LocalStorage
-        function loadAppState() {
-            const saved = localStorage.getItem('file_mod_lq_v5_td_data');
-            if (saved) {
-                try {
-                    appState = JSON.parse(saved);
-                } catch(e) {
-                    appState = JSON.parse(JSON.stringify(defaultState));
-                }
-            } else {
-                appState = JSON.parse(JSON.stringify(defaultState));
-                saveAppState();
-            }
-        }
+    <!-- UI INTERACTION SCRIPT -->
+    <script>
+        let currentTab = 'ios';
+        let currentAdminTab = 'links';
 
-        function saveAppState() {
-            try {
-                localStorage.setItem('file_mod_lq_v5_td_data', JSON.stringify(appState));
-            } catch(err) {
-                showToast('Dung lượng lưu trữ quá giới hạn! Hãy bớt bớt dung lượng tệp ảnh.', 'error');
-            }
-        }
+        const defaultUserAvatar = "input_file_0.png";
+        const defaultLinkImgBase64 = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23182030'/><path d='M30 65 L50 35 L70 65 Z' fill='%2300f2fe'/></svg>";
 
-        // Helper File Upload to Base64
+        // File Upload Handler Base64 Converter
         function handleFileImageUpload(inputElement, hiddenInputId, previewImgId, labelId) {
             const file = inputElement.files[0];
             if (!file) return;
 
-            if (file.size > 3 * 1024 * 1024) { // 3MB Limit
-                showToast('Kích thước tệp quá lớn! Vui lòng chọn ảnh dưới 3MB', 'error');
+            if (file.size > 2 * 1024 * 1024) { // 2MB Limit
+                showToast('Kích thước tệp quá lớn! Chọn ảnh dưới 2MB.', 'error');
                 inputElement.value = '';
                 return;
             }
@@ -709,12 +799,6 @@
             }
         }
 
-        // Open Login Modal
-        function handleOpenAdminTrigger() {
-            openAccountAuthModal();
-        }
-
-        // Switch Main Platform Tabs: Mod iOS vs Mod Adr
         function switchTab(platform) {
             currentTab = platform;
 
@@ -732,33 +816,36 @@
             renderLinks();
         }
 
-        // Render Entire Client View Application
         function renderApp() {
+            const appState = window.getAppState ? window.getAppState() : {};
+            if (!appState.siteConfig) return;
+
             document.getElementById('site-title-display').textContent = appState.siteConfig.title;
             document.getElementById('header-web-title').textContent = appState.siteConfig.title;
             document.getElementById('footer-site-title').textContent = appState.siteConfig.title;
             document.getElementById('site-bio-display').textContent = appState.siteConfig.bio;
             
             const logoImg = document.getElementById('site-logo-img');
-            logoImg.src = appState.siteConfig.logo || defaultLogoBase64;
+            logoImg.src = appState.siteConfig.logo || defaultUserAvatar;
 
             // Render Social Links
             const socialBox = document.getElementById('social-links-container');
             let socialHtml = '';
+            if (appState.siteConfig.youtube) {
+                socialHtml += `<a href="${escapeHtml(appState.siteConfig.youtube)}" target="_blank" class="w-10 h-10 rounded-xl bg-rose-600/30 border border-rose-500/60 text-rose-500 flex items-center justify-center text-base hover:scale-110 hover:bg-rose-600 hover:text-white transition shadow-lg glow-box-pink" title="Kênh YouTube Trong Dung"><i class="fa-brands fa-youtube"></i></a>`;
+            }
             if (appState.siteConfig.zalo) {
-                socialHtml += `<a href="${escapeHtml(appState.siteConfig.zalo)}" target="_blank" class="w-8 h-8 rounded-xl bg-blue-600/30 border border-blue-500/50 text-blue-400 flex items-center justify-center text-xs hover:scale-110 transition" title="Zalo Box"><i class="fa-solid fa-comment-dots"></i></a>`;
+                socialHtml += `<a href="${escapeHtml(appState.siteConfig.zalo)}" target="_blank" class="w-10 h-10 rounded-xl bg-blue-600/30 border border-blue-500/50 text-blue-400 flex items-center justify-center text-base hover:scale-110 hover:bg-blue-600 hover:text-white transition shadow" title="Zalo Box"><i class="fa-solid fa-comment-dots"></i></a>`;
             }
             if (appState.siteConfig.telegram) {
-                socialHtml += `<a href="${escapeHtml(appState.siteConfig.telegram)}" target="_blank" class="w-8 h-8 rounded-xl bg-sky-500/30 border border-sky-400/50 text-sky-300 flex items-center justify-center text-xs hover:scale-110 transition" title="Telegram"><i class="fa-brands fa-telegram"></i></a>`;
-            }
-            if (appState.siteConfig.youtube) {
-                socialHtml += `<a href="${escapeHtml(appState.siteConfig.youtube)}" target="_blank" class="w-8 h-8 rounded-xl bg-rose-600/30 border border-rose-500/50 text-rose-400 flex items-center justify-center text-xs hover:scale-110 transition" title="YouTube"><i class="fa-brands fa-youtube"></i></a>`;
+                socialHtml += `<a href="${escapeHtml(appState.siteConfig.telegram)}" target="_blank" class="w-10 h-10 rounded-xl bg-sky-500/30 border border-sky-400/50 text-sky-300 flex items-center justify-center text-base hover:scale-110 hover:bg-sky-500 hover:text-white transition shadow" title="Telegram"><i class="fa-brands fa-telegram"></i></a>`;
             }
             socialBox.innerHTML = socialHtml;
 
-            // Update Counters
-            const iosCount = appState.links.filter(i => i.platform === 'ios').length;
-            const adrCount = appState.links.filter(i => i.platform === 'adr').length;
+            // Counters
+            const links = appState.links || [];
+            const iosCount = links.filter(i => i.platform === 'ios').length;
+            const adrCount = links.filter(i => i.platform === 'adr').length;
 
             document.getElementById('badge-ios-count').textContent = iosCount;
             document.getElementById('badge-adr-count').textContent = adrCount;
@@ -769,9 +856,13 @@
         function renderLinks() {
             const container = document.getElementById('links-display-container');
             const searchQuery = (document.getElementById('search-input').value || '').toLowerCase().trim();
+            const appState = window.getAppState ? window.getAppState() : {};
 
-            const activeCats = appState.categories.filter(c => c.platform === currentTab);
-            let activeLinks = appState.links.filter(l => l.platform === currentTab);
+            const categories = appState.categories || [];
+            const links = appState.links || [];
+
+            const activeCats = categories.filter(c => c.platform === currentTab);
+            let activeLinks = links.filter(l => l.platform === currentTab);
 
             if (searchQuery) {
                 activeLinks = activeLinks.filter(l => l.title.toLowerCase().includes(searchQuery));
@@ -782,7 +873,7 @@
                     <div class="bg-cyber-card/60 border border-slate-800 rounded-2xl p-8 text-center my-6">
                         <i class="fa-solid fa-folder-open text-4xl text-slate-600 mb-2"></i>
                         <p class="text-slate-400 text-sm">Chưa có mục hoặc link mod nào ở khu vực này!</p>
-                        <p class="text-slate-600 text-xs mt-1">Đăng nhập Admin để bắt đầu thêm mục & link mới.</p>
+                        <p class="text-slate-600 text-xs mt-1">Đăng nhập Admin để tải link lên Cloud.</p>
                     </div>
                 `;
                 return;
@@ -801,14 +892,12 @@
 
                 html += `
                     <div class="mb-5">
-                        <!-- Category Header -->
                         <div class="flex items-center space-x-2 mb-2.5 px-1">
                             ${iconMarkup}
                             <h3 class="font-rajdhani font-extrabold text-sm sm:text-base text-slate-200 uppercase tracking-wider">${escapeHtml(cat.name)}</h3>
                             <span class="text-[10px] text-slate-400 bg-slate-800/80 px-2 py-0.5 rounded-full font-mono">${catLinks.length}</span>
                         </div>
 
-                        <!-- Links -->
                         ${catLinks.length > 0 ? `
                             <div class="space-y-2.5">
                                 ${catLinks.map(link => createLinkItemTemplate(link)).join('')}
@@ -820,7 +909,7 @@
                 `;
             });
 
-            // Display uncategorized links if any
+            // Display uncategorized links
             const uncategorizedLinks = activeLinks.filter(l => !activeCats.some(c => c.id === l.categoryId));
             if (uncategorizedLinks.length > 0) {
                 html += `
@@ -839,7 +928,6 @@
             container.innerHTML = html;
         }
 
-        // Link Item HTML Generator
         function createLinkItemTemplate(link) {
             const imgSrc = link.image && link.image.trim() !== '' ? link.image : defaultLinkImgBase64;
             const accentGlow = currentTab === 'ios' ? 'hover:border-cyber-cyan/60' : 'hover:border-emerald-400/60';
@@ -858,10 +946,8 @@
 
             return `
                 <div class="group bg-cyber-card hover:bg-cyber-cardHover border border-slate-800/80 ${accentGlow} p-3 rounded-2xl transition duration-300 flex items-center gap-3 shadow-md">
-                    <!-- Base64 Image Thumbnail -->
                     <img src="${escapeHtml(imgSrc)}" alt="Thumb" class="w-12 h-12 sm:w-13 sm:h-13 rounded-xl object-cover border border-slate-700/80 flex-shrink-0 group-hover:scale-105 transition duration-300">
 
-                    <!-- Title & Info -->
                     <div class="flex-1 min-w-0">
                         <div class="flex items-center gap-1.5 mb-0.5">
                             ${tagBadge}
@@ -874,7 +960,6 @@
                         </h4>
                     </div>
 
-                    <!-- Action Button -->
                     <a href="${escapeHtml(link.url)}" onclick="incrementView('${link.id}')" target="_blank" rel="noopener noreferrer" class="${btnGradient} px-3.5 py-2 rounded-xl text-xs sm:text-sm font-rajdhani font-bold flex items-center gap-1.5 flex-shrink-0 shadow transition active:scale-95">
                         <span>VƯỢT LINK</span>
                         <i class="fa-solid fa-angles-right text-xs"></i>
@@ -884,14 +969,18 @@
         }
 
         function incrementView(id) {
-            const link = appState.links.find(l => l.id === id);
+            const appState = window.getAppState ? window.getAppState() : {};
+            const link = (appState.links || []).find(l => l.id === id);
             if (link) {
                 link.views = (link.views || 0) + 1;
-                saveAppState();
+                if (window.saveAppStateToCloud) window.saveAppStateToCloud();
             }
         }
 
-        // ================= AUTHENTICATION LOGIC =================
+        // Authentication Modal Logic
+        function handleOpenAdminTrigger() {
+            openAccountAuthModal();
+        }
 
         function openAccountAuthModal() {
             const modal = document.getElementById('account-auth-modal');
@@ -921,6 +1010,7 @@
             e.preventDefault();
             const user = document.getElementById('input-admin-user').value.trim();
             const pass = document.getElementById('input-admin-pass').value.trim();
+            const appState = window.getAppState ? window.getAppState() : {};
 
             const targetUser = appState.adminAccount?.username || 'admin';
             const targetPass = appState.adminAccount?.password || '2812';
@@ -993,8 +1083,9 @@
         function updateCategorySelectOptions() {
             const platform = document.getElementById('form-link-platform').value;
             const select = document.getElementById('form-link-category');
+            const appState = window.getAppState ? window.getAppState() : {};
             
-            const filteredCats = appState.categories.filter(c => c.platform === platform);
+            const filteredCats = (appState.categories || []).filter(c => c.platform === platform);
             
             if (filteredCats.length === 0) {
                 select.innerHTML = `<option value="">⚠️ Chưa có mục nào (Hãy sang Tab "Quản Lý Mục" tạo trước)</option>`;
@@ -1005,9 +1096,10 @@
             }
         }
 
-        // SAVE & MANAGE CATEGORY
+        // Category Save & Sync
         function handleSaveCategory(e) {
             e.preventDefault();
+            const appState = window.getAppState ? window.getAppState() : {};
             const catId = document.getElementById('form-cat-id').value;
             const platform = document.getElementById('form-cat-platform').value;
             const name = document.getElementById('form-cat-name').value.trim();
@@ -1020,7 +1112,7 @@
                 const index = appState.categories.findIndex(c => c.id === catId);
                 if (index !== -1) {
                     appState.categories[index] = { ...appState.categories[index], platform, name, icon: iconFont, iconImg };
-                    showToast('Đã cập nhật mục!');
+                    showToast('Đã cập nhật mục lên Cloud!');
                 }
             } else {
                 const newCat = {
@@ -1034,7 +1126,7 @@
                 showToast('Tạo mục mới thành công!');
             }
 
-            saveAppState();
+            if (window.saveAppStateToCloud) window.saveAppStateToCloud();
             resetCatForm();
             updateCategorySelectOptions();
             renderAdminCatsList();
@@ -1042,7 +1134,8 @@
         }
 
         function editCategory(id) {
-            const cat = appState.categories.find(c => c.id === id);
+            const appState = window.getAppState ? window.getAppState() : {};
+            const cat = (appState.categories || []).find(c => c.id === id);
             if (!cat) return;
 
             document.getElementById('form-cat-id').value = cat.id;
@@ -1072,30 +1165,34 @@
             document.getElementById('form-cat-id').value = '';
             document.getElementById('form-cat-icon-base64').value = '';
             clearUploadedImage('form-cat-icon-base64', 'cat-img-preview', 'cat-img-placeholder', 'cat-file-label');
-            document.getElementById('cat-form-title').innerHTML = `<i class="fa-solid fa-folder-plus"></i> THÊM MỤC MỚI (TẠO KHU)`;
-            document.getElementById('form-cat-submit-btn').innerHTML = `<i class="fa-solid fa-folder-plus"></i> TẠO MỤC MỚI`;
+            document.getElementById('cat-form-title').innerHTML = `<i class="fa-solid fa-folder-plus"></i> THÊM MỤC MỚI (CLOUD)`;
+            document.getElementById('form-cat-submit-btn').innerHTML = `<i class="fa-solid fa-folder-plus"></i> LƯU MỤC LÊN CLOUD`;
             document.getElementById('cat-cancel-edit-btn').classList.add('hidden');
         }
 
         function deleteCategory(id) {
-            if (confirm('Xóa mục này? Các link thuộc mục này sẽ chuyển thành chưa phân mục.')) {
-                appState.categories = appState.categories.filter(c => c.id !== id);
-                saveAppState();
+            if (confirm('Xóa mục này trên Cloud?')) {
+                const appState = window.getAppState ? window.getAppState() : {};
+                appState.categories = (appState.categories || []).filter(c => c.id !== id);
+                if (window.saveAppStateToCloud) window.saveAppStateToCloud();
                 updateCategorySelectOptions();
                 renderAdminCatsList();
                 renderApp();
-                showToast('Đã xóa mục!', 'error');
+                showToast('Đã xóa mục khỏi Cloud!', 'error');
             }
         }
 
         function renderAdminCatsList() {
             const container = document.getElementById('adm-cats-list');
-            if (appState.categories.length === 0) {
-                container.innerHTML = `<p class="text-xs text-slate-500 text-center py-3">Chưa có mục nào!</p>`;
+            const appState = window.getAppState ? window.getAppState() : {};
+            const categories = appState.categories || [];
+
+            if (categories.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-500 text-center py-3">Chưa có mục nào trên Cloud!</p>`;
                 return;
             }
 
-            container.innerHTML = appState.categories.map(cat => `
+            container.innerHTML = categories.map(cat => `
                 <div class="bg-slate-800/80 border border-slate-700/70 p-2.5 rounded-xl flex items-center justify-between gap-2 text-xs">
                     <div class="flex items-center gap-2 min-w-0 flex-1">
                         <span class="px-2 py-0.5 rounded font-bold text-[10px] uppercase ${cat.platform === 'ios' ? 'bg-cyan-950 text-cyber-cyan border border-cyber-cyan/40' : 'bg-emerald-950 text-emerald-400 border border-emerald-800/50'}">
@@ -1116,9 +1213,10 @@
             `).join('');
         }
 
-        // SAVE & MANAGE LINKS
+        // Link Save & Realtime Sync
         function handleSaveLink(e) {
             e.preventDefault();
+            const appState = window.getAppState ? window.getAppState() : {};
             const linkId = document.getElementById('form-link-id').value;
             const platform = document.getElementById('form-link-platform').value;
             const categoryId = document.getElementById('form-link-category').value;
@@ -1141,7 +1239,7 @@
                         url, 
                         image: imageBase64 || appState.links[index].image 
                     };
-                    showToast('Đã cập nhật link mod!');
+                    showToast('Đã cập nhật link mod lên Cloud!');
                 }
             } else {
                 const newLink = {
@@ -1155,17 +1253,18 @@
                     views: 0
                 };
                 appState.links.unshift(newLink);
-                showToast('Đã gắn link mod vào mục thành công!');
+                showToast('Đăng link thành công! Tất cả thiết bị sẽ thấy ngay.');
             }
 
-            saveAppState();
+            if (window.saveAppStateToCloud) window.saveAppStateToCloud();
             resetLinkForm();
             renderAdminLinksList();
             renderApp();
         }
 
         function editLink(id) {
-            const link = appState.links.find(l => l.id === id);
+            const appState = window.getAppState ? window.getAppState() : {};
+            const link = (appState.links || []).find(l => l.id === id);
             if (!link) return;
 
             document.getElementById('form-link-id').value = link.id;
@@ -1189,7 +1288,7 @@
             }
 
             document.getElementById('link-form-title').innerHTML = `<i class="fa-solid fa-pen-to-square"></i> CHỈNH SỬA LINK MOD`;
-            document.getElementById('form-link-submit-btn').innerHTML = `<i class="fa-solid fa-check"></i> CẬP NHẬT LINK`;
+            document.getElementById('form-link-submit-btn').innerHTML = `<i class="fa-solid fa-check"></i> CẬP NHẬT LINK LÊN CLOUD`;
             document.getElementById('link-cancel-edit-btn').classList.remove('hidden');
         }
 
@@ -1199,30 +1298,34 @@
             document.getElementById('form-link-platform').value = currentTab;
             updateCategorySelectOptions();
             clearUploadedImage('form-link-image-base64', 'link-img-preview', 'link-img-placeholder', 'link-file-label');
-            document.getElementById('link-form-title').innerHTML = `<i class="fa-solid fa-plus-circle"></i> THÊM LINK MOD MỚI`;
-            document.getElementById('form-link-submit-btn').innerHTML = `<i class="fa-solid fa-floppy-disk"></i> LƯU LINK MOD VÀO MỤC`;
+            document.getElementById('link-form-title').innerHTML = `<i class="fa-solid fa-plus-circle"></i> THÊM LINK MOD MỚI (CLOUD)`;
+            document.getElementById('form-link-submit-btn').innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> ĐĂNG LINK LÊN CLOUD REALTIME`;
             document.getElementById('link-cancel-edit-btn').classList.add('hidden');
         }
 
         function deleteLink(id) {
-            if (confirm('Xóa link này?')) {
-                appState.links = appState.links.filter(l => l.id !== id);
-                saveAppState();
+            if (confirm('Xóa link này trên Cloud?')) {
+                const appState = window.getAppState ? window.getAppState() : {};
+                appState.links = (appState.links || []).filter(l => l.id !== id);
+                if (window.saveAppStateToCloud) window.saveAppStateToCloud();
                 renderAdminLinksList();
                 renderApp();
-                showToast('Đã xóa link!', 'error');
+                showToast('Đã xóa link khỏi Cloud!', 'error');
             }
         }
 
         function renderAdminLinksList() {
             const container = document.getElementById('adm-links-list');
-            if (appState.links.length === 0) {
-                container.innerHTML = `<p class="text-xs text-slate-500 text-center py-3">Chưa có link nào!</p>`;
+            const appState = window.getAppState ? window.getAppState() : {};
+            const links = appState.links || [];
+
+            if (links.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-500 text-center py-3">Chưa có link nào trên Cloud!</p>`;
                 return;
             }
 
-            container.innerHTML = appState.links.map(link => {
-                const cat = appState.categories.find(c => c.id === link.categoryId);
+            container.innerHTML = links.map(link => {
+                const cat = (appState.categories || []).find(c => c.id === link.categoryId);
                 return `
                     <div class="bg-slate-800/80 border border-slate-700/70 p-2.5 rounded-xl flex items-center justify-between gap-2 text-xs">
                         <div class="flex items-center gap-2 min-w-0 flex-1">
@@ -1247,25 +1350,29 @@
             }).join('');
         }
 
-        // SETTINGS & SITE LOGO CONFIG
+        // Change Admin Account
         function handleChangeAdminAccount(e) {
             e.preventDefault();
             const newUser = document.getElementById('input-new-user').value.trim();
             const newPass = document.getElementById('input-new-pass').value.trim();
+            const appState = window.getAppState ? window.getAppState() : {};
 
             if (newUser && newPass) {
                 appState.adminAccount = { username: newUser, password: newPass };
-                saveAppState();
+                if (window.saveAppStateToCloud) window.saveAppStateToCloud();
                 document.getElementById('input-new-user').value = '';
                 document.getElementById('input-new-pass').value = '';
-                showToast('Đã đổi Tài Khoản & Mật Khẩu Admin thành công!');
+                showToast('Đã cập nhật Tài khoản & Mật khẩu Admin lên Cloud!');
             }
         }
 
         function fillSiteConfigForm() {
+            const appState = window.getAppState ? window.getAppState() : {};
+            if (!appState.siteConfig) return;
+
             document.getElementById('form-cfg-title').value = appState.siteConfig.title || '';
             document.getElementById('form-cfg-logo-base64').value = appState.siteConfig.logo || '';
-            document.getElementById('logo-img-preview').src = appState.siteConfig.logo || defaultLogoBase64;
+            document.getElementById('logo-img-preview').src = appState.siteConfig.logo || defaultUserAvatar;
             document.getElementById('form-cfg-bio').value = appState.siteConfig.bio || '';
             document.getElementById('form-cfg-zalo').value = appState.siteConfig.zalo || '';
             document.getElementById('form-cfg-tele').value = appState.siteConfig.telegram || '';
@@ -1274,6 +1381,8 @@
 
         function handleSaveSiteConfig(e) {
             e.preventDefault();
+            const appState = window.getAppState ? window.getAppState() : {};
+
             appState.siteConfig.title = document.getElementById('form-cfg-title').value.trim();
             
             const uploadedLogo = document.getElementById('form-cfg-logo-base64').value;
@@ -1283,22 +1392,12 @@
 
             appState.siteConfig.bio = document.getElementById('form-cfg-bio').value.trim();
             appState.siteConfig.zalo = document.getElementById('form-cfg-zalo').value.trim();
-            appState.siteConfig.telegram = document.getElementById('form-cfg-tele').value.trim();
+            appState.siteConfig.telegram = document.getElementById('form-cfg-telegram')?.value?.trim() || '';
             appState.siteConfig.youtube = document.getElementById('form-cfg-youtube').value.trim();
 
-            saveAppState();
+            if (window.saveAppStateToCloud) window.saveAppStateToCloud();
             renderApp();
-            showToast('Đã lưu cấu hình thông tin web!');
-        }
-
-        function handleRestoreDefaultData() {
-            if (confirm('Khôi phục toàn bộ dữ liệu mẫu ban đầu?')) {
-                appState = JSON.parse(JSON.stringify(defaultState));
-                saveAppState();
-                renderApp();
-                closeAdminPanelModal();
-                showToast('Đã khôi phục dữ liệu ban đầu!');
-            }
+            showToast('Đã cập nhật thông tin trang lên Cloud!');
         }
 
         // Toast Helper
@@ -1324,7 +1423,6 @@
             }, 2500);
         }
 
-        // HTML Escape Function
         function escapeHtml(str) {
             if (!str) return '';
             return str
@@ -1334,6 +1432,33 @@
                 .replace(/"/g, "&quot;")
                 .replace(/'/g, "&#039;");
         }
+
+        // Global functions for window inline triggers
+        window.handleOpenAdminTrigger = handleOpenAdminTrigger;
+        window.closeAccountAuthModal = closeAccountAuthModal;
+        window.handleVerifyLogin = handleVerifyLogin;
+        window.closeAdminPanelModal = closeAdminPanelModal;
+        window.switchAdminTab = switchAdminTab;
+        window.handleFileImageUpload = handleFileImageUpload;
+        window.clearUploadedImage = clearUploadedImage;
+        window.updateCategorySelectOptions = updateCategorySelectOptions;
+        window.handleSaveCategory = handleSaveCategory;
+        window.editCategory = editCategory;
+        window.resetCatForm = resetCatForm;
+        window.deleteCategory = deleteCategory;
+        window.handleSaveLink = handleSaveLink;
+        window.editLink = editLink;
+        window.resetLinkForm = resetLinkForm;
+        window.deleteLink = deleteLink;
+        window.handleChangeAdminAccount = handleChangeAdminAccount;
+        window.handleSaveSiteConfig = handleSaveSiteConfig;
+        window.renderApp = renderApp;
+        window.renderAdminLinksList = renderAdminLinksList;
+        window.renderAdminCatsList = renderAdminCatsList;
+        window.switchTab = switchTab;
+        window.renderLinks = renderLinks;
+        window.incrementView = incrementView;
+        window.showToast = showToast;
     </script>
 </body>
 </html>
