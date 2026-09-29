@@ -36,8 +36,15 @@
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium mb-1 text-slate-300">📂 Đường dẫn file hoặc thư mục:</label>
-                    <input type="text" id="pathInput" placeholder="Ví dụ: /sdcard/Download/config.bytes" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none font-mono">
+                    <label class="block text-sm font-medium mb-1 text-slate-300">📂 Chọn tệp cần xử lý:</label>
+                    <!-- Input file ẩn, thay bằng nút bấm đẹp mắt -->
+                    <div class="flex items-center space-x-2">
+                        <label class="flex-1 bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-400 truncate cursor-pointer hover:border-emerald-500 transition-all flex items-center justify-between">
+                            <span id="fileLabel">Chưa chọn tệp nào...</span>
+                            <span class="bg-slate-800 text-emerald-400 px-3 py-1 rounded text-xs font-semibold border border-slate-700">📁 Thêm tệp</span>
+                            <input type="file" id="fileInput" class="hidden" multiple onchange="handleFileSelect(this)">
+                        </label>
+                    </div>
                 </div>
 
                 <button onclick="runTool()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold py-2.5 rounded-lg transition-all shadow-lg flex items-center justify-center space-x-2">
@@ -63,25 +70,49 @@
 
     <!-- Script xử lý tương tác giả lập -->
     <script>
+        let selectedFiles = [];
+
+        function handleFileSelect(input) {
+            const fileLabel = document.getElementById('fileLabel');
+            if (input.files.length > 0) {
+                selectedFiles = Array.from(input.files);
+                if (selectedFiles.length === 1) {
+                    fileLabel.textContent = selectedFiles[0].name;
+                    fileLabel.classList.remove('text-slate-400');
+                    fileLabel.classList.add('text-slate-100');
+                } else {
+                    fileLabel.textContent = `Đã chọn ${selectedFiles.length} tệp`;
+                    fileLabel.classList.remove('text-slate-400');
+                    fileLabel.classList.add('text-slate-100');
+                }
+            } else {
+                fileLabel.textContent = 'Chưa chọn tệp nào...';
+                fileLabel.classList.add('text-slate-400');
+                fileLabel.classList.remove('text-slate-100');
+            }
+        }
+
         function runTool() {
             const mode = document.getElementById('modeSelect').value;
-            const path = document.getElementById('pathInput').value.trim();
             const consoleLog = document.getElementById('consoleLog');
 
-            if (!path) {
-                alert('Vui lòng nhập đường dẫn file hoặc thư mục!');
+            if (selectedFiles.length === 0) {
+                alert('Vui lòng bấm "Thêm tệp" để chọn tệp trước khi thực thi!');
                 return;
             }
 
             const actionName = mode === 'd' ? 'Giải nén' : 'Nén';
             
-            // In log bắt đầu
-            consoleLog.innerHTML += `<div>[KTOOL] Đang xử lý đường dẫn: ${path} (Chế độ: ${actionName})</div>`;
+            selectedFiles.forEach(file => {
+                consoleLog.innerHTML += `<div>[KTOOL] Đang xử lý file: ${file.name} (Chế độ: ${actionName})</div>`;
+            });
+            consoleLog.scrollTop = consoleLog.scrollHeight;
             
             // Giả lập quá trình chạy sau 1 giây
             setTimeout(() => {
-                consoleLog.innerHTML += `<div>[KTOOL] Đang xử lý file...</div>`;
-                consoleLog.innerHTML += `<div class="text-green-400">[KTOOL] ✅ Đã xử lý thành công: ${path}</div>`;
+                selectedFiles.forEach(file => {
+                    consoleLog.innerHTML += `<div class="text-green-400">[KTOOL] ✅ Đã xử lý thành công: ${file.name}</div>`;
+                });
                 consoleLog.scrollTop = consoleLog.scrollHeight;
             }, 800);
         }
