@@ -9,25 +9,26 @@
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Orbitron:wght@600;800;900&display=swap" rel="stylesheet">
     
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        cyber: {
-                            bg: '#080a12',
-                            card: '#12172a',
-                            border: '#232b45',
-                            accent: '#00f0ff',
-                            pink: '#ff007f',
-                            purple: '#7928ca'
+                        brand: {
+                            dark: '#080a0f',
+                            card: '#111522',
+                            border: '#1e2638',
+                            cyan: '#00f2fe',
+                            blue: '#4facfe',
+                            pink: '#f857a6',
+                            purple: '#ff5858'
                         }
                     },
                     fontFamily: {
                         orbitron: ['Orbitron', 'sans-serif'],
-                        rajdhani: ['Rajdhani', 'sans-serif']
+                        jakarta: ['Plus Jakarta Sans', 'sans-serif']
                     }
                 }
             }
@@ -35,148 +36,116 @@
     </script>
     <style>
         body {
-            background-color: #060810;
+            background-color: #07090e;
             color: #f1f5f9;
-            font-family: 'Rajdhani', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             background-image: 
-                radial-gradient(circle at 50% 0%, rgba(0, 240, 255, 0.18), transparent 60%),
-                radial-gradient(circle at 100% 80%, rgba(255, 0, 127, 0.12), transparent 50%),
-                radial-gradient(circle at 0% 50%, rgba(121, 40, 202, 0.15), transparent 50%);
+                radial-gradient(ellipse at 50% -10%, rgba(0, 242, 254, 0.15), transparent 50%),
+                radial-gradient(ellipse at 80% 100%, rgba(248, 87, 166, 0.08), transparent 50%);
             background-attachment: fixed;
         }
 
-        .neon-glow-text {
+        .neon-title {
             font-family: 'Orbitron', sans-serif;
-            background: linear-gradient(135deg, #00f0ff 0%, #7928ca 50%, #ff007f 100%);
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 50%, #f857a6 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 15px rgba(0, 240, 255, 0.6));
-            animation: pulseGlow 3s infinite alternate;
+            text-shadow: 0 0 20px rgba(0, 242, 254, 0.3);
         }
 
-        @keyframes pulseGlow {
-            0% { filter: drop-shadow(0 0 10px rgba(0, 240, 255, 0.5)); }
-            100% { filter: drop-shadow(0 0 25px rgba(255, 0, 127, 0.8)); }
-        }
-
-        .cyber-card {
-            background: rgba(18, 23, 42, 0.85);
+        .glass-box {
+            background: rgba(17, 21, 34, 0.75);
             backdrop-filter: blur(16px);
-            border: 1px solid rgba(35, 43, 69, 0.9);
-            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        .cyber-btn-blue {
-            background: linear-gradient(135deg, #00f0ff 0%, #0072ff 100%);
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+        .btn-gradient-ios {
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+            box-shadow: 0 4px 15px rgba(0, 242, 254, 0.25);
             transition: all 0.25s ease;
         }
-        .cyber-btn-blue:hover {
-            box-shadow: 0 0 25px rgba(0, 240, 255, 0.8);
+        .btn-gradient-ios:hover {
+            box-shadow: 0 6px 20px rgba(0, 242, 254, 0.45);
             transform: translateY(-2px);
         }
 
-        .cyber-btn-pink {
-            background: linear-gradient(135deg, #ff007f 0%, #7928ca 100%);
-            box-shadow: 0 0 15px rgba(255, 0, 127, 0.4);
+        .btn-gradient-adr {
+            background: linear-gradient(135deg, #f857a6 0%, #ff5858 100%);
+            box-shadow: 0 4px 15px rgba(248, 87, 166, 0.25);
             transition: all 0.25s ease;
         }
+        .btn-gradient-adr:hover {
+            box-shadow: 0 6px 20px rgba(248, 87, 166, 0.45);
+            transform: translateY(-2px);
+        }
 
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #060810; }
-        ::-webkit-scrollbar-thumb { background: #232b45; border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: #00f0ff; }
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: #07090e; }
+        ::-webkit-scrollbar-thumb { background: #1e2638; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00f2fe; }
     </style>
 </head>
-<body class="min-h-screen pb-12 flex flex-col items-center justify-between">
+<body class="min-h-screen pb-12 flex flex-col justify-between items-center">
 
     <div class="w-full">
         <!-- HEADER SECTION -->
-        <header class="pt-8 pb-4 px-4 text-center relative max-w-xl mx-auto">
-            <!-- Live Clock Badge -->
-            <div class="inline-flex items-center gap-2 bg-cyber-card border border-cyber-border px-4 py-1.5 rounded-full mb-4 shadow-xl">
-                <i class="fa-regular fa-clock text-cyber-accent animate-spin" style="animation-duration: 8s;"></i>
-                <span id="liveClock" class="font-orbitron text-xs font-bold tracking-widest text-cyan-300">00:00:00 - 01/01/2026</span>
+        <header class="pt-8 pb-4 px-4 text-center max-w-lg mx-auto">
+            <!-- Clock -->
+            <div class="inline-flex items-center gap-2 bg-brand-card/90 border border-brand-border px-3.5 py-1.5 rounded-full mb-4 shadow-lg">
+                <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+                <span id="liveClock" class="font-orbitron text-[11px] font-bold tracking-wider text-cyan-300">00:00:00 - 01/01/2026</span>
             </div>
 
-            <!-- Main Neon Name Title -->
-            <div class="mb-2">
-                <h1 class="neon-glow-text text-4xl sm:text-5xl font-black tracking-wider uppercase">TRONG DUNG</h1>
-            </div>
+            <!-- Name Title -->
+            <h1 class="neon-title text-3xl sm:text-4xl font-black tracking-wider uppercase mb-1">TRONG DUNG</h1>
+            
+            <p class="text-xs font-bold text-gray-400 tracking-widest uppercase mb-5">FILE MOD LIÊN QUÂN VIP</p>
 
-            <!-- Subtitle -->
-            <div class="text-center mb-6">
-                <h2 class="font-orbitron text-xl sm:text-2xl font-black tracking-wide text-white inline-flex items-center gap-2">
-                    FILE MOD LQ
-                    <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/40">VIP PASS</span>
-                </h2>
-                <p class="text-xs text-gray-400 font-bold tracking-widest uppercase mt-1">TRANG CHÍNH THỨC • FILE MOD TỐI ƯU</p>
-            </div>
-
-            <!-- Social Links Panel -->
-            <div class="grid grid-cols-3 gap-3 max-w-md mx-auto mb-2">
+            <!-- Social Links Panel (Fixed overflow issues) -->
+            <div class="flex flex-wrap items-center justify-center gap-2.5 max-w-md mx-auto">
                 <!-- Youtube -->
-                <a href="https://youtube.com/@trdunxx?si=tGWPnDMwmzyX1BaU" target="_blank" class="cyber-card p-2.5 rounded-xl border border-red-500/30 hover:border-red-500 text-red-400 hover:text-white hover:bg-red-600/20 flex items-center justify-center gap-2 transition-all shadow-lg group">
-                    <i class="fa-brands fa-youtube text-lg group-hover:scale-110 transition-transform"></i>
-                    <span class="font-orbitron text-xs font-bold">YOUTUBE</span>
+                <a href="https://youtube.com/@trdunxx?si=tGWPnDMwmzyX1BaU" target="_blank" class="flex-1 min-w-[110px] glass-box px-3 py-2 rounded-xl border border-red-500/20 hover:border-red-500/50 text-red-400 hover:text-white hover:bg-red-500/10 flex items-center justify-center gap-2 transition-all">
+                    <i class="fa-brands fa-youtube text-base"></i>
+                    <span class="font-orbitron text-[11px] font-bold">YOUTUBE</span>
                 </a>
                 <!-- Telegram -->
-                <a href="https://t.me/TrongDung05" target="_blank" class="cyber-card p-2.5 rounded-xl border border-sky-400/30 hover:border-sky-400 text-sky-400 hover:text-white hover:bg-sky-500/20 flex items-center justify-center gap-2 transition-all shadow-lg group">
-                    <i class="fa-brands fa-telegram text-lg group-hover:scale-110 transition-transform"></i>
-                    <span class="font-orbitron text-xs font-bold">TELEGRAM</span>
+                <a href="https://t.me/TrongDung05" target="_blank" class="flex-1 min-w-[110px] glass-box px-3 py-2 rounded-xl border border-sky-400/20 hover:border-sky-400/50 text-sky-400 hover:text-white hover:bg-sky-500/10 flex items-center justify-center gap-2 transition-all">
+                    <i class="fa-brands fa-telegram text-base"></i>
+                    <span class="font-orbitron text-[11px] font-bold">TELEGRAM</span>
                 </a>
                 <!-- Zalo -->
-                <a href="https://zalo.me/0836376886" target="_blank" class="cyber-card p-2.5 rounded-xl border border-blue-500/30 hover:border-blue-500 text-blue-400 hover:text-white hover:bg-blue-600/20 flex items-center justify-center gap-2 transition-all shadow-lg group">
-                    <i class="fa-solid fa-comment-dots text-lg group-hover:scale-110 transition-transform"></i>
-                    <span class="font-orbitron text-xs font-bold">ZALO</span>
+                <a href="https://zalo.me/0836376886" target="_blank" class="flex-1 min-w-[100px] glass-box px-3 py-2 rounded-xl border border-blue-500/20 hover:border-blue-500/50 text-blue-400 hover:text-white hover:bg-blue-600/10 flex items-center justify-center gap-2 transition-all">
+                    <i class="fa-solid fa-comment-dots text-base"></i>
+                    <span class="font-orbitron text-[11px] font-bold">ZALO</span>
                 </a>
             </div>
         </header>
 
         <!-- MAIN CONTENT -->
-        <main class="max-w-xl mx-auto px-4 mt-2">
-
-            <!-- Stats Bar -->
-            <div class="grid grid-cols-3 gap-2 mb-6 cyber-card p-3 rounded-xl border border-cyber-border text-center">
-                <div>
-                    <div class="text-[10px] text-gray-400 uppercase font-semibold">Trạng Thái</div>
-                    <div class="text-xs font-bold text-emerald-400 flex items-center justify-center gap-1 mt-0.5">
-                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> Hoạt Động
-                    </div>
-                </div>
-                <div class="border-x border-cyber-border">
-                    <div class="text-[10px] text-gray-400 uppercase font-semibold">Bảo Mật</div>
-                    <div class="text-xs font-bold text-cyan-300 mt-0.5"><i class="fa-solid fa-shield-halved mr-1"></i>An Toàn</div>
-                </div>
-                <div>
-                    <div class="text-[10px] text-gray-400 uppercase font-semibold">Cập Nhật</div>
-                    <div class="text-xs font-bold text-purple-400 mt-0.5">Mới Nhất</div>
-                </div>
-            </div>
+        <main class="max-w-lg mx-auto px-4 mt-2">
 
             <!-- OS Switcher Tabs -->
-            <div class="grid grid-cols-2 gap-3 mb-6 p-1.5 cyber-card rounded-2xl">
-                <button id="tabIosBtn" onclick="switchPlatform('ios')" class="py-3 rounded-xl font-orbitron font-bold text-sm tracking-wider flex items-center justify-center gap-2 transition-all bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/25">
-                    <i class="fa-brands fa-apple text-lg"></i>
+            <div class="grid grid-cols-2 gap-2.5 mb-5 p-1.5 glass-box rounded-2xl">
+                <button id="tabIosBtn" onclick="switchPlatform('ios')" class="py-3 rounded-xl font-orbitron font-bold text-xs sm:text-sm tracking-wider flex items-center justify-center gap-2 transition-all bg-gradient-to-r from-cyan-400 to-blue-500 text-white shadow-lg shadow-cyan-500/20">
+                    <i class="fa-brands fa-apple text-base"></i>
                     MOD IOS
                 </button>
-                <button id="tabAdrBtn" onclick="switchPlatform('adr')" class="py-3 rounded-xl font-orbitron font-bold text-sm tracking-wider flex items-center justify-center gap-2 transition-all text-gray-400 hover:text-white">
-                    <i class="fa-brands fa-android text-lg"></i>
+                <button id="tabAdrBtn" onclick="switchPlatform('adr')" class="py-3 rounded-xl font-orbitron font-bold text-xs sm:text-sm tracking-wider flex items-center justify-center gap-2 transition-all text-gray-400 hover:text-white">
+                    <i class="fa-brands fa-android text-base"></i>
                     MOD ADR
                 </button>
             </div>
 
-            <!-- Dynamic File List Container -->
+            <!-- Dynamic File Container -->
             <div id="contentContainer" class="space-y-4">
-                <!-- Items render dynamically via JS -->
+                <!-- Content generated via JS -->
             </div>
 
-            <!-- Notice Box -->
-            <div class="mt-8 cyber-card p-4 rounded-xl border border-cyan-500/20 text-center relative overflow-hidden">
-                <div class="absolute -right-4 -bottom-4 w-16 h-16 bg-cyan-500/10 rounded-full blur-xl"></div>
-                <p class="text-xs text-gray-300 font-medium">
-                    <i class="fa-solid fa-circle-info text-cyan-400 mr-1.5"></i>
-                    Nếu có sự cố vượt link hoặc cần hỗ trợ cài đặt, vui lòng liên hệ qua Telegram hoặc Zalo ở trên.
+            <!-- Info Box -->
+            <div class="mt-6 glass-box p-3.5 rounded-xl border border-brand-border text-center">
+                <p class="text-xs text-gray-400 font-medium">
+                    <i class="fa-solid fa-shield-halved text-cyan-400 mr-1"></i>
+                    Tất cả File Mod đã được kiểm duyệt an toàn 100%. Liên hệ Zalo/Tele nếu cần giúp đỡ.
                 </p>
             </div>
 
@@ -184,7 +153,7 @@
     </div>
 
     <!-- FOOTER -->
-    <footer class="mt-12 text-center text-xs text-gray-500 font-medium">
+    <footer class="mt-10 text-center text-[11px] text-gray-500 font-medium">
         <p>© 2026 FILE MOD LQ • Developed by <span class="text-cyan-400 font-bold">TRONG DUNG</span></p>
     </footer>
 
@@ -238,12 +207,12 @@
             const isIos = plat === 'ios';
             
             document.getElementById('tabIosBtn').className = isIos 
-                ? 'py-3 rounded-xl font-orbitron font-bold text-sm tracking-wider flex items-center justify-center gap-2 transition-all bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/25'
-                : 'py-3 rounded-xl font-orbitron font-bold text-sm tracking-wider flex items-center justify-center gap-2 transition-all text-gray-400 hover:text-white';
+                ? 'py-3 rounded-xl font-orbitron font-bold text-xs sm:text-sm tracking-wider flex items-center justify-center gap-2 transition-all bg-gradient-to-r from-cyan-400 to-blue-500 text-white shadow-lg shadow-cyan-500/20'
+                : 'py-3 rounded-xl font-orbitron font-bold text-xs sm:text-sm tracking-wider flex items-center justify-center gap-2 transition-all text-gray-400 hover:text-white';
 
             document.getElementById('tabAdrBtn').className = !isIos 
-                ? 'py-3 rounded-xl font-orbitron font-bold text-sm tracking-wider flex items-center justify-center gap-2 transition-all bg-gradient-to-r from-pink-500 to-purple-600 text-white shadow-lg shadow-pink-500/25'
-                : 'py-3 rounded-xl font-orbitron font-bold text-sm tracking-wider flex items-center justify-center gap-2 transition-all text-gray-400 hover:text-white';
+                ? 'py-3 rounded-xl font-orbitron font-bold text-xs sm:text-sm tracking-wider flex items-center justify-center gap-2 transition-all bg-gradient-to-r from-pink-500 to-red-500 text-white shadow-lg shadow-pink-500/20'
+                : 'py-3 rounded-xl font-orbitron font-bold text-xs sm:text-sm tracking-wider flex items-center justify-center gap-2 transition-all text-gray-400 hover:text-white';
 
             renderContent();
         }
@@ -257,9 +226,9 @@
 
             if (categories.length === 0) {
                 container.innerHTML = `
-                    <div class="cyber-card rounded-2xl p-8 text-center border border-cyber-border">
-                        <i class="fa-solid fa-folder-open text-3xl text-gray-600 mb-3 block"></i>
-                        <p class="text-sm text-gray-400 font-medium">Chưa có file mod nào cho nền tảng này</p>
+                    <div class="glass-box rounded-2xl p-8 text-center border border-brand-border">
+                        <i class="fa-solid fa-folder-open text-3xl text-gray-600 mb-2 block"></i>
+                        <p class="text-xs text-gray-400 font-medium">Chưa có file mod nào cho nền tảng này</p>
                     </div>
                 `;
                 return;
@@ -267,43 +236,42 @@
 
             categories.forEach(cat => {
                 const catBox = document.createElement('div');
-                catBox.className = 'cyber-card rounded-2xl p-4 border border-cyber-border';
+                catBox.className = 'glass-box rounded-2xl p-4 border border-brand-border';
 
                 let linksHtml = '';
                 cat.links.forEach(link => {
-                    let badgeColor = 'bg-amber-500/20 text-amber-300 border-amber-500/40';
-                    if (link.badge === 'HOT') badgeColor = 'bg-rose-500/20 text-rose-300 border-rose-500/40';
-                    if (link.badge === 'NEW') badgeColor = 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40';
+                    let badgeColor = 'bg-amber-500/10 text-amber-300 border-amber-500/30';
+                    if (link.badge === 'HOT') badgeColor = 'bg-red-500/10 text-red-400 border-red-500/30';
+                    if (link.badge === 'NEW') badgeColor = 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30';
 
                     linksHtml += `
-                        <div class="flex items-center justify-between gap-3 p-3.5 bg-slate-900/80 rounded-xl border border-cyber-border hover:border-cyan-400/60 transition-all">
-                            <div class="flex-1 min-w-0 pr-2">
-                                <div class="flex items-center gap-2 mb-1.5 flex-wrap">
+                        <div class="flex items-center justify-between gap-3 p-3 bg-brand-card/90 rounded-xl border border-brand-border hover:border-cyan-400/40 transition-all">
+                            <div class="flex-1 min-w-0 pr-1">
+                                <div class="flex items-center gap-2 mb-1">
                                     <span class="inline-block px-1.5 py-0.5 rounded text-[10px] font-bold border ${badgeColor}">${link.badge}</span>
                                     <h5 class="text-sm font-bold text-white leading-snug break-words">${link.title}</h5>
                                 </div>
-                                <div class="flex items-center gap-3 text-[11px] text-gray-400 font-medium">
-                                    <span class="flex items-center gap-1"><i class="fa-regular fa-eye text-cyan-400"></i> ${link.views} lượt xem</span>
-                                    <span class="flex items-center gap-1 text-emerald-400"><i class="fa-solid fa-shield text-[10px]"></i> Đã duyệt</span>
+                                <div class="text-[11px] text-gray-400 flex items-center gap-2">
+                                    <span><i class="fa-regular fa-eye text-cyan-400 mr-1"></i>${link.views}</span>
                                 </div>
                             </div>
-                            <a href="${link.url}" target="_blank" class="${currentPlatform === 'ios' ? 'cyber-btn-blue' : 'cyber-btn-pink'} px-4 py-2.5 rounded-lg font-orbitron font-bold text-xs text-white flex items-center gap-1.5 shrink-0">
+                            <a href="${link.url}" target="_blank" class="${currentPlatform === 'ios' ? 'btn-gradient-ios' : 'btn-gradient-adr'} px-3.5 py-2 rounded-lg font-orbitron font-bold text-[11px] text-white flex items-center gap-1.5 shrink-0">
                                 <span>VƯỢT LINK</span>
-                                <i class="fa-solid fa-angles-right text-[10px]"></i>
+                                <i class="fa-solid fa-arrow-right-long text-[10px]"></i>
                             </a>
                         </div>
                     `;
                 });
 
                 catBox.innerHTML = `
-                    <div class="flex items-center justify-between mb-3 pb-2 border-b border-cyber-border/70">
+                    <div class="flex items-center justify-between mb-3 pb-2 border-b border-brand-border">
                         <div class="flex items-center gap-2">
-                            <i class="fa-solid fa-folder text-cyan-400"></i>
-                            <h4 class="font-orbitron font-bold text-sm text-gray-200 uppercase tracking-wider">${cat.categoryName}</h4>
+                            <i class="fa-solid fa-folder-closed text-cyan-400 text-sm"></i>
+                            <h4 class="font-orbitron font-bold text-xs text-gray-200 uppercase tracking-wider">${cat.categoryName}</h4>
                         </div>
-                        <span class="text-xs bg-slate-900 px-2.5 py-0.5 rounded-full text-cyan-300 border border-cyber-border font-bold">${cat.links.length} FILE</span>
+                        <span class="text-[11px] bg-brand-card px-2 py-0.5 rounded-full text-cyan-300 border border-brand-border font-bold">${cat.links.length} FILE</span>
                     </div>
-                    <div class="space-y-2.5">
+                    <div class="space-y-2">
                         ${linksHtml}
                     </div>
                 `;
@@ -312,7 +280,7 @@
             });
         }
 
-        // Initial Call
+        // Initial Render
         renderContent();
     </script>
 </body>
