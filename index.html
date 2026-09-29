@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KTOOL v1.0 - Web Simulator</title>
-    <!-- Tailwind CSS CDN -->
+    <title>KTOOL iSH & Python Ultimate - Web Simulator</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col items-center justify-center p-4">
@@ -12,79 +11,126 @@
     <div class="w-full max-w-xl bg-slate-800 border border-slate-700 rounded-xl shadow-2xl overflow-hidden">
         <!-- Banner Header -->
         <div class="bg-slate-950 p-4 border-b border-slate-700 text-center font-mono">
-            <div class="text-emerald-400 font-bold text-lg tracking-wider">🛠️ KTOOL v1.0</div>
-            <div class="text-xs text-slate-400 mt-1">giải mã hóa/mã hóa by Trong Dung</div>
+            <div class="text-emerald-400 font-bold text-lg tracking-wider">🛠️ KTOOL Ultimate v1.0</div>
+            <div class="text-xs text-slate-400 mt-1">AoV encode / decode wrapper by Trong Dung</div>
         </div>
 
-        <!-- Nội dung chính / Màn hình tương tác -->
+        <!-- Nội dung chính -->
         <div class="p-6 space-y-6">
-            <!-- Trạng thái module -->
-            <div class="bg-slate-900 p-3 rounded-lg border border-slate-700 font-mono text-xs space-y-1">
-                <div class="text-emerald-400">✅ AoV_Zstd đã chuẩn bị sẵn sàng.</div>
-                <div class="text-emerald-400">✅ aovt đã chuẩn bị sẵn sàng.</div>
-                <div class="text-slate-400 mt-1 font-semibold">🚀 Trạng thái: Sẵn sàng hoạt động.</div>
+            <!-- Trạng thái module & Môi trường iSH -->
+            <div id="envStatus" class="bg-slate-900 p-3 rounded-lg border border-slate-700 font-mono text-xs space-y-1">
+                <div class="text-slate-400" id="loadingEnv">🔄 Đang kiểm tra môi trường (Alpine/iSH) và cài đặt thư viện...</div>
             </div>
 
             <!-- Form chức năng -->
             <div class="space-y-4">
                 <div>
-                    <label class="block text-sm font-medium mb-1 text-slate-300">📌 Chọn chế độ làm việc:</label>
-                    <select id="modeSelect" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
-                        <option value="d">[1] 📂 Giải nén (giải mã)</option>
-                        <option value="c">[2] 📂 Nén (mã hóa)</option>
+                    <label class="block text-sm font-medium mb-1 text-slate-300">📌 Chọn chức năng (Menu):</label>
+                    <select id="modeSelect" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none font-mono" onchange="updateModeLabel()">
+                        <option value="d">[1] 📂 Giải mã / giải nén (d)</option>
+                        <option value="c">[2] 📦 Mã hóa / nén (c)</option>
                     </select>
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium mb-1 text-slate-300">📂 Chọn tệp cần xử lý:</label>
-                    <!-- Input file ẩn, thay bằng nút bấm đẹp mắt -->
+                    <label class="block text-sm font-medium mb-1 text-slate-300" id="fileInputLabel">📂 Chọn tệp/thư mục cần xử lý:</label>
                     <div class="flex items-center space-x-2">
                         <label class="flex-1 bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-400 truncate cursor-pointer hover:border-emerald-500 transition-all flex items-center justify-between">
                             <span id="fileLabel">Chưa chọn tệp nào...</span>
                             <span class="bg-slate-800 text-emerald-400 px-3 py-1 rounded text-xs font-semibold border border-slate-700">📁 Thêm tệp</span>
+                            <!-- Cho phép chọn nhiều tệp (mô phỏng duyệt thư mục) -->
                             <input type="file" id="fileInput" class="hidden" multiple onchange="handleFileSelect(this)">
                         </label>
                     </div>
                 </div>
 
-                <button onclick="runTool()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold py-2.5 rounded-lg transition-all shadow-lg flex items-center justify-center space-x-2">
-                    <span>⚡ Thực thi ngay</span>
-                </button>
+                <div class="flex space-x-2">
+                    <button onclick="runTool()" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold py-2.5 rounded-lg transition-all shadow-lg flex items-center justify-center space-x-2">
+                        <span>⚡ Thực thi ngay</span>
+                    </button>
+                    <button onclick="checkEnvironment()" class="bg-slate-700 hover:bg-slate-600 text-slate-200 px-4 py-2.5 rounded-lg text-xs font-mono transition-all">
+                        [3] 🔧 Kiểm tra môi trường
+                    </button>
+                </div>
             </div>
 
-            <!-- Khu vực Console Log (Mô phỏng terminal) -->
+            <!-- Khu vực Console Log -->
             <div>
                 <label class="block text-sm font-medium mb-1 text-slate-300">🖥️ Bảng điều khiển (Terminal Log):</label>
                 <div id="consoleLog" class="w-full h-40 bg-slate-950 border border-slate-700 rounded-lg p-3 font-mono text-xs overflow-y-auto text-emerald-400 space-y-1">
-                    <div>[KTOOL] 🔄 Đang khởi động KTOOL v1.0 (by Trong Dung)...</div>
-                    <div>[KTOOL] ✅ Tất cả các module đã sẵn sàng!</div>
+                    <div>[KTOOL] 🔄 Đang khởi động KTOOL...</div>
+                </div>
+            </div>
+
+            <!-- Khu vực tải tệp -->
+            <div id="downloadSection" class="hidden space-y-2">
+                <label class="block text-sm font-medium text-slate-300">📥 Tệp đã xử lý xong (Sẵn sàng tải về):</label>
+                <div id="downloadList" class="space-y-2 max-h-40 overflow-y-auto pr-2">
+                    <!-- Nút tải xuống -->
                 </div>
             </div>
         </div>
 
         <!-- Footer -->
         <div class="bg-slate-950 p-3 border-t border-slate-700 text-center text-xs text-slate-500 font-mono">
-            Giao diện mô phỏng KTOOL chạy trên trình duyệt
+            KTOOL Ultimate (Python + iSH) • Phát triển bởi Trong Dung
         </div>
     </div>
 
-    <!-- Script xử lý tương tác giả lập -->
     <script>
         let selectedFiles = [];
 
+        // Mô phỏng logic chuẩn bị từ file sh và python
+        window.onload = function() {
+            const consoleLog = document.getElementById('consoleLog');
+            setTimeout(() => {
+                consoleLog.innerHTML += `<div>[KTOOL] Kiểm tra môi trường iSH...</div>`;
+                consoleLog.innerHTML += `<div>[KTOOL] Đã tìm thấy apk, Python3, và py3-pip.</div>`;
+                consoleLog.innerHTML += `<div>[KTOOL] 🔄 Đang kiểm tra và chuẩn bị các module cần thiết...</div>`;
+                
+                document.getElementById('envStatus').innerHTML = `
+                    <div class="text-emerald-400">✅ apk, python3, py3-pip đã có sẵn.</div>
+                    <div class="text-emerald-400">✅ AoV_Zstd đã chuẩn bị sẵn sàng.</div>
+                    <div class="text-emerald-400">✅ aovt đã chuẩn bị sẵn sàng.</div>
+                    <div class="text-slate-400 mt-1 font-semibold">🚀 Trạng thái: Tất cả các module đã sẵn sàng!</div>
+                `;
+                consoleLog.innerHTML += `<div class="text-green-400">[KTOOL] ✅ Tất cả các module đã sẵn sàng!</div>`;
+                consoleLog.scrollTop = consoleLog.scrollHeight;
+            }, 800);
+        };
+
+        function updateModeLabel() {
+            const mode = document.getElementById('modeSelect').value;
+            const label = document.getElementById('fileInputLabel');
+            if (mode === 'd') {
+                label.textContent = "📂 Chọn tệp cần giải mã / giải nén:";
+            } else {
+                label.textContent = "📦 Chọn tệp cần mã hóa / nén:";
+            }
+        }
+
+        function checkEnvironment() {
+            const consoleLog = document.getElementById('consoleLog');
+            consoleLog.innerHTML += `<br><div>[KTOOL] Đang chạy kiểm tra lại môi trường...</div>`;
+            consoleLog.innerHTML += `<div class="text-emerald-400">[KTOOL] OK: AoV_Zstd</div>`;
+            consoleLog.innerHTML += `<div class="text-emerald-400">[KTOOL] OK: aovt</div>`;
+            consoleLog.scrollTop = consoleLog.scrollHeight;
+            alert("Môi trường (apk, python3) và các module (AoV_Zstd, aovt) đều đã được cài đặt và hoạt động bình thường!");
+        }
+
         function handleFileSelect(input) {
             const fileLabel = document.getElementById('fileLabel');
+            document.getElementById('downloadSection').classList.add('hidden');
+            
             if (input.files.length > 0) {
                 selectedFiles = Array.from(input.files);
                 if (selectedFiles.length === 1) {
                     fileLabel.textContent = selectedFiles[0].name;
-                    fileLabel.classList.remove('text-slate-400');
-                    fileLabel.classList.add('text-slate-100');
                 } else {
-                    fileLabel.textContent = `Đã chọn ${selectedFiles.length} tệp`;
-                    fileLabel.classList.remove('text-slate-400');
-                    fileLabel.classList.add('text-slate-100');
+                    fileLabel.textContent = `Đã chọn thư mục/chuỗi gồm ${selectedFiles.length} tệp`;
                 }
+                fileLabel.classList.remove('text-slate-400');
+                fileLabel.classList.add('text-slate-100');
             } else {
                 fileLabel.textContent = 'Chưa chọn tệp nào...';
                 fileLabel.classList.add('text-slate-400');
@@ -95,26 +141,50 @@
         function runTool() {
             const mode = document.getElementById('modeSelect').value;
             const consoleLog = document.getElementById('consoleLog');
+            const downloadSection = document.getElementById('downloadSection');
+            const downloadList = document.getElementById('downloadList');
 
             if (selectedFiles.length === 0) {
-                alert('Vui lòng bấm "Thêm tệp" để chọn tệp trước khi thực thi!');
+                consoleLog.innerHTML += `<div class="text-red-400">[KTOOL] ❌ Đường dẫn không hợp lệ hoặc trống.</div>`;
+                consoleLog.scrollTop = consoleLog.scrollHeight;
+                alert('Đường dẫn trống. Vui lòng bấm "Thêm tệp"!');
                 return;
             }
 
-            const actionName = mode === 'd' ? 'Giải nén' : 'Nén';
+            const actionName = mode === 'd' ? 'giải mã / giải nén' : 'mã hóa / nén';
+            downloadList.innerHTML = '';
             
+            consoleLog.innerHTML += `<br><div>[KTOOL iSH] Chế độ: ${actionName}</div>`;
+            
+            // Mô phỏng hàm process_item duyệt file
             selectedFiles.forEach(file => {
-                consoleLog.innerHTML += `<div>[KTOOL] Đang xử lý file: ${file.name} (Chế độ: ${actionName})</div>`;
+                consoleLog.innerHTML += `<div>[KTOOL] Đang xử lý file: ${file.name}</div>`;
             });
             consoleLog.scrollTop = consoleLog.scrollHeight;
             
-            // Giả lập quá trình chạy sau 1 giây
             setTimeout(() => {
                 selectedFiles.forEach(file => {
-                    consoleLog.innerHTML += `<div class="text-green-400">[KTOOL] ✅ Đã xử lý thành công: ${file.name}</div>`;
+                    consoleLog.innerHTML += `<div class="text-green-400">[KTOOL] ✅ Đã xử lý ${file.name}</div>`;
+                    
+                    const blob = new Blob([file], { type: file.type || 'application/octet-stream' });
+                    const blobUrl = URL.createObjectURL(blob);
+                    const outputFilename = mode === 'd' ? `dec_${file.name}` : `enc_${file.name}`;
+
+                    const downloadItem = document.createElement('div');
+                    downloadItem.className = 'flex items-center justify-between bg-slate-900 border border-slate-700 p-2.5 rounded-lg text-xs font-mono';
+                    downloadItem.innerHTML = `
+                        <span class="text-emerald-300 truncate max-w-[200px]" title="${outputFilename}">${outputFilename}</span>
+                        <a href="${blobUrl}" download="${outputFilename}" class="bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold px-3 py-1.5 rounded transition-all flex items-center space-x-1 shrink-0">
+                            <span>⬇️ Tải xuống</span>
+                        </a>
+                    `;
+                    downloadList.appendChild(downloadItem);
                 });
+
+                consoleLog.innerHTML += `<div class="text-slate-300 mt-1">[KTOOL] ✅ Hoàn tất. Tiến trình kết thúc với mã lỗi: 0</div>`;
                 consoleLog.scrollTop = consoleLog.scrollHeight;
-            }, 800);
+                downloadSection.classList.remove('hidden');
+            }, 1200);
         }
     </script>
 </body>
