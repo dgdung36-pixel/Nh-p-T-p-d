@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FILE MOD LQ - MOD IOS & MOD ADR</title>
+    <title>FILE MOD LQ - TRONG DUNG</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -17,10 +17,10 @@
                 extend: {
                     colors: {
                         dark: {
-                            base: '#090a0f',
-                            card: '#121520',
-                            input: '#1a1e2e',
-                            border: '#2a3047'
+                            base: '#07080c',
+                            card: '#101420',
+                            input: '#161b2b',
+                            border: '#22293e'
                         },
                         neon: {
                             blue: '#00f0ff',
@@ -39,20 +39,13 @@
     </script>
     <style>
         body {
-            background-color: #050608;
+            background-color: #06070a;
             color: #e2e8f0;
             font-family: 'Rajdhani', sans-serif;
             background-image: 
-                radial-gradient(circle at 50% 0%, rgba(0, 240, 255, 0.12), transparent 50%),
-                radial-gradient(circle at 100% 100%, rgba(255, 0, 127, 0.08), transparent 40%);
+                radial-gradient(circle at 50% 0%, rgba(0, 240, 255, 0.15), transparent 60%),
+                radial-gradient(circle at 100% 100%, rgba(255, 0, 127, 0.08), transparent 50%);
             background-attachment: fixed;
-        }
-
-        .neon-title {
-            text-shadow: 0 0 10px rgba(0, 240, 255, 0.8),
-                         0 0 20px rgba(0, 240, 255, 0.5),
-                         0 0 30px rgba(0, 240, 255, 0.3);
-            animation: pulseGlow 2s infinite alternate;
         }
 
         .neon-name {
@@ -60,40 +53,40 @@
             background: linear-gradient(135deg, #00f0ff 0%, #ff007f 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
+            text-shadow: 0 0 18px rgba(0, 240, 255, 0.6);
+            animation: pulseGlow 2.5s infinite alternate;
         }
 
         @keyframes pulseGlow {
-            0% { opacity: 0.9; text-shadow: 0 0 10px rgba(0, 240, 255, 0.8), 0 0 20px rgba(0, 240, 255, 0.4); }
-            100% { opacity: 1; text-shadow: 0 0 15px rgba(0, 240, 255, 1), 0 0 30px rgba(255, 0, 127, 0.8); }
+            0% { opacity: 0.9; text-shadow: 0 0 12px rgba(0, 240, 255, 0.7); }
+            100% { opacity: 1; text-shadow: 0 0 25px rgba(0, 240, 255, 1), 0 0 35px rgba(255, 0, 127, 0.8); }
         }
 
         .glass-card {
-            background: rgba(18, 21, 32, 0.85);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(42, 48, 71, 0.8);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            background: rgba(16, 20, 32, 0.85);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(34, 41, 62, 0.8);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
         }
 
         .btn-neon-blue {
             background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);
-            box-shadow: 0 0 15px rgba(0, 198, 255, 0.4);
-            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 198, 255, 0.35);
+            transition: all 0.25s ease;
         }
         .btn-neon-blue:hover {
-            box-shadow: 0 0 25px rgba(0, 198, 255, 0.8);
+            box-shadow: 0 0 22px rgba(0, 198, 255, 0.75);
             transform: translateY(-2px);
         }
 
-        /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 6px;
         }
         ::-webkit-scrollbar-track {
-            background: #090a0f;
+            background: #07080c;
         }
         ::-webkit-scrollbar-thumb {
-            background: #2a3047;
+            background: #22293e;
             border-radius: 3px;
         }
         ::-webkit-scrollbar-thumb:hover {
@@ -103,265 +96,108 @@
 </head>
 <body class="min-h-screen pb-12">
 
-    <!-- HEADER / HERO -->
-    <header class="pt-8 pb-4 px-4 text-center relative max-w-2xl mx-auto">
-        <!-- Live Clock & Date -->
-        <div class="inline-flex items-center gap-2 bg-dark-card border border-dark-border px-4 py-1.5 rounded-full mb-6 shadow-lg">
+    <!-- HEADER SECTION -->
+    <header class="pt-8 pb-4 px-4 text-center relative max-w-xl mx-auto">
+        <!-- Live Clock -->
+        <div class="inline-flex items-center gap-2 bg-dark-card border border-dark-border px-4 py-1.5 rounded-full mb-5 shadow-lg">
             <i class="fa-regular fa-clock text-neon-blue animate-pulse"></i>
             <span id="liveClock" class="font-orbitron text-xs font-bold tracking-widest text-gray-200">00:00:00 - 01/01/2026</span>
         </div>
 
-        <!-- Name Title: TRONG DUNG -->
+        <!-- Neon Name -->
         <div class="mb-3">
             <h1 class="neon-name text-3xl sm:text-4xl font-black tracking-wider uppercase">TRONG DUNG</h1>
         </div>
 
-        <!-- Web Title & Logo -->
-        <div class="flex items-center justify-center gap-3 mb-2">
-            <!-- Logo Cá Nhân -->
-            <div class="relative w-14 h-14 rounded-full p-0.5 bg-gradient-to-tr from-neon-blue to-neon-pink shadow-lg shadow-neon-blue/20">
-                <img id="webLogoImg" src="https://lh3.googleusercontent.com/d/1_ExampleImageID" alt="Logo" class="w-full h-full object-cover rounded-full">
-            </div>
-            <div class="text-left">
-                <h2 class="font-orbitron text-2xl font-black tracking-wide text-white flex items-center gap-2">
-                    FILE MOD LQ
-                    <span class="text-xs font-normal px-2 py-0.5 rounded bg-neon-blue/20 text-neon-blue border border-neon-blue/30">VIP</span>
-                </h2>
-                <p class="text-xs text-gray-400 font-medium tracking-wider uppercase">MOD IOS & MOD ADR</p>
-            </div>
+        <!-- Web Title -->
+        <div class="text-center mb-4">
+            <h2 class="font-orbitron text-2xl font-black tracking-wide text-white inline-flex items-center gap-2">
+                FILE MOD LQ
+                <span class="text-xs font-normal px-2 py-0.5 rounded bg-neon-blue/20 text-neon-blue border border-neon-blue/30">VIP</span>
+            </h2>
+            <p class="text-xs text-gray-400 font-medium tracking-wider uppercase mt-1">MOD IOS & MOD ADR</p>
         </div>
 
-        <!-- Social Buttons -->
-        <div class="flex justify-center items-center gap-3 mt-4">
+        <!-- Social Icons -->
+        <div class="flex justify-center items-center gap-3 mt-2">
             <!-- Youtube Button -->
             <a href="https://youtube.com/@trdunxx?si=tGWPnDMwmzyX1BaU" target="_blank" class="w-10 h-10 rounded-xl bg-red-600/20 border border-red-500/40 text-red-500 hover:bg-red-600 hover:text-white flex items-center justify-center transition-all shadow-lg hover:shadow-red-600/50">
                 <i class="fa-brands fa-youtube text-lg"></i>
             </a>
             <!-- Telegram Button -->
-            <a href="#" id="socialTelegram" target="_blank" class="w-10 h-10 rounded-xl bg-sky-500/20 border border-sky-400/40 text-sky-400 hover:bg-sky-500 hover:text-white flex items-center justify-center transition-all shadow-lg hover:shadow-sky-500/50">
+            <a href="#" target="_blank" class="w-10 h-10 rounded-xl bg-sky-500/20 border border-sky-400/40 text-sky-400 hover:bg-sky-500 hover:text-white flex items-center justify-center transition-all shadow-lg hover:shadow-sky-500/50">
                 <i class="fa-brands fa-telegram text-lg"></i>
             </a>
             <!-- Zalo Button -->
-            <a href="#" id="socialZalo" target="_blank" class="w-10 h-10 rounded-xl bg-blue-600/20 border border-blue-500/40 text-blue-400 hover:bg-blue-600 hover:text-white flex items-center justify-center font-bold text-xs transition-all shadow-lg hover:shadow-blue-600/50">
+            <a href="#" target="_blank" class="w-10 h-10 rounded-xl bg-blue-600/20 border border-blue-500/40 text-blue-400 hover:bg-blue-600 hover:text-white flex items-center justify-center font-bold text-xs transition-all shadow-lg hover:shadow-blue-600/50">
                 ZALO
             </a>
         </div>
-
-        <!-- Admin Login Button Top Right -->
-        <button onclick="toggleModal('loginModal')" class="absolute top-4 right-4 bg-dark-card border border-dark-border text-gray-300 hover:text-white px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 hover:border-neon-blue transition-all">
-            <i class="fa-solid fa-lock text-neon-blue"></i>
-            <span>ADMIN</span>
-        </button>
     </header>
 
-    <!-- MAIN CONTENT CONTAINER -->
-    <main class="max-w-2xl mx-auto px-4 mt-2">
+    <!-- MAIN CONTENT -->
+    <main class="max-w-xl mx-auto px-4 mt-4">
 
-        <!-- OS Platform Switcher Tabs -->
+        <!-- OS Switcher Tabs -->
         <div class="grid grid-cols-2 gap-3 mb-6 p-1.5 glass-card rounded-2xl">
             <button id="tabIosBtn" onclick="switchPlatform('ios')" class="py-3 rounded-xl font-orbitron font-bold text-sm tracking-wider flex items-center justify-center gap-2 transition-all bg-gradient-to-r from-neon-blue to-blue-600 text-white shadow-lg shadow-neon-blue/20">
                 <i class="fa-brands fa-apple text-lg"></i>
-                MOD IOS (<span id="countIos">0</span>)
+                MOD IOS
             </button>
             <button id="tabAdrBtn" onclick="switchPlatform('adr')" class="py-3 rounded-xl font-orbitron font-bold text-sm tracking-wider flex items-center justify-center gap-2 transition-all text-gray-400 hover:text-white">
                 <i class="fa-brands fa-android text-lg"></i>
-                MOD ADR (<span id="countAdr">0</span>)
+                MOD ADR
             </button>
         </div>
 
         <!-- Search Bar -->
         <div class="relative mb-6">
             <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-500"></i>
-            <input type="text" id="searchInput" oninput="renderLinks()" placeholder="Tìm kiếm file mod..." class="w-full bg-dark-card border border-dark-border rounded-xl py-3 pl-11 pr-4 text-sm text-gray-200 placeholder-gray-500 focus:outline-none focus:border-neon-blue transition-colors">
+            <input type="text" id="searchInput" oninput="renderContent()" placeholder="Tìm kiếm file mod..." class="w-full bg-dark-card border border-dark-border rounded-xl py-3 pl-11 pr-4 text-sm text-gray-200 placeholder-gray-500 focus:outline-none focus:border-neon-blue transition-colors">
         </div>
 
-        <!-- Dynamic Category List & Links Container -->
+        <!-- Dynamic Content List -->
         <div id="contentContainer" class="space-y-6">
-            <!-- Content will be generated dynamically by JS -->
+            <!-- Content render by JS -->
         </div>
 
     </main>
 
-    <!-- ADMIN LOGIN MODAL -->
-    <div id="loginModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center hidden p-4">
-        <div class="glass-card w-full max-w-sm rounded-2xl p-6 border border-dark-border relative">
-            <button onclick="toggleModal('loginModal')" class="absolute top-4 right-4 text-gray-400 hover:text-white">
-                <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
-            <div class="text-center mb-6">
-                <div class="w-12 h-12 rounded-full bg-neon-blue/10 border border-neon-blue/30 text-neon-blue flex items-center justify-center mx-auto mb-2">
-                    <i class="fa-solid fa-user-shield text-xl"></i>
-                </div>
-                <h3 class="font-orbitron font-bold text-lg text-white">ĐĂNG NHẬP ADMIN</h3>
-                <p class="text-xs text-gray-400 mt-1">Dành cho chủ sở hữu trang web</p>
-            </div>
-            <form onsubmit="handleAdminLogin(event)" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold text-gray-400 mb-1">Tài khoản</label>
-                    <input type="text" id="loginUser" required class="w-full bg-dark-input border border-dark-border rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-neon-blue">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-400 mb-1">Mật khẩu</label>
-                    <input type="password" id="loginPass" required class="w-full bg-dark-input border border-dark-border rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-neon-blue">
-                </div>
-                <div id="loginError" class="text-red-400 text-xs hidden text-center">Tài khoản hoặc mật khẩu không chính xác!</div>
-                <button type="submit" class="w-full btn-neon-blue py-2.5 rounded-lg font-orbitron font-bold text-sm text-white">ĐĂNG NHẬP</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- ADMIN PANEL MODAL -->
-    <div id="adminModal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 overflow-y-auto hidden p-4">
-        <div class="max-w-2xl mx-auto glass-card rounded-2xl p-6 my-8 border border-neon-blue/30 relative">
-            <div class="flex items-center justify-between pb-4 border-b border-dark-border mb-6">
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-sliders text-neon-blue text-xl"></i>
-                    <h3 class="font-orbitron font-bold text-xl text-white">BẢNG QUẢN TRỊ ADMIN</h3>
-                </div>
-                <button onclick="toggleModal('adminModal')" class="text-gray-400 hover:text-white px-3 py-1 rounded-lg bg-dark-input border border-dark-border text-xs">
-                    <i class="fa-solid fa-xmark mr-1"></i>Đóng
-                </button>
-            </div>
-
-            <!-- Admin Navigation Tabs -->
-            <div class="flex gap-2 border-b border-dark-border mb-6">
-                <button onclick="switchAdminTab('links')" id="tabAdminLinksBtn" class="px-4 py-2 font-semibold text-sm border-b-2 border-neon-blue text-neon-blue">Quản Lý Link</button>
-                <button onclick="switchAdminTab('categories')" id="tabAdminCatsBtn" class="px-4 py-2 font-semibold text-sm text-gray-400 hover:text-white">Quản Lý Mục</button>
-            </div>
-
-            <!-- TAB 1: MANAGE LINKS -->
-            <div id="adminTabLinks" class="space-y-6">
-                <!-- Add New Link Form -->
-                <form onsubmit="handleSaveLink(event)" class="bg-dark-input/50 p-4 rounded-xl border border-dark-border space-y-4">
-                    <h4 class="font-orbitron font-bold text-sm text-neon-blue flex items-center gap-2">
-                        <i class="fa-solid fa-plus-circle"></i> THÊM LINK VƯỢT MỚI
-                    </h4>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <div>
-                            <label class="block text-xs text-gray-400 mb-1">Nền tảng</label>
-                            <select id="linkPlatform" onchange="updateCategorySelectOptions()" class="w-full bg-dark-card border border-dark-border rounded-lg px-3 py-2 text-xs text-white">
-                                <option value="ios">MOD IOS</option>
-                                <option value="adr">MOD ADR</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-xs text-gray-400 mb-1">Chọn Mục Gắn Link</label>
-                            <select id="linkCategorySelect" class="w-full bg-dark-card border border-dark-border rounded-lg px-3 py-2 text-xs text-white">
-                                <!-- Dynamic Options -->
-                            </select>
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-xs text-gray-400 mb-1">Tên Tệp / File Mod</label>
-                        <input type="text" id="linkTitle" required placeholder="VD: Mod Skin All Tướng LQ S1 2026" class="w-full bg-dark-card border border-dark-border rounded-lg px-3 py-2 text-xs text-white">
-                    </div>
-                    <div>
-                        <label class="block text-xs text-gray-400 mb-1">Link Vượt (Đường dẫn đích)</label>
-                        <input type="url" id="linkUrl" required placeholder="https://link4m.net/..." class="w-full bg-dark-card border border-dark-border rounded-lg px-3 py-2 text-xs text-white">
-                    </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <div>
-                            <label class="block text-xs text-gray-400 mb-1">Huy hiệu (Tag)</label>
-                            <select id="linkBadge" class="w-full bg-dark-card border border-dark-border rounded-lg px-3 py-2 text-xs text-white">
-                                <option value="HOT">🔥 HOT</option>
-                                <option value="VIP">👑 VIP</option>
-                                <option value="NEW">✨ NEW</option>
-                                <option value="SAFE">🛡️ ANTIBAN</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-xs text-gray-400 mb-1">Hình ảnh xem trước</label>
-                            <input type="file" id="linkImgFile" accept="image/*" class="w-full bg-dark-card border border-dark-border rounded-lg px-2 py-1 text-xs text-gray-300">
-                        </div>
-                    </div>
-                    <button type="submit" class="w-full btn-neon-blue py-2.5 rounded-lg font-orbitron font-bold text-xs text-white">
-                        <i class="fa-solid fa-cloud-arrow-up mr-1"></i> LƯU LINK VÀO HỆ THỐNG
-                    </button>
-                </form>
-
-                <!-- Current Links List -->
-                <div>
-                    <h4 class="font-orbitron font-bold text-sm text-gray-300 mb-3">DANH SÁCH LINK HIỆN CÓ</h4>
-                    <div id="adminLinksList" class="space-y-2 max-h-60 overflow-y-auto pr-1">
-                        <!-- Dynamic list -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- TAB 2: MANAGE CATEGORIES -->
-            <div id="adminTabCategories" class="space-y-6 hidden">
-                <form onsubmit="handleSaveCategory(event)" class="bg-dark-input/50 p-4 rounded-xl border border-dark-border space-y-4">
-                    <h4 class="font-orbitron font-bold text-sm text-neon-blue flex items-center gap-2">
-                        <i class="fa-solid fa-folder-plus"></i> THÊM MỤC MỚI TÙY CHỈNH
-                    </h4>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <div>
-                            <label class="block text-xs text-gray-400 mb-1">Thuộc Nền tảng</label>
-                            <select id="catPlatform" class="w-full bg-dark-card border border-dark-border rounded-lg px-3 py-2 text-xs text-white">
-                                <option value="ios">MOD IOS</option>
-                                <option value="adr">MOD ADR</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-xs text-gray-400 mb-1">Tên Mục Mới</label>
-                            <input type="text" id="catName" required placeholder="VD: Edras VTK, Mod Skin VIP..." class="w-full bg-dark-card border border-dark-border rounded-lg px-3 py-2 text-xs text-white">
-                        </div>
-                    </div>
-                    <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 py-2.5 rounded-lg font-orbitron font-bold text-xs text-white transition-all">
-                        + TẠO MỤC MỚI
-                    </button>
-                </form>
-
-                <div>
-                    <h4 class="font-orbitron font-bold text-sm text-gray-300 mb-3">DANH SÁCH MỤC HIỆN TẠI</h4>
-                    <div id="adminCategoriesList" class="space-y-2 max-h-60 overflow-y-auto pr-1">
-                        <!-- Dynamic categories list -->
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <!-- JAVASCRIPT LOGIC -->
+    <!-- JAVASCRIPT -->
     <script>
-        // --- INITIAL DATA STRUCTURE ---
-        const DEFAULT_DATA = {
-            categories: [
-                { id: 'cat_edras_vtk', platform: 'ios', name: 'Edras VTK', icon: 'fa-folder-open' }
-            ],
-            links: [
+        // STATIC DATA LIST
+        const FILE_DATA = {
+            ios: [
                 {
-                    id: 'link_1',
-                    categoryId: 'cat_edras_vtk',
-                    platform: 'ios',
-                    title: 'Edras VTK Link Vượt VIP',
-                    url: 'https://link4m.net/xZ5QEUUJ',
-                    badge: 'VIP',
-                    img: '',
-                    views: 1200
+                    categoryName: 'File',
+                    links: [
+                        {
+                            title: 'Edras VTK Mod VIP',
+                            url: 'https://link4m.net/xZ5QEUUJ',
+                            badge: 'VIP',
+                            views: 1250
+                        }
+                    ]
+                }
+            ],
+            adr: [
+                {
+                    categoryName: 'File',
+                    links: [
+                        {
+                            title: 'Edras VTK Mod Android',
+                            url: 'https://link4m.net/xZ5QEUUJ',
+                            badge: 'VIP',
+                            views: 890
+                        }
+                    ]
                 }
             ]
         };
 
         let currentPlatform = 'ios';
-        let appData = loadLocalData();
 
-        // Load or Initialize Data
-        function loadLocalData() {
-            const saved = localStorage.getItem('file_mod_lq_db');
-            if (saved) {
-                try { return JSON.parse(saved); } catch(e) {}
-            }
-            return DEFAULT_DATA;
-        }
-
-        function saveData() {
-            localStorage.setItem('file_mod_lq_db', JSON.stringify(appData));
-            renderAll();
-        }
-
-        // Live Clock Function
+        // Live Clock
         function updateClock() {
             const now = new Date();
             const timeStr = now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
@@ -384,289 +220,77 @@
                 ? 'py-3 rounded-xl font-orbitron font-bold text-sm tracking-wider flex items-center justify-center gap-2 transition-all bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-lg shadow-green-500/20'
                 : 'py-3 rounded-xl font-orbitron font-bold text-sm tracking-wider flex items-center justify-center gap-2 transition-all text-gray-400 hover:text-white';
 
-            renderLinks();
+            renderContent();
         }
 
-        // Render Page Items
-        function renderAll() {
-            updateCounts();
-            renderLinks();
-            renderAdminLists();
-        }
-
-        function updateCounts() {
-            const iosCount = appData.links.filter(l => l.platform === 'ios').length;
-            const adrCount = appData.links.filter(l => l.platform === 'adr').length;
-            document.getElementById('countIos').innerText = iosCount;
-            document.getElementById('countAdr').innerText = adrCount;
-        }
-
-        function renderLinks() {
+        // Render List Files
+        function renderContent() {
             const container = document.getElementById('contentContainer');
             const searchKeyword = document.getElementById('searchInput').value.toLowerCase().trim();
+            const categories = FILE_DATA[currentPlatform] || [];
 
-            const platformCats = appData.categories.filter(c => c.platform === currentPlatform);
             container.innerHTML = '';
 
-            if (platformCats.length === 0) {
-                container.innerHTML = `<div class="text-center py-12 text-gray-500 text-sm">Chưa có mục nào được tạo cho nền tảng này.</div>`;
-                return;
-            }
+            let totalItems = 0;
 
-            let totalRenderedLinks = 0;
+            categories.forEach(cat => {
+                const filteredLinks = cat.links.filter(l => l.title.toLowerCase().includes(searchKeyword));
 
-            platformCats.forEach(cat => {
-                const catLinks = appData.links.filter(l => l.categoryId === cat.id && l.title.toLowerCase().includes(searchKeyword));
+                if (searchKeyword !== '' && filteredLinks.length === 0) return;
 
-                if (searchKeyword !== '' && catLinks.length === 0) return;
-
-                totalRenderedLinks += catLinks.length;
+                totalItems += filteredLinks.length;
 
                 const catBox = document.createElement('div');
                 catBox.className = 'glass-card rounded-2xl p-4 border border-dark-border';
 
                 let linksHtml = '';
-                if (catLinks.length === 0) {
-                    linksHtml = `<p class="text-xs text-gray-500 italic py-2">Chưa có link vượt nào trong mục này</p>`;
-                } else {
-                    catLinks.forEach(link => {
-                        let badgeColor = 'bg-red-500/20 text-red-400 border-red-500/30';
-                        if(link.badge === 'VIP') badgeColor = 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30';
-                        if(link.badge === 'NEW') badgeColor = 'bg-green-500/20 text-green-400 border-green-500/30';
+                filteredLinks.forEach(link => {
+                    let badgeColor = 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30';
+                    if (link.badge === 'HOT') badgeColor = 'bg-red-500/20 text-red-400 border-red-500/30';
+                    if (link.badge === 'NEW') badgeColor = 'bg-green-500/20 text-green-400 border-green-500/30';
 
-                        const thumb = link.img || 'https://via.placeholder.com/60/121520/00f0ff?text=MOD';
-
-                        linksHtml += `
-                            <div class="flex items-center justify-between gap-3 p-3 bg-dark-input/60 rounded-xl border border-dark-border/60 hover:border-neon-blue/50 transition-all">
-                                <div class="flex items-center gap-3">
-                                    <img src="${thumb}" alt="thumb" class="w-12 h-12 rounded-lg object-cover border border-dark-border">
-                                    <div>
-                                        <span class="inline-block px-1.5 py-0.5 rounded text-[10px] font-bold border ${badgeColor} mb-1">${link.badge}</span>
-                                        <h5 class="text-sm font-semibold text-white line-clamp-1">${link.title}</h5>
-                                        <span class="text-[11px] text-gray-400 flex items-center gap-1 mt-0.5">
-                                            <i class="fa-regular fa-eye"></i> ${link.views || 0} lượt xem
-                                        </span>
-                                    </div>
+                    linksHtml += `
+                        <div class="flex items-center justify-between gap-3 p-3 bg-dark-input/70 rounded-xl border border-dark-border/60 hover:border-neon-blue/50 transition-all">
+                            <div class="flex-1 pr-2">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="inline-block px-1.5 py-0.5 rounded text-[10px] font-bold border ${badgeColor}">${link.badge}</span>
+                                    <h5 class="text-sm font-bold text-white line-clamp-1">${link.title}</h5>
                                 </div>
-                                <a href="${link.url}" target="_blank" onclick="incrementView('${link.id}')" class="btn-neon-blue px-4 py-2 rounded-lg font-orbitron font-bold text-xs text-white flex items-center gap-1 shrink-0">
-                                    <span>VƯỢT LINK</span>
-                                    <i class="fa-solid fa-angles-right text-[10px]"></i>
-                                </a>
+                                <span class="text-[11px] text-gray-400 flex items-center gap-1">
+                                    <i class="fa-regular fa-eye"></i> ${link.views} lượt xem
+                                </span>
                             </div>
-                        `;
-                    });
-                }
+                            <a href="${link.url}" target="_blank" class="btn-neon-blue px-4 py-2 rounded-lg font-orbitron font-bold text-xs text-white flex items-center gap-1.5 shrink-0">
+                                <span>VƯỢT LINK</span>
+                                <i class="fa-solid fa-angles-right text-[10px]"></i>
+                            </a>
+                        </div>
+                    `;
+                });
 
                 catBox.innerHTML = `
                     <div class="flex items-center justify-between mb-3 pb-2 border-b border-dark-border/50">
                         <div class="flex items-center gap-2">
-                            <i class="fa-solid ${cat.icon || 'fa-folder'} text-neon-blue"></i>
-                            <h4 class="font-orbitron font-bold text-sm text-gray-200 uppercase">${cat.name}</h4>
+                            <i class="fa-solid fa-folder text-neon-blue"></i>
+                            <h4 class="font-orbitron font-bold text-sm text-gray-200 uppercase tracking-wider">${cat.categoryName}</h4>
                         </div>
-                        <span class="text-xs bg-dark-input px-2 py-0.5 rounded text-gray-400 border border-dark-border">${catLinks.length}</span>
+                        <span class="text-xs bg-dark-input px-2.5 py-0.5 rounded-full text-gray-400 border border-dark-border">${filteredLinks.length}</span>
                     </div>
-                    <div class="space-y-2">
+                    <div class="space-y-2.5">
                         ${linksHtml}
                     </div>
                 `;
+
                 container.appendChild(catBox);
             });
 
-            if (searchKeyword !== '' && totalRenderedLinks === 0) {
-                container.innerHTML = `<div class="text-center py-12 text-gray-500 text-sm">Không tìm thấy file mod nào khớp với từ khóa.</div>`;
+            if (totalItems === 0) {
+                container.innerHTML = `<div class="text-center py-12 text-gray-500 text-sm">Không tìm thấy file mod phù hợp.</div>`;
             }
         }
 
-        function incrementView(linkId) {
-            const link = appData.links.find(l => l.id === linkId);
-            if (link) {
-                link.views = (link.views || 0) + 1;
-                saveData();
-            }
-        }
-
-        // --- ADMIN LOGIN LOGIC ---
-        function handleAdminLogin(e) {
-            e.preventDefault();
-            const user = document.getElementById('loginUser').value.trim();
-            const pass = document.getElementById('loginPass').value.trim();
-
-            if (user === 'admin' && pass === '2812') {
-                document.getElementById('loginError').classList.add('hidden');
-                toggleModal('loginModal');
-                toggleModal('adminModal');
-                updateCategorySelectOptions();
-                renderAdminLists();
-            } else {
-                document.getElementById('loginError').classList.remove('hidden');
-            }
-        }
-
-        // Modal Toggle
-        function toggleModal(id) {
-            const el = document.getElementById(id);
-            el.classList.toggle('hidden');
-        }
-
-        // Admin Tab Switcher
-        function switchAdminTab(tab) {
-            const isLinks = tab === 'links';
-            document.getElementById('adminTabLinks').classList.toggle('hidden', !isLinks);
-            document.getElementById('adminTabCategories').classList.toggle('hidden', isLinks);
-
-            document.getElementById('tabAdminLinksBtn').className = isLinks ? 'px-4 py-2 font-semibold text-sm border-b-2 border-neon-blue text-neon-blue' : 'px-4 py-2 font-semibold text-sm text-gray-400 hover:text-white';
-            document.getElementById('tabAdminCatsBtn').className = !isLinks ? 'px-4 py-2 font-semibold text-sm border-b-2 border-neon-blue text-neon-blue' : 'px-4 py-2 font-semibold text-sm text-gray-400 hover:text-white';
-        }
-
-        // Dynamic Options for Category Select in Add Link Form
-        function updateCategorySelectOptions() {
-            const plat = document.getElementById('linkPlatform').value;
-            const select = document.getElementById('linkCategorySelect');
-            const filteredCats = appData.categories.filter(c => c.platform === plat);
-
-            select.innerHTML = '';
-            if (filteredCats.length === 0) {
-                select.innerHTML = '<option value="">-- Chưa có mục nào, hãy tạo mục trước --</option>';
-                return;
-            }
-
-            filteredCats.forEach(c => {
-                const opt = document.createElement('option');
-                opt.value = c.id;
-                opt.innerText = c.name;
-                select.appendChild(opt);
-            });
-        }
-
-        // Save Category
-        function handleSaveCategory(e) {
-            e.preventDefault();
-            const plat = document.getElementById('catPlatform').value;
-            const name = document.getElementById('catName').value.trim();
-
-            if (!name) return;
-
-            const newCat = {
-                id: 'cat_' + Date.now(),
-                platform: plat,
-                name: name,
-                icon: 'fa-folder-open'
-            };
-
-            appData.categories.push(newCat);
-            saveData();
-            document.getElementById('catName').value = '';
-            updateCategorySelectOptions();
-            alert('Đã thêm mục mới thành công!');
-        }
-
-        // Save Link (Convert Image File to Base64)
-        function handleSaveLink(e) {
-            e.preventDefault();
-            const plat = document.getElementById('linkPlatform').value;
-            const catId = document.getElementById('linkCategorySelect').value;
-            const title = document.getElementById('linkTitle').value.trim();
-            const url = document.getElementById('linkUrl').value.trim();
-            const badge = document.getElementById('linkBadge').value;
-            const fileInput = document.getElementById('linkImgFile');
-
-            if (!catId) {
-                alert('Vui lòng chọn mục để gắn link!');
-                return;
-            }
-
-            if (fileInput.files && fileInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(evt) {
-                    saveLinkToDb(evt.target.result);
-                };
-                reader.readAsDataURL(fileInput.files[0]);
-            } else {
-                saveLinkToDb('');
-            }
-
-            function saveLinkToDb(base64Img) {
-                const newLink = {
-                    id: 'link_' + Date.now(),
-                    categoryId: catId,
-                    platform: plat,
-                    title: title,
-                    url: url,
-                    badge: badge,
-                    img: base64Img,
-                    views: 0
-                };
-
-                appData.links.push(newLink);
-                saveData();
-                document.getElementById('linkTitle').value = '';
-                document.getElementById('linkUrl').value = '';
-                document.getElementById('linkImgFile').value = '';
-                alert('Thêm link vượt thành công!');
-            }
-        }
-
-        // Render Lists in Admin
-        function renderAdminLists() {
-            // Admin Links List
-            const linksListContainer = document.getElementById('adminLinksList');
-            linksListContainer.innerHTML = '';
-
-            appData.links.forEach(link => {
-                const cat = appData.categories.find(c => c.id === link.categoryId);
-                const item = document.createElement('div');
-                item.className = 'flex items-center justify-between p-2.5 bg-dark-card rounded-lg border border-dark-border text-xs';
-                item.innerHTML = `
-                    <div>
-                        <span class="font-bold text-neon-blue">[${link.platform.toUpperCase()}]</span>
-                        <span class="text-gray-400">(${cat ? cat.name : 'N/A'})</span>
-                        <div class="text-white font-semibold mt-0.5">${link.title}</div>
-                    </div>
-                    <button onclick="deleteLink('${link.id}')" class="text-red-400 hover:text-red-300 p-1.5">
-                        <i class="fa-solid fa-trash"></i>
-                    </button>
-                `;
-                linksListContainer.appendChild(item);
-            });
-
-            // Admin Categories List
-            const catListContainer = document.getElementById('adminCategoriesList');
-            catListContainer.innerHTML = '';
-
-            appData.categories.forEach(cat => {
-                const item = document.createElement('div');
-                item.className = 'flex items-center justify-between p-2.5 bg-dark-card rounded-lg border border-dark-border text-xs';
-                item.innerHTML = `
-                    <div>
-                        <span class="font-bold text-purple-400">[${cat.platform.toUpperCase()}]</span>
-                        <span class="text-white font-semibold ml-1">${cat.name}</span>
-                    </div>
-                    <button onclick="deleteCategory('${cat.id}')" class="text-red-400 hover:text-red-300 p-1.5">
-                        <i class="fa-solid fa-trash"></i>
-                    </button>
-                `;
-                catListContainer.appendChild(item);
-            });
-        }
-
-        function deleteLink(id) {
-            if (confirm('Bạn có chắc chắn muốn xóa link này?')) {
-                appData.links = appData.links.filter(l => l.id !== id);
-                saveData();
-            }
-        }
-
-        function deleteCategory(id) {
-            if (confirm('Xóa mục này sẽ xóa tất cả link bên trong mục. Bạn có muốn tiếp tục?')) {
-                appData.categories = appData.categories.filter(c => c.id !== id);
-                appData.links = appData.links.filter(l => l.categoryId !== id);
-                saveData();
-                updateCategorySelectOptions();
-            }
-        }
-
-        // Initialize Page Render
-        renderAll();
+        // Initial Call
+        renderContent();
     </script>
 </body>
 </html>
