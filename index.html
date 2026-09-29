@@ -1,1019 +1,1339 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Offline Media Catalog</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRONG DUNG - FILE MOD LQ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            dark: '#080b12',
+                            card: '#101622',
+                            cardHover: '#182030',
+                            cyan: '#00f2fe',
+                            pink: '#ff007f',
+                            purple: '#7f00ff',
+                            gold: '#ffb703',
+                            neonRed: '#ff2a6d'
+                        }
+                    },
+                    fontFamily: {
+                        orbitron: ['Orbitron', 'sans-serif'],
+                        rajdhani: ['Rajdhani', 'sans-serif'],
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Neon Glow Text Animations for Trong Dung */
+        .neon-title-glow {
+            text-shadow: 
+                0 0 5px #ff2a6d,
+                0 0 10px #ff2a6d,
+                0 0 20px #ff2a6d,
+                0 0 40px #00f2fe,
+                0 0 80px #00f2fe;
+            animation: neonPulse 2s infinite alternate;
+        }
 
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
+        @keyframes neonPulse {
+            0% {
+                text-shadow: 0 0 5px #ff2a6d, 0 0 10px #ff2a6d, 0 0 20px #ff2a6d, 0 0 35px #00f2fe;
+            }
+            100% {
+                text-shadow: 0 0 8px #ff2a6d, 0 0 15px #ff2a6d, 0 0 25px #ff2a6d, 0 0 45px #00f2fe, 0 0 60px #9d4edd;
+            }
+        }
 
-:root{
-  --bg:#0b0d12;
-  --panel:#121620;
-  --panel2:#181d28;
-  --border:#272e3b;
-  --text:#f4f6fa;
-  --muted:#929aaa;
-  --accent:#6c63ff;
-  --accent2:#8b85ff;
-  --danger:#ff5c70;
-}
+        .glow-text-cyan {
+            text-shadow: 0 0 10px rgba(0, 242, 254, 0.6), 0 0 20px rgba(0, 242, 254, 0.3);
+        }
+        .glow-box-cyan {
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.25);
+        }
+        .glow-box-pink {
+            box-shadow: 0 0 15px rgba(255, 0, 127, 0.3);
+        }
 
-body{
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  min-height:100vh;
-}
+        .bg-cyber-pattern {
+            background-image: radial-gradient(rgba(0, 242, 254, 0.08) 1px, transparent 1px),
+                              radial-gradient(rgba(255, 42, 109, 0.08) 1px, transparent 1px);
+            background-size: 24px 24px;
+            background-position: 0 0, 12px 12px;
+        }
 
-/* HEADER */
-header{
-  position:sticky;
-  top:0;
-  z-index:50;
-  background:rgba(11,13,18,.94);
-  backdrop-filter:blur(14px);
-  border-bottom:1px solid var(--border);
-}
-
-.nav{
-  max-width:1200px;
-  margin:auto;
-  min-height:68px;
-  padding:12px 18px;
-  display:flex;
-  align-items:center;
-  gap:20px;
-}
-
-.logo{
-  font-size:21px;
-  font-weight:800;
-  white-space:nowrap;
-}
-
-.logo span{color:var(--accent)}
-
-.search{
-  flex:1;
-  position:relative;
-}
-
-.search input{
-  width:100%;
-  height:42px;
-  border:1px solid var(--border);
-  border-radius:12px;
-  outline:none;
-  background:var(--panel);
-  color:var(--text);
-  padding:0 16px;
-  font-size:14px;
-}
-
-.search input:focus{
-  border-color:var(--accent);
-}
-
-.menu-btn{
-  display:none;
-  border:0;
-  background:var(--panel);
-  color:white;
-  width:42px;
-  height:42px;
-  border-radius:10px;
-  font-size:20px;
-}
-
-/* MAIN */
-main{
-  max-width:1200px;
-  margin:auto;
-  padding:28px 18px 50px;
-}
-
-.hero{
-  padding:28px;
-  border:1px solid var(--border);
-  background:
-    radial-gradient(circle at 90% 20%,rgba(108,99,255,.25),transparent 35%),
-    var(--panel);
-  border-radius:20px;
-  margin-bottom:25px;
-}
-
-.hero h1{
-  font-size:32px;
-  margin-bottom:8px;
-}
-
-.hero p{
-  color:var(--muted);
-  line-height:1.6;
-}
-
-/* FILTER */
-.toolbar{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:15px;
-  margin-bottom:20px;
-}
-
-.categories{
-  display:flex;
-  gap:8px;
-  overflow:auto;
-  scrollbar-width:none;
-}
-
-.categories::-webkit-scrollbar{display:none}
-
-.category{
-  flex:none;
-  border:1px solid var(--border);
-  background:var(--panel);
-  color:var(--muted);
-  padding:9px 14px;
-  border-radius:999px;
-  cursor:pointer;
-  transition:.2s;
-}
-
-.category:hover,
-.category.active{
-  background:var(--accent);
-  color:white;
-  border-color:var(--accent);
-}
-
-.count{
-  color:var(--muted);
-  white-space:nowrap;
-  font-size:14px;
-}
-
-/* GRID */
-.grid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:18px;
-}
-
-.card{
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:15px;
-  overflow:hidden;
-  cursor:pointer;
-  transition:.22s;
-}
-
-.card:hover{
-  transform:translateY(-4px);
-  border-color:#454d60;
-}
-
-.thumb{
-  position:relative;
-  aspect-ratio:16/10;
-  overflow:hidden;
-  background:#202532;
-}
-
-.thumb img{
-  width:100%;
-  height:100%;
-  display:block;
-  object-fit:cover;
-  transition:.3s;
-}
-
-.card:hover .thumb img{
-  transform:scale(1.05);
-}
-
-.badge{
-  position:absolute;
-  top:9px;
-  left:9px;
-  background:rgba(0,0,0,.72);
-  color:white;
-  padding:5px 8px;
-  border-radius:7px;
-  font-size:11px;
-}
-
-.duration{
-  position:absolute;
-  right:9px;
-  bottom:9px;
-  background:rgba(0,0,0,.75);
-  color:white;
-  padding:4px 7px;
-  border-radius:6px;
-  font-size:11px;
-}
-
-.info{
-  padding:13px;
-}
-
-.title{
-  font-size:15px;
-  font-weight:700;
-  line-height:1.4;
-  margin-bottom:7px;
-  display:-webkit-box;
-  -webkit-line-clamp:2;
-  -webkit-box-orient:vertical;
-  overflow:hidden;
-}
-
-.meta{
-  color:var(--muted);
-  font-size:12px;
-  display:flex;
-  justify-content:space-between;
-}
-
-/* PAGINATION */
-.pagination{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:7px;
-  margin-top:32px;
-  flex-wrap:wrap;
-}
-
-.page-btn{
-  min-width:40px;
-  height:40px;
-  padding:0 12px;
-  border-radius:9px;
-  border:1px solid var(--border);
-  background:var(--panel);
-  color:var(--text);
-  cursor:pointer;
-}
-
-.page-btn:hover{
-  border-color:var(--accent);
-}
-
-.page-btn.active{
-  background:var(--accent);
-  border-color:var(--accent);
-}
-
-.page-btn:disabled{
-  opacity:.35;
-  cursor:not-allowed;
-}
-
-/* MODAL */
-.modal{
-  position:fixed;
-  inset:0;
-  z-index:100;
-  background:rgba(0,0,0,.75);
-  backdrop-filter:blur(8px);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  padding:18px;
-}
-
-.modal.show{display:flex}
-
-.modal-box{
-  width:min(700px,100%);
-  max-height:90vh;
-  overflow:auto;
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:18px;
-  position:relative;
-}
-
-.modal-img{
-  width:100%;
-  max-height:360px;
-  object-fit:cover;
-  display:block;
-}
-
-.modal-content{
-  padding:22px;
-}
-
-.modal-content h2{
-  margin-bottom:10px;
-}
-
-.modal-content p{
-  color:var(--muted);
-  line-height:1.7;
-}
-
-.close{
-  position:absolute;
-  top:12px;
-  right:12px;
-  z-index:2;
-  width:38px;
-  height:38px;
-  border:0;
-  border-radius:50%;
-  background:rgba(0,0,0,.7);
-  color:white;
-  font-size:20px;
-  cursor:pointer;
-}
-
-/* EMPTY */
-.empty{
-  display:none;
-  text-align:center;
-  padding:70px 20px;
-  color:var(--muted);
-}
-
-.empty strong{
-  display:block;
-  color:white;
-  font-size:20px;
-  margin-bottom:8px;
-}
-
-/* RESPONSIVE */
-@media(max-width:900px){
-  .grid{
-    grid-template-columns:repeat(3,1fr);
-  }
-}
-
-@media(max-width:680px){
-  .nav{
-    flex-wrap:wrap;
-  }
-
-  .logo{
-    flex:1;
-  }
-
-  .menu-btn{
-    display:block;
-  }
-
-  .search{
-    order:3;
-    flex-basis:100%;
-  }
-
-  main{
-    padding:18px 12px 40px;
-  }
-
-  .hero{
-    padding:22px;
-  }
-
-  .hero h1{
-    font-size:25px;
-  }
-
-  .toolbar{
-    display:block;
-  }
-
-  .count{
-    margin-top:12px;
-  }
-
-  .grid{
-    grid-template-columns:repeat(2,1fr);
-    gap:11px;
-  }
-
-  .info{
-    padding:10px;
-  }
-
-  .title{
-    font-size:13px;
-  }
-}
-
-@media(max-width:390px){
-  .grid{
-    grid-template-columns:1fr 1fr;
-  }
-
-  .pagination{
-    gap:4px;
-  }
-
-  .page-btn{
-    min-width:36px;
-    height:36px;
-  }
-}
-</style>
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #080b12;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00f2fe;
+        }
+    </style>
 </head>
+<body class="bg-cyber-dark text-slate-100 font-sans min-h-screen bg-cyber-pattern flex flex-col justify-between selection:bg-cyber-cyan selection:text-black">
 
-<body>
+    <!-- TOP OWNER NEON BANNER -->
+    <div class="w-full bg-slate-950/90 border-b border-slate-800/80 py-2.5 px-4 text-center relative overflow-hidden backdrop-blur-md">
+        <div class="absolute inset-0 bg-gradient-to-r from-cyber-pink/10 via-cyber-cyan/10 to-cyber-purple/10 animate-pulse"></div>
+        <div class="relative max-w-2xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-1.5 sm:gap-0">
+            <!-- Neon Owner Name -->
+            <div class="flex items-center space-x-2">
+                <i class="fa-solid fa-crown text-amber-400 text-xs sm:text-sm animate-bounce"></i>
+                <span class="text-xs font-rajdhani font-bold text-slate-400 uppercase tracking-wider">CHỦ SỞ HỮU:</span>
+                <h2 class="font-orbitron font-black text-lg sm:text-xl text-white tracking-widest uppercase neon-title-glow">
+                    TRONG DUNG
+                </h2>
+            </div>
 
-<header>
-  <div class="nav">
-    <div class="logo">Offline<span>Catalog</span></div>
-
-    <div class="search">
-      <input
-        id="search"
-        type="search"
-        placeholder="Tìm kiếm nội dung..."
-        autocomplete="off">
+            <!-- Realtime Clock Widget -->
+            <div class="flex items-center space-x-2 bg-slate-900/90 border border-slate-800 px-3 py-1 rounded-full text-xs font-mono text-cyber-cyan shadow-inner">
+                <i class="fa-solid fa-clock text-cyber-pink animate-spin" style="animation-duration: 8s;"></i>
+                <span id="realtime-clock" class="font-bold">00:00:00</span>
+                <span class="text-slate-600">|</span>
+                <span id="realtime-date" class="text-slate-400 text-[11px]">00/00/2026</span>
+            </div>
+        </div>
     </div>
 
-    <button class="menu-btn" onclick="scrollToTop()">☰</button>
-  </div>
-</header>
+    <!-- NAVIGATION HEADER -->
+    <header class="sticky top-0 z-30 backdrop-blur-md bg-cyber-dark/90 border-b border-slate-800/80 px-4 py-3">
+        <div class="max-w-2xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-2.5">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyber-neonRed via-cyber-purple to-cyber-cyan p-0.5 flex items-center justify-center font-orbitron font-black text-black text-xs shadow-md glow-box-pink">
+                    <span class="w-full h-full bg-cyber-dark rounded-[10px] flex items-center justify-center text-cyber-cyan">LQ</span>
+                </div>
+                <div>
+                    <span id="header-web-title" class="font-orbitron font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyber-cyan via-white to-cyber-pink tracking-wider text-sm sm:text-base block">
+                        FILE MOD LQ
+                    </span>
+                    <span class="text-[10px] text-slate-500 font-rajdhani font-bold tracking-widest block -mt-1">MOD IOS & MOD ADR</span>
+                </div>
+            </div>
+            
+            <!-- Admin Panel Trigger Button -->
+            <button onclick="handleOpenAdminTrigger()" class="flex items-center space-x-1.5 text-xs bg-slate-900 hover:bg-slate-800 text-slate-200 px-3.5 py-2 rounded-xl border border-slate-700/80 transition duration-200 active:scale-95 shadow">
+                <i class="fa-solid fa-user-shield text-cyber-cyan"></i>
+                <span class="font-bold font-rajdhani text-sm">ADMIN LOGIN</span>
+            </button>
+        </div>
+    </header>
 
-<main>
+    <!-- MAIN CLIENT VIEW CONTAINER -->
+    <main class="max-w-2xl mx-auto w-full px-4 py-6 flex-1 flex flex-col items-center">
 
-  <section class="hero">
-    <h1>Media Catalog</h1>
-    <p>
-      Website dữ liệu mẫu chạy hoàn toàn offline.
-      Không cần máy chủ, API hoặc Internet.
-    </p>
-  </section>
+        <!-- BRAND BIO HERO -->
+        <div class="text-center my-2 w-full">
+            <div class="relative inline-block mb-3">
+                <div id="avatar-container" class="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-gradient-to-tr from-cyber-neonRed via-cyber-purple to-cyber-cyan p-1 glow-box-cyan mx-auto transition duration-300">
+                    <img id="site-logo-img" src="" alt="Logo" class="w-full h-full object-cover rounded-xl bg-cyber-dark">
+                </div>
+                <span class="absolute -bottom-1 -right-1 bg-emerald-500 text-black text-[10px] font-extrabold px-2 py-0.5 rounded-full border-2 border-cyber-dark flex items-center gap-1 shadow">
+                    <span class="w-1.5 h-1.5 bg-white rounded-full animate-ping"></span> ONLINE
+                </span>
+            </div>
 
-  <div class="toolbar">
-    <div class="categories" id="categories"></div>
-    <div class="count" id="count"></div>
-  </div>
+            <h1 id="site-title-display" class="text-2xl sm:text-3xl font-orbitron font-black text-white glow-text-cyan tracking-wide uppercase">
+                FILE MOD LQ
+            </h1>
+            <p id="site-bio-display" class="text-xs sm:text-sm font-rajdhani font-semibold text-slate-400 mt-1 max-w-md mx-auto px-2">
+                Kênh tổng hợp Link Mod Liên Quân VIP - Vượt link an toàn & tốc độ cao.
+            </p>
 
-  <section class="grid" id="grid"></section>
+            <!-- SOCIAL MEDIA LINKS -->
+            <div id="social-links-container" class="flex justify-center items-center gap-3 mt-3">
+                <!-- Rendered Dynamically -->
+            </div>
+        </div>
 
-  <div class="empty" id="empty">
-    <strong>Không tìm thấy nội dung</strong>
-    Hãy thử từ khóa hoặc thể loại khác.
-  </div>
+        <!-- MAIN TABS SELECTOR (Mod iOS vs Mod Adr) -->
+        <div class="w-full bg-slate-900/90 p-1.5 rounded-2xl border border-slate-800 flex gap-1.5 shadow-lg my-4">
+            <button id="tab-ios-btn" onclick="switchTab('ios')" class="flex-1 py-3 px-3 rounded-xl font-rajdhani font-bold text-sm sm:text-base flex items-center justify-center gap-2 transition-all duration-300 bg-gradient-to-r from-cyber-cyan to-blue-500 text-black shadow-md glow-box-cyan">
+                <i class="fa-brands fa-apple text-lg sm:text-xl"></i>
+                <span class="tracking-wide">MOD IOS</span>
+                <span id="badge-ios-count" class="text-xs bg-black/30 px-2 py-0.5 rounded-full font-sans">0</span>
+            </button>
+            <button id="tab-adr-btn" onclick="switchTab('adr')" class="flex-1 py-3 px-3 rounded-xl font-rajdhani font-bold text-sm sm:text-base flex items-center justify-center gap-2 transition-all duration-300 text-slate-400 hover:text-white hover:bg-slate-800/60">
+                <i class="fa-brands fa-android text-lg sm:text-xl text-emerald-400"></i>
+                <span class="tracking-wide">MOD ADR</span>
+                <span id="badge-adr-count" class="text-xs bg-slate-800 px-2 py-0.5 rounded-full font-sans text-slate-300">0</span>
+            </button>
+        </div>
 
-  <div class="pagination" id="pagination"></div>
+        <!-- SEARCH BOX -->
+        <div class="w-full relative mb-4">
+            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
+            <input type="text" id="search-input" oninput="renderLinks()" placeholder="Tìm kiếm file mod..." class="w-full bg-slate-900/80 border border-slate-800 rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm focus:outline-none focus:border-cyber-cyan text-slate-200 placeholder-slate-500 transition duration-200">
+        </div>
 
-</main>
+        <!-- CATEGORIES & LINKS DISPLAY CONTAINER -->
+        <div id="links-display-container" class="w-full space-y-5 min-h-[220px]">
+            <!-- Dynamic Content -->
+        </div>
 
-<div class="modal" id="modal" onclick="closeOutside(event)">
-  <div class="modal-box">
-    <button class="close" onclick="closeModal()">×</button>
+    </main>
 
-    <img id="modalImg" class="modal-img" alt="">
+    <!-- FOOTER -->
+    <footer class="mt-8 py-5 border-t border-slate-800/80 text-center text-xs text-slate-500 bg-cyber-dark/95">
+        <div class="max-w-2xl mx-auto px-4 space-y-1.5">
+            <p class="font-orbitron tracking-wider text-slate-400">&copy; <span id="year-display"></span> <span id="footer-site-title">FILE MOD LQ</span> - Designed for <span class="text-cyber-pink font-bold">TRONG DUNG</span></p>
+            <p class="text-[11px] text-slate-600">Hệ thống tổng hợp link vượt an toàn & uy tín</p>
+        </div>
+    </footer>
 
-    <div class="modal-content">
-      <h2 id="modalTitle"></h2>
-      <p id="modalDescription"></p>
-      <br>
-      <p id="modalMeta"></p>
+
+    <!-- ACCOUNT & PASSWORD LOGIN MODAL (Tài Khoản & Mật Khẩu) -->
+    <div id="account-auth-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-cyber-card border border-slate-700/80 w-full max-w-sm rounded-2xl p-6 shadow-2xl text-center transform scale-95 transition-transform duration-300" id="login-modal-content">
+            <div class="w-12 h-12 bg-gradient-to-tr from-cyber-neonRed to-cyber-cyan rounded-2xl flex items-center justify-center text-black text-xl mx-auto mb-3 shadow-lg glow-box-pink">
+                <i class="fa-solid fa-lock"></i>
+            </div>
+            <h3 class="font-orbitron font-black text-white text-lg">ĐĂNG NHẬP QUẢN TRỊ</h3>
+            <p class="text-xs text-slate-400 mt-1 mb-4">Vui lòng nhập Tài khoản và Mật khẩu chủ web</p>
+            
+            <form onsubmit="handleVerifyLogin(event)" class="space-y-3.5 text-left">
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">Tài khoản Admin</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-user absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-xs"></i>
+                        <input type="text" id="input-admin-user" required autocomplete="off" placeholder="Tài khoản..." class="w-full bg-slate-900 border border-slate-700 rounded-xl pl-9 pr-3 py-2.5 text-xs text-slate-100 focus:outline-none focus:border-cyber-cyan placeholder:text-slate-600">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">Mật khẩu</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-key absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-xs"></i>
+                        <input type="password" id="input-admin-pass" required autocomplete="off" placeholder="Mật khẩu..." class="w-full bg-slate-900 border border-slate-700 rounded-xl pl-9 pr-3 py-2.5 text-xs text-slate-100 focus:outline-none focus:border-cyber-cyan placeholder:text-slate-600">
+                    </div>
+                </div>
+
+                <div class="flex gap-2 pt-2">
+                    <button type="button" onclick="closeAccountAuthModal()" class="flex-1 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-xl transition">Hủy</button>
+                    <button type="submit" class="flex-1 py-2.5 bg-gradient-to-r from-cyber-cyan to-blue-500 hover:brightness-110 text-black text-xs font-extrabold font-rajdhani rounded-xl transition shadow">ĐĂNG NHẬP</button>
+                </div>
+            </form>
+        </div>
     </div>
-  </div>
-</div>
 
-<script>
-/*
-  ==========================================
-  DỮ LIỆU MẪU
-  Có thể sửa / thêm object ở đây.
-  ==========================================
-*/
 
-const DATA = [
-  {
-    title:"Adventure Collection",
-    category:"Adventure",
-    duration:"12:45",
-    views:"1.2K",
-    date:"29/09/2026",
-    description:"Một bộ sưu tập nội dung phiêu lưu mẫu.",
-    image:"https://picsum.photos/seed/adventure1/800/500"
-  },
-  {
-    title:"City Night",
-    category:"Travel",
-    duration:"08:31",
-    views:"2.8K",
-    date:"28/09/2026",
-    description:"Khám phá thành phố vào ban đêm.",
-    image:"https://picsum.photos/seed/citynight/800/500"
-  },
-  {
-    title:"Mountain Journey",
-    category:"Adventure",
-    duration:"15:20",
-    views:"3.4K",
-    date:"27/09/2026",
-    description:"Hành trình khám phá vùng núi.",
-    image:"https://picsum.photos/seed/mountain/800/500"
-  },
-  {
-    title:"Ocean Blue",
-    category:"Nature",
-    duration:"10:12",
-    views:"980",
-    date:"26/09/2026",
-    description:"Những khung cảnh thiên nhiên bên đại dương.",
-    image:"https://picsum.photos/seed/ocean/800/500"
-  },
-  {
-    title:"Forest Morning",
-    category:"Nature",
-    duration:"06:42",
-    views:"1.7K",
-    date:"25/09/2026",
-    description:"Không gian yên bình của khu rừng.",
-    image:"https://picsum.photos/seed/forest/800/500"
-  },
-  {
-    title:"Retro Collection",
-    category:"Lifestyle",
-    duration:"09:22",
-    views:"2.1K",
-    date:"24/09/2026",
-    description:"Bộ sưu tập phong cách retro.",
-    image:"https://picsum.photos/seed/retro/800/500"
-  },
-  {
-    title:"Street Photography",
-    category:"Photography",
-    duration:"11:08",
-    views:"4.2K",
-    date:"23/09/2026",
-    description:"Những khoảnh khắc đời thường trên đường phố.",
-    image:"https://picsum.photos/seed/street/800/500"
-  },
-  {
-    title:"Sunset",
-    category:"Nature",
-    duration:"05:44",
-    views:"5.3K",
-    date:"22/09/2026",
-    description:"Hoàng hôn với màu sắc tự nhiên.",
-    image:"https://picsum.photos/seed/sunset/800/500"
-  },
-  {
-    title:"Urban Architecture",
-    category:"Photography",
-    duration:"13:10",
-    views:"1.9K",
-    date:"21/09/2026",
-    description:"Kiến trúc hiện đại trong thành phố.",
-    image:"https://picsum.photos/seed/architecture/800/500"
-  },
-  {
-    title:"Road Trip",
-    category:"Travel",
-    duration:"17:20",
-    views:"3.8K",
-    date:"20/09/2026",
-    description:"Một chuyến đi đường dài đầy thú vị.",
-    image:"https://picsum.photos/seed/roadtrip/800/500"
-  },
-  {
-    title:"Calm Lake",
-    category:"Nature",
-    duration:"07:12",
-    views:"1.4K",
-    date:"19/09/2026",
-    description:"Khung cảnh hồ nước yên tĩnh.",
-    image:"https://picsum.photos/seed/lake/800/500"
-  },
-  {
-    title:"Modern Design",
-    category:"Lifestyle",
-    duration:"09:55",
-    views:"2.6K",
-    date:"18/09/2026",
-    description:"Ý tưởng thiết kế hiện đại.",
-    image:"https://picsum.photos/seed/design/800/500"
-  },
-  {
-    title:"Desert Road",
-    category:"Adventure",
-    duration:"14:02",
-    views:"2.9K",
-    date:"17/09/2026",
-    description:"Hành trình qua vùng đất khô cằn.",
-    image:"https://picsum.photos/seed/desert/800/500"
-  },
-  {
-    title:"Old Town",
-    category:"Travel",
-    duration:"08:14",
-    views:"1.1K",
-    date:"16/09/2026",
-    description:"Một khu phố cổ với kiến trúc đặc trưng.",
-    image:"https://picsum.photos/seed/oldtown/800/500"
-  },
-  {
-    title:"Minimal Space",
-    category:"Lifestyle",
-    duration:"06:20",
-    views:"870",
-    date:"15/09/2026",
-    description:"Không gian tối giản và hiện đại.",
-    image:"https://picsum.photos/seed/minimal/800/500"
-  },
-  {
-    title:"Night Photography",
-    category:"Photography",
-    duration:"12:18",
-    views:"3.1K",
-    date:"14/09/2026",
-    description:"Nhiếp ảnh đường phố về đêm.",
-    image:"https://picsum.photos/seed/nightphoto/800/500"
-  }
-];
+    <!-- FULL ADMIN PANEL MODAL -->
+    <div id="admin-panel-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-2 sm:p-4 hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-cyber-card border border-slate-700/80 w-full max-w-3xl rounded-2xl shadow-2xl flex flex-col max-h-[92vh] overflow-hidden transform scale-95 transition-transform duration-300" id="admin-panel-content">
+            
+            <!-- Modal Header -->
+            <div class="px-5 py-3.5 border-b border-slate-800 flex justify-between items-center bg-slate-900/60">
+                <div class="flex items-center space-x-2">
+                    <div class="w-7 h-7 rounded-lg bg-gradient-to-r from-cyber-cyan to-cyber-pink flex items-center justify-center text-black text-xs font-bold">
+                        <i class="fa-solid fa-sliders"></i>
+                    </div>
+                    <h3 class="font-orbitron font-bold text-white text-base">BẢNG QUẢN TRỊ ADMIN (TRONG DUNG)</h3>
+                </div>
+                <button onclick="closeAdminPanelModal()" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-400 hover:text-white transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
 
-/*
-  ==========================================
-  CONFIG
-  ==========================================
-*/
+            <!-- Admin Navigation Tabs -->
+            <div class="flex border-b border-slate-800 bg-slate-950/40 text-xs font-rajdhani font-bold px-3 pt-2 gap-1 overflow-x-auto">
+                <button id="adm-tab-links-btn" onclick="switchAdminTab('links')" class="py-2 px-3.5 rounded-t-lg border-b-2 border-cyber-cyan text-cyber-cyan bg-slate-800/60 flex items-center gap-1.5">
+                    <i class="fa-solid fa-link"></i> Quản Lý Link Mod
+                </button>
+                <button id="adm-tab-cats-btn" onclick="switchAdminTab('cats')" class="py-2 px-3.5 rounded-t-lg border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-1.5">
+                    <i class="fa-solid fa-folder-plus"></i> Quản Lý Mục
+                </button>
+                <button id="adm-tab-settings-btn" onclick="switchAdminTab('settings')" class="py-2 px-3.5 rounded-t-lg border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-1.5">
+                    <i class="fa-solid fa-gear"></i> Đổi Mật Khẩu & Trang Web
+                </button>
+            </div>
 
-const PER_PAGE = 8;
+            <!-- Modal Scrollable Content Area -->
+            <div class="p-4 sm:p-5 overflow-y-auto flex-1 space-y-5 bg-slate-950/20">
 
-let currentPage = 1;
-let currentCategory = "All";
-let currentSearch = "";
+                <!-- TAB 1: LINK MANAGER -->
+                <div id="adm-sec-links" class="space-y-4">
+                    <!-- Form Create/Edit Link -->
+                    <div class="bg-slate-900/80 rounded-xl p-4 border border-slate-800">
+                        <div class="flex justify-between items-center mb-3 pb-2 border-b border-slate-800">
+                            <h4 id="link-form-title" class="font-rajdhani font-bold text-cyber-cyan text-sm sm:text-base flex items-center gap-2">
+                                <i class="fa-solid fa-plus-circle"></i> THÊM LINK MOD MỚI
+                            </h4>
+                            <button id="link-cancel-edit-btn" onclick="resetLinkForm()" class="text-xs text-rose-400 hover:underline hidden">
+                                <i class="fa-solid fa-xmark mr-1"></i> Hủy sửa
+                            </button>
+                        </div>
 
-/*
-  ==========================================
-  CATEGORY
-  ==========================================
-*/
+                        <form id="link-form" onsubmit="handleSaveLink(event)" class="space-y-3 text-xs">
+                            <input type="hidden" id="form-link-id" value="">
+                            <input type="hidden" id="form-link-image-base64" value="">
 
-function buildCategories(){
+                            <!-- Target Platform & Category Select -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                                <div>
+                                    <label class="block font-semibold text-slate-400 mb-1">1. Chọn Khu Vực Mod *</label>
+                                    <select id="form-link-platform" onchange="updateCategorySelectOptions()" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-cyber-cyan">
+                                        <option value="ios">🍏 Mod iOS</option>
+                                        <option value="adr">🤖 Mod Adr (Android)</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block font-semibold text-amber-400 mb-1">2. Gắn Vào Mục Cụ Thể *</label>
+                                    <select id="form-link-category" required class="w-full bg-slate-800 border border-amber-500/60 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-cyber-cyan font-bold">
+                                        <!-- Dynamic Options -->
+                                    </select>
+                                </div>
+                            </div>
 
-  const categories = [
-    "All",
-    ...new Set(DATA.map(item => item.category))
-  ];
+                            <!-- Link Title & Tag -->
+                            <div class="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                                <div class="col-span-2 sm:col-span-3">
+                                    <label class="block font-semibold text-slate-400 mb-1">Tên Link Mod Hiển Thị *</label>
+                                    <input type="text" id="form-link-title" required placeholder="Ví dụ: Mod Skin Full Hiệu Ứng S2 VIP" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-cyber-cyan">
+                                </div>
+                                <div>
+                                    <label class="block font-semibold text-slate-400 mb-1">Thẻ Huy Hiệu</label>
+                                    <select id="form-link-tag" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2 py-2 text-white focus:outline-none focus:border-cyber-cyan">
+                                        <option value="">Không tag</option>
+                                        <option value="HOT">🔥 HOT</option>
+                                        <option value="NEW">✨ NEW</option>
+                                        <option value="VIP">👑 VIP</option>
+                                    </select>
+                                </div>
+                            </div>
 
-  const box = document.getElementById("categories");
+                            <!-- URL -->
+                            <div>
+                                <label class="block font-semibold text-slate-400 mb-1">Link Vượt / Link Download *</label>
+                                <input type="url" id="form-link-url" required placeholder="https://linkvuot.com/xyz123..." class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-cyber-cyan font-mono text-[11px]">
+                            </div>
 
-  box.innerHTML = categories.map(category => `
-    <button
-      class="category ${category === "All" ? "active" : ""}"
-      onclick="setCategory('${escapeHTML(category)}', this)">
-      ${escapeHTML(category)}
-    </button>
-  `).join("");
-}
+                            <!-- Image Upload File Input -->
+                            <div>
+                                <label class="block font-semibold text-slate-400 mb-1">Tải Ảnh Thumbnail Từ Máy (Tùy chọn)</label>
+                                <div class="flex items-center gap-3">
+                                    <label class="flex-1 cursor-pointer bg-slate-800 hover:bg-slate-750 border border-dashed border-slate-600 hover:border-cyber-cyan rounded-lg p-2.5 flex items-center justify-center gap-2 transition text-slate-300">
+                                        <i class="fa-solid fa-cloud-arrow-up text-cyber-cyan text-base"></i>
+                                        <span id="link-file-label" class="text-xs truncate">Chọn ảnh từ máy...</span>
+                                        <input type="file" id="form-link-file-input" accept="image/*" onchange="handleFileImageUpload(this, 'form-link-image-base64', 'link-img-preview', 'link-file-label')" class="hidden">
+                                    </label>
+                                    <!-- Preview Image -->
+                                    <div class="w-11 h-11 rounded-lg border border-slate-700 bg-slate-900 overflow-hidden flex-shrink-0 flex items-center justify-center">
+                                        <img id="link-img-preview" src="" class="w-full h-full object-cover hidden">
+                                        <i id="link-img-placeholder" class="fa-solid fa-image text-slate-600"></i>
+                                    </div>
+                                    <button type="button" onclick="clearUploadedImage('form-link-image-base64', 'link-img-preview', 'link-img-placeholder', 'link-file-label')" class="text-xs text-slate-500 hover:text-rose-400 p-1">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
 
-function setCategory(category, button){
+                            <button type="submit" id="form-link-submit-btn" class="w-full py-2.5 bg-gradient-to-r from-cyber-cyan to-blue-500 hover:brightness-110 text-black font-rajdhani font-extrabold text-sm rounded-lg shadow transition flex items-center justify-center gap-1">
+                                <i class="fa-solid fa-floppy-disk"></i> LƯU LINK MOD VÀO MỤC
+                            </button>
+                        </form>
+                    </div>
 
-  currentCategory = category;
-  currentPage = 1;
+                    <!-- List of Existing Links -->
+                    <div>
+                        <h5 class="font-rajdhani font-bold text-white text-sm mb-2 flex items-center gap-1.5">
+                            <i class="fa-solid fa-list text-cyber-cyan"></i> DANH SÁCH LINK ĐÃ TẠO
+                        </h5>
+                        <div id="adm-links-list" class="space-y-2 max-h-[220px] overflow-y-auto pr-1">
+                            <!-- Rendered by JS -->
+                        </div>
+                    </div>
+                </div>
 
-  document
-    .querySelectorAll(".category")
-    .forEach(btn => btn.classList.remove("active"));
+                <!-- TAB 2: CATEGORY MANAGER -->
+                <div id="adm-sec-cats" class="space-y-4 hidden">
+                    <!-- Form Create/Edit Category -->
+                    <div class="bg-slate-900/80 rounded-xl p-4 border border-slate-800">
+                        <div class="flex justify-between items-center mb-3 pb-2 border-b border-slate-800">
+                            <h4 id="cat-form-title" class="font-rajdhani font-bold text-cyber-cyan text-sm sm:text-base flex items-center gap-2">
+                                <i class="fa-solid fa-folder-plus"></i> THÊM MỤC MỚI (TẠO KHU)
+                            </h4>
+                            <button id="cat-cancel-edit-btn" onclick="resetCatForm()" class="text-xs text-rose-400 hover:underline hidden">
+                                <i class="fa-solid fa-xmark mr-1"></i> Hủy sửa
+                            </button>
+                        </div>
 
-  button.classList.add("active");
+                        <form id="cat-form" onsubmit="handleSaveCategory(event)" class="space-y-3 text-xs">
+                            <input type="hidden" id="form-cat-id" value="">
+                            <input type="hidden" id="form-cat-icon-base64" value="">
 
-  render();
-}
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                                <div>
+                                    <label class="block font-semibold text-slate-400 mb-1">Khu Vực Áp Dụng *</label>
+                                    <select id="form-cat-platform" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-cyber-cyan">
+                                        <option value="ios">🍏 Mod iOS</option>
+                                        <option value="adr">🤖 Mod Adr (Android)</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block font-semibold text-slate-400 mb-1">Tên Mục Mới Tùy Chỉnh *</label>
+                                    <input type="text" id="form-cat-name" required placeholder="Ví dụ: Mod Skin VIP, Hack Cam Xa, Mod Sound..." class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-cyber-cyan">
+                                </div>
+                            </div>
 
-/*
-  ==========================================
-  FILTER
-  ==========================================
-*/
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                <div>
+                                    <label class="block font-semibold text-slate-400 mb-1">Icon Tùy Chọn (Icon FontAwesome)</label>
+                                    <input type="text" id="form-cat-icon-font" placeholder="Ví dụ: fa-shield-halved, fa-gamepad" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-cyber-cyan font-mono text-[11px]">
+                                </div>
+                                <div>
+                                    <label class="block font-semibold text-slate-400 mb-1">Hoặc Tải Ảnh Icon Từ Máy</label>
+                                    <div class="flex items-center gap-2">
+                                        <label class="flex-1 cursor-pointer bg-slate-800 hover:bg-slate-750 border border-slate-700 rounded-lg p-2 flex items-center justify-center gap-1.5 transition text-slate-300">
+                                            <i class="fa-solid fa-upload text-cyber-cyan"></i>
+                                            <span id="cat-file-label" class="text-[11px] truncate">Chọn ảnh...</span>
+                                            <input type="file" accept="image/*" onchange="handleFileImageUpload(this, 'form-cat-icon-base64', 'cat-img-preview', 'cat-file-label')" class="hidden">
+                                        </label>
+                                        <div class="w-9 h-9 rounded-lg border border-slate-700 bg-slate-900 overflow-hidden flex-shrink-0 flex items-center justify-center">
+                                            <img id="cat-img-preview" src="" class="w-full h-full object-cover hidden">
+                                            <i id="cat-img-placeholder" class="fa-solid fa-folder text-slate-600 text-xs"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-document.getElementById("search").addEventListener("input", e => {
+                            <button type="submit" id="form-cat-submit-btn" class="w-full py-2.5 bg-gradient-to-r from-cyber-cyan to-blue-500 hover:brightness-110 text-black font-rajdhani font-extrabold text-sm rounded-lg shadow transition flex items-center justify-center gap-1">
+                                <i class="fa-solid fa-folder-plus"></i> TẠO MỤC MỚI
+                            </button>
+                        </form>
+                    </div>
 
-  currentSearch = e.target.value.trim().toLowerCase();
-  currentPage = 1;
+                    <!-- Category List -->
+                    <div>
+                        <h5 class="font-rajdhani font-bold text-white text-sm mb-2 flex items-center gap-1.5">
+                            <i class="fa-solid fa-folder-tree text-cyber-cyan"></i> DANH SÁCH MỤC HIỆN CÓ
+                        </h5>
+                        <div id="adm-cats-list" class="space-y-2 max-h-[220px] overflow-y-auto pr-1">
+                            <!-- Rendered by JS -->
+                        </div>
+                    </div>
+                </div>
 
-  render();
-});
+                <!-- TAB 3: SETTINGS & ACCOUNT CONFIG -->
+                <div id="adm-sec-settings" class="space-y-4 hidden text-xs">
+                    
+                    <!-- Change Password Section -->
+                    <div class="bg-slate-900/80 rounded-xl p-4 border border-slate-800 space-y-3">
+                        <h4 class="font-rajdhani font-bold text-amber-400 text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-key"></i> ĐỔI TÀI KHOẢN & MẬT KHẨU ADMIN
+                        </h4>
 
-function getFiltered(){
+                        <form onsubmit="handleChangeAdminAccount(event)" class="space-y-2.5 max-w-md">
+                            <div>
+                                <label class="block text-slate-400 mb-1">Tài Khoản Mới</label>
+                                <input type="text" id="input-new-user" required placeholder="Nhập tài khoản mới..." class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-amber-400">
+                            </div>
+                            <div>
+                                <label class="block text-slate-400 mb-1">Mật Khẩu Mới</label>
+                                <input type="password" id="input-new-pass" required placeholder="Nhập mật khẩu mới..." class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-amber-400">
+                            </div>
+                            <button type="submit" class="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-black font-bold font-rajdhani rounded-lg transition">
+                                CẬP NHẬT TÀI KHOẢN & MẬT KHẨU
+                            </button>
+                        </form>
+                    </div>
 
-  return DATA.filter(item => {
+                    <!-- Edit Web Info & Bio Avatar Upload -->
+                    <div class="bg-slate-900/80 rounded-xl p-4 border border-slate-800 space-y-3">
+                        <h4 class="font-rajdhani font-bold text-cyber-cyan text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-globe"></i> CẤU HÌNH THÔNG TIN TRANG WEB & AVATAR
+                        </h4>
 
-    const categoryMatch =
-      currentCategory === "All" ||
-      item.category === currentCategory;
+                        <form onsubmit="handleSaveSiteConfig(event)" class="space-y-3">
+                            <input type="hidden" id="form-cfg-logo-base64" value="">
 
-    const searchMatch =
-      !currentSearch ||
-      item.title.toLowerCase().includes(currentSearch) ||
-      item.category.toLowerCase().includes(currentSearch) ||
-      item.description.toLowerCase().includes(currentSearch);
+                            <div>
+                                <label class="block text-slate-400 mb-1">Tên Web / Brand Title</label>
+                                <input type="text" id="form-cfg-title" required class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-cyber-cyan">
+                            </div>
 
-    return categoryMatch && searchMatch;
-  });
-}
+                            <!-- Avatar Logo File Upload -->
+                            <div>
+                                <label class="block text-slate-400 mb-1">Tải Logo / Avatar Mới Từ Máy</label>
+                                <div class="flex items-center gap-3">
+                                    <label class="flex-1 cursor-pointer bg-slate-800 hover:bg-slate-750 border border-dashed border-slate-600 rounded-lg p-2.5 flex items-center justify-center gap-2 transition text-slate-300">
+                                        <i class="fa-solid fa-image text-cyber-cyan text-base"></i>
+                                        <span id="logo-file-label" class="text-xs truncate">Chọn ảnh đại diện mới...</span>
+                                        <input type="file" accept="image/*" onchange="handleFileImageUpload(this, 'form-cfg-logo-base64', 'logo-img-preview', 'logo-file-label')" class="hidden">
+                                    </label>
+                                    <div class="w-12 h-12 rounded-xl border border-slate-700 bg-slate-900 overflow-hidden flex-shrink-0 flex items-center justify-center">
+                                        <img id="logo-img-preview" src="" class="w-full h-full object-cover">
+                                    </div>
+                                </div>
+                            </div>
 
-/*
-  ==========================================
-  RENDER
-  ==========================================
-*/
+                            <div>
+                                <label class="block text-slate-400 mb-1">Mô Tả Bio Ngắn</label>
+                                <textarea id="form-cfg-bio" rows="2" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-cyber-cyan"></textarea>
+                            </div>
 
-function render(){
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                                <div>
+                                    <label class="block text-slate-400 mb-1">Link Zalo Box</label>
+                                    <input type="text" id="form-cfg-zalo" placeholder="https://zalo.me/..." class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-cyber-cyan">
+                                </div>
+                                <div>
+                                    <label class="block text-slate-400 mb-1">Link Telegram</label>
+                                    <input type="text" id="form-cfg-tele" placeholder="https://t.me/..." class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-cyber-cyan">
+                                </div>
+                                <div>
+                                    <label class="block text-slate-400 mb-1">Link YouTube</label>
+                                    <input type="text" id="form-cfg-youtube" placeholder="https://youtube.com/..." class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-cyber-cyan">
+                                </div>
+                            </div>
 
-  const data = getFiltered();
+                            <button type="submit" class="w-full py-2 bg-gradient-to-r from-cyber-cyan to-blue-500 hover:brightness-110 text-black font-rajdhani font-extrabold rounded-lg transition">
+                                LƯU CẤU HÌNH TRANG
+                            </button>
+                        </form>
+                    </div>
 
-  const totalPages = Math.max(
-    1,
-    Math.ceil(data.length / PER_PAGE)
-  );
+                    <!-- Factory Reset -->
+                    <div class="pt-2 flex justify-between items-center">
+                        <button onclick="handleRestoreDefaultData()" class="text-rose-400 hover:underline flex items-center gap-1 text-[11px]">
+                            <i class="fa-solid fa-rotate-left"></i> Khôi phục dữ liệu mẫu ban đầu
+                        </button>
+                    </div>
 
-  if(currentPage > totalPages){
-    currentPage = totalPages;
-  }
+                </div>
 
-  const start = (currentPage - 1) * PER_PAGE;
+            </div>
 
-  const pageData = data.slice(
-    start,
-    start + PER_PAGE
-  );
-
-  const grid = document.getElementById("grid");
-  const empty = document.getElementById("empty");
-
-  grid.innerHTML = "";
-
-  if(!pageData.length){
-
-    empty.style.display = "block";
-
-  }else{
-
-    empty.style.display = "none";
-
-    pageData.forEach((item,index) => {
-
-      const card = document.createElement("article");
-
-      card.className = "card";
-
-      card.onclick = () => openModal(
-        start + index
-      );
-
-      card.innerHTML = `
-        <div class="thumb">
-
-          <img
-            src="${item.image}"
-            alt="${escapeHTML(item.title)}"
-            loading="lazy">
-
-          <span class="badge">
-            ${escapeHTML(item.category)}
-          </span>
-
-          <span class="duration">
-            ${escapeHTML(item.duration)}
-          </span>
-
+            <!-- Modal Footer -->
+            <div class="px-5 py-3 border-t border-slate-800 bg-slate-900/80 flex justify-end">
+                <button onclick="closeAdminPanelModal()" class="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-lg transition">
+                    Đóng Panel
+                </button>
+            </div>
         </div>
+    </div>
 
-        <div class="info">
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 bg-slate-900 text-white border border-cyber-cyan/50 px-4 py-2.5 rounded-xl shadow-2xl flex items-center gap-2 transform translate-y-20 opacity-0 transition-all duration-300 text-xs pointer-events-none">
+        <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
+        <span id="toast-msg">Thông báo...</span>
+    </div>
 
-          <div class="title">
-            ${escapeHTML(item.title)}
-          </div>
 
-          <div class="meta">
-            <span>${escapeHTML(item.views)} views</span>
-            <span>${escapeHTML(item.date)}</span>
-          </div>
+    <!-- JAVASCRIPT APP LOGIC -->
+    <script>
+        // Default SVG Fallback Data URLs
+        const defaultLogoBase64 = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23101622'/><circle cx='50' cy='50' r='35' fill='%2300f2fe'/><text x='50' y='57' font-size='22' font-weight='bold' text-anchor='middle' fill='%23000'>LQ</text></svg>";
+        const defaultLinkImgBase64 = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23182030'/><path d='M30 65 L50 35 L70 65 Z' fill='%2300f2fe'/></svg>";
 
-        </div>
-      `;
+        // INITIAL DEFAULT DATA TEMPLATE
+        const defaultState = {
+            adminAccount: {
+                username: "admin",
+                password: "2812"
+            },
+            siteConfig: {
+                title: "FILE MOD LQ",
+                ownerName: "TRONG DUNG",
+                bio: "Kênh tổng hợp Link Mod Liên Quân VIP - Vượt link an toàn & tốc độ cao.",
+                logo: defaultLogoBase64,
+                zalo: "https://zalo.me",
+                telegram: "https://t.me",
+                youtube: "https://youtube.com"
+            },
+            categories: [
+                { id: "cat-ios-1", platform: "ios", name: "MOD SKIN VIP IOS", icon: "fa-shield-halved", iconImg: "" },
+                { id: "cat-ios-2", platform: "ios", name: "FILE CAM XA IOS", icon: "fa-video", iconImg: "" },
+                { id: "cat-adr-1", platform: "adr", name: "MOD SKIN VIP ADR", icon: "fa-wand-magic-sparkles", iconImg: "" },
+                { id: "cat-adr-2", platform: "adr", name: "FILE APK MOD MENU", icon: "fa-gamepad", iconImg: "" }
+            ],
+            links: [
+                {
+                    id: "lnk-1",
+                    platform: "ios",
+                    categoryId: "cat-ios-1",
+                    title: "Mod Skin All Tướng LQ S2 [Anti-Ban iOS]",
+                    url: "https://example.com/link-vuot-ios-skin",
+                    image: defaultLinkImgBase64,
+                    tag: "HOT",
+                    views: 1890
+                },
+                {
+                    id: "lnk-2",
+                    platform: "ios",
+                    categoryId: "cat-ios-2",
+                    title: "Cam Xa iOS Max HD [Khóa Map Chuẩn]",
+                    url: "https://example.com/link-vuot-ios-camxa",
+                    image: defaultLinkImgBase64,
+                    tag: "VIP",
+                    views: 1240
+                },
+                {
+                    id: "lnk-3",
+                    platform: "adr",
+                    categoryId: "cat-adr-1",
+                    title: "Mod Skin Full Hiệu Ứng S2 Android (Không Root)",
+                    url: "https://example.com/link-vuot-adr-skin",
+                    image: defaultLinkImgBase64,
+                    tag: "NEW",
+                    views: 2980
+                },
+                {
+                    id: "lnk-4",
+                    platform: "adr",
+                    categoryId: "cat-adr-2",
+                    title: "APK Mod Menu Liên Quân V1.54 Hack Cam + Skin",
+                    url: "https://example.com/link-vuot-adr-menu",
+                    image: defaultLinkImgBase64,
+                    tag: "HOT",
+                    views: 3510
+                }
+            ]
+        };
 
-      grid.appendChild(card);
-    });
-  }
+        // Active State variables
+        let appState = {};
+        let currentTab = 'ios';
+        let currentAdminTab = 'links';
 
-  document.getElementById("count").textContent =
-    `${data.length} kết quả`;
+        // Window Init
+        window.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('year-display').textContent = new Date().getFullYear();
+            loadAppState();
+            startRealtimeClock();
+            renderApp();
+        });
 
-  renderPagination(totalPages);
-}
+        // Realtime Clock Functionality
+        function startRealtimeClock() {
+            function updateClock() {
+                const now = new Date();
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                const seconds = String(now.getSeconds()).padStart(2, '0');
+                
+                const day = String(now.getDate()).padStart(2, '0');
+                const month = String(now.getMonth() + 1).padStart(2, '0');
+                const year = now.getFullYear();
 
-/*
-  ==========================================
-  PAGINATION
-  ==========================================
-*/
+                document.getElementById('realtime-clock').textContent = `${hours}:${minutes}:${seconds}`;
+                document.getElementById('realtime-date').textContent = `${day}/${month}/${year}`;
+            }
 
-function renderPagination(totalPages){
+            updateClock();
+            setInterval(updateClock, 1000);
+        }
 
-  const pagination =
-    document.getElementById("pagination");
+        // Load state from LocalStorage
+        function loadAppState() {
+            const saved = localStorage.getItem('file_mod_lq_v5_td_data');
+            if (saved) {
+                try {
+                    appState = JSON.parse(saved);
+                } catch(e) {
+                    appState = JSON.parse(JSON.stringify(defaultState));
+                }
+            } else {
+                appState = JSON.parse(JSON.stringify(defaultState));
+                saveAppState();
+            }
+        }
 
-  if(totalPages <= 1){
+        function saveAppState() {
+            try {
+                localStorage.setItem('file_mod_lq_v5_td_data', JSON.stringify(appState));
+            } catch(err) {
+                showToast('Dung lượng lưu trữ quá giới hạn! Hãy bớt bớt dung lượng tệp ảnh.', 'error');
+            }
+        }
 
-    pagination.innerHTML = "";
-    return;
-  }
+        // Helper File Upload to Base64
+        function handleFileImageUpload(inputElement, hiddenInputId, previewImgId, labelId) {
+            const file = inputElement.files[0];
+            if (!file) return;
 
-  let html = "";
+            if (file.size > 3 * 1024 * 1024) { // 3MB Limit
+                showToast('Kích thước tệp quá lớn! Vui lòng chọn ảnh dưới 3MB', 'error');
+                inputElement.value = '';
+                return;
+            }
 
-  html += `
-    <button
-      class="page-btn"
-      onclick="goPage(${currentPage - 1})"
-      ${currentPage === 1 ? "disabled" : ""}>
-      ‹
-    </button>
-  `;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const base64Url = e.target.result;
+                document.getElementById(hiddenInputId).value = base64Url;
 
-  const pages = [];
+                const previewImg = document.getElementById(previewImgId);
+                if (previewImg) {
+                    previewImg.src = base64Url;
+                    previewImg.classList.remove('hidden');
+                }
 
-  if(totalPages <= 7){
+                const placeholder = previewImgId.replace('preview', 'placeholder');
+                const placeholderEl = document.getElementById(placeholder);
+                if (placeholderEl) placeholderEl.classList.add('hidden');
 
-    for(let i=1;i<=totalPages;i++){
-      pages.push(i);
-    }
+                if (labelId) {
+                    document.getElementById(labelId).textContent = file.name;
+                }
+            };
+            reader.readAsDataURL(file);
+        }
 
-  }else{
+        function clearUploadedImage(hiddenInputId, previewImgId, placeholderId, labelId) {
+            document.getElementById(hiddenInputId).value = '';
+            const preview = document.getElementById(previewImgId);
+            if (preview) {
+                preview.src = '';
+                preview.classList.add('hidden');
+            }
+            if (placeholderId) {
+                const ph = document.getElementById(placeholderId);
+                if (ph) ph.classList.remove('hidden');
+            }
+            if (labelId) {
+                document.getElementById(labelId).textContent = 'Chọn ảnh từ máy...';
+            }
+        }
 
-    pages.push(1);
+        // Open Login Modal
+        function handleOpenAdminTrigger() {
+            openAccountAuthModal();
+        }
 
-    if(currentPage > 3){
-      pages.push("...");
-    }
+        // Switch Main Platform Tabs: Mod iOS vs Mod Adr
+        function switchTab(platform) {
+            currentTab = platform;
 
-    const start = Math.max(2,currentPage-1);
-    const end = Math.min(totalPages-1,currentPage+1);
+            const iosBtn = document.getElementById('tab-ios-btn');
+            const adrBtn = document.getElementById('tab-adr-btn');
 
-    for(let i=start;i<=end;i++){
-      pages.push(i);
-    }
+            if (platform === 'ios') {
+                iosBtn.className = "flex-1 py-3 px-3 rounded-xl font-rajdhani font-bold text-sm sm:text-base flex items-center justify-center gap-2 transition-all duration-300 bg-gradient-to-r from-cyber-cyan to-blue-500 text-black shadow-md glow-box-cyan";
+                adrBtn.className = "flex-1 py-3 px-3 rounded-xl font-rajdhani font-bold text-sm sm:text-base flex items-center justify-center gap-2 transition-all duration-300 text-slate-400 hover:text-white hover:bg-slate-800/60";
+            } else {
+                adrBtn.className = "flex-1 py-3 px-3 rounded-xl font-rajdhani font-bold text-sm sm:text-base flex items-center justify-center gap-2 transition-all duration-300 bg-gradient-to-r from-emerald-400 to-teal-500 text-black shadow-md glow-box-cyan";
+                iosBtn.className = "flex-1 py-3 px-3 rounded-xl font-rajdhani font-bold text-sm sm:text-base flex items-center justify-center gap-2 transition-all duration-300 text-slate-400 hover:text-white hover:bg-slate-800/60";
+            }
 
-    if(currentPage < totalPages-2){
-      pages.push("...");
-    }
+            renderLinks();
+        }
 
-    pages.push(totalPages);
-  }
+        // Render Entire Client View Application
+        function renderApp() {
+            document.getElementById('site-title-display').textContent = appState.siteConfig.title;
+            document.getElementById('header-web-title').textContent = appState.siteConfig.title;
+            document.getElementById('footer-site-title').textContent = appState.siteConfig.title;
+            document.getElementById('site-bio-display').textContent = appState.siteConfig.bio;
+            
+            const logoImg = document.getElementById('site-logo-img');
+            logoImg.src = appState.siteConfig.logo || defaultLogoBase64;
 
-  pages.forEach(page => {
+            // Render Social Links
+            const socialBox = document.getElementById('social-links-container');
+            let socialHtml = '';
+            if (appState.siteConfig.zalo) {
+                socialHtml += `<a href="${escapeHtml(appState.siteConfig.zalo)}" target="_blank" class="w-8 h-8 rounded-xl bg-blue-600/30 border border-blue-500/50 text-blue-400 flex items-center justify-center text-xs hover:scale-110 transition" title="Zalo Box"><i class="fa-solid fa-comment-dots"></i></a>`;
+            }
+            if (appState.siteConfig.telegram) {
+                socialHtml += `<a href="${escapeHtml(appState.siteConfig.telegram)}" target="_blank" class="w-8 h-8 rounded-xl bg-sky-500/30 border border-sky-400/50 text-sky-300 flex items-center justify-center text-xs hover:scale-110 transition" title="Telegram"><i class="fa-brands fa-telegram"></i></a>`;
+            }
+            if (appState.siteConfig.youtube) {
+                socialHtml += `<a href="${escapeHtml(appState.siteConfig.youtube)}" target="_blank" class="w-8 h-8 rounded-xl bg-rose-600/30 border border-rose-500/50 text-rose-400 flex items-center justify-center text-xs hover:scale-110 transition" title="YouTube"><i class="fa-brands fa-youtube"></i></a>`;
+            }
+            socialBox.innerHTML = socialHtml;
 
-    if(page === "..."){
+            // Update Counters
+            const iosCount = appState.links.filter(i => i.platform === 'ios').length;
+            const adrCount = appState.links.filter(i => i.platform === 'adr').length;
 
-      html += `
-        <span class="page-btn"
-          style="cursor:default">
-          …
-        </span>
-      `;
+            document.getElementById('badge-ios-count').textContent = iosCount;
+            document.getElementById('badge-adr-count').textContent = adrCount;
 
-    }else{
+            renderLinks();
+        }
 
-      html += `
-        <button
-          class="page-btn ${page === currentPage ? "active" : ""}"
-          onclick="goPage(${page})">
-          ${page}
-        </button>
-      `;
-    }
-  });
+        function renderLinks() {
+            const container = document.getElementById('links-display-container');
+            const searchQuery = (document.getElementById('search-input').value || '').toLowerCase().trim();
 
-  html += `
-    <button
-      class="page-btn"
-      onclick="goPage(${currentPage + 1})"
-      ${currentPage === totalPages ? "disabled" : ""}>
-      ›
-    </button>
-  `;
+            const activeCats = appState.categories.filter(c => c.platform === currentTab);
+            let activeLinks = appState.links.filter(l => l.platform === currentTab);
 
-  pagination.innerHTML = html;
-}
+            if (searchQuery) {
+                activeLinks = activeLinks.filter(l => l.title.toLowerCase().includes(searchQuery));
+            }
 
-function goPage(page){
+            if (activeCats.length === 0 && activeLinks.length === 0) {
+                container.innerHTML = `
+                    <div class="bg-cyber-card/60 border border-slate-800 rounded-2xl p-8 text-center my-6">
+                        <i class="fa-solid fa-folder-open text-4xl text-slate-600 mb-2"></i>
+                        <p class="text-slate-400 text-sm">Chưa có mục hoặc link mod nào ở khu vực này!</p>
+                        <p class="text-slate-600 text-xs mt-1">Đăng nhập Admin để bắt đầu thêm mục & link mới.</p>
+                    </div>
+                `;
+                return;
+            }
 
-  const totalPages = Math.max(
-    1,
-    Math.ceil(getFiltered().length / PER_PAGE)
-  );
+            let html = '';
 
-  if(page < 1 || page > totalPages){
-    return;
-  }
+            // Group links by Category
+            activeCats.forEach(cat => {
+                const catLinks = activeLinks.filter(l => l.categoryId === cat.id);
+                
+                let iconMarkup = `<i class="fa-solid ${escapeHtml(cat.icon || 'fa-folder-open')} ${currentTab === 'ios' ? 'text-cyber-cyan' : 'text-emerald-400'} text-sm"></i>`;
+                if (cat.iconImg && cat.iconImg.trim() !== '') {
+                    iconMarkup = `<img src="${escapeHtml(cat.iconImg)}" class="w-4 h-4 rounded object-cover">`;
+                }
 
-  currentPage = page;
+                html += `
+                    <div class="mb-5">
+                        <!-- Category Header -->
+                        <div class="flex items-center space-x-2 mb-2.5 px-1">
+                            ${iconMarkup}
+                            <h3 class="font-rajdhani font-extrabold text-sm sm:text-base text-slate-200 uppercase tracking-wider">${escapeHtml(cat.name)}</h3>
+                            <span class="text-[10px] text-slate-400 bg-slate-800/80 px-2 py-0.5 rounded-full font-mono">${catLinks.length}</span>
+                        </div>
 
-  render();
+                        <!-- Links -->
+                        ${catLinks.length > 0 ? `
+                            <div class="space-y-2.5">
+                                ${catLinks.map(link => createLinkItemTemplate(link)).join('')}
+                            </div>
+                        ` : `
+                            <p class="text-[11px] text-slate-600 italic px-2">Chưa có link trong mục này...</p>
+                        `}
+                    </div>
+                `;
+            });
 
-  window.scrollTo({
-    top:0,
-    behavior:"smooth"
-  });
-}
+            // Display uncategorized links if any
+            const uncategorizedLinks = activeLinks.filter(l => !activeCats.some(c => c.id === l.categoryId));
+            if (uncategorizedLinks.length > 0) {
+                html += `
+                    <div class="mb-5">
+                        <div class="flex items-center space-x-2 mb-2.5 px-1">
+                            <i class="fa-solid fa-list text-slate-400 text-sm"></i>
+                            <h3 class="font-rajdhani font-extrabold text-sm sm:text-base text-slate-300 uppercase">CHƯA PHÂN MỤC</h3>
+                        </div>
+                        <div class="space-y-2.5">
+                            ${uncategorizedLinks.map(link => createLinkItemTemplate(link)).join('')}
+                        </div>
+                    </div>
+                `;
+            }
 
-/*
-  ==========================================
-  MODAL
-  ==========================================
-*/
+            container.innerHTML = html;
+        }
 
-function openModal(index){
+        // Link Item HTML Generator
+        function createLinkItemTemplate(link) {
+            const imgSrc = link.image && link.image.trim() !== '' ? link.image : defaultLinkImgBase64;
+            const accentGlow = currentTab === 'ios' ? 'hover:border-cyber-cyan/60' : 'hover:border-emerald-400/60';
+            const btnGradient = currentTab === 'ios' 
+                ? 'bg-gradient-to-r from-cyber-cyan to-blue-500 text-black hover:brightness-110' 
+                : 'bg-gradient-to-r from-emerald-400 to-teal-500 text-black hover:brightness-110';
 
-  const data = getFiltered();
-  const item = data[index];
+            let tagBadge = '';
+            if (link.tag === 'HOT') {
+                tagBadge = `<span class="text-[9px] font-bold bg-rose-950 text-rose-400 border border-rose-800/60 px-1.5 py-0.2 rounded">🔥 HOT</span>`;
+            } else if (link.tag === 'NEW') {
+                tagBadge = `<span class="text-[9px] font-bold bg-cyan-950 text-cyber-cyan border border-cyber-cyan/60 px-1.5 py-0.2 rounded">✨ NEW</span>`;
+            } else if (link.tag === 'VIP') {
+                tagBadge = `<span class="text-[9px] font-bold bg-amber-950 text-amber-400 border border-amber-800/60 px-1.5 py-0.2 rounded">👑 VIP</span>`;
+            }
 
-  if(!item) return;
+            return `
+                <div class="group bg-cyber-card hover:bg-cyber-cardHover border border-slate-800/80 ${accentGlow} p-3 rounded-2xl transition duration-300 flex items-center gap-3 shadow-md">
+                    <!-- Base64 Image Thumbnail -->
+                    <img src="${escapeHtml(imgSrc)}" alt="Thumb" class="w-12 h-12 sm:w-13 sm:h-13 rounded-xl object-cover border border-slate-700/80 flex-shrink-0 group-hover:scale-105 transition duration-300">
 
-  document.getElementById("modalImg").src =
-    item.image;
+                    <!-- Title & Info -->
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-1.5 mb-0.5">
+                            ${tagBadge}
+                            <span class="text-[10px] text-slate-500 flex items-center gap-1">
+                                <i class="fa-solid fa-eye text-[9px] text-cyber-cyan"></i> ${(link.views || 0) + 120}
+                            </span>
+                        </div>
+                        <h4 class="font-sans font-semibold text-xs sm:text-sm text-slate-100 group-hover:text-white line-clamp-2 leading-snug">
+                            ${escapeHtml(link.title)}
+                        </h4>
+                    </div>
 
-  document.getElementById("modalTitle").textContent =
-    item.title;
+                    <!-- Action Button -->
+                    <a href="${escapeHtml(link.url)}" onclick="incrementView('${link.id}')" target="_blank" rel="noopener noreferrer" class="${btnGradient} px-3.5 py-2 rounded-xl text-xs sm:text-sm font-rajdhani font-bold flex items-center gap-1.5 flex-shrink-0 shadow transition active:scale-95">
+                        <span>VƯỢT LINK</span>
+                        <i class="fa-solid fa-angles-right text-xs"></i>
+                    </a>
+                </div>
+            `;
+        }
 
-  document.getElementById("modalDescription").textContent =
-    item.description;
+        function incrementView(id) {
+            const link = appState.links.find(l => l.id === id);
+            if (link) {
+                link.views = (link.views || 0) + 1;
+                saveAppState();
+            }
+        }
 
-  document.getElementById("modalMeta").textContent =
-    `${item.category} • ${item.duration} • ${item.views} views • ${item.date}`;
+        // ================= AUTHENTICATION LOGIC =================
 
-  document.getElementById("modal")
-    .classList.add("show");
+        function openAccountAuthModal() {
+            const modal = document.getElementById('account-auth-modal');
+            const content = document.getElementById('login-modal-content');
+            document.getElementById('input-admin-user').value = '';
+            document.getElementById('input-admin-pass').value = '';
 
-  document.body.style.overflow = "hidden";
-}
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                content.classList.remove('scale-95');
+                document.getElementById('input-admin-user').focus();
+            }, 10);
+        }
 
-function closeModal(){
+        function closeAccountAuthModal() {
+            const modal = document.getElementById('account-auth-modal');
+            const content = document.getElementById('login-modal-content');
+            modal.classList.add('opacity-0');
+            content.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
 
-  document.getElementById("modal")
-    .classList.remove("show");
+        function handleVerifyLogin(e) {
+            e.preventDefault();
+            const user = document.getElementById('input-admin-user').value.trim();
+            const pass = document.getElementById('input-admin-pass').value.trim();
 
-  document.body.style.overflow = "";
-}
+            const targetUser = appState.adminAccount?.username || 'admin';
+            const targetPass = appState.adminAccount?.password || '2812';
 
-function closeOutside(event){
+            if (user === targetUser && pass === targetPass) {
+                closeAccountAuthModal();
+                setTimeout(() => {
+                    openAdminPanelModal();
+                    showToast('Đăng nhập thành công! Chào mừng TRONG DUNG.');
+                }, 300);
+            } else {
+                showToast('Tài khoản hoặc Mật khẩu không chính xác!', 'error');
+            }
+        }
 
-  if(event.target.id === "modal"){
-    closeModal();
-  }
-}
+        function openAdminPanelModal() {
+            const modal = document.getElementById('admin-panel-modal');
+            const content = document.getElementById('admin-panel-content');
 
-document.addEventListener("keydown", event => {
+            updateCategorySelectOptions();
+            renderAdminLinksList();
+            renderAdminCatsList();
+            fillSiteConfigForm();
 
-  if(event.key === "Escape"){
-    closeModal();
-  }
-});
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                content.classList.remove('scale-95');
+            }, 10);
+        }
 
-/*
-  ==========================================
-  UTILITIES
-  ==========================================
-*/
+        function closeAdminPanelModal() {
+            const modal = document.getElementById('admin-panel-modal');
+            const content = document.getElementById('admin-panel-content');
+            modal.classList.add('opacity-0');
+            content.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
 
-function escapeHTML(value){
+        function switchAdminTab(tabName) {
+            currentAdminTab = tabName;
+            
+            const linksBtn = document.getElementById('adm-tab-links-btn');
+            const catsBtn = document.getElementById('adm-tab-cats-btn');
+            const settingsBtn = document.getElementById('adm-tab-settings-btn');
 
-  return String(value)
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
-}
+            const linksSec = document.getElementById('adm-sec-links');
+            const catsSec = document.getElementById('adm-sec-cats');
+            const settingsSec = document.getElementById('adm-sec-settings');
 
-function scrollToTop(){
+            [linksBtn, catsBtn, settingsBtn].forEach(btn => {
+                btn.className = "py-2 px-3.5 rounded-t-lg border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-1.5";
+            });
+            [linksSec, catsSec, settingsSec].forEach(sec => sec.classList.add('hidden'));
 
-  window.scrollTo({
-    top:0,
-    behavior:"smooth"
-  });
-}
+            if (tabName === 'links') {
+                linksBtn.className = "py-2 px-3.5 rounded-t-lg border-b-2 border-cyber-cyan text-cyber-cyan bg-slate-800/60 flex items-center gap-1.5";
+                linksSec.classList.remove('hidden');
+            } else if (tabName === 'cats') {
+                catsBtn.className = "py-2 px-3.5 rounded-t-lg border-b-2 border-cyber-cyan text-cyber-cyan bg-slate-800/60 flex items-center gap-1.5";
+                catsSec.classList.remove('hidden');
+            } else {
+                settingsBtn.className = "py-2 px-3.5 rounded-t-lg border-b-2 border-cyber-cyan text-cyber-cyan bg-slate-800/60 flex items-center gap-1.5";
+                settingsSec.classList.remove('hidden');
+            }
+        }
 
-/*
-  ==========================================
-  START
-  ==========================================
-*/
+        function updateCategorySelectOptions() {
+            const platform = document.getElementById('form-link-platform').value;
+            const select = document.getElementById('form-link-category');
+            
+            const filteredCats = appState.categories.filter(c => c.platform === platform);
+            
+            if (filteredCats.length === 0) {
+                select.innerHTML = `<option value="">⚠️ Chưa có mục nào (Hãy sang Tab "Quản Lý Mục" tạo trước)</option>`;
+            } else {
+                select.innerHTML = filteredCats.map(c => `
+                    <option value="${c.id}">📁 ${escapeHtml(c.name)}</option>
+                `).join('');
+            }
+        }
 
-buildCategories();
-render();
+        // SAVE & MANAGE CATEGORY
+        function handleSaveCategory(e) {
+            e.preventDefault();
+            const catId = document.getElementById('form-cat-id').value;
+            const platform = document.getElementById('form-cat-platform').value;
+            const name = document.getElementById('form-cat-name').value.trim();
+            const iconFont = document.getElementById('form-cat-icon-font').value.trim();
+            const iconImg = document.getElementById('form-cat-icon-base64').value;
 
-</script>
+            if (!name) return;
 
+            if (catId) {
+                const index = appState.categories.findIndex(c => c.id === catId);
+                if (index !== -1) {
+                    appState.categories[index] = { ...appState.categories[index], platform, name, icon: iconFont, iconImg };
+                    showToast('Đã cập nhật mục!');
+                }
+            } else {
+                const newCat = {
+                    id: 'cat-' + Date.now(),
+                    platform,
+                    name,
+                    icon: iconFont || 'fa-folder-open',
+                    iconImg: iconImg || ''
+                };
+                appState.categories.push(newCat);
+                showToast('Tạo mục mới thành công!');
+            }
+
+            saveAppState();
+            resetCatForm();
+            updateCategorySelectOptions();
+            renderAdminCatsList();
+            renderApp();
+        }
+
+        function editCategory(id) {
+            const cat = appState.categories.find(c => c.id === id);
+            if (!cat) return;
+
+            document.getElementById('form-cat-id').value = cat.id;
+            document.getElementById('form-cat-platform').value = cat.platform;
+            document.getElementById('form-cat-name').value = cat.name;
+            document.getElementById('form-cat-icon-font').value = cat.icon || '';
+            document.getElementById('form-cat-icon-base64').value = cat.iconImg || '';
+
+            const previewImg = document.getElementById('cat-img-preview');
+            const placeholder = document.getElementById('cat-img-placeholder');
+            if (cat.iconImg) {
+                previewImg.src = cat.iconImg;
+                previewImg.classList.remove('hidden');
+                placeholder.classList.add('hidden');
+            } else {
+                previewImg.classList.add('hidden');
+                placeholder.classList.remove('hidden');
+            }
+
+            document.getElementById('cat-form-title').innerHTML = `<i class="fa-solid fa-pen-to-square"></i> CHỈNH SỬA MỤC`;
+            document.getElementById('form-cat-submit-btn').innerHTML = `<i class="fa-solid fa-check"></i> CẬP NHẬT MỤC`;
+            document.getElementById('cat-cancel-edit-btn').classList.remove('hidden');
+        }
+
+        function resetCatForm() {
+            document.getElementById('cat-form').reset();
+            document.getElementById('form-cat-id').value = '';
+            document.getElementById('form-cat-icon-base64').value = '';
+            clearUploadedImage('form-cat-icon-base64', 'cat-img-preview', 'cat-img-placeholder', 'cat-file-label');
+            document.getElementById('cat-form-title').innerHTML = `<i class="fa-solid fa-folder-plus"></i> THÊM MỤC MỚI (TẠO KHU)`;
+            document.getElementById('form-cat-submit-btn').innerHTML = `<i class="fa-solid fa-folder-plus"></i> TẠO MỤC MỚI`;
+            document.getElementById('cat-cancel-edit-btn').classList.add('hidden');
+        }
+
+        function deleteCategory(id) {
+            if (confirm('Xóa mục này? Các link thuộc mục này sẽ chuyển thành chưa phân mục.')) {
+                appState.categories = appState.categories.filter(c => c.id !== id);
+                saveAppState();
+                updateCategorySelectOptions();
+                renderAdminCatsList();
+                renderApp();
+                showToast('Đã xóa mục!', 'error');
+            }
+        }
+
+        function renderAdminCatsList() {
+            const container = document.getElementById('adm-cats-list');
+            if (appState.categories.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-500 text-center py-3">Chưa có mục nào!</p>`;
+                return;
+            }
+
+            container.innerHTML = appState.categories.map(cat => `
+                <div class="bg-slate-800/80 border border-slate-700/70 p-2.5 rounded-xl flex items-center justify-between gap-2 text-xs">
+                    <div class="flex items-center gap-2 min-w-0 flex-1">
+                        <span class="px-2 py-0.5 rounded font-bold text-[10px] uppercase ${cat.platform === 'ios' ? 'bg-cyan-950 text-cyber-cyan border border-cyber-cyan/40' : 'bg-emerald-950 text-emerald-400 border border-emerald-800/50'}">
+                            ${cat.platform === 'ios' ? 'iOS' : 'ADR'}
+                        </span>
+                        ${cat.iconImg ? `<img src="${escapeHtml(cat.iconImg)}" class="w-4 h-4 rounded object-cover">` : `<i class="fa-solid ${escapeHtml(cat.icon || 'fa-folder-open')} text-slate-400"></i>`}
+                        <span class="text-slate-200 font-semibold truncate">${escapeHtml(cat.name)}</span>
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <button onclick="editCategory('${cat.id}')" title="Sửa" class="w-7 h-7 rounded bg-slate-700 hover:bg-cyber-cyan hover:text-black text-slate-300 flex items-center justify-center transition">
+                            <i class="fa-solid fa-pen"></i>
+                        </button>
+                        <button onclick="deleteCategory('${cat.id}')" title="Xóa" class="w-7 h-7 rounded bg-slate-700 hover:bg-rose-600 text-slate-300 hover:text-white flex items-center justify-center transition">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // SAVE & MANAGE LINKS
+        function handleSaveLink(e) {
+            e.preventDefault();
+            const linkId = document.getElementById('form-link-id').value;
+            const platform = document.getElementById('form-link-platform').value;
+            const categoryId = document.getElementById('form-link-category').value;
+            const title = document.getElementById('form-link-title').value.trim();
+            const tag = document.getElementById('form-link-tag').value;
+            const url = document.getElementById('form-link-url').value.trim();
+            const imageBase64 = document.getElementById('form-link-image-base64').value;
+
+            if (!title || !url) return;
+
+            if (linkId) {
+                const index = appState.links.findIndex(l => l.id === linkId);
+                if (index !== -1) {
+                    appState.links[index] = { 
+                        ...appState.links[index], 
+                        platform, 
+                        categoryId, 
+                        title, 
+                        tag, 
+                        url, 
+                        image: imageBase64 || appState.links[index].image 
+                    };
+                    showToast('Đã cập nhật link mod!');
+                }
+            } else {
+                const newLink = {
+                    id: 'lnk-' + Date.now(),
+                    platform,
+                    categoryId,
+                    title,
+                    tag,
+                    url,
+                    image: imageBase64 || defaultLinkImgBase64,
+                    views: 0
+                };
+                appState.links.unshift(newLink);
+                showToast('Đã gắn link mod vào mục thành công!');
+            }
+
+            saveAppState();
+            resetLinkForm();
+            renderAdminLinksList();
+            renderApp();
+        }
+
+        function editLink(id) {
+            const link = appState.links.find(l => l.id === id);
+            if (!link) return;
+
+            document.getElementById('form-link-id').value = link.id;
+            document.getElementById('form-link-platform').value = link.platform;
+            updateCategorySelectOptions();
+            document.getElementById('form-link-category').value = link.categoryId || '';
+            document.getElementById('form-link-title').value = link.title;
+            document.getElementById('form-link-tag').value = link.tag || '';
+            document.getElementById('form-link-url').value = link.url;
+            document.getElementById('form-link-image-base64').value = link.image || '';
+
+            const previewImg = document.getElementById('link-img-preview');
+            const placeholder = document.getElementById('link-img-placeholder');
+            if (link.image) {
+                previewImg.src = link.image;
+                previewImg.classList.remove('hidden');
+                placeholder.classList.add('hidden');
+            } else {
+                previewImg.classList.add('hidden');
+                placeholder.classList.remove('hidden');
+            }
+
+            document.getElementById('link-form-title').innerHTML = `<i class="fa-solid fa-pen-to-square"></i> CHỈNH SỬA LINK MOD`;
+            document.getElementById('form-link-submit-btn').innerHTML = `<i class="fa-solid fa-check"></i> CẬP NHẬT LINK`;
+            document.getElementById('link-cancel-edit-btn').classList.remove('hidden');
+        }
+
+        function resetLinkForm() {
+            document.getElementById('link-form').reset();
+            document.getElementById('form-link-id').value = '';
+            document.getElementById('form-link-platform').value = currentTab;
+            updateCategorySelectOptions();
+            clearUploadedImage('form-link-image-base64', 'link-img-preview', 'link-img-placeholder', 'link-file-label');
+            document.getElementById('link-form-title').innerHTML = `<i class="fa-solid fa-plus-circle"></i> THÊM LINK MOD MỚI`;
+            document.getElementById('form-link-submit-btn').innerHTML = `<i class="fa-solid fa-floppy-disk"></i> LƯU LINK MOD VÀO MỤC`;
+            document.getElementById('link-cancel-edit-btn').classList.add('hidden');
+        }
+
+        function deleteLink(id) {
+            if (confirm('Xóa link này?')) {
+                appState.links = appState.links.filter(l => l.id !== id);
+                saveAppState();
+                renderAdminLinksList();
+                renderApp();
+                showToast('Đã xóa link!', 'error');
+            }
+        }
+
+        function renderAdminLinksList() {
+            const container = document.getElementById('adm-links-list');
+            if (appState.links.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-500 text-center py-3">Chưa có link nào!</p>`;
+                return;
+            }
+
+            container.innerHTML = appState.links.map(link => {
+                const cat = appState.categories.find(c => c.id === link.categoryId);
+                return `
+                    <div class="bg-slate-800/80 border border-slate-700/70 p-2.5 rounded-xl flex items-center justify-between gap-2 text-xs">
+                        <div class="flex items-center gap-2 min-w-0 flex-1">
+                            <span class="px-2 py-0.5 rounded font-bold text-[10px] uppercase ${link.platform === 'ios' ? 'bg-cyan-950 text-cyber-cyan border border-cyber-cyan/40' : 'bg-emerald-950 text-emerald-400 border border-emerald-800/50'}">
+                                ${link.platform === 'ios' ? 'iOS' : 'ADR'}
+                            </span>
+                            <div class="truncate">
+                                <p class="text-slate-200 font-medium truncate">${escapeHtml(link.title)}</p>
+                                <p class="text-[10px] text-amber-400 font-semibold truncate">📁 Mục: ${cat ? escapeHtml(cat.name) : 'Chưa gắn'}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <button onclick="editLink('${link.id}')" title="Sửa" class="w-7 h-7 rounded bg-slate-700 hover:bg-cyber-cyan hover:text-black text-slate-300 flex items-center justify-center transition">
+                                <i class="fa-solid fa-pen"></i>
+                            </button>
+                            <button onclick="deleteLink('${link.id}')" title="Xóa" class="w-7 h-7 rounded bg-slate-700 hover:bg-rose-600 text-slate-300 hover:text-white flex items-center justify-center transition">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // SETTINGS & SITE LOGO CONFIG
+        function handleChangeAdminAccount(e) {
+            e.preventDefault();
+            const newUser = document.getElementById('input-new-user').value.trim();
+            const newPass = document.getElementById('input-new-pass').value.trim();
+
+            if (newUser && newPass) {
+                appState.adminAccount = { username: newUser, password: newPass };
+                saveAppState();
+                document.getElementById('input-new-user').value = '';
+                document.getElementById('input-new-pass').value = '';
+                showToast('Đã đổi Tài Khoản & Mật Khẩu Admin thành công!');
+            }
+        }
+
+        function fillSiteConfigForm() {
+            document.getElementById('form-cfg-title').value = appState.siteConfig.title || '';
+            document.getElementById('form-cfg-logo-base64').value = appState.siteConfig.logo || '';
+            document.getElementById('logo-img-preview').src = appState.siteConfig.logo || defaultLogoBase64;
+            document.getElementById('form-cfg-bio').value = appState.siteConfig.bio || '';
+            document.getElementById('form-cfg-zalo').value = appState.siteConfig.zalo || '';
+            document.getElementById('form-cfg-tele').value = appState.siteConfig.telegram || '';
+            document.getElementById('form-cfg-youtube').value = appState.siteConfig.youtube || '';
+        }
+
+        function handleSaveSiteConfig(e) {
+            e.preventDefault();
+            appState.siteConfig.title = document.getElementById('form-cfg-title').value.trim();
+            
+            const uploadedLogo = document.getElementById('form-cfg-logo-base64').value;
+            if (uploadedLogo) {
+                appState.siteConfig.logo = uploadedLogo;
+            }
+
+            appState.siteConfig.bio = document.getElementById('form-cfg-bio').value.trim();
+            appState.siteConfig.zalo = document.getElementById('form-cfg-zalo').value.trim();
+            appState.siteConfig.telegram = document.getElementById('form-cfg-tele').value.trim();
+            appState.siteConfig.youtube = document.getElementById('form-cfg-youtube').value.trim();
+
+            saveAppState();
+            renderApp();
+            showToast('Đã lưu cấu hình thông tin web!');
+        }
+
+        function handleRestoreDefaultData() {
+            if (confirm('Khôi phục toàn bộ dữ liệu mẫu ban đầu?')) {
+                appState = JSON.parse(JSON.stringify(defaultState));
+                saveAppState();
+                renderApp();
+                closeAdminPanelModal();
+                showToast('Đã khôi phục dữ liệu ban đầu!');
+            }
+        }
+
+        // Toast Helper
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-msg');
+            const toastIcon = document.getElementById('toast-icon');
+
+            toastMsg.textContent = message;
+
+            if (type === 'error') {
+                toastIcon.className = "fa-solid fa-circle-exclamation text-rose-400 text-base";
+                toast.classList.add('border-rose-500/50');
+            } else {
+                toastIcon.className = "fa-solid fa-circle-check text-emerald-400 text-base";
+                toast.classList.remove('border-rose-500/50');
+            }
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 2500);
+        }
+
+        // HTML Escape Function
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+    </script>
 </body>
 </html>
