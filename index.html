@@ -9,7 +9,7 @@
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <script>
         tailwind.config = {
@@ -31,12 +31,14 @@
                     },
                     fontFamily: {
                         orbitron: ['Orbitron', 'sans-serif'],
-                        rajdhani: ['Rajdhani', 'sans-serif']
+                        rajdhani: ['Rajdhani', 'sans-serif'],
+                        sans: ['Inter', 'sans-serif']
                     }
                 }
             }
         }
     </script>
+
     <style>
         body {
             background-color: #06070a;
@@ -121,15 +123,15 @@
         <!-- Social Icons -->
         <div class="flex justify-center items-center gap-3 mt-2">
             <!-- Youtube Button -->
-            <a href="https://youtube.com/@trdunxx?si=tGWPnDMwmzyX1BaU" target="_blank" class="w-10 h-10 rounded-xl bg-red-600/20 border border-red-500/40 text-red-500 hover:bg-red-600 hover:text-white flex items-center justify-center transition-all shadow-lg hover:shadow-red-600/50">
+            <a href="https://youtube.com/@trdunxx?si=tGWPnDMwmzyX1BaU" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-xl bg-red-600/20 border border-red-500/40 text-red-500 hover:bg-red-600 hover:text-white flex items-center justify-center transition-all shadow-lg hover:shadow-red-600/50" title="Kênh YouTube TRONG DUNG">
                 <i class="fa-brands fa-youtube text-lg"></i>
             </a>
             <!-- Telegram Button -->
-            <a href="#" target="_blank" class="w-10 h-10 rounded-xl bg-sky-500/20 border border-sky-400/40 text-sky-400 hover:bg-sky-500 hover:text-white flex items-center justify-center transition-all shadow-lg hover:shadow-sky-500/50">
+            <a href="#" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-xl bg-sky-500/20 border border-sky-400/40 text-sky-400 hover:bg-sky-500 hover:text-white flex items-center justify-center transition-all shadow-lg hover:shadow-sky-500/50" title="Telegram">
                 <i class="fa-brands fa-telegram text-lg"></i>
             </a>
             <!-- Zalo Button -->
-            <a href="#" target="_blank" class="w-10 h-10 rounded-xl bg-blue-600/20 border border-blue-500/40 text-blue-400 hover:bg-blue-600 hover:text-white flex items-center justify-center font-bold text-xs transition-all shadow-lg hover:shadow-blue-600/50">
+            <a href="#" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-xl bg-blue-600/20 border border-blue-500/40 text-blue-400 hover:bg-blue-600 hover:text-white flex items-center justify-center font-bold text-xs transition-all shadow-lg hover:shadow-blue-600/50" title="Zalo">
                 ZALO
             </a>
         </div>
@@ -150,16 +152,16 @@
             </button>
         </div>
 
-        <!-- Dynamic Content List -->
+        <!-- Dynamic Content List Container -->
         <div id="contentContainer" class="space-y-6">
-            <!-- Content render by JS -->
+            <!-- Content rendered dynamically via JavaScript -->
         </div>
 
     </main>
 
     <!-- JAVASCRIPT -->
     <script>
-        // STATIC DATA STRUCTURE
+        // STRICT SEPARATED DATA FOR IOS AND ANDROID
         const FILE_DATA = {
             ios: [
                 {
@@ -191,7 +193,7 @@
 
         let currentPlatform = 'ios';
 
-        // Live Clock
+        // Live Realtime Clock
         function updateClock() {
             const now = new Date();
             const timeStr = now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
@@ -217,7 +219,7 @@
             renderContent();
         }
 
-        // Render List Files
+        // Render List Files for Current Selected Platform
         function renderContent() {
             const container = document.getElementById('contentContainer');
             const categories = FILE_DATA[currentPlatform] || [];
@@ -246,16 +248,19 @@
 
                     linksHtml += `
                         <div class="flex items-center justify-between gap-3 p-3 bg-dark-input/70 rounded-xl border border-dark-border/60 hover:border-neon-blue/50 transition-all">
-                            <div class="flex-1 pr-2">
-                                <div class="flex items-center gap-2 mb-1">
-                                    <span class="inline-block px-1.5 py-0.5 rounded text-[10px] font-bold border ${badgeColor}">${link.badge}</span>
-                                    <h5 class="text-sm font-bold text-white line-clamp-1">${link.title}</h5>
+                            <!-- Left File Details Container: Flex-1 and whitespace-normal for full title visibility -->
+                            <div class="flex-1 min-w-0 pr-1">
+                                <div class="flex flex-wrap items-center gap-2 mb-1">
+                                    <span class="inline-block px-1.5 py-0.5 rounded text-[10px] font-bold border ${badgeColor} shrink-0">${link.badge}</span>
+                                    <!-- Full text title without truncation -->
+                                    <h5 class="text-sm sm:text-base font-bold text-white leading-snug break-words font-sans">${escapeHtml(link.title)}</h5>
                                 </div>
-                                <span class="text-[11px] text-gray-400 flex items-center gap-1">
-                                    <i class="fa-regular fa-eye"></i> ${link.views} lượt xem
+                                <span class="text-[11px] text-gray-400 flex items-center gap-1 mt-0.5">
+                                    <i class="fa-regular fa-eye text-neon-blue"></i> ${link.views} lượt xem
                                 </span>
                             </div>
-                            <a href="${link.url}" target="_blank" class="btn-neon-blue px-4 py-2 rounded-lg font-orbitron font-bold text-xs text-white flex items-center gap-1.5 shrink-0">
+                            <!-- Right Download Button -->
+                            <a href="${escapeHtml(link.url)}" target="_blank" rel="noopener noreferrer" class="btn-neon-blue px-3.5 sm:px-4 py-2 rounded-lg font-orbitron font-bold text-xs text-white flex items-center gap-1.5 shrink-0 shadow-md">
                                 <span>VƯỢT LINK</span>
                                 <i class="fa-solid fa-angles-right text-[10px]"></i>
                             </a>
@@ -267,9 +272,9 @@
                     <div class="flex items-center justify-between mb-3 pb-2 border-b border-dark-border/50">
                         <div class="flex items-center gap-2">
                             <i class="fa-solid fa-folder text-neon-blue"></i>
-                            <h4 class="font-orbitron font-bold text-sm text-gray-200 uppercase tracking-wider">${cat.categoryName}</h4>
+                            <h4 class="font-orbitron font-bold text-sm text-gray-200 uppercase tracking-wider">${escapeHtml(cat.categoryName)}</h4>
                         </div>
-                        <span class="text-xs bg-dark-input px-2.5 py-0.5 rounded-full text-gray-400 border border-dark-border">${cat.links.length}</span>
+                        <span class="text-xs bg-dark-input px-2.5 py-0.5 rounded-full text-gray-400 border border-dark-border font-mono">${cat.links.length}</span>
                     </div>
                     <div class="space-y-2.5">
                         ${linksHtml}
@@ -280,7 +285,13 @@
             });
         }
 
-        // Initial Call
+        // HTML Escape Helper
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+
+        // Initial Render Call
         renderContent();
     </script>
 </body>
