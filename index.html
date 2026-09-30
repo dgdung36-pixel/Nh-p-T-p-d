@@ -148,15 +148,22 @@
             transform: translateY(-2px);
         }
 
-        /* Marquee Scrolling Text Effect */
-        .marquee-track {
-            display: inline-block;
-            white-space: nowrap;
-            animation: marqueeScroll 10s linear infinite;
+        /* Continuous Full Marquee Scrolling Text */
+        .marquee-wrapper {
+            display: flex;
+            width: 100%;
+            overflow: hidden;
         }
 
-        @keyframes marqueeScroll {
-            0% { transform: translateX(100%); }
+        .marquee-content {
+            display: flex;
+            flex-shrink: 0;
+            white-space: nowrap;
+            animation: marqueeContinuous 16s linear infinite;
+        }
+
+        @keyframes marqueeContinuous {
+            0% { transform: translateX(0%); }
             100% { transform: translateX(-100%); }
         }
 
@@ -180,7 +187,7 @@
         #loadingScreen.fade-out {
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.5s ease-out;
+            transition: opacity 0.4s ease-out;
         }
 
         /* Modal Animation */
@@ -210,27 +217,22 @@
 
     <!-- 5-SECOND LOADING SCREEN OVERLAY -->
     <div id="loadingScreen" class="fixed inset-0 z-50 bg-[#020408] flex flex-col items-center justify-center p-4">
-        <!-- Glowing Orbs in Loader -->
         <div class="w-64 h-64 rounded-full bg-cyan-500/10 blur-3xl absolute animate-pulse"></div>
         
         <div class="relative z-10 text-center max-w-sm w-full">
-            <!-- Animated Shield / Logo Icon -->
             <div class="relative w-20 h-20 mx-auto mb-6 flex items-center justify-center">
                 <div class="absolute inset-0 rounded-2xl border-2 border-cyan-400/40 animate-spin" style="animation-duration: 6s;"></div>
                 <div class="absolute inset-2 rounded-xl border-2 border-pink-500/40 animate-spin" style="animation-duration: 4s; animation-direction: reverse;"></div>
                 <i class="fa-solid fa-gem text-3xl text-cyan-400 animate-bounce"></i>
             </div>
 
-            <!-- Loading Title -->
             <h2 class="neon-shimmer-title text-2xl font-black tracking-wider uppercase mb-2">MOD SKIN VIP</h2>
             <p class="text-xs text-gray-400 font-bold tracking-widest uppercase mb-6">Đang tải hệ thống file mod...</p>
 
-            <!-- Progress Bar & Countdown -->
             <div class="w-full bg-cyber-card border border-cyber-border h-3 rounded-full p-0.5 mb-3 shadow-inner overflow-hidden">
                 <div id="progressBar" class="h-full rounded-full bg-gradient-to-r from-cyan-400 via-blue-500 to-pink-500 w-0 transition-all duration-100 ease-linear shadow-lg shadow-cyan-500/50"></div>
             </div>
 
-            <!-- Live Seconds Counter -->
             <div class="flex items-center justify-between text-[11px] text-gray-400 font-mono font-bold px-1">
                 <span>Vui lòng chờ: <span id="countdownText" class="text-cyan-400">5</span>s</span>
                 <span id="progressPercent" class="text-pink-400">0%</span>
@@ -238,34 +240,29 @@
         </div>
     </div>
 
-    <!-- POPUP THÔNG BÁO CHÀO MỪNG (FIXED ONE-CLICK CLOSE) -->
+    <!-- POPUP THÔNG BÁO CHÀO MỪNG (DỄ DÀNG ĐÓNG 1-CLICK) -->
     <div id="welcomeModal" class="fixed inset-0 z-40 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
         <div class="glass-vip-card max-w-md w-full rounded-2xl p-6 border border-cyan-400/30 relative text-center modal-pop shadow-2xl">
-            <!-- Icon Header -->
             <div class="w-14 h-14 rounded-full bg-cyan-500/10 border border-cyan-400/30 text-cyan-400 flex items-center justify-center mx-auto mb-4 shadow-lg shadow-cyan-500/20">
                 <i class="fa-solid fa-crown text-2xl animate-bounce text-amber-400"></i>
             </div>
 
-            <!-- Modal Title -->
             <h3 class="neon-shimmer-title text-xl font-black tracking-wider uppercase mb-3">MOD SKIN VIP</h3>
 
-            <!-- Modal Body Text -->
             <p class="text-sm text-gray-200 leading-relaxed font-semibold mb-6 px-2">
                 Đây là web lấy mod của kênh <span class="text-cyan-300 font-bold">Trong Dung</span>, nơi cập nhật những File mod skin ios và adr hàng tuần.
             </p>
 
-            <!-- Close Button -->
-            <button type="button" onclick="closeWelcomeModal()" class="btn-glow-ios w-full py-3 rounded-xl font-orbitron font-bold text-xs text-white uppercase tracking-wider">
+            <button type="button" id="closeWelcomeBtn" class="btn-glow-ios w-full py-3 rounded-xl font-orbitron font-bold text-xs text-white uppercase tracking-wider">
                 ĐÃ HỂU / TRUY CẬP WEB
             </button>
         </div>
     </div>
 
-    <!-- POPUP HƯỚNG DẪN CÀI ĐẶT TRƯỚC KHI VƯỢT LINK (CÓ DẤU X ĐÓNG) -->
+    <!-- POPUP HƯỚNG DẪN CÀI ĐẶT TRƯỚC KHI VƯỢT LINK -->
     <div id="instructionModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 hidden">
         <div class="glass-vip-card max-w-md w-full rounded-2xl p-6 border border-cyan-400/40 relative text-center modal-pop shadow-2xl">
             
-            <!-- NÚT X ĐÓNG POPUP -->
             <button type="button" onclick="closeInstructionModal()" class="absolute top-3.5 right-3.5 w-8 h-8 rounded-full bg-cyber-card border border-cyber-border text-gray-400 hover:text-white hover:border-pink-500 flex items-center justify-center transition-all">
                 <i class="fa-solid fa-xmark text-sm"></i>
             </button>
@@ -276,7 +273,7 @@
             <h3 class="font-orbitron font-black text-lg text-white uppercase tracking-wider mb-2">HƯỚNG DẪN MOD</h3>
             
             <p id="instructionText" class="text-sm text-cyan-300 font-bold leading-relaxed mb-6 bg-cyber-card/80 p-3.5 rounded-xl border border-cyber-border">
-                <!-- Nội dung thông báo hiển thị động tại đây -->
+                <!-- Nội dung hiển thị động -->
             </p>
 
             <button id="confirmBypassBtn" class="btn-glow-ios w-full py-3 rounded-xl font-orbitron font-bold text-xs text-white uppercase tracking-wider flex items-center justify-center gap-2">
@@ -294,11 +291,16 @@
         <!-- HEADER SECTION -->
         <header class="pt-6 pb-4 px-4 text-center max-w-lg mx-auto">
             
-            <!-- RUNNING MARQUEE TEXT (Chạy qua màn hình mỗi 10s) -->
-            <div class="w-full overflow-hidden bg-cyber-card/90 border border-cyan-400/30 rounded-full py-1.5 px-3 mb-5 shadow-lg backdrop-blur-md">
-                <div class="marquee-track font-semibold text-xs text-cyan-300 flex items-center gap-2">
-                    <i class="fa-solid fa-bullhorn text-pink-400 animate-pulse mr-1"></i>
-                    <span>file mod được mình share tổng hợp từ một số file của bạn mình làm và tập hợp từ vài nguồn khác, nếu có sẽ ghi cre</span>
+            <!-- MARQUEE RUNNING TEXT (HIỂN THỊ ĐẦY ĐỦ 100% CẢ DÒNG VĂN BẢN) -->
+            <div class="w-full overflow-hidden bg-cyber-card/90 border border-cyan-400/30 rounded-full py-2 px-3 mb-5 shadow-lg backdrop-blur-md flex items-center">
+                <i class="fa-solid fa-bullhorn text-pink-400 animate-pulse ml-1 mr-2 shrink-0 z-10"></i>
+                <div class="marquee-wrapper">
+                    <div class="marquee-content font-semibold text-xs text-cyan-300 pr-12">
+                        file mod được mình share tổng hợp từ một số file của bạn mình làm và tập hợp từ vài nguồn khác, nếu có sẽ ghi cre &nbsp;•&nbsp;&nbsp;
+                    </div>
+                    <div class="marquee-content font-semibold text-xs text-cyan-300 pr-12" aria-hidden="true">
+                        file mod được mình share tổng hợp từ một số file của bạn mình làm và tập hợp từ vài nguồn khác, nếu có sẽ ghi cre &nbsp;•&nbsp;&nbsp;
+                    </div>
                 </div>
             </div>
 
@@ -354,7 +356,7 @@
 
             <!-- Dynamic File Container -->
             <div id="contentContainer" class="space-y-4">
-                <!-- Generated dynamically via JS -->
+                <!-- Content injected via JS -->
             </div>
 
             <!-- Security Badge Box -->
@@ -411,7 +413,7 @@
         let pendingTargetUrl = '';
         let pendingLinkId = '';
 
-        // Open Instruction Modal Before Bypassing Link
+        // Instruction Modal Handling
         function openBypassInstruction(id, url) {
             pendingTargetUrl = url;
             pendingLinkId = id;
@@ -482,12 +484,13 @@
                         setTimeout(() => {
                             loadingScreen.style.display = 'none';
                             showWelcomeModal();
-                        }, 500);
+                        }, 400);
                     }
                 }
             }, intervalTime);
         }
 
+        // Welcome Modal Controls
         function showWelcomeModal() {
             const modal = document.getElementById('welcomeModal');
             if (modal) {
@@ -495,14 +498,14 @@
             }
         }
 
-        function closeWelcomeModal() {
+        document.getElementById('closeWelcomeBtn').addEventListener('click', function() {
             const modal = document.getElementById('welcomeModal');
             if (modal) {
                 modal.classList.add('hidden');
             }
-        }
+        });
 
-        // Live Clock Function
+        // Live Clock
         function updateClock() {
             const now = new Date();
             const timeStr = now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
@@ -512,7 +515,7 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // Platform Switcher Function
+        // Platform Switcher
         function switchPlatform(plat) {
             currentPlatform = plat;
             const isIos = plat === 'ios';
@@ -528,7 +531,7 @@
             renderContent();
         }
 
-        // Render File Cards Function
+        // Render File Cards
         function renderContent() {
             const container = document.getElementById('contentContainer');
             const categories = FILE_DATA[currentPlatform] || [];
@@ -591,7 +594,7 @@
             });
         }
 
-        // Initialize Page & Start Loader
+        // Initialize Page
         startLoadingScreen();
         renderContent();
     </script>
