@@ -9,26 +9,26 @@
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
     
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        cyber: {
-                            bg: '#020408',
-                            card: '#080c16',
-                            border: '#161f36',
-                            cyan: '#00f0ff',
-                            blue: '#0072ff',
-                            pink: '#ff007f',
-                            purple: '#8a2be2'
+                        modern: {
+                            bg: '#090d16',
+                            card: '#121827',
+                            border: '#1f293d',
+                            accent: '#6366f1',
+                            pink: '#ec4899',
+                            cyan: '#06b6d4',
+                            emerald: '#10b981'
                         }
                     },
                     fontFamily: {
-                        orbitron: ['Orbitron', 'sans-serif'],
-                        jakarta: ['Plus Jakarta Sans', 'sans-serif']
+                        heading: ['Space Grotesk', 'sans-serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif']
                     }
                 }
             }
@@ -36,119 +36,77 @@
     </script>
     <style>
         body {
-            background-color: #020408;
-            color: #f1f5f9;
+            background-color: #090d16;
+            color: #f3f4f6;
             font-family: 'Plus Jakarta Sans', sans-serif;
             overflow-x: hidden;
             position: relative;
         }
 
-        /* Ambient Cyber Grid Background */
-        .cyber-grid {
-            background-size: 32px 32px;
-            background-image: 
-                linear-gradient(to right, rgba(0, 240, 255, 0.025) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(0, 240, 255, 0.025) 1px, transparent 1px);
-        }
-
-        /* Dynamic Floating Orbs */
-        .orb-cyan {
+        /* Ambient Gradient Background Blur */
+        .bg-glow-1 {
             position: fixed;
-            top: -10%;
+            top: -15%;
             left: 50%;
             transform: translateX(-50%);
-            width: 480px;
-            height: 480px;
-            background: radial-gradient(circle, rgba(0, 240, 255, 0.2) 0%, transparent 70%);
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.18) 0%, transparent 70%);
             filter: blur(80px);
-            animation: orbFloat 8s infinite alternate ease-in-out;
             pointer-events: none;
             z-index: 0;
         }
 
-        .orb-pink {
+        .bg-glow-2 {
             position: fixed;
-            bottom: -12%;
-            right: -8%;
-            width: 420px;
-            height: 420px;
-            background: radial-gradient(circle, rgba(255, 0, 127, 0.16) 0%, transparent 70%);
+            bottom: -15%;
+            right: -10%;
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, rgba(236, 72, 153, 0.15) 0%, transparent 70%);
             filter: blur(90px);
-            animation: orbFloat 10s infinite alternate-reverse ease-in-out;
             pointer-events: none;
             z-index: 0;
         }
 
-        @keyframes orbFloat {
-            0% { transform: translateY(0) scale(1); }
-            100% { transform: translateY(30px) scale(1.1); }
+        /* Modern Glassmorphic Card */
+        .modern-glass {
+            background: rgba(18, 24, 39, 0.75);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5);
         }
 
-        /* Neon Shimmer Title */
-        .neon-shimmer-title {
-            font-family: 'Orbitron', sans-serif;
-            background: linear-gradient(135deg, #00f0ff 0%, #ffffff 40%, #ff007f 80%, #00f0ff 100%);
-            background-size: 250% auto;
+        /* Gradient Text Title */
+        .gradient-title {
+            font-family: 'Space Grotesk', sans-serif;
+            background: linear-gradient(135deg, #ffffff 0%, #818cf8 50%, #c084fc 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: shimmerText 5s linear infinite;
-            filter: drop-shadow(0 0 20px rgba(0, 240, 255, 0.5));
         }
 
-        @keyframes shimmerText {
-            to { background-position: 250% center; }
+        /* Gradient Button Effects */
+        .btn-modern-ios {
+            background: linear-gradient(135deg, #6366f1 0%, #3b82f6 100%);
+            box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
+            transition: all 0.25s ease;
         }
-
-        /* Ultra Glassmorphism VIP Card */
-        .glass-vip-card {
-            background: rgba(8, 12, 22, 0.85);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.65);
-            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        /* Button Glow Animations */
-        .btn-glow-ios {
-            background: linear-gradient(135deg, #00f0ff 0%, #0072ff 100%);
-            box-shadow: 0 4px 18px rgba(0, 240, 255, 0.35);
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-glow-ios::before, .btn-glow-adr::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-            transition: 0.5s;
-        }
-
-        .btn-glow-ios:hover::before, .btn-glow-adr:hover::before {
-            left: 100%;
-        }
-
-        .btn-glow-ios:hover {
-            box-shadow: 0 6px 28px rgba(0, 240, 255, 0.7);
+        .btn-modern-ios:hover {
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.55);
             transform: translateY(-2px);
         }
 
-        .btn-glow-adr {
-            background: linear-gradient(135deg, #ff007f 0%, #8a2be2 100%);
-            box-shadow: 0 4px 18px rgba(255, 0, 127, 0.35);
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            position: relative;
-            overflow: hidden;
+        .btn-modern-adr {
+            background: linear-gradient(135deg, #ec4899 0%, #a855f7 100%);
+            box-shadow: 0 4px 14px rgba(236, 72, 153, 0.35);
+            transition: all 0.25s ease;
         }
-
-        .btn-glow-adr:hover {
-            box-shadow: 0 6px 28px rgba(255, 0, 127, 0.7);
+        .btn-modern-adr:hover {
+            box-shadow: 0 6px 20px rgba(236, 72, 153, 0.55);
             transform: translateY(-2px);
         }
 
-        /* Continuous Full Marquee Scrolling Text */
+        /* Marquee Motion */
         .marquee-wrapper {
             display: flex;
             width: 100%;
@@ -159,28 +117,12 @@
             display: flex;
             flex-shrink: 0;
             white-space: nowrap;
-            animation: marqueeContinuous 16s linear infinite;
+            animation: marqueeContinuous 18s linear infinite;
         }
 
         @keyframes marqueeContinuous {
             0% { transform: translateX(0%); }
             100% { transform: translateX(-100%); }
-        }
-
-        /* Smooth Entry Animation */
-        .smooth-appear {
-            animation: smoothAppear 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        @keyframes smoothAppear {
-            from {
-                opacity: 0;
-                transform: translateY(18px) scale(0.98);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
         }
 
         /* Loading Screen Fade Out */
@@ -192,13 +134,13 @@
 
         /* Modal Animation */
         .modal-pop {
-            animation: modalPop 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: modalPop 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
         @keyframes modalPop {
             from {
                 opacity: 0;
-                transform: scale(0.92) translateY(10px);
+                transform: scale(0.95) translateY(10px);
             }
             to {
                 opacity: 1;
@@ -206,135 +148,113 @@
             }
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-track { background: #020408; }
-        ::-webkit-scrollbar-thumb { background: #161f36; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #00f0ff; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #090d16; }
+        ::-webkit-scrollbar-thumb { background: #1f293d; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #6366f1; }
     </style>
 </head>
-<body class="min-h-screen pb-12 cyber-grid flex flex-col justify-between items-center relative">
+<body class="min-h-screen pb-12 flex flex-col justify-between items-center relative">
 
-    <!-- 5-SECOND LOADING SCREEN OVERLAY -->
-    <div id="loadingScreen" class="fixed inset-0 z-50 bg-[#020408] flex flex-col items-center justify-center p-4">
-        <div class="w-64 h-64 rounded-full bg-cyan-500/10 blur-3xl absolute animate-pulse"></div>
+    <!-- 3-SECOND LOADING SCREEN OVERLAY -->
+    <div id="loadingScreen" class="fixed inset-0 z-50 bg-[#090d16] flex flex-col items-center justify-center p-4">
+        <div class="w-64 h-64 rounded-full bg-indigo-500/10 blur-3xl absolute animate-pulse"></div>
         
         <div class="relative z-10 text-center max-w-sm w-full">
-            <div class="relative w-20 h-20 mx-auto mb-6 flex items-center justify-center">
-                <div class="absolute inset-0 rounded-2xl border-2 border-cyan-400/40 animate-spin" style="animation-duration: 6s;"></div>
-                <div class="absolute inset-2 rounded-xl border-2 border-pink-500/40 animate-spin" style="animation-duration: 4s; animation-direction: reverse;"></div>
-                <i class="fa-solid fa-gem text-3xl text-cyan-400 animate-bounce"></i>
+            <div class="w-16 h-16 rounded-2xl bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center mx-auto mb-5 shadow-xl">
+                <i class="fa-solid fa-layer-group text-2xl text-indigo-400 animate-pulse"></i>
             </div>
 
-            <h2 class="neon-shimmer-title text-2xl font-black tracking-wider uppercase mb-2">MOD SKIN VIP</h2>
-            <p class="text-xs text-gray-400 font-bold tracking-widest uppercase mb-6">Đang tải hệ thống file mod...</p>
+            <h2 class="gradient-title text-2xl font-bold tracking-tight mb-2">MOD SKIN VIP</h2>
+            <p class="text-xs text-gray-400 font-medium mb-6">Đang tối ưu hệ thống file mod...</p>
 
-            <div class="w-full bg-cyber-card border border-cyber-border h-3 rounded-full p-0.5 mb-3 shadow-inner overflow-hidden">
-                <div id="progressBar" class="h-full rounded-full bg-gradient-to-r from-cyan-400 via-blue-500 to-pink-500 w-0 transition-all duration-100 ease-linear shadow-lg shadow-cyan-500/50"></div>
+            <div class="w-full bg-modern-card border border-modern-border h-2.5 rounded-full p-0.5 mb-3 shadow-inner overflow-hidden">
+                <div id="progressBar" class="h-full rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 w-0 transition-all duration-100 ease-linear shadow-sm"></div>
             </div>
 
-            <div class="flex items-center justify-between text-[11px] text-gray-400 font-mono font-bold px-1">
-                <span>Vui lòng chờ: <span id="countdownText" class="text-cyan-400">5</span>s</span>
-                <span id="progressPercent" class="text-pink-400">0%</span>
+            <div class="flex items-center justify-between text-xs text-gray-400 font-mono font-medium px-1">
+                <span>Vui lòng chờ: <span id="countdownText" class="text-indigo-400 font-bold">3</span>s</span>
+                <span id="progressPercent" class="text-pink-400 font-bold">0%</span>
             </div>
-        </div>
-    </div>
-
-    <!-- POPUP THÔNG BÁO CHÀO MỪNG -->
-    <div id="welcomeModal" class="fixed inset-0 z-40 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
-        <div class="glass-vip-card max-w-md w-full rounded-2xl p-6 border border-cyan-400/30 relative text-center modal-pop shadow-2xl">
-            <div class="w-14 h-14 rounded-full bg-cyan-500/10 border border-cyan-400/30 text-cyan-400 flex items-center justify-center mx-auto mb-4 shadow-lg shadow-cyan-500/20">
-                <i class="fa-solid fa-crown text-2xl animate-bounce text-amber-400"></i>
-            </div>
-
-            <h3 class="neon-shimmer-title text-xl font-black tracking-wider uppercase mb-3">MOD SKIN VIP</h3>
-
-            <p class="text-sm text-gray-200 leading-relaxed font-semibold mb-6 px-2">
-                Đây là web lấy mod của kênh <span class="text-cyan-300 font-bold">Trong Dung</span>, nơi cập nhật những File mod skin ios và adr hàng tuần.
-            </p>
-
-            <button type="button" id="closeWelcomeBtn" class="btn-glow-ios w-full py-3 rounded-xl font-orbitron font-bold text-xs text-white uppercase tracking-wider">
-                ĐÃ HỂU / TRUY CẬP WEB
-            </button>
         </div>
     </div>
 
     <!-- POPUP HƯỚNG DẪN CÀI ĐẶT TRƯỚC KHI VƯỢT LINK -->
-    <div id="instructionModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 hidden">
-        <div class="glass-vip-card max-w-md w-full rounded-2xl p-6 border border-cyan-400/40 relative text-center modal-pop shadow-2xl">
+    <div id="instructionModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
+        <div class="modern-glass max-w-md w-full rounded-3xl p-6 border border-modern-border relative text-center modal-pop shadow-2xl">
             
-            <button type="button" onclick="closeInstructionModal()" class="absolute top-3.5 right-3.5 w-8 h-8 rounded-full bg-cyber-card border border-cyber-border text-gray-400 hover:text-white hover:border-pink-500 flex items-center justify-center transition-all">
+            <button type="button" onclick="closeInstructionModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-modern-card border border-modern-border text-gray-400 hover:text-white flex items-center justify-center transition-all">
                 <i class="fa-solid fa-xmark text-sm"></i>
             </button>
 
-            <div class="w-14 h-14 rounded-full bg-cyan-500/10 border border-cyan-400/30 text-cyan-400 flex items-center justify-center mx-auto mb-4 shadow-lg shadow-cyan-500/20">
-                <i class="fa-solid fa-circle-info text-2xl animate-pulse text-cyan-300"></i>
+            <div class="w-12 h-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 flex items-center justify-center mx-auto mb-4">
+                <i class="fa-solid fa-circle-info text-xl"></i>
             </div>
-            <h3 class="font-orbitron font-black text-lg text-white uppercase tracking-wider mb-2">HƯỚNG DẪN MOD</h3>
+            <h3 class="font-heading font-bold text-lg text-white uppercase tracking-wider mb-2">HƯỚNG DẪN MOD</h3>
             
-            <p id="instructionText" class="text-sm text-cyan-300 font-bold leading-relaxed mb-6 bg-cyber-card/80 p-3.5 rounded-xl border border-cyber-border">
+            <p id="instructionText" class="text-sm text-indigo-200 font-semibold leading-relaxed mb-6 bg-modern-card/80 p-4 rounded-2xl border border-modern-border">
                 <!-- Nội dung hiển thị động -->
             </p>
 
-            <button id="confirmBypassBtn" class="btn-glow-ios w-full py-3 rounded-xl font-orbitron font-bold text-xs text-white uppercase tracking-wider flex items-center justify-center gap-2">
+            <button id="confirmBypassBtn" class="btn-modern-ios w-full py-3.5 rounded-2xl font-heading font-bold text-xs text-white uppercase tracking-wider flex items-center justify-center gap-2">
                 <span>OK (VƯỢT LINK)</span>
                 <i class="fa-solid fa-arrow-right-long text-xs"></i>
             </button>
         </div>
     </div>
 
-    <!-- Glowing Background Orbs -->
-    <div class="orb-cyan"></div>
-    <div class="orb-pink"></div>
+    <!-- Background Orbs -->
+    <div class="bg-glow-1"></div>
+    <div class="bg-glow-2"></div>
 
     <div class="w-full relative z-10">
         <!-- HEADER SECTION -->
         <header class="pt-6 pb-4 px-4 text-center max-w-lg mx-auto">
             
             <!-- MARQUEE RUNNING TEXT -->
-            <div class="w-full overflow-hidden bg-cyber-card/90 border border-cyan-400/30 rounded-full py-2 px-3 mb-5 shadow-lg backdrop-blur-md flex items-center">
-                <i class="fa-solid fa-bullhorn text-pink-400 animate-pulse ml-1 mr-2 shrink-0 z-10"></i>
+            <div class="w-full overflow-hidden bg-modern-card/80 border border-modern-border rounded-2xl py-2 px-3 mb-5 shadow-lg backdrop-blur-md flex items-center">
+                <i class="fa-solid fa-bullhorn text-pink-400 text-xs mr-2.5 shrink-0"></i>
                 <div class="marquee-wrapper">
-                    <div class="marquee-content font-semibold text-xs text-cyan-300 pr-12">
+                    <div class="marquee-content font-medium text-xs text-indigo-200 pr-12">
                         file mod được mình share tổng hợp từ một số file của bạn mình làm và tập hợp từ vài nguồn khác, nếu có sẽ ghi cre &nbsp;•&nbsp;&nbsp;
                     </div>
-                    <div class="marquee-content font-semibold text-xs text-cyan-300 pr-12" aria-hidden="true">
+                    <div class="marquee-content font-medium text-xs text-indigo-200 pr-12" aria-hidden="true">
                         file mod được mình share tổng hợp từ một số file của bạn mình làm và tập hợp từ vài nguồn khác, nếu có sẽ ghi cre &nbsp;•&nbsp;&nbsp;
                     </div>
                 </div>
             </div>
 
             <!-- Clock Badge -->
-            <div class="inline-flex items-center gap-2 bg-cyber-card/90 border border-cyber-border px-4 py-1.5 rounded-full mb-4 shadow-2xl backdrop-blur-md">
-                <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
-                <span id="liveClock" class="font-orbitron text-[11px] font-bold tracking-wider text-cyan-300">00:00:00 - 01/01/2026</span>
+            <div class="inline-flex items-center gap-2 bg-modern-card/80 border border-modern-border px-4 py-1.5 rounded-full mb-4 shadow-lg backdrop-blur-md">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span id="liveClock" class="font-mono text-[11px] font-semibold text-gray-300">00:00:00 - 01/01/2026</span>
             </div>
 
             <!-- Main Title -->
-            <h1 class="neon-shimmer-title text-4xl sm:text-5xl font-black tracking-wider uppercase mb-1">MOD SKIN VIP</h1>
+            <h1 class="gradient-title text-4xl sm:text-5xl font-bold tracking-tight mb-1">MOD SKIN VIP</h1>
             
-            <p class="text-xs font-bold text-gray-400 tracking-widest uppercase mb-6 flex items-center justify-center gap-2">
-                <span class="h-[1px] w-6 bg-gradient-to-r from-transparent to-cyan-500"></span>
+            <p class="text-xs font-semibold text-gray-400 tracking-widest uppercase mb-6 flex items-center justify-center gap-2">
+                <span class="h-[1px] w-8 bg-indigo-500/30"></span>
                 TRONG DUNG • FILE MOD LIÊN QUÂN
-                <span class="h-[1px] w-6 bg-gradient-to-l from-transparent to-cyan-500"></span>
+                <span class="h-[1px] w-8 bg-indigo-500/30"></span>
             </p>
 
             <!-- Social Links Panel -->
             <div class="grid grid-cols-3 gap-2.5 max-w-md mx-auto">
                 <!-- Youtube -->
-                <a href="https://youtube.com/@trdunxx?si=tGWPnDMwmzyX1BaU" target="_blank" class="glass-vip-card px-2.5 py-2.5 rounded-xl border border-red-500/20 hover:border-red-500/60 text-red-400 hover:text-white hover:bg-red-500/15 flex items-center justify-center gap-2 transition-all group">
-                    <i class="fa-brands fa-youtube text-base group-hover:scale-110 transition-transform"></i>
-                    <span class="font-orbitron text-[11px] font-bold">YOUTUBE</span>
+                <a href="https://youtube.com/@trdunxx?si=tGWPnDMwmzyX1BaU" target="_blank" class="modern-glass px-3 py-2.5 rounded-2xl border border-red-500/20 hover:border-red-500/50 text-red-400 hover:text-white flex items-center justify-center gap-2 transition-all">
+                    <i class="fa-brands fa-youtube text-base"></i>
+                    <span class="font-heading text-[11px] font-bold">YOUTUBE</span>
                 </a>
                 <!-- Telegram -->
-                <a href="https://t.me/TrongDung05" target="_blank" class="glass-vip-card px-2.5 py-2.5 rounded-xl border border-sky-400/20 hover:border-sky-400/60 text-sky-400 hover:text-white hover:bg-sky-500/15 flex items-center justify-center gap-2 transition-all group">
-                    <i class="fa-brands fa-telegram text-base group-hover:scale-110 transition-transform"></i>
-                    <span class="font-orbitron text-[11px] font-bold">TELEGRAM</span>
+                <a href="https://t.me/TrongDung05" target="_blank" class="modern-glass px-3 py-2.5 rounded-2xl border border-sky-400/20 hover:border-sky-400/50 text-sky-400 hover:text-white flex items-center justify-center gap-2 transition-all">
+                    <i class="fa-brands fa-telegram text-base"></i>
+                    <span class="font-heading text-[11px] font-bold">TELEGRAM</span>
                 </a>
                 <!-- Zalo -->
-                <a href="https://zalo.me/0836376886" target="_blank" class="glass-vip-card px-2.5 py-2.5 rounded-xl border border-blue-500/20 hover:border-blue-500/60 text-blue-400 hover:text-white hover:bg-blue-600/15 flex items-center justify-center gap-2 transition-all group">
-                    <i class="fa-solid fa-comment-dots text-base group-hover:scale-110 transition-transform"></i>
-                    <span class="font-orbitron text-[11px] font-bold">ZALO</span>
+                <a href="https://zalo.me/0836376886" target="_blank" class="modern-glass px-3 py-2.5 rounded-2xl border border-blue-500/20 hover:border-blue-500/50 text-blue-400 hover:text-white flex items-center justify-center gap-2 transition-all">
+                    <i class="fa-solid fa-comment-dots text-base"></i>
+                    <span class="font-heading text-[11px] font-bold">ZALO</span>
                 </a>
             </div>
         </header>
@@ -343,12 +263,12 @@
         <main class="max-w-lg mx-auto px-4 mt-2">
 
             <!-- OS Switcher Tabs -->
-            <div class="grid grid-cols-2 gap-2.5 mb-5 p-1.5 glass-vip-card rounded-2xl border border-cyber-border">
-                <button id="tabIosBtn" onclick="switchPlatform('ios')" class="py-3 rounded-xl font-orbitron font-bold text-xs sm:text-sm tracking-wider flex items-center justify-center gap-2 transition-all bg-gradient-to-r from-cyan-400 to-blue-600 text-white shadow-lg shadow-cyan-500/25">
+            <div class="grid grid-cols-2 gap-2 mb-6 p-1.5 modern-glass rounded-2xl border border-modern-border">
+                <button id="tabIosBtn" onclick="switchPlatform('ios')" class="py-3 rounded-xl font-heading font-bold text-xs sm:text-sm tracking-wider flex items-center justify-center gap-2 transition-all bg-gradient-to-r from-indigo-500 to-blue-600 text-white shadow-lg shadow-indigo-500/20">
                     <i class="fa-brands fa-apple text-base"></i>
                     MOD IOS
                 </button>
-                <button id="tabAdrBtn" onclick="switchPlatform('adr')" class="py-3 rounded-xl font-orbitron font-bold text-xs sm:text-sm tracking-wider flex items-center justify-center gap-2 transition-all text-gray-400 hover:text-white">
+                <button id="tabAdrBtn" onclick="switchPlatform('adr')" class="py-3 rounded-xl font-heading font-bold text-xs sm:text-sm tracking-wider flex items-center justify-center gap-2 transition-all text-gray-400 hover:text-white">
                     <i class="fa-brands fa-android text-base"></i>
                     MOD ADR
                 </button>
@@ -360,10 +280,10 @@
             </div>
 
             <!-- Security Badge Box -->
-            <div class="mt-6 glass-vip-card p-3.5 rounded-2xl border border-cyber-border text-center relative overflow-hidden">
-                <p class="text-xs text-gray-400 font-semibold flex items-center justify-center gap-1.5">
-                    <i class="fa-solid fa-shield-halved text-cyan-400"></i>
-                    Tất cả File Mod được bảo mật & kiểm duyệt 100% an toàn.
+            <div class="mt-6 modern-glass p-4 rounded-2xl border border-modern-border text-center">
+                <p class="text-xs text-gray-400 font-medium flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-shield-halved text-indigo-400"></i>
+                    Tất cả File Mod đã được kiểm duyệt an toàn 100%
                 </p>
             </div>
 
@@ -372,7 +292,7 @@
 
     <!-- FOOTER -->
     <footer class="mt-10 text-center text-[11px] text-gray-500 font-medium relative z-10">
-        <p>© 2026 MOD SKIN VIP • Developed by <span class="text-cyan-400 font-bold">TRONG DUNG</span></p>
+        <p>© 2026 MOD SKIN VIP • Developed by <span class="text-indigo-400 font-bold">TRONG DUNG</span></p>
     </footer>
 
     <!-- JAVASCRIPT -->
@@ -471,10 +391,10 @@
             }
         });
 
-        // 5-SECOND LOADING SCREEN LOGIC
+        // 3-SECOND LOADING SCREEN LOGIC (RÚT NGẮN CÒN 3S)
         function startLoadingScreen() {
-            const duration = 5000;
-            const intervalTime = 50;
+            const duration = 3000; // 3 giây
+            const intervalTime = 30;
             let elapsedTime = 0;
 
             const progressBar = document.getElementById('progressBar');
@@ -497,27 +417,11 @@
                         loadingScreen.classList.add('fade-out');
                         setTimeout(() => {
                             loadingScreen.style.display = 'none';
-                            showWelcomeModal();
                         }, 400);
                     }
                 }
             }, intervalTime);
         }
-
-        // Welcome Modal Controls
-        function showWelcomeModal() {
-            const modal = document.getElementById('welcomeModal');
-            if (modal) {
-                modal.classList.remove('hidden');
-            }
-        }
-
-        document.getElementById('closeWelcomeBtn').addEventListener('click', function() {
-            const modal = document.getElementById('welcomeModal');
-            if (modal) {
-                modal.classList.add('hidden');
-            }
-        });
 
         // Live Clock
         function updateClock() {
@@ -535,12 +439,12 @@
             const isIos = plat === 'ios';
             
             document.getElementById('tabIosBtn').className = isIos 
-                ? 'py-3 rounded-xl font-orbitron font-bold text-xs sm:text-sm tracking-wider flex items-center justify-center gap-2 transition-all bg-gradient-to-r from-cyan-400 to-blue-600 text-white shadow-lg shadow-cyan-500/25'
-                : 'py-3 rounded-xl font-orbitron font-bold text-xs sm:text-sm tracking-wider flex items-center justify-center gap-2 transition-all text-gray-400 hover:text-white';
+                ? 'py-3 rounded-xl font-heading font-bold text-xs sm:text-sm tracking-wider flex items-center justify-center gap-2 transition-all bg-gradient-to-r from-indigo-500 to-blue-600 text-white shadow-lg shadow-indigo-500/20'
+                : 'py-3 rounded-xl font-heading font-bold text-xs sm:text-sm tracking-wider flex items-center justify-center gap-2 transition-all text-gray-400 hover:text-white';
 
             document.getElementById('tabAdrBtn').className = !isIos 
-                ? 'py-3 rounded-xl font-orbitron font-bold text-xs sm:text-sm tracking-wider flex items-center justify-center gap-2 transition-all bg-gradient-to-r from-pink-500 to-purple-600 text-white shadow-lg shadow-pink-500/25'
-                : 'py-3 rounded-xl font-orbitron font-bold text-xs sm:text-sm tracking-wider flex items-center justify-center gap-2 transition-all text-gray-400 hover:text-white';
+                ? 'py-3 rounded-xl font-heading font-bold text-xs sm:text-sm tracking-wider flex items-center justify-center gap-2 transition-all bg-gradient-to-r from-pink-500 to-purple-600 text-white shadow-lg shadow-pink-500/20'
+                : 'py-3 rounded-xl font-heading font-bold text-xs sm:text-sm tracking-wider flex items-center justify-center gap-2 transition-all text-gray-400 hover:text-white';
 
             renderContent();
         }
@@ -554,7 +458,7 @@
 
             if (categories.length === 0) {
                 container.innerHTML = `
-                    <div class="glass-vip-card rounded-2xl p-8 text-center border border-cyber-border smooth-appear">
+                    <div class="modern-glass rounded-3xl p-8 text-center border border-modern-border">
                         <i class="fa-solid fa-folder-open text-3xl text-gray-600 mb-2 block"></i>
                         <p class="text-xs text-gray-400 font-medium">Chưa có file mod nào cho nền tảng này</p>
                     </div>
@@ -564,40 +468,40 @@
 
             categories.forEach(cat => {
                 const catBox = document.createElement('div');
-                catBox.className = 'glass-vip-card rounded-2xl p-4 border border-cyber-border smooth-appear';
+                catBox.className = 'modern-glass rounded-3xl p-4 sm:p-5 border border-modern-border';
 
                 let linksHtml = '';
                 cat.links.forEach(link => {
-                    let badgeColor = 'bg-amber-500/15 text-amber-300 border-amber-500/40';
-                    if (link.badge === 'HOT') badgeColor = 'bg-red-500/15 text-red-400 border-red-500/40';
-                    if (link.badge === 'NEW') badgeColor = 'bg-emerald-500/15 text-emerald-400 border-emerald-500/40';
+                    let badgeColor = 'bg-amber-500/10 text-amber-300 border-amber-500/20';
+                    if (link.badge === 'HOT') badgeColor = 'bg-red-500/10 text-red-400 border-red-500/20';
+                    if (link.badge === 'NEW') badgeColor = 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20';
 
                     linksHtml += `
-                        <div class="flex items-center justify-between gap-3 p-3.5 bg-cyber-card/90 rounded-xl border border-cyber-border hover:border-cyan-400/50 transition-all group">
+                        <div class="flex items-center justify-between gap-3 p-3.5 bg-modern-card/80 rounded-2xl border border-modern-border/80 hover:border-indigo-500/40 transition-all">
                             <div class="flex-1 min-w-0 pr-2">
                                 <div class="flex items-center gap-2 mb-1">
-                                    <span class="inline-block px-1.5 py-0.5 rounded text-[10px] font-bold border ${badgeColor}">${link.badge}</span>
-                                    <h5 class="text-sm font-bold text-white leading-snug break-words group-hover:text-cyan-300 transition-colors">${link.title}</h5>
+                                    <span class="inline-block px-2 py-0.5 rounded-md text-[10px] font-bold border ${badgeColor}">${link.badge}</span>
+                                    <h5 class="text-sm font-bold text-white leading-snug break-words">${link.title}</h5>
                                 </div>
-                                <div class="text-[11px] text-gray-400 flex items-center gap-2">
-                                    <span><i class="fa-regular fa-eye text-cyan-400 mr-1"></i>${link.views} lượt xem</span>
+                                <div class="text-[11px] text-gray-400 flex items-center gap-2 font-medium">
+                                    <span><i class="fa-regular fa-eye text-indigo-400 mr-1"></i>${link.views} lượt xem</span>
                                 </div>
                             </div>
-                            <button onclick="openBypassInstruction('${link.id}', '${link.url}')" class="${currentPlatform === 'ios' ? 'btn-glow-ios' : 'btn-glow-adr'} px-4 py-2.5 rounded-xl font-orbitron font-bold text-[11px] text-white flex items-center gap-1.5 shrink-0">
+                            <button onclick="openBypassInstruction('${link.id}', '${link.url}')" class="${currentPlatform === 'ios' ? 'btn-modern-ios' : 'btn-modern-adr'} px-4 py-2.5 rounded-xl font-heading font-bold text-[11px] text-white flex items-center gap-1.5 shrink-0">
                                 <span>VƯỢT LINK</span>
-                                <i class="fa-solid fa-arrow-right-long text-[10px] group-hover:translate-x-1 transition-transform"></i>
+                                <i class="fa-solid fa-arrow-right-long text-[10px]"></i>
                             </button>
                         </div>
                     `;
                 });
 
                 catBox.innerHTML = `
-                    <div class="flex items-center justify-between mb-3 pb-2 border-b border-cyber-border">
+                    <div class="flex items-center justify-between mb-3.5 pb-2.5 border-b border-modern-border">
                         <div class="flex items-center gap-2">
-                            <i class="fa-solid fa-folder-closed text-cyan-400 text-sm"></i>
-                            <h4 class="font-orbitron font-bold text-xs text-gray-200 uppercase tracking-wider">${cat.categoryName}</h4>
+                            <i class="fa-solid fa-folder-closed text-indigo-400 text-sm"></i>
+                            <h4 class="font-heading font-bold text-xs text-gray-200 uppercase tracking-wider">${cat.categoryName}</h4>
                         </div>
-                        <span class="text-[11px] bg-cyber-card px-2.5 py-0.5 rounded-full text-cyan-300 border border-cyber-border font-bold">${cat.links.length} FILE</span>
+                        <span class="text-[11px] bg-modern-card px-2.5 py-0.5 rounded-full text-indigo-300 border border-modern-border font-bold">${cat.links.length} FILE</span>
                     </div>
                     <div class="space-y-2.5">
                         ${linksHtml}
