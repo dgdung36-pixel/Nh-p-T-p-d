@@ -17,14 +17,13 @@
                 extend: {
                     colors: {
                         cyber: {
-                            bg: '#030509',
-                            card: '#0a0e1a',
-                            border: '#182035',
+                            bg: '#020408',
+                            card: '#080c16',
+                            border: '#161f36',
                             cyan: '#00f0ff',
                             blue: '#0072ff',
                             pink: '#ff007f',
-                            purple: '#7928ca',
-                            gold: '#ffd700'
+                            purple: '#8a2be2'
                         }
                     },
                     fontFamily: {
@@ -37,52 +36,52 @@
     </script>
     <style>
         body {
-            background-color: #030509;
+            background-color: #020408;
             color: #f1f5f9;
             font-family: 'Plus Jakarta Sans', sans-serif;
             overflow-x: hidden;
             position: relative;
         }
 
-        /* Ambient Cyber Mesh Background */
+        /* Ambient Cyber Grid Background */
         .cyber-grid {
             background-size: 32px 32px;
             background-image: 
-                linear-gradient(to right, rgba(0, 240, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+                linear-gradient(to right, rgba(0, 240, 255, 0.025) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 240, 255, 0.025) 1px, transparent 1px);
         }
 
         /* Dynamic Floating Orbs */
         .orb-cyan {
             position: fixed;
-            top: -12%;
+            top: -10%;
             left: 50%;
             transform: translateX(-50%);
-            width: 450px;
-            height: 450px;
-            background: radial-gradient(circle, rgba(0, 240, 255, 0.22) 0%, transparent 70%);
-            filter: blur(70px);
-            animation: orbFloat 7s infinite alternate ease-in-out;
+            width: 480px;
+            height: 480px;
+            background: radial-gradient(circle, rgba(0, 240, 255, 0.2) 0%, transparent 70%);
+            filter: blur(80px);
+            animation: orbFloat 8s infinite alternate ease-in-out;
             pointer-events: none;
             z-index: 0;
         }
 
         .orb-pink {
             position: fixed;
-            bottom: -15%;
-            right: -10%;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(255, 0, 127, 0.18) 0%, transparent 70%);
-            filter: blur(80px);
-            animation: orbFloat 9s infinite alternate-reverse ease-in-out;
+            bottom: -12%;
+            right: -8%;
+            width: 420px;
+            height: 420px;
+            background: radial-gradient(circle, rgba(255, 0, 127, 0.16) 0%, transparent 70%);
+            filter: blur(90px);
+            animation: orbFloat 10s infinite alternate-reverse ease-in-out;
             pointer-events: none;
             z-index: 0;
         }
 
         @keyframes orbFloat {
             0% { transform: translateY(0) scale(1); }
-            100% { transform: translateY(35px) scale(1.12); }
+            100% { transform: translateY(30px) scale(1.1); }
         }
 
         /* Neon Shimmer Title */
@@ -100,16 +99,16 @@
             to { background-position: 250% center; }
         }
 
-        /* Glassmorphism VIP Card */
+        /* Ultra Glassmorphism VIP Card */
         .glass-vip-card {
-            background: rgba(10, 14, 26, 0.85);
+            background: rgba(8, 12, 22, 0.85);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.09);
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.65);
             transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* Button Hover & Light Sweep Animations */
+        /* Button Glow Animations */
         .btn-glow-ios {
             background: linear-gradient(135deg, #00f0ff 0%, #0072ff 100%);
             box-shadow: 0 4px 18px rgba(0, 240, 255, 0.35);
@@ -133,11 +132,11 @@
 
         .btn-glow-ios:hover {
             box-shadow: 0 6px 28px rgba(0, 240, 255, 0.7);
-            transform: translateY(-2px) scale(1.02);
+            transform: translateY(-2px);
         }
 
         .btn-glow-adr {
-            background: linear-gradient(135deg, #ff007f 0%, #7928ca 100%);
+            background: linear-gradient(135deg, #ff007f 0%, #8a2be2 100%);
             box-shadow: 0 4px 18px rgba(255, 0, 127, 0.35);
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative;
@@ -146,7 +145,7 @@
 
         .btn-glow-adr:hover {
             box-shadow: 0 6px 28px rgba(255, 0, 127, 0.7);
-            transform: translateY(-2px) scale(1.02);
+            transform: translateY(-2px);
         }
 
         /* Smooth Entry Animation */
@@ -163,15 +162,6 @@
                 opacity: 1;
                 transform: translateY(0) scale(1);
             }
-        }
-
-        /* Toast Animation */
-        .toast-pop {
-            animation: toastPop 0.3s ease-out forwards;
-        }
-        @keyframes toastPop {
-            from { opacity: 0; transform: translateY(-20px) translateX(-50%); }
-            to { opacity: 1; transform: translateY(0) translateX(-50%); }
         }
 
         /* Loading Screen Fade Out */
@@ -199,21 +189,15 @@
 
         /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-track { background: #030509; }
-        ::-webkit-scrollbar-thumb { background: #182035; border-radius: 4px; }
+        ::-webkit-scrollbar-track { background: #020408; }
+        ::-webkit-scrollbar-thumb { background: #161f36; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #00f0ff; }
     </style>
 </head>
 <body class="min-h-screen pb-12 cyber-grid flex flex-col justify-between items-center relative">
 
-    <!-- TOAST NOTIFICATION -->
-    <div id="toast" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 bg-cyber-card border border-cyan-400/50 text-cyan-300 px-4 py-2 rounded-full text-xs font-bold shadow-2xl backdrop-blur-md hidden toast-pop flex items-center gap-2">
-        <i class="fa-solid fa-circle-check text-emerald-400"></i>
-        <span id="toastMsg">Đã sao chép liên kết thành công!</span>
-    </div>
-
     <!-- 5-SECOND LOADING SCREEN OVERLAY -->
-    <div id="loadingScreen" class="fixed inset-0 z-50 bg-[#030509] flex flex-col items-center justify-center p-4">
+    <div id="loadingScreen" class="fixed inset-0 z-50 bg-[#020408] flex flex-col items-center justify-center p-4">
         <!-- Glowing Orbs in Loader -->
         <div class="w-64 h-64 rounded-full bg-cyan-500/10 blur-3xl absolute animate-pulse"></div>
         
@@ -227,9 +211,9 @@
 
             <!-- Loading Title -->
             <h2 class="neon-shimmer-title text-2xl font-black tracking-wider uppercase mb-2">MOD SKIN VIP</h2>
-            <p class="text-xs text-gray-400 font-bold tracking-widest uppercase mb-6">Đang tối ưu hệ thống file mod...</p>
+            <p class="text-xs text-gray-400 font-bold tracking-widest uppercase mb-6">Đang tải hệ thống file mod...</p>
 
-            <!-- Progress Bar Bar & Countdown -->
+            <!-- Progress Bar & Countdown -->
             <div class="w-full bg-cyber-card border border-cyber-border h-3 rounded-full p-0.5 mb-3 shadow-inner overflow-hidden">
                 <div id="progressBar" class="h-full rounded-full bg-gradient-to-r from-cyan-400 via-blue-500 to-pink-500 w-0 transition-all duration-100 ease-linear shadow-lg shadow-cyan-500/50"></div>
             </div>
@@ -400,26 +384,6 @@
         let pendingTargetUrl = '';
         let pendingLinkId = '';
 
-        // Toast Helper
-        function showToast(msg) {
-            const toast = document.getElementById('toast');
-            const toastMsg = document.getElementById('toastMsg');
-            toastMsg.innerText = msg;
-            toast.classList.remove('hidden');
-            setTimeout(() => {
-                toast.classList.add('hidden');
-            }, 2500);
-        }
-
-        // Copy Link
-        function copyLink(url) {
-            navigator.clipboard.writeText(url).then(() => {
-                showToast('Đã sao chép liên kết vượt link!');
-            }).catch(() => {
-                showToast('Không thể sao chép liên kết!');
-            });
-        }
-
         // Open Instruction Modal Before Bypassing Link
         function openBypassInstruction(id, url) {
             pendingTargetUrl = url;
@@ -440,7 +404,7 @@
         // Confirm & Execute Bypass
         document.getElementById('confirmBypassBtn').addEventListener('click', function() {
             if (pendingLinkId) {
-                // Tăng số lượt xem
+                // Tăng lượt xem
                 for (let plat in FILE_DATA) {
                     FILE_DATA[plat].forEach(cat => {
                         cat.links.forEach(l => {
@@ -561,7 +525,7 @@
 
                     linksHtml += `
                         <div class="flex items-center justify-between gap-3 p-3.5 bg-cyber-card/90 rounded-xl border border-cyber-border hover:border-cyan-400/50 transition-all group">
-                            <div class="flex-1 min-w-0 pr-1">
+                            <div class="flex-1 min-w-0 pr-2">
                                 <div class="flex items-center gap-2 mb-1">
                                     <span class="inline-block px-1.5 py-0.5 rounded text-[10px] font-bold border ${badgeColor}">${link.badge}</span>
                                     <h5 class="text-sm font-bold text-white leading-snug break-words group-hover:text-cyan-300 transition-colors">${link.title}</h5>
@@ -570,15 +534,10 @@
                                     <span><i class="fa-regular fa-eye text-cyan-400 mr-1"></i>${link.views} lượt xem</span>
                                 </div>
                             </div>
-                            <div class="flex items-center gap-2 shrink-0">
-                                <button onclick="copyLink('${link.url}')" title="Sao chép link" class="w-9 h-9 rounded-xl bg-cyber-border/60 hover:bg-cyan-500/20 text-gray-300 hover:text-cyan-300 flex items-center justify-center border border-cyber-border transition-all">
-                                    <i class="fa-regular fa-copy text-xs"></i>
-                                </button>
-                                <button onclick="openBypassInstruction('${link.id}', '${link.url}')" class="${currentPlatform === 'ios' ? 'btn-glow-ios' : 'btn-glow-adr'} px-4 py-2.5 rounded-xl font-orbitron font-bold text-[11px] text-white flex items-center gap-1.5">
-                                    <span>VƯỢT LINK</span>
-                                    <i class="fa-solid fa-arrow-right-long text-[10px] group-hover:translate-x-1 transition-transform"></i>
-                                </button>
-                            </div>
+                            <button onclick="openBypassInstruction('${link.id}', '${link.url}')" class="${currentPlatform === 'ios' ? 'btn-glow-ios' : 'btn-glow-adr'} px-4 py-2.5 rounded-xl font-orbitron font-bold text-[11px] text-white flex items-center gap-1.5 shrink-0">
+                                <span>VƯỢT LINK</span>
+                                <i class="fa-solid fa-arrow-right-long text-[10px] group-hover:translate-x-1 transition-transform"></i>
+                            </button>
                         </div>
                     `;
                 });
