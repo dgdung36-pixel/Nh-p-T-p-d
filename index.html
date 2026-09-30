@@ -242,7 +242,7 @@
         </div>
     </div>
 
-    <!-- POPUP THÔNG BÁO SAU KHI VÀO WEB -->
+    <!-- POPUP THÔNG BÁO CHÀO MỪNG -->
     <div id="welcomeModal" class="fixed inset-0 z-40 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
         <div class="glass-vip-card max-w-md w-full rounded-2xl p-6 border border-cyan-400/30 relative text-center modal-pop shadow-2xl">
             <!-- Icon Header -->
@@ -261,6 +261,25 @@
             <!-- Close Button -->
             <button onclick="closeModal()" class="btn-glow-ios w-full py-3 rounded-xl font-orbitron font-bold text-xs text-white uppercase tracking-wider">
                 ĐÃ HỂU / TRUY CẬP WEB
+            </button>
+        </div>
+    </div>
+
+    <!-- POPUP HƯỚNG DẪN CÀI ĐẶT TRƯỚC KHI VƯỢT LINK -->
+    <div id="instructionModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 hidden">
+        <div class="glass-vip-card max-w-md w-full rounded-2xl p-6 border border-cyan-400/40 relative text-center modal-pop shadow-2xl">
+            <div class="w-14 h-14 rounded-full bg-cyan-500/10 border border-cyan-400/30 text-cyan-400 flex items-center justify-center mx-auto mb-4 shadow-lg shadow-cyan-500/20">
+                <i class="fa-solid fa-circle-info text-2xl animate-pulse text-cyan-300"></i>
+            </div>
+            <h3 class="font-orbitron font-black text-lg text-white uppercase tracking-wider mb-2">HƯỚNG DẪN MOD</h3>
+            
+            <p id="instructionText" class="text-sm text-cyan-300 font-bold leading-relaxed mb-6 bg-cyber-card/80 p-3.5 rounded-xl border border-cyber-border">
+                <!-- Nội dung thông báo hiển thị động tại đây -->
+            </p>
+
+            <button id="confirmBypassBtn" class="btn-glow-ios w-full py-3 rounded-xl font-orbitron font-bold text-xs text-white uppercase tracking-wider flex items-center justify-center gap-2">
+                <span>OK (VƯỢT LINK)</span>
+                <i class="fa-solid fa-arrow-right-long text-xs"></i>
             </button>
         </div>
     </div>
@@ -287,7 +306,7 @@
                 <span class="h-[1px] w-6 bg-gradient-to-l from-transparent to-cyan-500"></span>
             </p>
 
-            <!-- Social Links Panel (Responsive Grid) -->
+            <!-- Social Links Panel -->
             <div class="grid grid-cols-3 gap-2.5 max-w-md mx-auto">
                 <!-- Youtube -->
                 <a href="https://youtube.com/@trdunxx?si=tGWPnDMwmzyX1BaU" target="_blank" class="glass-vip-card px-2.5 py-2.5 rounded-xl border border-red-500/20 hover:border-red-500/60 text-red-400 hover:text-white hover:bg-red-500/15 flex items-center justify-center gap-2 transition-all group">
@@ -378,8 +397,10 @@
         };
 
         let currentPlatform = 'ios';
+        let pendingTargetUrl = '';
+        let pendingLinkId = '';
 
-        // Toast Notification Helper
+        // Toast Helper
         function showToast(msg) {
             const toast = document.getElementById('toast');
             const toastMsg = document.getElementById('toastMsg');
@@ -390,7 +411,7 @@
             }, 2500);
         }
 
-        // Copy Link Function
+        // Copy Link
         function copyLink(url) {
             navigator.clipboard.writeText(url).then(() => {
                 showToast('Đã sao chép liên kết vượt link!');
@@ -399,19 +420,44 @@
             });
         }
 
-        // Increment Views
-        function handleLinkClick(id) {
-            for (let plat in FILE_DATA) {
-                FILE_DATA[plat].forEach(cat => {
-                    cat.links.forEach(l => {
-                        if (l.id === id) {
-                            l.views += 1;
-                        }
-                    });
-                });
+        // Open Instruction Modal Before Bypassing Link
+        function openBypassInstruction(id, url) {
+            pendingTargetUrl = url;
+            pendingLinkId = id;
+
+            const modal = document.getElementById('instructionModal');
+            const textEl = document.getElementById('instructionText');
+
+            if (currentPlatform === 'ios') {
+                textEl.innerText = "file này có thể dùng 3015/menu để mod";
+            } else {
+                textEl.innerText = "file này có thể dùng zachiver để mod";
             }
-            renderContent();
+
+            modal.classList.remove('hidden');
         }
+
+        // Confirm & Execute Bypass
+        document.getElementById('confirmBypassBtn').addEventListener('click', function() {
+            if (pendingLinkId) {
+                // Tăng số lượt xem
+                for (let plat in FILE_DATA) {
+                    FILE_DATA[plat].forEach(cat => {
+                        cat.links.forEach(l => {
+                            if (l.id === pendingLinkId) l.views += 1;
+                        });
+                    });
+                }
+                renderContent();
+            }
+
+            const modal = document.getElementById('instructionModal');
+            modal.classList.add('hidden');
+
+            if (pendingTargetUrl) {
+                window.open(pendingTargetUrl, '_blank');
+            }
+        });
 
         // 5-SECOND LOADING SCREEN LOGIC
         function startLoadingScreen() {
@@ -528,10 +574,10 @@
                                 <button onclick="copyLink('${link.url}')" title="Sao chép link" class="w-9 h-9 rounded-xl bg-cyber-border/60 hover:bg-cyan-500/20 text-gray-300 hover:text-cyan-300 flex items-center justify-center border border-cyber-border transition-all">
                                     <i class="fa-regular fa-copy text-xs"></i>
                                 </button>
-                                <a href="${link.url}" target="_blank" onclick="handleLinkClick('${link.id}')" class="${currentPlatform === 'ios' ? 'btn-glow-ios' : 'btn-glow-adr'} px-4 py-2.5 rounded-xl font-orbitron font-bold text-[11px] text-white flex items-center gap-1.5">
+                                <button onclick="openBypassInstruction('${link.id}', '${link.url}')" class="${currentPlatform === 'ios' ? 'btn-glow-ios' : 'btn-glow-adr'} px-4 py-2.5 rounded-xl font-orbitron font-bold text-[11px] text-white flex items-center gap-1.5">
                                     <span>VƯỢT LINK</span>
                                     <i class="fa-solid fa-arrow-right-long text-[10px] group-hover:translate-x-1 transition-transform"></i>
-                                </a>
+                                </button>
                             </div>
                         </div>
                     `;
