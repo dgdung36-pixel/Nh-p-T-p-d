@@ -17,13 +17,13 @@
                 extend: {
                     colors: {
                         cyber: {
-                            bg: '#05070d',
-                            card: '#0f1424',
-                            border: '#1d2640',
+                            bg: '#04060a',
+                            card: '#0b0f19',
+                            border: '#1a2238',
                             cyan: '#00f0ff',
                             blue: '#0072ff',
                             pink: '#ff007f',
-                            purple: '#8a2be2'
+                            purple: '#7928ca'
                         }
                     },
                     fontFamily: {
@@ -36,178 +36,216 @@
     </script>
     <style>
         body {
-            background-color: #05070d;
+            background-color: #04060a;
             color: #f1f5f9;
             font-family: 'Plus Jakarta Sans', sans-serif;
             overflow-x: hidden;
             position: relative;
         }
 
-        /* Animated Grid & Glow Background */
-        .bg-grid-pattern {
-            background-size: 30px 30px;
+        /* Ambient Cyber Mesh Background */
+        .cyber-grid {
+            background-size: 32px 32px;
             background-image: 
-                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+                linear-gradient(to right, rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
         }
 
-        .glow-orb-1 {
+        /* Dynamic Floating Orbs */
+        .orb-cyan {
             position: fixed;
-            top: -10%;
+            top: -12%;
             left: 50%;
             transform: translateX(-50%);
-            width: 350px;
-            height: 350px;
-            background: radial-gradient(circle, rgba(0, 240, 255, 0.18) 0%, transparent 70%);
-            filter: blur(50px);
-            animation: orbFloat 8s infinite alternate ease-in-out;
+            width: 420px;
+            height: 420px;
+            background: radial-gradient(circle, rgba(0, 240, 255, 0.22) 0%, transparent 70%);
+            filter: blur(60px);
+            animation: orbFloat 7s infinite alternate ease-in-out;
             pointer-events: none;
             z-index: 0;
         }
 
-        .glow-orb-2 {
+        .orb-pink {
             position: fixed;
-            bottom: -10%;
-            right: -5%;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(255, 0, 127, 0.15) 0%, transparent 70%);
-            filter: blur(60px);
-            animation: orbFloat 10s infinite alternate-reverse ease-in-out;
+            bottom: -15%;
+            right: -10%;
+            width: 380px;
+            height: 380px;
+            background: radial-gradient(circle, rgba(255, 0, 127, 0.18) 0%, transparent 70%);
+            filter: blur(70px);
+            animation: orbFloat 9s infinite alternate-reverse ease-in-out;
             pointer-events: none;
             z-index: 0;
         }
 
         @keyframes orbFloat {
             0% { transform: translateY(0) scale(1); }
-            100% { transform: translateY(30px) scale(1.1); }
+            100% { transform: translateY(35px) scale(1.12); }
         }
 
-        /* Neon Metallic Title Animation */
-        .neon-title {
+        /* Neon Shimmer Title */
+        .neon-shimmer-title {
             font-family: 'Orbitron', sans-serif;
-            background: linear-gradient(135deg, #00f0ff 0%, #ffffff 50%, #ff007f 100%);
-            background-size: 200% auto;
+            background: linear-gradient(135deg, #00f0ff 0%, #ffffff 40%, #ff007f 80%, #00f0ff 100%);
+            background-size: 250% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: shineText 4s linear infinite;
-            filter: drop-shadow(0 0 15px rgba(0, 240, 255, 0.4));
+            animation: shimmerText 5s linear infinite;
+            filter: drop-shadow(0 0 20px rgba(0, 240, 255, 0.5));
         }
 
-        @keyframes shineText {
-            to { background-position: 200% center; }
+        @keyframes shimmerText {
+            to { background-position: 250% center; }
         }
 
-        /* Glassmorphism Card */
-        .glass-card {
-            background: rgba(15, 20, 36, 0.75);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        /* Glassmorphism VIP Card */
+        .glass-vip-card {
+            background: rgba(11, 15, 25, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6);
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         /* Button Hover Animations */
-        .btn-ios {
+        .btn-glow-ios {
             background: linear-gradient(135deg, #00f0ff 0%, #0072ff 100%);
-            box-shadow: 0 4px 15px rgba(0, 240, 255, 0.3);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 18px rgba(0, 240, 255, 0.35);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative;
             overflow: hidden;
         }
 
-        .btn-ios::before, .btn-adr::before {
+        .btn-glow-ios::before, .btn-glow-adr::before {
             content: '';
             position: absolute;
             top: 0; left: -100%;
             width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
             transition: 0.5s;
         }
 
-        .btn-ios:hover::before, .btn-adr:hover::before {
+        .btn-glow-ios:hover::before, .btn-glow-adr:hover::before {
             left: 100%;
         }
 
-        .btn-ios:hover {
-            box-shadow: 0 6px 25px rgba(0, 240, 255, 0.6);
+        .btn-glow-ios:hover {
+            box-shadow: 0 6px 28px rgba(0, 240, 255, 0.7);
             transform: translateY(-2px) scale(1.02);
         }
 
-        .btn-adr {
-            background: linear-gradient(135deg, #ff007f 0%, #8a2be2 100%);
-            box-shadow: 0 4px 15px rgba(255, 0, 127, 0.3);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        .btn-glow-adr {
+            background: linear-gradient(135deg, #ff007f 0%, #7928ca 100%);
+            box-shadow: 0 4px 18px rgba(255, 0, 127, 0.35);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative;
             overflow: hidden;
         }
 
-        .btn-adr:hover {
-            box-shadow: 0 6px 25px rgba(255, 0, 127, 0.6);
+        .btn-glow-adr:hover {
+            box-shadow: 0 6px 28px rgba(255, 0, 127, 0.7);
             transform: translateY(-2px) scale(1.02);
         }
 
-        /* Content Switch Animation */
-        .fade-in-up {
-            animation: fadeInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        /* Smooth Entry Animation */
+        .smooth-appear {
+            animation: smoothAppear 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        @keyframes fadeInUp {
+        @keyframes smoothAppear {
             from {
                 opacity: 0;
-                transform: translateY(15px);
+                transform: translateY(18px) scale(0.98);
             }
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateY(0) scale(1);
             }
+        }
+
+        /* Loading Screen Fade Out */
+        #loadingScreen.fade-out {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.6s ease-out;
         }
 
         /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-track { background: #05070d; }
-        ::-webkit-scrollbar-thumb { background: #1d2640; border-radius: 4px; }
+        ::-webkit-scrollbar-track { background: #04060a; }
+        ::-webkit-scrollbar-thumb { background: #1a2238; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #00f0ff; }
     </style>
 </head>
-<body class="min-h-screen pb-12 bg-grid-pattern flex flex-col justify-between items-center relative">
+<body class="min-h-screen pb-12 cyber-grid flex flex-col justify-between items-center relative">
+
+    <!-- 5-SECOND LOADING SCREEN OVERLAY -->
+    <div id="loadingScreen" class="fixed inset-0 z-50 bg-[#04060a] flex flex-col items-center justify-center p-4">
+        <!-- Glowing Orbs in Loader -->
+        <div class="w-64 h-64 rounded-full bg-cyan-500/10 blur-3xl absolute animate-pulse"></div>
+        
+        <div class="relative z-10 text-center max-w-sm w-full">
+            <!-- Animated Shield / Logo Icon -->
+            <div class="relative w-20 h-20 mx-auto mb-6 flex items-center justify-center">
+                <div class="absolute inset-0 rounded-2xl border-2 border-cyan-400/40 animate-spin" style="animation-duration: 6s;"></div>
+                <div class="absolute inset-2 rounded-xl border-2 border-pink-500/40 animate-spin" style="animation-duration: 4s; animation-direction: reverse;"></div>
+                <i class="fa-solid fa-bolt text-3xl text-cyan-400 animate-bounce"></i>
+            </div>
+
+            <!-- Loading Title -->
+            <h2 class="neon-shimmer-title text-2xl font-black tracking-wider uppercase mb-2">TRONG DUNG VIP</h2>
+            <p class="text-xs text-gray-400 font-bold tracking-widest uppercase mb-6">Đang tải hệ thống file mod...</p>
+
+            <!-- Progress Bar Bar & Countdown -->
+            <div class="w-full bg-cyber-card border border-cyber-border h-3 rounded-full p-0.5 mb-3 shadow-inner overflow-hidden">
+                <div id="progressBar" class="h-full rounded-full bg-gradient-to-r from-cyan-400 via-blue-500 to-pink-500 w-0 transition-all duration-100 ease-linear shadow-lg shadow-cyan-500/50"></div>
+            </div>
+
+            <!-- Live Seconds Counter -->
+            <div class="flex items-center justify-between text-[11px] text-gray-400 font-mono font-bold px-1">
+                <span>Vui lòng chờ: <span id="countdownText" class="text-cyan-400">5</span>s</span>
+                <span id="progressPercent" class="text-pink-400">0%</span>
+            </div>
+        </div>
+    </div>
 
     <!-- Glowing Background Orbs -->
-    <div class="glow-orb-1"></div>
-    <div class="glow-orb-2"></div>
+    <div class="orb-cyan"></div>
+    <div class="orb-pink"></div>
 
     <div class="w-full relative z-10">
         <!-- HEADER SECTION -->
         <header class="pt-8 pb-4 px-4 text-center max-w-lg mx-auto">
             <!-- Clock Badge -->
-            <div class="inline-flex items-center gap-2 bg-cyber-card/90 border border-cyber-border px-4 py-1.5 rounded-full mb-4 shadow-xl backdrop-blur-md">
+            <div class="inline-flex items-center gap-2 bg-cyber-card/90 border border-cyber-border px-4 py-1.5 rounded-full mb-4 shadow-2xl backdrop-blur-md">
                 <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
                 <span id="liveClock" class="font-orbitron text-[11px] font-bold tracking-wider text-cyan-300">00:00:00 - 01/01/2026</span>
             </div>
 
-            <!-- Name Title -->
-            <h1 class="neon-title text-4xl sm:text-5xl font-black tracking-wider uppercase mb-1">TRONG DUNG</h1>
+            <!-- Main Title -->
+            <h1 class="neon-shimmer-title text-4xl sm:text-5xl font-black tracking-wider uppercase mb-1">TRONG DUNG</h1>
             
             <p class="text-xs font-bold text-gray-400 tracking-widest uppercase mb-6 flex items-center justify-center gap-2">
-                <span class="h-[1px] w-6 bg-cyan-500/40"></span>
+                <span class="h-[1px] w-6 bg-gradient-to-r from-transparent to-cyan-500"></span>
                 FILE MOD LIÊN QUÂN VIP
-                <span class="h-[1px] w-6 bg-cyan-500/40"></span>
+                <span class="h-[1px] w-6 bg-gradient-to-l from-transparent to-cyan-500"></span>
             </p>
 
-            <!-- Social Links Panel -->
+            <!-- Social Links Panel (Responsive Grid) -->
             <div class="grid grid-cols-3 gap-2.5 max-w-md mx-auto">
                 <!-- Youtube -->
-                <a href="https://youtube.com/@trdunxx?si=tGWPnDMwmzyX1BaU" target="_blank" class="glass-card px-2.5 py-2.5 rounded-xl border border-red-500/20 hover:border-red-500/60 text-red-400 hover:text-white hover:bg-red-500/15 flex items-center justify-center gap-2 transition-all group">
+                <a href="https://youtube.com/@trdunxx?si=tGWPnDMwmzyX1BaU" target="_blank" class="glass-vip-card px-2.5 py-2.5 rounded-xl border border-red-500/20 hover:border-red-500/60 text-red-400 hover:text-white hover:bg-red-500/15 flex items-center justify-center gap-2 transition-all group">
                     <i class="fa-brands fa-youtube text-base group-hover:scale-110 transition-transform"></i>
                     <span class="font-orbitron text-[11px] font-bold">YOUTUBE</span>
                 </a>
                 <!-- Telegram -->
-                <a href="https://t.me/TrongDung05" target="_blank" class="glass-card px-2.5 py-2.5 rounded-xl border border-sky-400/20 hover:border-sky-400/60 text-sky-400 hover:text-white hover:bg-sky-500/15 flex items-center justify-center gap-2 transition-all group">
+                <a href="https://t.me/TrongDung05" target="_blank" class="glass-vip-card px-2.5 py-2.5 rounded-xl border border-sky-400/20 hover:border-sky-400/60 text-sky-400 hover:text-white hover:bg-sky-500/15 flex items-center justify-center gap-2 transition-all group">
                     <i class="fa-brands fa-telegram text-base group-hover:scale-110 transition-transform"></i>
                     <span class="font-orbitron text-[11px] font-bold">TELEGRAM</span>
                 </a>
                 <!-- Zalo -->
-                <a href="https://zalo.me/0836376886" target="_blank" class="glass-card px-2.5 py-2.5 rounded-xl border border-blue-500/20 hover:border-blue-500/60 text-blue-400 hover:text-white hover:bg-blue-600/15 flex items-center justify-center gap-2 transition-all group">
+                <a href="https://zalo.me/0836376886" target="_blank" class="glass-vip-card px-2.5 py-2.5 rounded-xl border border-blue-500/20 hover:border-blue-500/60 text-blue-400 hover:text-white hover:bg-blue-600/15 flex items-center justify-center gap-2 transition-all group">
                     <i class="fa-solid fa-comment-dots text-base group-hover:scale-110 transition-transform"></i>
                     <span class="font-orbitron text-[11px] font-bold">ZALO</span>
                 </a>
@@ -218,7 +256,7 @@
         <main class="max-w-lg mx-auto px-4 mt-2">
 
             <!-- OS Switcher Tabs -->
-            <div class="grid grid-cols-2 gap-2.5 mb-5 p-1.5 glass-card rounded-2xl border border-cyber-border">
+            <div class="grid grid-cols-2 gap-2.5 mb-5 p-1.5 glass-vip-card rounded-2xl border border-cyber-border">
                 <button id="tabIosBtn" onclick="switchPlatform('ios')" class="py-3 rounded-xl font-orbitron font-bold text-xs sm:text-sm tracking-wider flex items-center justify-center gap-2 transition-all bg-gradient-to-r from-cyan-400 to-blue-600 text-white shadow-lg shadow-cyan-500/25">
                     <i class="fa-brands fa-apple text-base"></i>
                     MOD IOS
@@ -235,7 +273,7 @@
             </div>
 
             <!-- Security Badge Box -->
-            <div class="mt-6 glass-card p-3.5 rounded-2xl border border-cyber-border text-center relative overflow-hidden">
+            <div class="mt-6 glass-vip-card p-3.5 rounded-2xl border border-cyber-border text-center relative overflow-hidden">
                 <p class="text-xs text-gray-400 font-semibold flex items-center justify-center gap-1.5">
                     <i class="fa-solid fa-shield-halved text-cyan-400"></i>
                     Tất cả File Mod được bảo mật & kiểm duyệt 100% an toàn.
@@ -284,6 +322,38 @@
 
         let currentPlatform = 'ios';
 
+        // 5-SECOND LOADING SCREEN LOGIC
+        function startLoadingScreen() {
+            const duration = 5000; // 5 Seconds
+            const intervalTime = 50;
+            let elapsedTime = 0;
+
+            const progressBar = document.getElementById('progressBar');
+            const progressPercent = document.getElementById('progressPercent');
+            const countdownText = document.getElementById('countdownText');
+            const loadingScreen = document.getElementById('loadingScreen');
+
+            const timer = setInterval(() => {
+                elapsedTime += intervalTime;
+                const percentage = Math.min(Math.floor((elapsedTime / duration) * 100), 100);
+                const secondsRemaining = Math.max(Math.ceil((duration - elapsedTime) / 1000), 0);
+
+                if (progressBar) progressBar.style.width = percentage + '%';
+                if (progressPercent) progressPercent.innerText = percentage + '%';
+                if (countdownText) countdownText.innerText = secondsRemaining;
+
+                if (elapsedTime >= duration) {
+                    clearInterval(timer);
+                    if (loadingScreen) {
+                        loadingScreen.classList.add('fade-out');
+                        setTimeout(() => {
+                            loadingScreen.style.display = 'none';
+                        }, 600);
+                    }
+                }
+            }, intervalTime);
+        }
+
         // Live Clock Function
         function updateClock() {
             const now = new Date();
@@ -319,7 +389,7 @@
 
             if (categories.length === 0) {
                 container.innerHTML = `
-                    <div class="glass-card rounded-2xl p-8 text-center border border-cyber-border fade-in-up">
+                    <div class="glass-vip-card rounded-2xl p-8 text-center border border-cyber-border smooth-appear">
                         <i class="fa-solid fa-folder-open text-3xl text-gray-600 mb-2 block"></i>
                         <p class="text-xs text-gray-400 font-medium">Chưa có file mod nào cho nền tảng này</p>
                     </div>
@@ -329,7 +399,7 @@
 
             categories.forEach(cat => {
                 const catBox = document.createElement('div');
-                catBox.className = 'glass-card rounded-2xl p-4 border border-cyber-border fade-in-up';
+                catBox.className = 'glass-vip-card rounded-2xl p-4 border border-cyber-border smooth-appear';
 
                 let linksHtml = '';
                 cat.links.forEach(link => {
@@ -348,7 +418,7 @@
                                     <span><i class="fa-regular fa-eye text-cyan-400 mr-1"></i>${link.views} lượt xem</span>
                                 </div>
                             </div>
-                            <a href="${link.url}" target="_blank" class="${currentPlatform === 'ios' ? 'btn-ios' : 'btn-adr'} px-4 py-2.5 rounded-xl font-orbitron font-bold text-[11px] text-white flex items-center gap-1.5 shrink-0">
+                            <a href="${link.url}" target="_blank" class="${currentPlatform === 'ios' ? 'btn-glow-ios' : 'btn-glow-adr'} px-4 py-2.5 rounded-xl font-orbitron font-bold text-[11px] text-white flex items-center gap-1.5 shrink-0">
                                 <span>VƯỢT LINK</span>
                                 <i class="fa-solid fa-arrow-right-long text-[10px] group-hover:translate-x-1 transition-transform"></i>
                             </a>
@@ -373,7 +443,8 @@
             });
         }
 
-        // Initial Render
+        // Initialize Page & Start Loader
+        startLoadingScreen();
         renderContent();
     </script>
 </body>
