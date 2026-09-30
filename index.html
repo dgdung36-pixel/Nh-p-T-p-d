@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FILE MOD LQ - TRONG DUNG VIP</title>
+    <title>FILE MOD LQ - MOD SKIN VIP</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -17,13 +17,14 @@
                 extend: {
                     colors: {
                         cyber: {
-                            bg: '#04060a',
-                            card: '#0b0f19',
-                            border: '#1a2238',
+                            bg: '#030509',
+                            card: '#0a0e1a',
+                            border: '#182035',
                             cyan: '#00f0ff',
                             blue: '#0072ff',
                             pink: '#ff007f',
-                            purple: '#7928ca'
+                            purple: '#7928ca',
+                            gold: '#ffd700'
                         }
                     },
                     fontFamily: {
@@ -36,7 +37,7 @@
     </script>
     <style>
         body {
-            background-color: #04060a;
+            background-color: #030509;
             color: #f1f5f9;
             font-family: 'Plus Jakarta Sans', sans-serif;
             overflow-x: hidden;
@@ -57,10 +58,10 @@
             top: -12%;
             left: 50%;
             transform: translateX(-50%);
-            width: 420px;
-            height: 420px;
+            width: 450px;
+            height: 450px;
             background: radial-gradient(circle, rgba(0, 240, 255, 0.22) 0%, transparent 70%);
-            filter: blur(60px);
+            filter: blur(70px);
             animation: orbFloat 7s infinite alternate ease-in-out;
             pointer-events: none;
             z-index: 0;
@@ -70,10 +71,10 @@
             position: fixed;
             bottom: -15%;
             right: -10%;
-            width: 380px;
-            height: 380px;
+            width: 400px;
+            height: 400px;
             background: radial-gradient(circle, rgba(255, 0, 127, 0.18) 0%, transparent 70%);
-            filter: blur(70px);
+            filter: blur(80px);
             animation: orbFloat 9s infinite alternate-reverse ease-in-out;
             pointer-events: none;
             z-index: 0;
@@ -101,14 +102,14 @@
 
         /* Glassmorphism VIP Card */
         .glass-vip-card {
-            background: rgba(11, 15, 25, 0.8);
+            background: rgba(10, 14, 26, 0.85);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.09);
             box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6);
             transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* Button Hover Animations */
+        /* Button Hover & Light Sweep Animations */
         .btn-glow-ios {
             background: linear-gradient(135deg, #00f0ff 0%, #0072ff 100%);
             box-shadow: 0 4px 18px rgba(0, 240, 255, 0.35);
@@ -164,6 +165,15 @@
             }
         }
 
+        /* Toast Animation */
+        .toast-pop {
+            animation: toastPop 0.3s ease-out forwards;
+        }
+        @keyframes toastPop {
+            from { opacity: 0; transform: translateY(-20px) translateX(-50%); }
+            to { opacity: 1; transform: translateY(0) translateX(-50%); }
+        }
+
         /* Loading Screen Fade Out */
         #loadingScreen.fade-out {
             opacity: 0;
@@ -189,15 +199,21 @@
 
         /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-track { background: #04060a; }
-        ::-webkit-scrollbar-thumb { background: #1a2238; border-radius: 4px; }
+        ::-webkit-scrollbar-track { background: #030509; }
+        ::-webkit-scrollbar-thumb { background: #182035; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #00f0ff; }
     </style>
 </head>
 <body class="min-h-screen pb-12 cyber-grid flex flex-col justify-between items-center relative">
 
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 bg-cyber-card border border-cyan-400/50 text-cyan-300 px-4 py-2 rounded-full text-xs font-bold shadow-2xl backdrop-blur-md hidden toast-pop flex items-center gap-2">
+        <i class="fa-solid fa-circle-check text-emerald-400"></i>
+        <span id="toastMsg">Đã sao chép liên kết thành công!</span>
+    </div>
+
     <!-- 5-SECOND LOADING SCREEN OVERLAY -->
-    <div id="loadingScreen" class="fixed inset-0 z-50 bg-[#04060a] flex flex-col items-center justify-center p-4">
+    <div id="loadingScreen" class="fixed inset-0 z-50 bg-[#030509] flex flex-col items-center justify-center p-4">
         <!-- Glowing Orbs in Loader -->
         <div class="w-64 h-64 rounded-full bg-cyan-500/10 blur-3xl absolute animate-pulse"></div>
         
@@ -206,12 +222,12 @@
             <div class="relative w-20 h-20 mx-auto mb-6 flex items-center justify-center">
                 <div class="absolute inset-0 rounded-2xl border-2 border-cyan-400/40 animate-spin" style="animation-duration: 6s;"></div>
                 <div class="absolute inset-2 rounded-xl border-2 border-pink-500/40 animate-spin" style="animation-duration: 4s; animation-direction: reverse;"></div>
-                <i class="fa-solid fa-bolt text-3xl text-cyan-400 animate-bounce"></i>
+                <i class="fa-solid fa-gem text-3xl text-cyan-400 animate-bounce"></i>
             </div>
 
             <!-- Loading Title -->
-            <h2 class="neon-shimmer-title text-2xl font-black tracking-wider uppercase mb-2">TRONG DUNG VIP</h2>
-            <p class="text-xs text-gray-400 font-bold tracking-widest uppercase mb-6">Đang tải hệ thống file mod...</p>
+            <h2 class="neon-shimmer-title text-2xl font-black tracking-wider uppercase mb-2">MOD SKIN VIP</h2>
+            <p class="text-xs text-gray-400 font-bold tracking-widest uppercase mb-6">Đang tối ưu hệ thống file mod...</p>
 
             <!-- Progress Bar Bar & Countdown -->
             <div class="w-full bg-cyber-card border border-cyber-border h-3 rounded-full p-0.5 mb-3 shadow-inner overflow-hidden">
@@ -231,11 +247,11 @@
         <div class="glass-vip-card max-w-md w-full rounded-2xl p-6 border border-cyan-400/30 relative text-center modal-pop shadow-2xl">
             <!-- Icon Header -->
             <div class="w-14 h-14 rounded-full bg-cyan-500/10 border border-cyan-400/30 text-cyan-400 flex items-center justify-center mx-auto mb-4 shadow-lg shadow-cyan-500/20">
-                <i class="fa-solid fa-bell text-2xl animate-bounce"></i>
+                <i class="fa-solid fa-crown text-2xl animate-bounce text-amber-400"></i>
             </div>
 
             <!-- Modal Title -->
-            <h3 class="neon-shimmer-title text-xl font-black tracking-wider uppercase mb-3">THÔNG BÁO</h3>
+            <h3 class="neon-shimmer-title text-xl font-black tracking-wider uppercase mb-3">MOD SKIN VIP</h3>
 
             <!-- Modal Body Text -->
             <p class="text-sm text-gray-200 leading-relaxed font-semibold mb-6 px-2">
@@ -263,11 +279,11 @@
             </div>
 
             <!-- Main Title -->
-            <h1 class="neon-shimmer-title text-4xl sm:text-5xl font-black tracking-wider uppercase mb-1">TRONG DUNG</h1>
+            <h1 class="neon-shimmer-title text-4xl sm:text-5xl font-black tracking-wider uppercase mb-1">MOD SKIN VIP</h1>
             
             <p class="text-xs font-bold text-gray-400 tracking-widest uppercase mb-6 flex items-center justify-center gap-2">
                 <span class="h-[1px] w-6 bg-gradient-to-r from-transparent to-cyan-500"></span>
-                FILE MOD LIÊN QUÂN VIP
+                TRONG DUNG • FILE MOD LIÊN QUÂN
                 <span class="h-[1px] w-6 bg-gradient-to-l from-transparent to-cyan-500"></span>
             </p>
 
@@ -324,7 +340,7 @@
 
     <!-- FOOTER -->
     <footer class="mt-10 text-center text-[11px] text-gray-500 font-medium relative z-10">
-        <p>© 2026 FILE MOD LQ • Developed by <span class="text-cyan-400 font-bold">TRONG DUNG</span></p>
+        <p>© 2026 MOD SKIN VIP • Developed by <span class="text-cyan-400 font-bold">TRONG DUNG</span></p>
     </footer>
 
     <!-- JAVASCRIPT -->
@@ -333,26 +349,28 @@
         const FILE_DATA = {
             ios: [
                 {
-                    categoryName: 'File',
+                    categoryName: 'File Mod iOS',
                     links: [
                         {
+                            id: 'ios_1',
                             title: 'Edras VTK',
                             url: 'https://link4m.net/xZ5QEUUJ',
                             badge: 'VIP',
-                            views: '1.2K'
+                            views: 1250
                         }
                     ]
                 }
             ],
             adr: [
                 {
-                    categoryName: 'File',
+                    categoryName: 'File Mod Android',
                     links: [
                         {
+                            id: 'adr_1',
                             title: 'Edras VTK [11:44 30/9]',
                             url: 'https://link4m.org/5bZR3j',
                             badge: 'VIP',
-                            views: '890'
+                            views: 890
                         }
                     ]
                 }
@@ -361,9 +379,43 @@
 
         let currentPlatform = 'ios';
 
-        // 5-SECOND LOADING SCREEN & POPUP TRIGGER LOGIC
+        // Toast Notification Helper
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMsg');
+            toastMsg.innerText = msg;
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 2500);
+        }
+
+        // Copy Link Function
+        function copyLink(url) {
+            navigator.clipboard.writeText(url).then(() => {
+                showToast('Đã sao chép liên kết vượt link!');
+            }).catch(() => {
+                showToast('Không thể sao chép liên kết!');
+            });
+        }
+
+        // Increment Views
+        function handleLinkClick(id) {
+            for (let plat in FILE_DATA) {
+                FILE_DATA[plat].forEach(cat => {
+                    cat.links.forEach(l => {
+                        if (l.id === id) {
+                            l.views += 1;
+                        }
+                    });
+                });
+            }
+            renderContent();
+        }
+
+        // 5-SECOND LOADING SCREEN LOGIC
         function startLoadingScreen() {
-            const duration = 5000; // 5 Seconds
+            const duration = 5000;
             const intervalTime = 50;
             let elapsedTime = 0;
 
@@ -387,7 +439,7 @@
                         loadingScreen.classList.add('fade-out');
                         setTimeout(() => {
                             loadingScreen.style.display = 'none';
-                            showWelcomeModal(); // Mở Popup thông báo ngay sau khi ẩn loading
+                            showWelcomeModal();
                         }, 600);
                     }
                 }
@@ -472,10 +524,15 @@
                                     <span><i class="fa-regular fa-eye text-cyan-400 mr-1"></i>${link.views} lượt xem</span>
                                 </div>
                             </div>
-                            <a href="${link.url}" target="_blank" class="${currentPlatform === 'ios' ? 'btn-glow-ios' : 'btn-glow-adr'} px-4 py-2.5 rounded-xl font-orbitron font-bold text-[11px] text-white flex items-center gap-1.5 shrink-0">
-                                <span>VƯỢT LINK</span>
-                                <i class="fa-solid fa-arrow-right-long text-[10px] group-hover:translate-x-1 transition-transform"></i>
-                            </a>
+                            <div class="flex items-center gap-2 shrink-0">
+                                <button onclick="copyLink('${link.url}')" title="Sao chép link" class="w-9 h-9 rounded-xl bg-cyber-border/60 hover:bg-cyan-500/20 text-gray-300 hover:text-cyan-300 flex items-center justify-center border border-cyber-border transition-all">
+                                    <i class="fa-regular fa-copy text-xs"></i>
+                                </button>
+                                <a href="${link.url}" target="_blank" onclick="handleLinkClick('${link.id}')" class="${currentPlatform === 'ios' ? 'btn-glow-ios' : 'btn-glow-adr'} px-4 py-2.5 rounded-xl font-orbitron font-bold text-[11px] text-white flex items-center gap-1.5">
+                                    <span>VƯỢT LINK</span>
+                                    <i class="fa-solid fa-arrow-right-long text-[10px] group-hover:translate-x-1 transition-transform"></i>
+                                </a>
+                            </div>
                         </div>
                     `;
                 });
