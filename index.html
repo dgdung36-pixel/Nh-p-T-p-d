@@ -171,6 +171,22 @@
             transition: opacity 0.6s ease-out;
         }
 
+        /* Modal Animation */
+        .modal-pop {
+            animation: modalPop 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes modalPop {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
         /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 5px; }
         ::-webkit-scrollbar-track { background: #04060a; }
@@ -207,6 +223,29 @@
                 <span>Vui lòng chờ: <span id="countdownText" class="text-cyan-400">5</span>s</span>
                 <span id="progressPercent" class="text-pink-400">0%</span>
             </div>
+        </div>
+    </div>
+
+    <!-- POPUP THÔNG BÁO SAU KHI VÀO WEB -->
+    <div id="welcomeModal" class="fixed inset-0 z-40 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
+        <div class="glass-vip-card max-w-md w-full rounded-2xl p-6 border border-cyan-400/30 relative text-center modal-pop shadow-2xl">
+            <!-- Icon Header -->
+            <div class="w-14 h-14 rounded-full bg-cyan-500/10 border border-cyan-400/30 text-cyan-400 flex items-center justify-center mx-auto mb-4 shadow-lg shadow-cyan-500/20">
+                <i class="fa-solid fa-bell text-2xl animate-bounce"></i>
+            </div>
+
+            <!-- Modal Title -->
+            <h3 class="neon-shimmer-title text-xl font-black tracking-wider uppercase mb-3">THÔNG BÁO</h3>
+
+            <!-- Modal Body Text -->
+            <p class="text-sm text-gray-200 leading-relaxed font-semibold mb-6 px-2">
+                Đây là web lấy mod của kênh <span class="text-cyan-300 font-bold">Trong Dung</span>, nơi cập nhật những File mod skin ios và adr hàng tuần.
+            </p>
+
+            <!-- Close Button -->
+            <button onclick="closeModal()" class="btn-glow-ios w-full py-3 rounded-xl font-orbitron font-bold text-xs text-white uppercase tracking-wider">
+                ĐÃ HỂU / TRUY CẬP WEB
+            </button>
         </div>
     </div>
 
@@ -322,7 +361,7 @@
 
         let currentPlatform = 'ios';
 
-        // 5-SECOND LOADING SCREEN LOGIC
+        // 5-SECOND LOADING SCREEN & POPUP TRIGGER LOGIC
         function startLoadingScreen() {
             const duration = 5000; // 5 Seconds
             const intervalTime = 50;
@@ -348,10 +387,25 @@
                         loadingScreen.classList.add('fade-out');
                         setTimeout(() => {
                             loadingScreen.style.display = 'none';
+                            showWelcomeModal(); // Mở Popup thông báo ngay sau khi ẩn loading
                         }, 600);
                     }
                 }
             }, intervalTime);
+        }
+
+        function showWelcomeModal() {
+            const modal = document.getElementById('welcomeModal');
+            if (modal) {
+                modal.classList.remove('hidden');
+            }
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('welcomeModal');
+            if (modal) {
+                modal.classList.add('hidden');
+            }
         }
 
         // Live Clock Function
