@@ -1,107 +1,299 @@
 
+
 <!DOCTYPE html>
+
 <html lang="vi">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Happy Women's Day 20/10 💗</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>20/10 dành cho bạn 💗</title>
+
 <style>
+
 *{box-sizing:border-box}
+
+:root{--pink:#e76f98;--dark:#913d64}
+
 body{
-  margin:0;min-height:100vh;overflow-x:hidden;
-  font-family:"Segoe UI",sans-serif;
-  background:linear-gradient(135deg,#ffe4ec,#fff0f5,#f8d7ff);
-  display:flex;justify-content:center;align-items:center;
-  color:#a12e60;text-align:center;padding:24px;
+
+ margin:0;min-height:100vh;font-family:"Segoe UI",sans-serif;
+
+ color:var(--dark);
+
+ background:linear-gradient(135deg,#fff0f4,#ffe0eb,#f8e9ff);
+
+ display:flex;align-items:center;justify-content:center;
+
+ padding:20px;overflow-x:hidden
+
 }
+
+#hearts{position:fixed;inset:0;pointer-events:none;overflow:hidden}
+
+.heart{position:absolute;bottom:-40px;animation:rise linear forwards}
+
 .card{
-  position:relative;z-index:2;width:100%;max-width:430px;
-  padding:35px 24px;border:1px solid #ffffffbd;
-  border-radius:28px;background:#ffffffb8;
-  box-shadow:0 15px 50px #d96b9b30;
-  backdrop-filter:blur(12px);
-  animation:appear 1s ease;
+
+ width:100%;max-width:480px;min-height:560px;
+
+ padding:34px 26px 24px;border-radius:28px;
+
+ background:#ffffffc9;backdrop-filter:blur(12px);
+
+ border:1px solid white;box-shadow:0 15px 55px #bb648d25;
+
+ text-align:center;position:relative;z-index:1;
+
+ display:flex;flex-direction:column;align-items:center;
+
+ justify-content:center;animation:appear .65s ease
+
 }
-.flower{font-size:65px;animation:sway 3s infinite ease-in-out}
-h1{font-size:32px;margin:12px 0;color:#e34f87}
-h2{font-size:22px;color:#ba4880}
-p{line-height:1.8;font-size:16px}
+
+.page{display:none;width:100%}
+
+.page.active{display:block;animation:appear .65s ease}
+
+.emoji{font-size:70px;margin-bottom:12px;animation:float 3s infinite}
+
+.small{font-size:12px;letter-spacing:4px;color:#cb7798}
+
+h1{font-size:clamp(29px,8vw,42px);line-height:1.3;margin:14px 0;color:#d95183}
+
+h2{font-size:25px;margin:15px 0;color:#d95183}
+
+p{font-size:16px;line-height:1.95;margin:14px 0}
+
+.line{color:#e69bb7;letter-spacing:8px;margin:18px}
+
 button{
-  border:0;border-radius:30px;padding:14px 23px;
-  margin-top:15px;background:linear-gradient(90deg,#ff76a8,#d77bdb);
-  color:white;font-size:16px;font-weight:bold;
-  box-shadow:0 6px 18px #e77aaa55;cursor:pointer;
-  transition:.3s;
+
+ background:linear-gradient(110deg,#f18aaa,#d780c8);
+
+ color:white;border:0;border-radius:28px;padding:13px 24px;
+
+ font-size:15px;font-weight:600;cursor:pointer;
+
+ box-shadow:0 6px 16px #d77ca633;margin:8px 4px;
+
+ transition:transform .2s
+
 }
-button:active{transform:scale(.96)}
-#letter{display:none;margin-top:22px;animation:appear .8s ease}
-.signature{font-style:italic;color:#dc5790}
-.heart{
-  position:fixed;bottom:-30px;z-index:1;
-  animation:floatUp linear forwards;pointer-events:none;
-}
-.sparkle{position:fixed;pointer-events:none;animation:twinkle 2s infinite}
-@keyframes appear{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-@keyframes sway{0%,100%{transform:rotate(-7deg)}50%{transform:rotate(7deg)}}
-@keyframes floatUp{to{transform:translateY(-110vh) rotate(360deg);opacity:0}}
-@keyframes twinkle{0%,100%{opacity:.3}50%{opacity:1}}
+
+button:hover{transform:translateY(-3px)}
+
+.back{background:#fff;color:#c45d89;border:1px solid #f5c4d6}
+
+.nav{margin-top:25px}
+
+.progress{font-size:12px;color:#c17a98;margin-top:15px;letter-spacing:3px}
+
+.envelope{font-size:100px;cursor:pointer;display:block;margin:20px auto}
+
+.letter{background:#fff8fb;padding:20px;border-radius:18px;border:1px solid #f8d8e5}
+
+.signature{font-size:24px;font-style:italic;color:#d95183;margin-top:24px}
+
+.footer{font-size:12px;color:#c78ba5;margin-top:15px}
+
+@keyframes appear{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+@keyframes float{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-9px) rotate(4deg)}}
+
+@keyframes rise{to{transform:translateY(-110vh) rotate(360deg);opacity:0}}
+
 </style>
+
 </head>
+
 <body>
 
-<div class="card">
-  <div class="flower">💐</div>
-  <p>🌷 20 THÁNG 10 🌷</p>
-  <h1>Happy Women's Day!</h1>
-  <h2>Chúc mừng ngày Phụ nữ Việt Nam 💗</h2>
-  <p>
-    Hôm nay là một ngày thật đặc biệt,<br>
-    dành riêng cho những bông hoa xinh đẹp nhất.
-  </p>
+<div id="hearts"></div>
 
-  <button onclick="openLetter()">💌 Mở lời chúc bí mật</button>
+<main class="card">
 
-  <div id="letter">
-    <h2>Gửi đến cô gái đặc biệt 🌸</h2>
-    <p>
-      Chúc bạn luôn xinh đẹp, vui vẻ và hạnh phúc.
-      Mong mọi điều tốt đẹp nhất sẽ đến với bạn,
-      nụ cười luôn nở trên môi và những ước mơ
-      đều trở thành hiện thực.
-    </p>
-    <p>
-      Chúc bạn có một ngày 20/10 thật ngọt ngào,
-      được yêu thương thật nhiều và luôn là phiên
-      bản rực rỡ nhất của chính mình! 💕
-    </p>
-    <div class="signature">🌹 Bạn xứng đáng với những điều tuyệt vời nhất 🌹</div>
-  </div>
-</div>
+<section class="page active">
+
+ <div class="small">20 · 10 · 2026</div>
+
+ <div class="emoji">💐</div>
+
+ <h1>Chúc mừng<br>Ngày Phụ Nữ<br>Việt Nam 20/10</h1>
+
+ <div class="line">♡ ── ♥ ── ♡</div>
+
+ <p>Hôm nay là ngày đặc biệt dành cho những bông hoa xinh đẹp. Mình có một món quà nhỏ muốn gửi đến bạn!</p>
+
+ <button onclick="go(1)">Bắt đầu hành trình 💗 →</button>
+
+</section>
+
+<section class="page">
+
+ <div class="small">MỘT MÓN QUÀ NHỎ</div>
+
+ <div class="emoji">💌</div>
+
+ <h2>Gửi đến bạn...</h2>
+
+ <p>Có những lời chúc tuy giản dị nhưng được gửi gắm bằng tất cả sự chân thành.</p>
+
+ <p>Hãy mở phong bì này để nhận những điều dễ thương dành riêng cho ngày hôm nay nhé!</p>
+
+ <div class="envelope" onclick="openLetter()">💌</div>
+
+ <div id="letter" class="letter" style="display:none">
+
+   <p>🌷 Xin gửi đến bạn một cái ôm thật ấm áp và thật nhiều yêu thương!</p>
+
+ </div>
+
+ <div class="nav"><button class="back" onclick="go(0)">← Trở lại</button><button onclick="go(2)">Đọc tiếp →</button></div>
+
+</section>
+
+<section class="page">
+
+ <div class="small">ĐIỀU ƯỚC THỨ NHẤT</div>
+
+ <div class="emoji">🌸</div>
+
+ <h2>Chúc bạn luôn rạng rỡ</h2>
+
+ <p>Chúc bạn mỗi sáng thức dậy đều có một lý do để mỉm cười, mỗi ngày đều gặp được những điều tử tế và mỗi tối đều có thể ngủ ngon với một trái tim bình yên.</p>
+
+ <p>Mong rằng đôi mắt bạn luôn ánh lên niềm vui, nụ cười luôn thật tươi và vẻ đẹp của bạn không chỉ nằm ở ngoại hình mà còn tỏa sáng từ tâm hồn. 💕</p>
+
+ <div class="line">♡ ── 🌷 ── ♡</div>
+
+ <div class="nav"><button class="back" onclick="go(1)">← Trở lại</button><button onclick="go(3)">Lời chúc tiếp theo →</button></div>
+
+</section>
+
+<section class="page">
+
+ <div class="small">ĐIỀU ƯỚC THỨ HAI</div>
+
+ <div class="emoji">🦋</div>
+
+ <h2>Chúc mọi điều như ý</h2>
+
+ <p>Chúc cho những dự định bạn đang ấp ủ sẽ từng bước thành hiện thực. Chúc bạn học tập thật tốt, công việc thuận lợi và luôn đủ tự tin để theo đuổi điều mình yêu thích.</p>
+
+ <p>Nếu có những ngày mệt mỏi, mong bạn vẫn đủ mạnh mẽ để bước tiếp, đủ dịu dàng để yêu thương bản thân và đủ kiên trì để không từ bỏ ước mơ. ✨</p>
+
+ <div class="line">♡ ── 🌼 ── ♡</div>
+
+ <div class="nav"><button class="back" onclick="go(2)">← Trở lại</button><button onclick="go(4)">Tiếp tục nhé →</button></div>
+
+</section>
+
+<section class="page">
+
+ <div class="small">ĐIỀU ƯỚC THỨ BA</div>
+
+ <div class="emoji">💖</div>
+
+ <h2>Luôn được yêu thương</h2>
+
+ <p>Mong bạn luôn gặp những người chân thành, được trân trọng đúng với giá trị của mình và không bao giờ phải cố gắng trở thành một ai khác để được yêu quý.</p>
+
+ <p>Chúc bạn có thật nhiều kỷ niệm đẹp, những người bạn tốt bên cạnh, một tình yêu dịu dàng khi đến đúng lúc và một cuộc sống ngập tràn tiếng cười.</p>
+
+ <p>Hãy nhớ rằng bạn xứng đáng với những điều tốt đẹp nhất trên thế giới này! 🌹</p>
+
+ <div class="nav"><button class="back" onclick="go(3)">← Trở lại</button><button onclick="go(5)">Đến món quà cuối 💝 →</button></div>
+
+</section>
+
+<section class="page">
+
+ <div class="small">DÀNH RIÊNG CHO BẠN</div>
+
+ <div class="emoji">🌷</div>
+
+ <h1>Happy<br>Women's Day!</h1>
+
+ <div class="line">♡ ── ♥ ── ♡</div>
+
+ <p>Chúc bạn một ngày 20/10 thật vui, thật hạnh phúc và nhận được thật nhiều yêu thương.</p>
+
+ <p>Mong rằng không chỉ hôm nay mà tất cả 365 ngày trong năm, bạn đều có thể sống vui vẻ, bình an, tự tin và hạnh phúc theo cách riêng của mình.</p>
+
+ <p>Cảm ơn bạn đã dành thời gian đọc món quà nhỏ này. Hy vọng nó có thể khiến bạn mỉm cười! 💗</p>
+
+ <div class="signature">dev trong dung</div>
+
+ <div class="footer">Made with ♡ · 20/10</div>
+
+ <div class="nav"><button class="back" onclick="go(4)">← Đọc lại</button><button onclick="go(0)">↻ Xem lại từ đầu</button></div>
+
+</section>
+
+<div class="progress" id="progress">01 / 06</div>
+
+</main>
 
 <script>
+
+let current=0;
+
+const pages=document.querySelectorAll(".page");
+
+function go(n){
+
+ pages[current].classList.remove("active");
+
+ current=n;
+
+ pages[current].classList.add("active");
+
+ document.getElementById("progress").textContent=
+
+ String(current+1).padStart(2,"0")+" / 06";
+
+ window.scrollTo({top:0,behavior:"smooth"});
+
+}
+
 function openLetter(){
-  const letter=document.getElementById("letter");
-  letter.style.display="block";
-  document.querySelector("button").textContent="💖 Một ngày 20/10 thật vui nhé!";
-  for(let i=0;i<30;i++){
-    setTimeout(createHeart,i*70);
-  }
+
+ const letter=document.getElementById("letter");
+
+ letter.style.display="block";
+
+ document.querySelector(".envelope").textContent="💗";
+
 }
+
 function createHeart(){
-  const heart=document.createElement("div");
-  heart.className="heart";
-  heart.textContent=["💗","💕","🌸","💖","✨"][Math.floor(Math.random()*5)];
-  heart.style.left=Math.random()*100+"vw";
-  heart.style.fontSize=(16+Math.random()*22)+"px";
-  heart.style.animationDuration=(3+Math.random()*4)+"s";
-  document.body.appendChild(heart);
-  setTimeout(()=>heart.remove(),7000);
+
+ const h=document.createElement("span");
+
+ h.className="heart";
+
+ h.textContent=["♡","💗","💕","🌸","✨"][Math.floor(Math.random()*5)];
+
+ h.style.left=Math.random()*100+"%";
+
+ h.style.fontSize=(15+Math.random()*20)+"px";
+
+ h.style.animationDuration=(5+Math.random()*6)+"s";
+
+ document.getElementById("hearts").appendChild(h);
+
+ setTimeout(()=>h.remove(),11000);
+
 }
-setInterval(()=>{
-  if(document.hidden)return;
-  createHeart();
-},650);
+
+setInterval(createHeart,500);
+
 </script>
 
 </body>
+
 </html>
