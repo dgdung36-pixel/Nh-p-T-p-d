@@ -3,42 +3,43 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Max Verstappen #1 | F1 Cyberpunk Telemetry & Journal</title>
+<title>Max Verstappen #3 | Official F1 Driver Profile & Career Journal</title>
 
-<!-- Fonts: Titillium Web (F1 style) & Orbitron (Cyberpunk Numbers) -->
+<!-- Fonts: Titillium Web & Orbitron -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Titillium+Web:ital,wght@0,300;0,400;0,700;0,900;1,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Titillium+Web:ital,wght@0,300;0,400;0,600;0,700;0,900;1,700&display=swap" rel="stylesheet">
 
 <style>
 :root {
-  --red: #e10600;
-  --red-neon: #ff1801;
-  --navy: #060e22;
+  --f1-red: #e10600;
+  --f1-red-glow: rgba(225, 6, 0, 0.4);
+  --rb-blue: #06002e;
+  --rb-navy: #090e1a;
   --gold: #ffb800;
   --cyan: #00f0ff;
-  --bg: #040508;
-  --panel: #0d111a;
-  --panel-border: #1a2235;
-  --text: #f0f3f8;
-  --muted: #7e8b9f;
-  --carbon: linear-gradient(135deg, #11141d 25%, #0a0c12 25%, #0a0c12 50%, #11141d 50%, #11141d 75%, #0a0c12 75%, #0a0c12 100%);
+  --bg-dark: #07080c;
+  --card-bg: #11141e;
+  --card-border: #1f2638;
+  --text-main: #f3f5f8;
+  --text-muted: #8c97ab;
+  --f1-font: 'Titillium Web', sans-serif;
+  --speed-font: 'Orbitron', sans-serif;
 }
 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-html { scroll-behavior: smooth; background: var(--bg); color: var(--text); font-family: 'Titillium Web', sans-serif; }
-body { margin: 0; padding: 0; overflow-x: hidden; width: 100%; }
+html { scroll-behavior: smooth; background: var(--bg-dark); color: var(--text-main); font-family: var(--f1-font); }
+body { margin: 0; padding: 0; overflow-x: hidden; width: 100%; line-height: 1.5; }
 
-/* --- HUD & HEADER --- */
+/* --- HEADER HUD --- */
 header {
   position: fixed;
   top: 0;
   width: 100%;
   z-index: 1000;
-  background: rgba(4, 5, 8, 0.88);
+  background: rgba(7, 8, 12, 0.92);
   backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(225, 6, 0, 0.3);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.8);
+  border-bottom: 2px solid var(--f1-red);
 }
 
 .nav-container {
@@ -51,343 +52,388 @@ header {
   justify-content: space-between;
 }
 
-.logo-f1 {
-  font-family: 'Orbitron', sans-serif;
-  font-weight: 900;
-  font-size: 1.1rem;
-  letter-spacing: 2px;
+.f1-brand {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
+  font-family: var(--speed-font);
+  font-weight: 900;
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+  color: #fff;
+  text-decoration: none;
 }
 
-.logo-f1 span { color: var(--red); text-shadow: 0 0 10px rgba(225, 6, 0, 0.6); }
+.f1-logo-badge {
+  background: var(--f1-red);
+  color: #fff;
+  padding: 2px 8px;
+  font-size: 0.9rem;
+  font-weight: 900;
+  font-style: italic;
+  clip-path: polygon(0 0, 100% 0, 85% 100%, 0 100%);
+}
 
 .nav-links {
   display: flex;
-  gap: 20px;
+  gap: 22px;
 }
 
 .nav-links a {
-  color: var(--muted);
+  color: var(--text-muted);
   text-decoration: none;
   font-weight: 700;
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 1.5px;
   transition: 0.2s;
-  position: relative;
   padding: 6px 0;
 }
 
-.nav-links a:hover, .nav-links a.active {
-  color: #fff;
-  text-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
-}
+.nav-links a:hover { color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.8); }
 
-.nav-links a::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 0%;
-  height: 2px;
-  background: var(--red);
-  transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.nav-links a:hover::after { width: 100%; }
-
-/* AUDIO CONTROLLER SWITCH */
-.audio-toggle {
+.audio-btn {
   background: rgba(225, 6, 0, 0.15);
-  border: 1px solid var(--red);
+  border: 1px solid var(--f1-red);
   color: #fff;
-  padding: 6px 12px;
-  border-radius: 4px;
+  padding: 6px 14px;
+  font-family: var(--speed-font);
   font-size: 0.72rem;
-  font-weight: 700;
-  font-family: 'Orbitron', sans-serif;
+  font-weight: 800;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   transition: 0.3s;
+  clip-path: polygon(0 0, 100% 0, 92% 100%, 0 100%);
 }
 
-.audio-toggle:hover { background: var(--red); box-shadow: 0 0 15px rgba(225, 6, 0, 0.6); }
-.audio-toggle .dot { width: 6px; height: 6px; border-radius: 50%; background: #666; }
-.audio-toggle.active .dot { background: #00ff66; box-shadow: 0 0 8px #00ff66; }
+.audio-btn:hover { background: var(--f1-red); box-shadow: 0 0 15px var(--f1-red-glow); }
+.audio-btn .dot { width: 6px; height: 6px; border-radius: 50%; background: #555; }
+.audio-btn.playing .dot { background: #00ff66; box-shadow: 0 0 8px #00ff66; }
 
-/* --- HERO SECTION --- */
+/* --- HERO SECTION (F1 FORMULA1.COM STYLE) --- */
 .hero {
   position: relative;
-  min-height: 100vh;
-  padding-top: 90px;
-  padding-bottom: 40px;
-  display: flex;
-  align-items: center;
+  padding-top: 100px;
+  padding-bottom: 50px;
   background: 
-    radial-gradient(circle at 80% 20%, rgba(6, 14, 34, 0.9) 0%, rgba(4, 5, 8, 0.95) 70%),
-    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,240,255,0.02) 2px, rgba(0,240,255,0.02) 4px);
+    linear-gradient(135deg, rgba(6, 0, 46, 0.95) 0%, rgba(7, 8, 12, 0.98) 70%),
+    repeating-linear-gradient(45deg, rgba(255,255,255,0.01) 0px, rgba(255,255,255,0.01) 2px, transparent 2px, transparent 10px);
   overflow: hidden;
+  border-bottom: 1px solid var(--card-border);
 }
 
-.hero::before {
-  content: "1";
+.hero::after {
+  content: "";
   position: absolute;
-  right: -2vw;
-  bottom: -10vh;
-  font-family: 'Orbitron', sans-serif;
-  font-size: 55vw;
-  font-weight: 900;
-  color: rgba(255, 255, 255, 0.02);
-  line-height: 1;
+  top: 0; right: 0; width: 50%; height: 100%;
+  background: radial-gradient(circle at 70% 30%, rgba(225, 6, 0, 0.15), transparent 60%);
   pointer-events: none;
-  user-select: none;
 }
+
+.container { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
 
 .hero-grid {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 20px;
   display: grid;
-  grid-template-columns: 1fr 1.2fr;
-  gap: 30px;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 40px;
   align-items: center;
   position: relative;
   z-index: 2;
 }
 
-.badge-tag {
-  display: inline-flex;
+.driver-number {
+  font-family: var(--speed-font);
+  font-size: clamp(4rem, 12vw, 9rem);
+  font-weight: 900;
+  line-height: 0.8;
+  color: transparent;
+  -webkit-text-stroke: 2px rgba(255,255,255,0.2);
+  position: absolute;
+  top: -30px;
+  left: 0;
+  user-select: none;
+  z-index: -1;
+}
+
+.driver-flag {
+  display: flex;
   align-items: center;
-  gap: 8px;
-  background: rgba(255, 184, 0, 0.1);
-  border: 1px solid var(--gold);
-  color: var(--gold);
-  padding: 4px 12px;
-  font-family: 'Orbitron', sans-serif;
-  font-size: 0.75rem;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+.flag-img {
+  width: 32px;
+  height: 22px;
+  object-fit: cover;
+  border-radius: 2px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.5);
+}
+
+.driver-country {
+  font-family: var(--speed-font);
+  font-size: 0.85rem;
   font-weight: 800;
   letter-spacing: 2px;
-  margin-bottom: 15px;
-  clip-path: polygon(0 0, 100% 0, 95% 100%, 0 100%);
+  color: var(--text-muted);
 }
 
-h1.hero-title {
-  font-family: 'Orbitron', sans-serif;
-  font-size: clamp(2.8rem, 6.5vw, 5.5rem);
+h1.driver-name {
+  font-family: var(--speed-font);
+  font-size: clamp(2.5rem, 5.5vw, 4.8rem);
   font-weight: 900;
-  line-height: 0.9;
   text-transform: uppercase;
-  letter-spacing: -2px;
-  margin: 0 0 15px 0;
+  line-height: 0.95;
+  margin: 0 0 20px 0;
+  letter-spacing: -1px;
 }
 
-h1.hero-title span {
+h1.driver-name span {
   display: block;
-  color: var(--red);
-  text-shadow: 0 0 25px rgba(225, 6, 0, 0.5);
+  color: var(--f1-red);
+  text-shadow: 0 0 20px var(--f1-red-glow);
 }
 
-.hero-desc {
-  font-size: 1.05rem;
-  color: var(--muted);
-  line-height: 1.6;
-  max-width: 500px;
-  margin-bottom: 25px;
-}
-
-/* REAL HQ DRIVER PHOTO / SVG CAR CONTAINER */
-.hero-visual {
+/* DRIVER PORTRAIT CONTAINER WITH FALLBACK */
+.portrait-card {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.car-display {
   width: 100%;
-  max-width: 680px;
-  position: relative;
-  filter: drop-shadow(0 15px 25px rgba(225, 6, 0, 0.25));
-  animation: floatCar 4s ease-in-out infinite;
+  max-width: 480px;
+  margin: 0 auto;
+  background: radial-gradient(circle at bottom, rgba(225,6,0,0.2) 0%, transparent 70%);
+  border-bottom: 4px solid var(--f1-red);
+  overflow: hidden;
 }
 
-@keyframes floatCar {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-8px) rotate(0.5deg); }
+.driver-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.8));
+  transition: transform 0.4s ease;
 }
 
-/* F1 TELEMETRY METRICS GRID */
-.telemetry-bar {
-  background: rgba(13, 17, 26, 0.95);
-  border: 1px solid var(--panel-border);
-  border-top: 3px solid var(--red);
-  padding: 15px 25px;
+.portrait-card:hover .driver-img {
+  transform: scale(1.02);
+}
+
+/* DRIVER BIOGRAPHY BIOCARD */
+.bio-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  padding: 18px;
+  margin-top: 25px;
+}
+
+.bio-item {
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  padding-bottom: 8px;
+}
+
+.bio-label {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.bio-val {
+  font-family: var(--speed-font);
+  font-weight: 800;
+  font-size: 1rem;
+  color: #fff;
+  margin-top: 2px;
+}
+
+/* --- STATS COUNTER STRIP --- */
+.stats-strip {
+  background: #0c0e16;
+  border-bottom: 1px solid var(--card-border);
+  padding: 30px 0;
+}
+
+.stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 15px;
-  margin-top: 30px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  gap: 20px;
+  text-align: center;
 }
 
-.t-item {
-  border-right: 1px solid rgba(255,255,255,0.08);
-  padding-right: 10px;
+.stat-card {
+  border-right: 1px solid var(--card-border);
+  padding: 0 10px;
 }
-.t-item:last-child { border-right: none; }
+.stat-card:last-child { border-right: none; }
 
-.t-value {
-  font-family: 'Orbitron', sans-serif;
-  font-size: clamp(1.6rem, 2.8vw, 2.4rem);
+.stat-num {
+  font-family: var(--speed-font);
+  font-size: clamp(2rem, 4.5vw, 3.5rem);
   font-weight: 900;
   color: #fff;
   line-height: 1;
 }
 
-.t-label {
-  font-size: 0.7rem;
-  color: var(--muted);
+.stat-num span { color: var(--f1-red); }
+
+.stat-title {
+  font-size: 0.8rem;
+  color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-top: 4px;
+  letter-spacing: 1.5px;
+  margin-top: 6px;
+  font-weight: 700;
 }
 
-/* --- SECTION HEADINGS --- */
+/* --- CAREER TIMELINE 2018-2026 --- */
+.timeline-section {
+  padding: 80px 0;
+  background: var(--bg-dark);
+}
+
 .section-head {
-  margin-bottom: 35px;
+  margin-bottom: 40px;
   position: relative;
+  border-left: 4px solid var(--f1-red);
+  padding-left: 15px;
 }
 
-.section-head .sub {
-  font-family: 'Orbitron', sans-serif;
-  color: var(--red);
+.section-head .tag {
+  font-family: var(--speed-font);
+  color: var(--f1-red);
   font-size: 0.8rem;
   font-weight: 800;
-  letter-spacing: 3px;
+  letter-spacing: 2px;
   text-transform: uppercase;
 }
 
 .section-head h2 {
-  font-family: 'Orbitron', sans-serif;
-  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-family: var(--speed-font);
+  font-size: clamp(1.8rem, 3.8vw, 2.8rem);
   text-transform: uppercase;
-  margin: 5px 0 0 0;
+  margin: 4px 0 0 0;
   letter-spacing: -1px;
 }
 
-/* --- RACES & CALENDAR INTERACTIVE HUB --- */
-.races-section {
-  padding: 80px 0;
-  background: var(--bg);
-  border-top: 1px solid var(--panel-border);
+.timeline-hub {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
 }
 
-.container { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
-
-.races-grid {
+.year-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  grid-template-columns: 180px 1fr 300px;
   gap: 20px;
-}
-
-.race-card {
-  background: var(--panel);
-  border: 1px solid var(--panel-border);
-  padding: 20px;
+  padding: 24px;
   position: relative;
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  overflow: hidden;
-  cursor: pointer;
-}
-
-.race-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 4px;
-  height: 100%;
-  background: var(--panel-border);
   transition: 0.3s;
 }
 
-.race-card:hover {
-  transform: translateY(-5px);
-  border-color: rgba(225, 6, 0, 0.5);
-  box-shadow: 0 10px 25px rgba(225, 6, 0, 0.15);
+.year-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; width: 4px; height: 100%;
+  background: var(--card-border);
+  transition: 0.3s;
 }
 
-.race-card:hover::before { background: var(--red); }
-
-.race-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
+.year-card:hover {
+  border-color: rgba(225, 6, 0, 0.4);
+  transform: translateX(6px);
 }
 
-.race-flag {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-weight: 700;
-  font-size: 0.95rem;
-}
+.year-card:hover::before { background: var(--f1-red); }
 
-.race-badge {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 0.7rem;
+.yc-year {
+  font-family: var(--speed-font);
+  font-size: 2.2rem;
   font-weight: 900;
-  padding: 3px 8px;
-  border-radius: 2px;
+  color: var(--f1-red);
+  line-height: 1;
 }
 
-.badge-p1 { background: var(--gold); color: #000; }
-.badge-podium { background: #c0c0c0; color: #000; }
-.badge-fl { background: var(--cyan); color: #000; }
-
-.race-circuit {
-  font-size: 1.2rem;
-  font-weight: 900;
+.yc-team {
+  font-size: 0.85rem;
+  color: var(--text-muted);
   text-transform: uppercase;
-  margin-bottom: 5px;
+  font-weight: 700;
+  margin-top: 4px;
 }
 
-.race-details {
-  font-size: 0.82rem;
-  color: var(--muted);
+.yc-title {
+  font-family: var(--speed-font);
+  font-size: 1.25rem;
+  font-weight: 800;
+  margin: 0 0 8px 0;
+  text-transform: uppercase;
+}
+
+.yc-desc {
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.yc-stats {
+  background: #090c14;
+  border: 1px solid rgba(255,255,255,0.05);
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+}
+
+.yc-stat-row {
   display: flex;
   justify-content: space-between;
-  margin-top: 15px;
-  padding-top: 12px;
-  border-top: 1px dashed var(--panel-border);
+  font-size: 0.82rem;
+  font-weight: 700;
 }
 
-/* --- TELEMETRY & SEASON CALCULATOR --- */
+.yc-stat-row span:last-child {
+  font-family: var(--speed-font);
+  color: var(--gold);
+}
+
+.yc-media {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border: 1px solid var(--card-border);
+  margin-top: 10px;
+}
+
+/* --- TELEMETRY CALCULATOR & COMPARISON --- */
 .telemetry-section {
   padding: 80px 0;
-  background: var(--panel);
-  border-block: 1px solid var(--panel-border);
+  background: #0a0d16;
+  border-block: 1px solid var(--card-border);
 }
 
-.season-tabs {
+.season-selector {
   display: flex;
   gap: 10px;
-  margin-bottom: 25px;
   overflow-x: auto;
-  padding-bottom: 5px;
+  padding-bottom: 10px;
+  margin-bottom: 30px;
 }
 
-.tab-btn {
-  background: #121824;
-  border: 1px solid var(--panel-border);
-  color: var(--muted);
-  padding: 10px 22px;
-  font-family: 'Orbitron', sans-serif;
+.season-btn {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  color: var(--text-muted);
+  padding: 12px 22px;
+  font-family: var(--speed-font);
   font-weight: 800;
   font-size: 0.85rem;
   cursor: pointer;
@@ -395,460 +441,666 @@ h1.hero-title span {
   white-space: nowrap;
 }
 
-.tab-btn.active, .tab-btn:hover {
-  background: var(--red);
-  border-color: var(--red);
+.season-btn.active, .season-btn:hover {
+  background: var(--f1-red);
+  border-color: var(--f1-red);
   color: #fff;
-  box-shadow: 0 0 15px rgba(225, 6, 0, 0.4);
+  box-shadow: 0 0 15px var(--f1-red-glow);
 }
 
-.stats-display {
+.telemetry-board {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  padding: 30px;
   display: grid;
   grid-template-columns: 1fr 1.5fr;
-  gap: 25px;
-  background: #080b12;
-  border: 1px solid var(--panel-border);
-  padding: 30px;
+  gap: 30px;
 }
 
-.stat-box-large {
+.tb-rank-box {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  border-right: 1px solid var(--panel-border);
-  padding-right: 25px;
+  align-items: center;
+  background: #080a10;
+  border: 1px solid var(--card-border);
+  padding: 30px;
+  text-align: center;
 }
 
-.stat-box-large .rank {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 4rem;
+.tb-rank {
+  font-family: var(--speed-font);
+  font-size: 4.5rem;
   font-weight: 900;
-  color: var(--red);
+  color: var(--f1-red);
   line-height: 1;
 }
 
-.progress-bar-wrap {
-  margin-bottom: 18px;
+.bar-wrap { margin-bottom: 20px; }
+.bar-label { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 700; margin-bottom: 6px; }
+.bar-bg { height: 10px; background: #1a2030; width: 100%; overflow: hidden; }
+.bar-fill { height: 100%; background: linear-gradient(90deg, var(--f1-red), var(--gold)); width: 0%; transition: width 0.8s ease; }
+
+/* --- ICONIC RACES MODAL HUB --- */
+.races-section { padding: 80px 0; }
+.races-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+
+.race-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  padding: 20px;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
-.progress-info {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.85rem;
-  margin-bottom: 6px;
-  font-weight: 700;
+.race-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--f1-red);
+  box-shadow: 0 10px 25px rgba(225, 6, 0, 0.2);
 }
 
-.progress-bg {
-  height: 8px;
-  background: #1a2233;
-  width: 100%;
-  overflow: hidden;
-  position: relative;
+.race-badge {
+  background: var(--gold);
+  color: #000;
+  font-family: var(--speed-font);
+  font-size: 0.7rem;
+  font-weight: 900;
+  padding: 3px 8px;
+  float: right;
 }
 
-.progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--red), var(--gold));
-  width: 0%;
-  transition: width 1s ease-out;
-}
+.race-title { font-family: var(--speed-font); font-size: 1.1rem; font-weight: 800; margin: 10px 0 5px 0; }
+.race-circuit { font-size: 0.85rem; color: var(--text-muted); }
 
-/* --- MODAL POPUP --- */
+/* MODAL */
 .modal-overlay {
   position: fixed;
   top: 0; left: 0; width: 100%; height: 100%;
   background: rgba(0,0,0,0.85);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
   z-index: 2000;
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 0;
-  pointer-events: none;
+  opacity: 0; pointer-events: none;
   transition: 0.3s;
   padding: 20px;
 }
-
 .modal-overlay.active { opacity: 1; pointer-events: all; }
 
-.modal-content {
-  background: #0d111a;
-  border: 1px solid var(--red);
+.modal-body {
+  background: var(--card-bg);
+  border: 1px solid var(--f1-red);
+  max-width: 600px;
   width: 100%;
-  max-width: 650px;
   padding: 30px;
   position: relative;
-  box-shadow: 0 0 40px rgba(225, 6, 0, 0.3);
-  transform: translateY(20px);
-  transition: 0.3s;
+  box-shadow: 0 0 40px var(--f1-red-glow);
 }
-
-.modal-overlay.active .modal-content { transform: translateY(0); }
 
 .modal-close {
   position: absolute;
   top: 15px; right: 20px;
-  background: none;
-  border: none;
+  background: none; border: none; color: #fff; font-size: 1.8rem; cursor: pointer;
+}
+
+/* --- PROMINENT F1 DEV FOOTER --- */
+footer {
+  background: #040508;
+  border-top: 3px solid var(--f1-red);
+  padding: 60px 0 30px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+footer::before {
+  content: "";
+  position: absolute;
+  bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 100%; max-width: 1280px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--f1-red), transparent);
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 40px;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.dev-signature-box {
+  background: linear-gradient(135deg, rgba(225,6,0,0.1) 0%, rgba(9,14,26,0.8) 100%);
+  border: 1px solid var(--f1-red);
+  padding: 30px;
+  position: relative;
+  clip-path: polygon(0 0, 100% 0, 96% 100%, 0 100%);
+}
+
+.dev-title {
+  font-family: var(--speed-font);
+  font-size: 0.8rem;
+  color: var(--gold);
+  letter-spacing: 3px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.dev-name {
+  font-family: var(--speed-font);
+  font-size: clamp(2rem, 5vw, 3.8rem);
+  font-weight: 900;
   color: #fff;
-  font-size: 1.5rem;
-  cursor: pointer;
+  text-transform: uppercase;
+  line-height: 1;
+  margin: 8px 0;
+  letter-spacing: -1px;
+  text-shadow: 0 0 15px rgba(255,255,255,0.3);
+}
+
+.dev-name span {
+  color: var(--f1-red);
+  text-shadow: 0 0 20px var(--f1-red-glow);
+}
+
+.dev-sub {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.footer-bottom {
+  border-top: 1px solid var(--card-border);
+  padding-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 15px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
 }
 
 /* --- RESPONSIVE MOBILE FIXES --- */
-@media (max-width: 900px) {
-  .hero-grid { grid-template-columns: 1fr; text-align: center; gap: 20px; }
-  .hero-desc { margin: 0 auto 20px auto; }
-  .telemetry-bar { grid-template-columns: repeat(2, 1fr); gap: 20px; }
-  .t-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 10px; }
-  .stats-display { grid-template-columns: 1fr; }
-  .stat-box-large { border-right: none; border-bottom: 1px solid var(--panel-border); padding-bottom: 20px; }
+@media (max-width: 960px) {
+  .hero-grid { grid-template-columns: 1fr; text-align: center; }
+  .driver-flag { justify-content: center; }
+  .year-card { grid-template-columns: 1fr; }
+  .telemetry-board { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .stat-card { border-right: none; border-bottom: 1px solid var(--card-border); padding-bottom: 15px; }
+  .footer-grid { grid-template-columns: 1fr; }
 }
 
-@media (max-width: 500px) {
-  .nav-links { display: none; } /* Compact mobile HUD header */
-  h1.hero-title { font-size: 2.6rem; }
-  .telemetry-bar { grid-template-columns: repeat(2, 1fr); padding: 12px; }
-  .races-grid { grid-template-columns: 1fr; }
-  .season-tabs { flex-wrap: nowrap; }
+@media (max-width: 580px) {
+  .nav-links { display: none; }
+  h1.driver-name { font-size: 2.5rem; }
+  .dev-signature-box { clip-path: none; padding: 20px; }
 }
 </style>
 </head>
 
 <body>
 
-<!-- HUD HEADER NAV -->
+<!-- HEADER HUD NAV -->
 <header>
   <div class="nav-container">
-    <a href="#" class="logo-f1">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="var(--red)"><path d="M2 4h20v4H2zM2 10h14v4H2zM2 16h8v4H2z"/></svg>
-      MV<span>1 TELEMETRY</span>
+    <a href="#" class="f1-brand">
+      <span class="f1-logo-badge">F1</span>
+      VERSTAPPEN #1
     </a>
 
     <nav class="nav-links">
-      <a href="#hero">Overview</a>
-      <a href="#telemetry">Telemetry</a>
-      <a href="#races">Races</a>
-      <a href="#career">Career</a>
+      <a href="#overview">Tổng quan</a>
+      <a href="#timeline">Hành trình 2018-2026</a>
+      <a href="#telemetry">Thống kê dữ liệu</a>
+      <a href="#races">Chặng đua di sản</a>
     </nav>
 
-    <button class="audio-toggle" id="audioBtn" onclick="toggleAudio()">
-      <span class="dot"></span> ENGINE AUDIO
+    <button class="audio-btn" id="audioToggle" onclick="toggleEngineAudio()">
+      <span class="dot"></span> TIẾNG ĐỘNG CƠ F1
     </button>
   </div>
 </header>
 
-<!-- HERO SECTION -->
-<section class="hero" id="hero">
+<!-- HERO SECTION: FORMULA1.COM DRIVER STYLE -->
+<section class="hero" id="overview">
   <div class="container hero-grid">
-    <div>
-      <div class="badge-tag">🏆 4-TIME WORLD CHAMPION (2021-2024)</div>
-      <h1 class="hero-title">Max <span>Verstappen</span></h1>
-      <p class="hero-desc">
-        Hệ thống phân tích thông số kỹ thuật, chặng đua và dữ liệu phong độ trực tiếp của nhà vô địch thế giới Formula 1 Max Verstappen.
+    <div style="position:relative;">
+      <div class="driver-number">1</div>
+      <div class="driver-flag">
+        <img src="https://flagcdn.com/w40/nl.png" alt="Netherlands" class="flag-img">
+        <span class="driver-country">HÀ LẠN · RED BULL RACING</span>
+      </div>
+
+      <h1 class="driver-name">Max <span>Verstappen</span></h1>
+
+      <p style="color:var(--text-muted); font-size:1.05rem; max-width:520px; line-height:1.7;">
+        Trang hồ sơ chính thức mô phỏng theo chuẩn Formula1.com. Cập nhật chi tiết hành trình sự nghiệp đỉnh cao từ mùa giải 2018 đến 2026 của tay đua 4 lần vô địch thế giới F1.
       </p>
 
-      <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content: inherit;">
-        <a href="#races" style="background:var(--red); color:#fff; padding:12px 24px; font-family:'Orbitron',sans-serif; font-weight:800; text-decoration:none; font-size:0.8rem; letter-spacing:1px; clip-path:polygon(0 0, 100% 0, 95% 100%, 0 100%);">XEM LỊCH THI ĐẤU ↓</a>
-        <button onclick="openModal('Abu Dhabi 2021', 'Chặng đua lịch sử mang về chức vô địch thế giới đầu tiên cho Max Verstappen ở vòng đua cuối cùng.', '58/58', 'P1', '1:26.103')" style="background:transparent; border:1px solid var(--muted); color:#fff; padding:12px 20px; font-family:'Orbitron',sans-serif; font-weight:800; font-size:0.8rem; cursor:pointer;">HIGHLIGHTS ↗</button>
+      <!-- DRIVER BIO TABLE -->
+      <div class="bio-grid">
+        <div class="bio-item">
+          <div class="bio-label">Đội đua hiện tại</div>
+          <div class="bio-val">Red Bull Racing</div>
+        </div>
+        <div class="bio-item">
+          <div class="bio-label">Quốc tịch</div>
+          <div class="bio-val">Hà Lan (Netherlands)</div>
+        </div>
+        <div class="bio-item">
+          <div class="bio-label">Số lần vô địch thế giới</div>
+          <div class="bio-val" style="color:var(--gold);">4 (2021, 2022, 2023, 2024)</div>
+        </div>
+        <div class="bio-item">
+          <div class="bio-label">Ngày sinh / Nơi sinh</div>
+          <div class="bio-val">30/09/1997 (Hasselt, Bỉ)</div>
+        </div>
       </div>
     </div>
 
-    <!-- CAR DISPLAY SVG DESIGN -->
-    <div class="hero-visual">
-      <div class="car-display">
-        <svg viewBox="0 0 1000 400" width="100%" height="auto">
-          <!-- Glow FX -->
-          <filter id="neon-glow" x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur stdDeviation="8" result="coloredBlur"/>
-            <feMerge>
-              <feMergeNode in="coloredBlur"/>
-              <feMergeNode in="SourceGraphic"/>
-            </feMerge>
-          </filter>
-
-          <!-- Carbon Chassis Graphic -->
-          <path d="M100,280 L250,260 L450,230 L700,240 L900,290 L850,330 L150,330 Z" fill="#0b0e17" stroke="#1f293d" stroke-width="2"/>
-          <!-- Red Bull Livery Streaks -->
-          <path d="M200,265 L400,240 L650,250 L800,295 L720,310 Z" fill="url(#rb-red)" filter="url(#neon-glow)"/>
-          <path d="M450,230 L550,180 L650,230 Z" fill="#060e22" stroke="var(--cyan)" stroke-width="2"/>
-          
-          <!-- Wheels -->
-          <circle cx="220" cy="320" r="55" fill="#050505" stroke="#333" stroke-width="8"/>
-          <circle cx="220" cy="320" r="30" fill="#111" stroke="var(--gold)" stroke-width="4"/>
-          <circle cx="780" cy="320" r="55" fill="#050505" stroke="#333" stroke-width="8"/>
-          <circle cx="780" cy="320" r="30" fill="#111" stroke="var(--gold)" stroke-width="4"/>
-
-          <!-- Front/Rear Wings -->
-          <rect x="50" y="290" width="80" height="30" fill="var(--red)" filter="url(#neon-glow)"/>
-          <rect x="870" y="240" width="90" height="50" fill="var(--red)"/>
-
-          <!-- Gradients -->
-          <defs>
-            <linearGradient id="rb-red" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stop-color="#e10600"/>
-              <stop offset="100%" stop-color="#ff4c45"/>
-            </linearGradient>
-          </defs>
-        </svg>
-      </div>
-    </div>
-  </div>
-
-  <!-- TELEMETRY COUNTER STRIP -->
-  <div class="container" style="width:100%;">
-    <div class="telemetry-bar">
-      <div class="t-item">
-        <div class="t-value" data-target="4">0</div>
-        <div class="t-label">World Titles</div>
-      </div>
-      <div class="t-item">
-        <div class="t-value" data-target="63">0</div>
-        <div class="t-label">Grand Prix Wins</div>
-      </div>
-      <div class="t-item">
-        <div class="t-value" data-target="111">0</div>
-        <div class="t-label">Podiums</div>
-      </div>
-      <div class="t-item">
-        <div class="t-value" data-target="40">0</div>
-        <div class="t-label">Pole Positions</div>
-      </div>
+    <!-- OFFICIAL F1 DRIVER PORTRAIT -->
+    <div class="portrait-card">
+      <img src="https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/M/MAXVER01_Max_Verstappen/maxver01.png" 
+           alt="Max Verstappen Official F1 Portrait" 
+           class="driver-img"
+           onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=800&q=80';">
     </div>
   </div>
 </section>
 
-<!-- SEASON TELEMETRY HUB -->
+<!-- COUNTER STATS STRIP -->
+<section class="stats-strip">
+  <div class="container stats-grid">
+    <div class="stat-card">
+      <div class="stat-num" data-target="4">0</div>
+      <div class="stat-title">Chức vô địch thế giới</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" data-target="63">0</div>
+      <div class="stat-title">Chiến thắng Grand Prix</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" data-target="111">0</div>
+      <div class="stat-title">Podiums (Bục trao giải)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" data-target="40">0</div>
+      <div class="stat-title">Pole Positions</div>
+    </div>
+  </div>
+</section>
+
+<!-- CAREER TIMELINE SECTION 2018 - 2026 -->
+<section class="timeline-section" id="timeline">
+  <div class="container">
+    <div class="section-head">
+      <div class="tag">01 / DÒNG THỜI GIAN SỰ NGHIỆP</div>
+      <h2>Hành trình từ 2018 - 2026</h2>
+    </div>
+
+    <div class="timeline-hub">
+
+      <!-- 2026 -->
+      <div class="year-card">
+        <div>
+          <div class="yc-year">2026</div>
+          <div class="yc-team">Oracle Red Bull Racing</div>
+        </div>
+        <div>
+          <h3 class="yc-title">Kỷ nguyên Động cơ mới & Chiến thuật Ford Powertrains</h3>
+          <p class="yc-desc">Bước vào kỷ nguyên luật động cơ 2026 của F1 với bộ truyền động Red Bull Ford Powertrains. Max Verstappen tiếp tục dẫn dắt đội đua duy trì vị thế cạnh tranh top đầu trên bảng xếp hạng thế giới.</p>
+        </div>
+        <div class="yc-stats">
+          <div class="yc-stat-row"><span>Hạng mùa giải:</span><span>P1 (Đang diễn ra)</span></div>
+          <div class="yc-stat-row"><span>Động cơ:</span><span>Red Bull-Ford V6</span></div>
+          <div class="yc-stat-row"><span>Số chặng thắng:</span><span>6 Wins</span></div>
+        </div>
+      </div>
+
+      <!-- 2025 -->
+      <div class="year-card">
+        <div>
+          <div class="yc-year">2025</div>
+          <div class="yc-team">Oracle Red Bull Racing</div>
+        </div>
+        <div>
+          <h3 class="yc-title">Cuộc đua vô địch nghẹt thở đến chặng cuối</h3>
+          <p class="yc-desc">Mùa giải chứng kiến sự trỗi dậy mạnh mẽ từ McLaren và Ferrari. Max xuất sắc cán đích ở vị trí Á quân sau những trận chiến phân hạng sát sao từng miligiây.</p>
+        </div>
+        <div class="yc-stats">
+          <div class="yc-stat-row"><span>Hạng mùa giải:</span><span>P2 (Á quân)</span></div>
+          <div class="yc-stat-row"><span>Điểm số:</span><span>421 PTS</span></div>
+          <div class="yc-stat-row"><span>Số chặng thắng:</span><span>8 Wins</span></div>
+        </div>
+      </div>
+
+      <!-- 2024 -->
+      <div class="year-card">
+        <div>
+          <div class="yc-year">2024</div>
+          <div class="yc-team">Oracle Red Bull Racing</div>
+        </div>
+        <div>
+          <h3 class="yc-title">Bảo vệ thành công chức vô địch thế giới thứ 4</h3>
+          <p class="yc-desc">Chính thức đi vào ngôi đền huyền thoại F1 khi giành chức vô địch thế giới thứ 4 liên tiếp (2021-2024) nhờ màn trình diễn đỉnh cao dưới mưa tại Brazil Grand Prix.</p>
+        </div>
+        <div class="yc-stats">
+          <div class="yc-stat-row"><span>Hạng mùa giải:</span><span>P1 (Vô địch thế giới)</span></div>
+          <div class="yc-stat-row"><span>Điểm số:</span><span>429 PTS</span></div>
+          <div class="yc-stat-row"><span>Số chặng thắng:</span><span>9 Wins</span></div>
+        </div>
+      </div>
+
+      <!-- 2023 -->
+      <div class="year-card">
+        <div>
+          <div class="yc-year">2023</div>
+          <div class="yc-team">Oracle Red Bull Racing</div>
+        </div>
+        <div>
+          <h3 class="yc-title">Kỷ lục vô tiền khoáng hậu - Kỷ nguyên thống trị RB19</h3>
+          <p class="yc-desc">Mùa giải thống trị tuyệt đối lịch sử F1: Thắng 19/22 chặng đua, lập kỷ lục 10 chiến thắng liên tiếp và đạt tổng số điểm cao nhất từ trước đến nay (575 điểm).</p>
+        </div>
+        <div class="yc-stats">
+          <div class="yc-stat-row"><span>Hạng mùa giải:</span><span>P1 (Vô địch thế giới)</span></div>
+          <div class="yc-stat-row"><span>Điểm số:</span><span>575 PTS (Kỷ lục)</span></div>
+          <div class="yc-stat-row"><span>Tỷ lệ thắng:</span><span>86.3%</span></div>
+        </div>
+      </div>
+
+      <!-- 2022 -->
+      <div class="year-card">
+        <div>
+          <div class="yc-year">2022</div>
+          <div class="yc-team">Oracle Red Bull Racing</div>
+        </div>
+        <div>
+          <h3 class="yc-title">Thống trị Kỷ nguyên khí động học Ground-Effect</h3>
+          <p class="yc-desc">Red Bull trình làng mẫu xe RB18 cực mạnh. Max giành 15 chiến thắng trong mùa giải, đăng quang ngôi vô địch thế giới lần thứ 2 sớm trước 4 chặng tại Suzuka, Nhật Bản.</p>
+        </div>
+        <div class="yc-stats">
+          <div class="yc-stat-row"><span>Hạng mùa giải:</span><span>P1 (Vô địch thế giới)</span></div>
+          <div class="yc-stat-row"><span>Điểm số:</span><span>454 PTS</span></div>
+          <div class="yc-stat-row"><span>Số chặng thắng:</span><span>15 Wins</span></div>
+        </div>
+      </div>
+
+      <!-- 2021 -->
+      <div class="year-card">
+        <div>
+          <div class="yc-year">2021</div>
+          <div class="yc-team">Red Bull Racing Honda</div>
+        </div>
+        <div>
+          <h3 class="yc-title">Chức vô địch thế giới đầu tiên - Đêm Abu Dhabi lịch sử</h3>
+          <p class="yc-desc">Trận đại chiến kinh điển cùng Lewis Hamilton. Max Verstappen vượt qua ở vòng đua cuối cùng tại Abu Dhabi GP để trở thành tay đua Hà Lan đầu tiên vô địch thế giới F1.</p>
+        </div>
+        <div class="yc-stats">
+          <div class="yc-stat-row"><span>Hạng mùa giải:</span><span>P1 (Vô địch thế giới)</span></div>
+          <div class="yc-stat-row"><span>Điểm số:</span><span>395.5 PTS</span></div>
+          <div class="yc-stat-row"><span>Pole Positions:</span><span>10 Poles</span></div>
+        </div>
+      </div>
+
+      <!-- 2018-2020 -->
+      <div class="year-card">
+        <div>
+          <div class="yc-year">2018-20</div>
+          <div class="yc-team">Red Bull Racing TAG Heuer / Honda</div>
+        </div>
+        <div>
+          <h3 class="yc-title">Giai đoạn tôi luyện & Trở thành Kẻ thách thức số 1</h3>
+          <p class="yc-desc">Chuyển sang sử dụng động cơ Honda từ 2019, Max liên tục đánh bại các đối thủ sừng sỏ, mang về những chiến thắng nghẹt thở tại Austria, Germany và Brazil GP.</p>
+        </div>
+        <div class="yc-stats">
+          <div class="yc-stat-row"><span>Thắng 2018:</span><span>2 Wins (P4)</span></div>
+          <div class="yc-stat-row"><span>Thắng 2019:</span><span>3 Wins (P3)</span></div>
+          <div class="yc-stat-row"><span>Thắng 2020:</span><span>2 Wins (P3)</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- TELEMETRY & PERFORMANCE BOARD -->
 <section class="telemetry-section" id="telemetry">
   <div class="container">
     <div class="section-head">
-      <div class="sub">01 / DỮ LIỆU MÙA GIẢI</div>
-      <h2>Telemetry & Performance</h2>
+      <div class="tag">02 / PHÂN TÍCH HIỆU SUẤT TỪNG MÙA</div>
+      <h2>Telemetry & Interactive Stats</h2>
     </div>
 
-    <div class="season-tabs">
-      <button class="tab-btn active" onclick="switchSeason('2026', this)">MÙA 2026</button>
-      <button class="tab-btn" onclick="switchSeason('2025', this)">MÙA 2025</button>
-      <button class="tab-btn" onclick="switchSeason('2024', this)">MÙA 2024</button>
-      <button class="tab-btn" onclick="switchSeason('2023', this)">MÙA 2023</button>
+    <div class="season-selector">
+      <button class="season-btn active" onclick="updateTelemetry('2026', this)">MÙA 2026</button>
+      <button class="season-btn" onclick="updateTelemetry('2025', this)">MÙA 2025</button>
+      <button class="season-btn" onclick="updateTelemetry('2024', this)">MÙA 2024</button>
+      <button class="season-btn" onclick="updateTelemetry('2023', this)">MÙA 2023</button>
+      <button class="season-btn" onclick="updateTelemetry('2022', this)">MÙA 2022</button>
+      <button class="season-btn" onclick="updateTelemetry('2021', this)">MÙA 2021</button>
     </div>
 
-    <div class="stats-display" id="seasonDisplay">
-      <!-- Dynamic JS injects content -->
+    <div class="telemetry-board" id="telemetryDisplay">
+      <!-- Dynamic JS content -->
     </div>
   </div>
 </section>
 
-<!-- RACES HUB -->
+<!-- RACES HUB MODAL -->
 <section class="races-section" id="races">
   <div class="container">
     <div class="section-head">
-      <div class="sub">02 / LỊCH THI ĐẤU & KẾT QUẢ</div>
-      <h2>Race Calendar & Results</h2>
+      <div class="tag">03 / NHỮNG CHẶNG ĐƯỜNG DI SẠN</div>
+      <h2>Iconic Race Victories</h2>
     </div>
 
     <div class="races-grid">
-      <div class="race-card" onclick="openModal('Bahrain Grand Prix', 'Chiến thắng áp đảo mở màn mùa giải với Fast Lap.', '57/57', 'P1', '1:31.447')">
-        <div class="race-header">
-          <div class="race-flag">🇧🇭 BAHRAIN GP</div>
-          <span class="race-badge badge-p1">P1 WINNER</span>
-        </div>
-        <div class="race-circuit">Sakhir International Circuit</div>
-        <div class="race-details">
-          <span>Lap Record: 1:31.447</span>
-          <span>Points: +26</span>
-        </div>
+      <div class="race-card" onclick="openRaceModal('Abu Dhabi GP 2021', 'Chặng đua định mệnh vòng 58. Max vượt Lewis Hamilton ở góc cua số 5 để lần đầu đăng quang ngôi Vô địch Thế giới.', '58 Laps', 'P1 WINNER', '1:26.103')">
+        <span class="race-badge">WORLD TITLE</span>
+        <div class="race-title">🇦🇪 Abu Dhabi Grand Prix 2021</div>
+        <div class="race-circuit">Yas Marina Circuit</div>
       </div>
 
-      <div class="race-card" onclick="openModal('Saudi Arabian GP', 'Xuất phát P1 và dẫn đầu toàn bộ chặng đua.', '50/50', 'P1', '1:31.632')">
-        <div class="race-header">
-          <div class="race-flag">🇸🇦 SAUDI ARABIA</div>
-          <span class="race-badge badge-p1">P1 WINNER</span>
-        </div>
-        <div class="race-circuit">Jeddah Corniche Circuit</div>
-        <div class="race-details">
-          <span>Lap Record: 1:31.632</span>
-          <span>Points: +25</span>
-        </div>
+      <div class="race-card" onclick="openRaceModal('Spa-Francorchamps 2022', 'Xuất phát từ vị trí P14 do phạt thay động cơ, Max hủy diệt toàn bộ đoàn đua để về đích P1 với khoảng cách 17 giây.', '44 Laps', 'P1 WINNER', '1:49.354')">
+        <span class="race-badge">P14 TO P1</span>
+        <div class="race-title">🇧🇪 Belgian Grand Prix 2022</div>
+        <div class="race-circuit">Circuit de Spa-Francorchamps</div>
       </div>
 
-      <div class="race-card" onclick="openModal('Monaco Grand Prix', 'Thi đấu xuất sắc dưới điều kiện thời tiết phức tạp.', '78/78', 'P1', '1:15.650')">
-        <div class="race-header">
-          <div class="race-flag">🇲🇨 MONACO GP</div>
-          <span class="race-badge badge-p1">P1 WINNER</span>
-        </div>
-        <div class="race-circuit">Circuit de Monaco</div>
-        <div class="race-details">
-          <span>Lap Record: 1:15.650</span>
-          <span>Points: +25</span>
-        </div>
+      <div class="race-card" onclick="openRaceModal('São Paulo GP 2024', 'Màn trình diễn dưới mưa bão lịch sử. Xuất phát P17, Max vượt 16 xe để giành chiến thắng áp đảo, chạm tay vào chức vô địch thứ 4.', '69 Laps', 'P1 WINNER', '1:20.472')">
+        <span class="race-badge">RAIN MASTER</span>
+        <div class="race-title">🇧🇷 São Paulo Grand Prix 2024</div>
+        <div class="race-circuit">Autódromo José Carlos Pace</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- MODAL POPUP -->
-<div class="modal-overlay" id="modal">
-  <div class="modal-content">
-    <button class="modal-close" onclick="closeModal()">×</button>
-    <div style="font-family:'Orbitron',sans-serif; color:var(--red); font-size:0.8rem; font-weight:800;" id="mBadge">TELEMETRY BREAKDOWN</div>
-    <h3 style="font-family:'Orbitron',sans-serif; font-size:1.8rem; margin:10px 0;" id="mTitle">Race Title</h3>
-    <p style="color:var(--muted); font-size:0.95rem; line-height:1.6;" id="mDesc">Description...</p>
+<!-- MODAL OVERLAY -->
+<div class="modal-overlay" id="raceModal">
+  <div class="modal-body">
+    <button class="modal-close" onclick="closeRaceModal()">×</button>
+    <div style="font-family:var(--speed-font); color:var(--f1-red); font-weight:800; font-size:0.8rem;" id="mBadge">TELEMETRY BREAKDOWN</div>
+    <h3 style="font-family:var(--speed-font); font-size:1.6rem; margin:10px 0;" id="mTitle">Race Title</h3>
+    <p style="color:var(--text-muted); font-size:0.95rem; line-height:1.6;" id="mDesc">Description</p>
 
-    <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; margin-top:20px; background:#080b12; padding:15px; border:1px solid var(--panel-border);">
+    <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; margin-top:20px; background:#080b12; padding:15px; border:1px solid var(--card-border);">
       <div>
-        <div style="font-size:0.7rem; color:var(--muted);">LAPS</div>
-        <div style="font-family:'Orbitron',sans-serif; font-weight:800; font-size:1.2rem;" id="mLaps">58</div>
+        <div style="font-size:0.7rem; color:var(--text-muted);">SỐ VÒNG ĐUA</div>
+        <div style="font-family:var(--speed-font); font-weight:800; font-size:1.1rem;" id="mLaps">58</div>
       </div>
       <div>
-        <div style="font-size:0.7rem; color:var(--muted);">POSITION</div>
-        <div style="font-family:'Orbitron',sans-serif; font-weight:800; font-size:1.2rem; color:var(--gold);" id="mPos">P1</div>
+        <div style="font-size:0.7rem; color:var(--text-muted);">KẾT QUẢ</div>
+        <div style="font-family:var(--speed-font); font-weight:800; font-size:1.1rem; color:var(--gold);" id="mPos">P1</div>
       </div>
       <div>
-        <div style="font-size:0.7rem; color:var(--muted);">BEST LAP</div>
-        <div style="font-family:'Orbitron',sans-serif; font-weight:800; font-size:1.2rem; color:var(--cyan);" id="mBest">1:26.103</div>
+        <div style="font-size:0.7rem; color:var(--text-muted);">FASTEST LAP</div>
+        <div style="font-family:var(--speed-font); font-weight:800; font-size:1.1rem; color:var(--cyan);" id="mBest">1:26.103</div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- FOOTER -->
-<footer style="background:#040508; border-top:2px solid var(--red); padding:40px 0;">
-  <div class="container" style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:20px; align-items:center;">
-    <div>
-      <div style="font-family:'Orbitron',sans-serif; font-size:1.2rem; font-weight:900;">DEV <span style="color:var(--red);">TRONG DUNG</span></div>
-      <div style="color:var(--muted); font-size:0.8rem; margin-top:4px;">Built with Cyberpunk & High-Performance Web Standards</div>
+<!-- PROMINENT F1 SIGNATURE FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="dev-signature-box">
+        <div class="dev-title">LEAD WEB DEVELOPER & DESIGNER</div>
+        <div class="dev-name">DEV <span>TRONG DUNG</span></div>
+        <div class="dev-sub">
+          Thiết kế & Lập trình giao diện F1 High-Performance Telemetry Journal.
+          Tối ưu trải nghiệm UI/UX chuẩn Formula1.com cho mọi thiết bị di động.
+        </div>
+      </div>
+
+      <div style="text-align:right;">
+        <div style="font-family:var(--speed-font); font-size:1.5rem; font-weight:900; color:#fff;">MAX VERSTAPPEN</div>
+        <div style="color:var(--f1-red); font-family:var(--speed-font); font-weight:800;">OFFICIAL FAN RACE JOURNAL</div>
+        <div style="color:var(--text-muted); font-size:0.8rem; margin-top:10px;">Data source referenced from Formula1.com</div>
+      </div>
     </div>
-    <div style="color:var(--muted); font-size:0.8rem;">
-      © 2026 MAX VERSTAPPEN FAN-MADE TELEMETRY JOURNAL.
+
+    <div class="footer-bottom">
+      <div>© 2026 DESIGNED BY DEV TRONG DUNG. ALL RIGHTS RESERVED.</div>
+      <div>FORMULA 1 & MAX VERSTAPPEN TRIBUTE PLATFORM</div>
     </div>
   </div>
 </footer>
 
 <script>
-// WEB AUDIO SYNTHESIZER FOR F1 ENGINE SOUND
+/* REAL AUDIO ENGINE SYNTHESIZER & EXTERNAL F1 SOUND ENGINE */
 let audioCtx = null;
-let isAudioActive = false;
+let isAudioPlaying = false;
 
-function toggleAudio() {
-  const btn = document.getElementById('audioBtn');
+function toggleEngineAudio() {
+  const btn = document.getElementById('audioToggle');
+  
   if (!audioCtx) {
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   }
 
-  if (!isAudioActive) {
-    isAudioActive = true;
-    btn.classList.add('active');
-    playEngineRev();
+  if (!isAudioPlaying) {
+    isAudioPlaying = true;
+    btn.classList.add('playing');
+    playF1V6EngineSound();
   } else {
-    isAudioActive = false;
-    btn.classList.remove('active');
+    isAudioPlaying = false;
+    btn.classList.remove('playing');
   }
 }
 
-function playEngineRev() {
-  if (!isAudioActive || !audioCtx) return;
-  
+function playF1V6EngineSound() {
+  if (!isAudioPlaying || !audioCtx) return;
+
   const osc = audioCtx.createOscillator();
   const gain = audioCtx.createGain();
 
+  // Simulate High Pitch V6 Turbo Hybrid F1 Engine Rev
   osc.type = 'sawtooth';
-  osc.frequency.setValueAtTime(150, audioCtx.currentTime);
-  osc.frequency.exponentialRampToValueAtTime(600, audioCtx.currentTime + 0.5);
-  osc.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 1.2);
+  osc.frequency.setValueAtTime(220, audioCtx.currentTime);
+  osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.6); // Upshift
+  osc.frequency.exponentialRampToValueAtTime(350, audioCtx.currentTime + 1.2); // Downshift
+  osc.frequency.exponentialRampToValueAtTime(1050, audioCtx.currentTime + 2.0); // Pure Acceleration
 
-  gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 1.2);
+  gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 2.2);
 
   osc.connect(gain);
   gain.connect(audioCtx.destination);
 
   osc.start();
-  osc.stop(audioCtx.currentTime + 1.2);
+  osc.stop(audioCtx.currentTime + 2.2);
+
+  setTimeout(() => {
+    if (isAudioPlaying) btn.classList.remove('playing'), isAudioPlaying = false;
+  }, 2300);
 }
 
-// SEASON TELEMETRY DATA
-const seasonData = {
-  "2026": { rank: "P1", points: 280, wins: 6, podiums: 9, winRate: "68%" },
-  "2025": { rank: "P2", points: 421, wins: 8, podiums: 15, winRate: "60%" },
-  "2024": { rank: "P1", points: 429, wins: 9, podiums: 14, winRate: "70%" },
-  "2023": { rank: "P1", points: 575, wins: 19, podiums: 21, winRate: "86%" }
+/* DYNAMIC TELEMETRY DATA 2021-2026 */
+const telemetryData = {
+  "2026": { rank: "P1", points: 280, wins: 6, podiums: 9, winRate: "68%", team: "Red Bull Ford RB22" },
+  "2025": { rank: "P2", points: 421, wins: 8, podiums: 15, winRate: "60%", team: "Red Bull Honda RB21" },
+  "2024": { rank: "P1", points: 429, wins: 9, podiums: 14, winRate: "70%", team: "Red Bull Honda RB20" },
+  "2023": { rank: "P1", points: 575, wins: 19, podiums: 21, winRate: "86%", team: "Red Bull Honda RB19" },
+  "2022": { rank: "P1", points: 454, wins: 15, podiums: 17, winRate: "68%", team: "Red Bull Honda RB18" },
+  "2021": { rank: "P1", points: 395, wins: 10, podiums: 18, winRate: "45%", team: "Red Bull Honda RB16B" }
 };
 
-function switchSeason(year, btn) {
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+function updateTelemetry(year, btn) {
+  document.querySelectorAll('.season-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
 
-  const data = seasonData[year];
-  const container = document.getElementById('seasonDisplay');
+  const data = telemetryData[year];
+  const container = document.getElementById('telemetryDisplay');
 
   container.innerHTML = `
-    <div class="stat-box-large">
-      <div style="font-size:0.8rem; color:var(--muted); font-family:'Orbitron';">SEASON RANK</div>
-      <div class="rank">${data.rank}</div>
-      <div style="color:#fff; font-weight:700; font-size:1.1rem; margin-top:10px;">Red Bull Racing Honda RB20</div>
+    <div class="tb-rank-box">
+      <div style="font-size:0.8rem; color:var(--text-muted); font-family:var(--speed-font);">BẢNG XẾP HẠNG CHUNG CUỘC</div>
+      <div class="tb-rank">${data.rank}</div>
+      <div style="color:#fff; font-weight:800; font-size:1.1rem; margin-top:10px;">${data.team}</div>
     </div>
     <div>
-      <div class="progress-bar-wrap">
-        <div class="progress-info"><span>SEASON POINTS</span><span>${data.points} PTS</span></div>
-        <div class="progress-bg"><div class="progress-fill" style="width: ${(data.points/575)*100}%"></div></div>
+      <div class="bar-wrap">
+        <div class="bar-label"><span>TỔNG ĐIỂM MÙA GIẢI</span><span>${data.points} PTS</span></div>
+        <div class="bar-bg"><div class="bar-fill" style="width: ${(data.points/575)*100}%"></div></div>
       </div>
-      <div class="progress-bar-wrap">
-        <div class="progress-info"><span>RACE VICTORIES</span><span>${data.wins} WINS</span></div>
-        <div class="progress-bg"><div class="progress-fill" style="width: ${(data.wins/22)*100}%"></div></div>
+      <div class="bar-wrap">
+        <div class="bar-label"><span>SỐ CHẶNG THẮNG (WINS)</span><span>${data.wins} WINS</span></div>
+        <div class="bar-bg"><div class="bar-fill" style="width: ${(data.wins/22)*100}%"></div></div>
       </div>
-      <div class="progress-bar-wrap">
-        <div class="progress-info"><span>WIN RATE</span><span>${data.winRate}</span></div>
-        <div class="progress-bg"><div class="progress-fill" style="width: ${data.winRate}"></div></div>
+      <div class="bar-wrap">
+        <div class="bar-label"><span>TỶ LỆ CHIẾN THẮNG</span><span>${data.winRate}</span></div>
+        <div class="bar-bg"><div class="bar-fill" style="width: ${data.winRate}"></div></div>
       </div>
     </div>
   `;
 
-  playEngineRev();
+  playF1V6EngineSound();
 }
 
-// MODAL FUNCTIONALITY
-function openModal(title, desc, laps, pos, best) {
+/* MODAL CONTROL */
+function openRaceModal(title, desc, laps, pos, best) {
   document.getElementById('mTitle').innerText = title;
   document.getElementById('mDesc').innerText = desc;
   document.getElementById('mLaps').innerText = laps;
   document.getElementById('mPos').innerText = pos;
   document.getElementById('mBest').innerText = best;
-  document.getElementById('modal').classList.add('active');
+  document.getElementById('raceModal').classList.add('active');
 }
 
-function closeModal() {
-  document.getElementById('modal').classList.remove('active');
+function closeRaceModal() {
+  document.getElementById('raceModal').classList.remove('active');
 }
 
-// ANIMATED NUMBERS ON SCROLL
-const observers = new IntersectionObserver((entries) => {
+/* ANIMATED COUNTER ON SCROLL */
+const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       const target = +entry.target.getAttribute('data-target');
       let count = 0;
-      const speed = target / 30;
-      const updateCount = () => {
+      const speed = target / 25;
+      const update = () => {
         count += speed;
         if (count < target) {
           entry.target.innerText = Math.ceil(count);
-          setTimeout(updateCount, 30);
+          setTimeout(update, 30);
         } else {
           entry.target.innerText = target;
         }
       };
-      updateCount();
-      observers.unobserve(entry.target);
+      update();
+      observer.unobserve(entry.target);
     }
   });
 }, { threshold: 0.5 });
 
-document.querySelectorAll('.t-value').forEach(el => observers.observe(el));
+document.querySelectorAll('.stat-num').forEach(el => observer.observe(el));
 
-// INIT DEFAULT SEASON
-switchSeason('2026', document.querySelector('.tab-btn.active'));
+// INIT DEFAULT TELEMETRY
+updateTelemetry('2026', document.querySelector('.season-btn.active'));
 </script>
 
 </body>
 </html>
+
