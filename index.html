@@ -1,299 +1,360 @@
 
-
 <!DOCTYPE html>
-
 <html lang="vi">
-
 <head>
-
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
-<title>20/10 dành cho bạn 💗</title>
-
+<title>For You ♡ 20/10</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@500;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-
+:root{
+ --pink:#ff4c91;--rose:#c72e69;--ink:#783652;
+ --glass:rgba(255,249,252,.83);
+}
 *{box-sizing:border-box}
-
-:root{--pink:#e76f98;--dark:#913d64}
-
 body{
-
- margin:0;min-height:100vh;font-family:"Segoe UI",sans-serif;
-
- color:var(--dark);
-
- background:linear-gradient(135deg,#fff0f4,#ffe0eb,#f8e9ff);
-
- display:flex;align-items:center;justify-content:center;
-
- padding:20px;overflow-x:hidden
-
+ margin:0;min-height:100vh;font-family:'Quicksand',sans-serif;
+ color:var(--ink);overflow-x:hidden;
+ background:linear-gradient(155deg,#ffedf3,#ffe0ec 48%,#f0ddff);
 }
-
-#hearts{position:fixed;inset:0;pointer-events:none;overflow:hidden}
-
-.heart{position:absolute;bottom:-40px;animation:rise linear forwards}
-
-.card{
-
- width:100%;max-width:480px;min-height:560px;
-
- padding:34px 26px 24px;border-radius:28px;
-
- background:#ffffffc9;backdrop-filter:blur(12px);
-
- border:1px solid white;box-shadow:0 15px 55px #bb648d25;
-
- text-align:center;position:relative;z-index:1;
-
- display:flex;flex-direction:column;align-items:center;
-
- justify-content:center;animation:appear .65s ease
-
+body:before{
+ content:"";position:fixed;inset:0;z-index:-2;
+ background:
+ radial-gradient(ellipse at 15% 20%,#fff 0,transparent 35%),
+ radial-gradient(ellipse at 85% 80%,#ffb7d2 0,transparent 40%),
+ linear-gradient(140deg,#fff1f5,#ffdce9,#f1e2ff);
 }
-
-.page{display:none;width:100%}
-
-.page.active{display:block;animation:appear .65s ease}
-
-.emoji{font-size:70px;margin-bottom:12px;animation:float 3s infinite}
-
-.small{font-size:12px;letter-spacing:4px;color:#cb7798}
-
-h1{font-size:clamp(29px,8vw,42px);line-height:1.3;margin:14px 0;color:#d95183}
-
-h2{font-size:25px;margin:15px 0;color:#d95183}
-
-p{font-size:16px;line-height:1.95;margin:14px 0}
-
-.line{color:#e69bb7;letter-spacing:8px;margin:18px}
-
-button{
-
- background:linear-gradient(110deg,#f18aaa,#d780c8);
-
- color:white;border:0;border-radius:28px;padding:13px 24px;
-
- font-size:15px;font-weight:600;cursor:pointer;
-
- box-shadow:0 6px 16px #d77ca633;margin:8px 4px;
-
- transition:transform .2s
-
+#sky{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+.orb{
+ position:absolute;border-radius:50%;filter:blur(2px);
+ background:linear-gradient(135deg,#ffffffa8,#ff9cbd50);
+ animation:drift 9s ease-in-out infinite alternate;
 }
-
-button:hover{transform:translateY(-3px)}
-
-.back{background:#fff;color:#c45d89;border:1px solid #f5c4d6}
-
-.nav{margin-top:25px}
-
-.progress{font-size:12px;color:#c17a98;margin-top:15px;letter-spacing:3px}
-
-.envelope{font-size:100px;cursor:pointer;display:block;margin:20px auto}
-
-.letter{background:#fff8fb;padding:20px;border-radius:18px;border:1px solid #f8d8e5}
-
-.signature{font-size:24px;font-style:italic;color:#d95183;margin-top:24px}
-
-.footer{font-size:12px;color:#c78ba5;margin-top:15px}
-
-@keyframes appear{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-
-@keyframes float{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-9px) rotate(4deg)}}
-
-@keyframes rise{to{transform:translateY(-110vh) rotate(360deg);opacity:0}}
-
+header{
+ position:fixed;top:0;left:0;right:0;z-index:20;
+ display:flex;justify-content:space-between;align-items:center;
+ padding:15px 20px;
+ background:linear-gradient(#fff9,transparent);
+}
+.logo{font-weight:800;letter-spacing:2px;color:#c63876;font-size:12px}
+.music{
+ border:1px solid #fff;background:#ffffffb8;color:#b83d73;
+ border-radius:30px;padding:10px 13px;cursor:pointer;
+ font:600 12px 'Quicksand';
+}
+main{
+ min-height:100svh;display:flex;align-items:center;
+ justify-content:center;padding:78px 14px 30px;
+}
+.page{
+ display:none;position:relative;isolation:isolate;
+ width:100%;max-width:550px;min-height:610px;
+ padding:38px 27px 25px;border-radius:30px;
+ background:var(--glass);border:1px solid #ffffffed;
+ box-shadow:0 25px 80px #bd578b26;
+ backdrop-filter:blur(16px);text-align:center;overflow:hidden;
+}
+.page:before{
+ content:"";position:absolute;inset:8px;z-index:-1;
+ border:1px solid #efb5ce;border-radius:24px;
+}
+.page:after{
+ content:"✧";position:absolute;top:19px;right:23px;
+ color:#e77da5;font-size:25px;opacity:.8;
+}
+.page.active{display:flex;flex-direction:column;justify-content:center;animation:enter .65s ease}
+.inner{width:100%;position:relative;z-index:1}
+.eyebrow{font-size:11px;letter-spacing:4px;font-weight:700;color:#b95b84}
+h1,h2{font-family:'Playfair Display',serif}
+h1{font-size:clamp(34px,8vw,48px);line-height:1.25;color:#d83d7b;margin:17px 0}
+h2{font-size:27px;line-height:1.4;color:#cf3977;margin:15px 0}
+.script{font-family:'Great Vibes',cursive;color:#e94d8a}
+.hero-script{font-size:clamp(42px,10vw,64px);line-height:1.15}
+p{font-size:15px;line-height:1.95;margin:13px 0}
+.flower{font-size:70px;display:block;animation:sway 4s ease-in-out infinite}
+.line{letter-spacing:7px;color:#e77da5;margin:15px 0}
+.actions{display:flex;justify-content:center;flex-wrap:wrap;gap:9px;margin-top:22px}
+button{font-family:'Quicksand',sans-serif}
+.btn{
+ border:0;border-radius:30px;padding:13px 20px;
+ color:white;font-size:13px;font-weight:700;cursor:pointer;
+ background:linear-gradient(110deg,#fa73a3,#d878c9);
+ box-shadow:0 7px 20px #d55a9330;transition:.25s;
+}
+.btn:hover{transform:translateY(-3px);box-shadow:0 10px 24px #d55a9350}
+.btn.secondary{background:#fff;color:#bd5382;border:1px solid #f0c2d5;box-shadow:none}
+.counter{font-size:11px;letter-spacing:4px;color:#b97896;margin-top:23px}
+.envelope{
+ font-size:96px;display:block;margin:18px auto;cursor:pointer;
+ filter:drop-shadow(0 10px 12px #d77b9c30);
+ animation:float 3s ease-in-out infinite;
+}
+.letter{
+ display:none;text-align:left;background:#fff8fb;
+ border:1px solid #f3c5d7;border-radius:18px;padding:18px;
+ animation:enter .5s ease;
+}
+.letter p{margin:0}
+.photo-frame{
+ border-radius:24px;padding:24px 15px;
+ background:linear-gradient(135deg,#fff7fa,#ffe0ec);
+ border:1px solid white;margin:15px 0;
+}
+.big-heart{font-size:100px;display:block;animation:heartbeat 1.8s infinite}
+.quote{font-family:'Playfair Display',serif;font-style:italic;font-size:18px;color:#ae4774}
+.signature-box{
+ margin:22px auto 12px;padding:20px 8px 18px;
+ position:relative;max-width:420px;
+ border-radius:19px;
+ background:linear-gradient(115deg,#ff5c9a,#eb4389 55%,#bd4ca5);
+ box-shadow:0 12px 28px #d9387945;
+ transform:rotate(-2deg);
+}
+.signature-box:before{
+ content:"";position:absolute;inset:5px;
+ border:1px dashed #ffffffa8;border-radius:14px;
+}
+.signature{
+ position:relative;z-index:1;
+ font-family:'Great Vibes',cursive;
+ font-size:clamp(43px,10vw,67px);
+ line-height:1.2;color:#fff;
+ text-shadow:0 2px 0 #c42e6c,0 0 12px #fff8;
+}
+.signature-sub{
+ font-size:10px;letter-spacing:4px;color:#fff;
+ position:relative;z-index:1;margin-top:8px;
+}
+.footer{font-size:11px;letter-spacing:1px;color:#bd7896;margin-top:16px}
+.corner{position:absolute;font-size:25px;opacity:.7}
+.c1{left:20px;top:18px}.c2{right:20px;bottom:18px}
+#particles{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:10}
+.particle{position:absolute;bottom:-45px;animation:rise linear forwards}
+@keyframes enter{from{opacity:0;transform:translateY(20px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes sway{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes heartbeat{0%,100%{transform:scale(1)}15%{transform:scale(1.1)}30%{transform:scale(1)}45%{transform:scale(1.06)}}
+@keyframes rise{to{transform:translateY(-115vh) rotate(330deg);opacity:0}}
+@keyframes drift{to{transform:translate(25px,-25px) scale(1.15)}}
+@media(max-width:400px){
+ .page{min-height:570px;padding:32px 20px 20px}
+ p{font-size:14px}
+ h2{font-size:24px}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*:before,*:after{animation-duration:.01ms!important;transition:none!important}
+}
 </style>
-
 </head>
-
 <body>
+<div id="sky"></div>
+<div id="particles"></div>
+<header>
+ <div class="logo">♡ A LITTLE GIFT FOR YOU</div>
+ <button class="music" id="musicBtn" onclick="toggleMusic()">♫ Bật nhạc</button>
+</header>
 
-<div id="hearts"></div>
-
-<main class="card">
-
+<main>
+<!-- TRANG 1 -->
 <section class="page active">
-
- <div class="small">20 · 10 · 2026</div>
-
- <div class="emoji">💐</div>
-
- <h1>Chúc mừng<br>Ngày Phụ Nữ<br>Việt Nam 20/10</h1>
-
- <div class="line">♡ ── ♥ ── ♡</div>
-
- <p>Hôm nay là ngày đặc biệt dành cho những bông hoa xinh đẹp. Mình có một món quà nhỏ muốn gửi đến bạn!</p>
-
- <button onclick="go(1)">Bắt đầu hành trình 💗 →</button>
-
-</section>
-
-<section class="page">
-
- <div class="small">MỘT MÓN QUÀ NHỎ</div>
-
- <div class="emoji">💌</div>
-
- <h2>Gửi đến bạn...</h2>
-
- <p>Có những lời chúc tuy giản dị nhưng được gửi gắm bằng tất cả sự chân thành.</p>
-
- <p>Hãy mở phong bì này để nhận những điều dễ thương dành riêng cho ngày hôm nay nhé!</p>
-
- <div class="envelope" onclick="openLetter()">💌</div>
-
- <div id="letter" class="letter" style="display:none">
-
-   <p>🌷 Xin gửi đến bạn một cái ôm thật ấm áp và thật nhiều yêu thương!</p>
-
+ <div class="inner">
+  <div class="eyebrow">20 · 10 · 2026</div>
+  <span class="flower">💐</span>
+  <div class="script hero-script">Happy Women's Day</div>
+  <h1>Chúc mừng<br>20 tháng 10</h1>
+  <div class="line">♡ ── ♥ ── ♡</div>
+  <p>Gửi đến những cô gái tuyệt vời nhất,<br>một món quà nhỏ chứa đầy yêu thương.</p>
+  <p class="quote">"Mong hôm nay của bạn ngọt ngào như một giấc mơ."</p>
+  <div class="actions">
+   <button class="btn" onclick="go(1)">Mở món quà của bạn ♡ →</button>
+  </div>
+  <div class="counter">01 / 06</div>
  </div>
-
- <div class="nav"><button class="back" onclick="go(0)">← Trở lại</button><button onclick="go(2)">Đọc tiếp →</button></div>
-
 </section>
 
+<!-- TRANG 2 -->
 <section class="page">
-
- <div class="small">ĐIỀU ƯỚC THỨ NHẤT</div>
-
- <div class="emoji">🌸</div>
-
- <h2>Chúc bạn luôn rạng rỡ</h2>
-
- <p>Chúc bạn mỗi sáng thức dậy đều có một lý do để mỉm cười, mỗi ngày đều gặp được những điều tử tế và mỗi tối đều có thể ngủ ngon với một trái tim bình yên.</p>
-
- <p>Mong rằng đôi mắt bạn luôn ánh lên niềm vui, nụ cười luôn thật tươi và vẻ đẹp của bạn không chỉ nằm ở ngoại hình mà còn tỏa sáng từ tâm hồn. 💕</p>
-
- <div class="line">♡ ── 🌷 ── ♡</div>
-
- <div class="nav"><button class="back" onclick="go(1)">← Trở lại</button><button onclick="go(3)">Lời chúc tiếp theo →</button></div>
-
+ <div class="inner">
+  <div class="eyebrow">A LITTLE SURPRISE</div>
+  <h2>Một bức thư dành riêng cho bạn</h2>
+  <div class="envelope" onclick="openLetter()" id="env">💌</div>
+  <p>Trong chiếc phong bì nhỏ này<br>có vài điều mình muốn gửi đến bạn.</p>
+  <div class="letter" id="letter">
+   <p>🌷 Xin chào cô gái! Hôm nay hãy cho phép bản thân được vui vẻ, được yêu chiều và được nhận thật nhiều điều tốt đẹp nhé. Bạn xứng đáng với tất cả sự dịu dàng của thế giới.</p>
+  </div>
+  <div class="actions">
+   <button class="btn secondary" onclick="go(0)">← Quay lại</button>
+   <button class="btn" onclick="go(2)">Nhận lời chúc tiếp theo →</button>
+  </div>
+  <div class="counter">02 / 06</div>
+ </div>
 </section>
 
+<!-- TRANG 3 -->
 <section class="page">
-
- <div class="small">ĐIỀU ƯỚC THỨ HAI</div>
-
- <div class="emoji">🦋</div>
-
- <h2>Chúc mọi điều như ý</h2>
-
- <p>Chúc cho những dự định bạn đang ấp ủ sẽ từng bước thành hiện thực. Chúc bạn học tập thật tốt, công việc thuận lợi và luôn đủ tự tin để theo đuổi điều mình yêu thích.</p>
-
- <p>Nếu có những ngày mệt mỏi, mong bạn vẫn đủ mạnh mẽ để bước tiếp, đủ dịu dàng để yêu thương bản thân và đủ kiên trì để không từ bỏ ước mơ. ✨</p>
-
- <div class="line">♡ ── 🌼 ── ♡</div>
-
- <div class="nav"><button class="back" onclick="go(2)">← Trở lại</button><button onclick="go(4)">Tiếp tục nhé →</button></div>
-
+ <div class="inner">
+  <div class="eyebrow">WISH NO. 01</div>
+  <span class="flower">🌸</span>
+  <h2>Chúc bạn luôn rạng rỡ</h2>
+  <div class="line">✧ ── ♡ ── ✧</div>
+  <p>Chúc bạn luôn xinh đẹp theo cách riêng của mình, luôn tự tin mỗi khi bước ra ngoài và luôn có một nụ cười thật tươi trên môi.</p>
+  <p>Mong mỗi ngày đều mang đến cho bạn một niềm vui nho nhỏ, một điều bất ngờ dễ thương và những người khiến bạn cảm thấy cuộc sống thật đáng yêu.</p>
+  <p class="quote">"Hãy cứ tỏa sáng, vì thế giới này cần ánh sáng của bạn." ✨</p>
+  <div class="actions">
+   <button class="btn secondary" onclick="go(1)">← Trở lại</button>
+   <button class="btn" onclick="go(3)">Lời chúc tiếp theo →</button>
+  </div>
+  <div class="counter">03 / 06</div>
+ </div>
 </section>
 
+<!-- TRANG 4 -->
 <section class="page">
-
- <div class="small">ĐIỀU ƯỚC THỨ BA</div>
-
- <div class="emoji">💖</div>
-
- <h2>Luôn được yêu thương</h2>
-
- <p>Mong bạn luôn gặp những người chân thành, được trân trọng đúng với giá trị của mình và không bao giờ phải cố gắng trở thành một ai khác để được yêu quý.</p>
-
- <p>Chúc bạn có thật nhiều kỷ niệm đẹp, những người bạn tốt bên cạnh, một tình yêu dịu dàng khi đến đúng lúc và một cuộc sống ngập tràn tiếng cười.</p>
-
- <p>Hãy nhớ rằng bạn xứng đáng với những điều tốt đẹp nhất trên thế giới này! 🌹</p>
-
- <div class="nav"><button class="back" onclick="go(3)">← Trở lại</button><button onclick="go(5)">Đến món quà cuối 💝 →</button></div>
-
+ <div class="inner">
+  <div class="eyebrow">WISH NO. 02</div>
+  <span class="flower">🦋</span>
+  <h2>Chúc mọi điều như ý</h2>
+  <div class="line">✧ ── ♡ ── ✧</div>
+  <p>Chúc cho những ước mơ bạn đang theo đuổi sẽ dần trở thành hiện thực. Việc học thật thuận lợi, công việc thật suôn sẻ và mọi nỗ lực đều nhận lại những thành quả xứng đáng.</p>
+  <p>Nếu có ngày mệt mỏi, mong bạn vẫn đủ kiên cường để bước tiếp, đủ dịu dàng để yêu thương bản thân và đủ can đảm để bắt đầu lại.</p>
+  <p class="quote">"Chậm một chút cũng không sao, miễn là bạn vẫn đang tiến về phía trước."</p>
+  <div class="actions">
+   <button class="btn secondary" onclick="go(2)">← Trở lại</button>
+   <button class="btn" onclick="go(4)">Lời chúc tiếp theo →</button>
+  </div>
+  <div class="counter">04 / 06</div>
+ </div>
 </section>
 
+<!-- TRANG 5 -->
 <section class="page">
-
- <div class="small">DÀNH RIÊNG CHO BẠN</div>
-
- <div class="emoji">🌷</div>
-
- <h1>Happy<br>Women's Day!</h1>
-
- <div class="line">♡ ── ♥ ── ♡</div>
-
- <p>Chúc bạn một ngày 20/10 thật vui, thật hạnh phúc và nhận được thật nhiều yêu thương.</p>
-
- <p>Mong rằng không chỉ hôm nay mà tất cả 365 ngày trong năm, bạn đều có thể sống vui vẻ, bình an, tự tin và hạnh phúc theo cách riêng của mình.</p>
-
- <p>Cảm ơn bạn đã dành thời gian đọc món quà nhỏ này. Hy vọng nó có thể khiến bạn mỉm cười! 💗</p>
-
- <div class="signature">dev trong dung</div>
-
- <div class="footer">Made with ♡ · 20/10</div>
-
- <div class="nav"><button class="back" onclick="go(4)">← Đọc lại</button><button onclick="go(0)">↻ Xem lại từ đầu</button></div>
-
+ <div class="inner">
+  <div class="eyebrow">WISH NO. 03</div>
+  <span class="flower">💗</span>
+  <h2>Luôn được yêu thương</h2>
+  <div class="line">✧ ── ♡ ── ✧</div>
+  <p>Mong bạn gặp được những người chân thành, được lắng nghe khi cần tâm sự, được ở bên những người mang lại bình yên và được trân trọng đúng với giá trị của mình.</p>
+  <p>Chúc trái tim bạn luôn ấm áp, những ngày bình thường cũng có điều đáng nhớ, những lúc buồn luôn có người sẻ chia và tương lai luôn có những điều khiến bạn háo hức mong chờ.</p>
+  <p class="quote">"Đừng quên rằng bạn cũng xứng đáng nhận lại tất cả yêu thương mà mình trao đi."</p>
+  <div class="actions">
+   <button class="btn secondary" onclick="go(3)">← Trở lại</button>
+   <button class="btn" onclick="go(5)">Món quà cuối cùng 💝 →</button>
+  </div>
+  <div class="counter">05 / 06</div>
+ </div>
 </section>
 
-<div class="progress" id="progress">01 / 06</div>
-
+<!-- TRANG 6 -->
+<section class="page">
+ <div class="inner">
+  <div class="eyebrow">A MESSAGE FROM THE HEART</div>
+  <div class="script" style="font-size:37px">Happy Women's Day!</div>
+  <span class="big-heart" style="font-size:75px">💖</span>
+  <h2>Gửi bạn ngàn điều tốt đẹp</h2>
+  <p>Chúc bạn một ngày 20/10 thật vui, hạnh phúc và ngập tràn yêu thương. Mong không chỉ hôm nay mà cả những ngày sau, bạn luôn bình an, tự tin và sống thật rực rỡ.</p>
+  <p>Cảm ơn bạn đã dành thời gian mở món quà nhỏ này. Hy vọng khi khép lại trang cuối, bạn sẽ mang theo một nụ cười thật xinh. 🌷</p>
+  <div class="signature-box">
+   <div class="signature">dev trong dung</div>
+   <div class="signature-sub">MADE WITH LOVE · 20/10</div>
+  </div>
+  <div class="actions">
+   <button class="btn secondary" onclick="go(4)">← Đọc lại</button>
+   <button class="btn" onclick="celebrate()">🎉 Gửi một trái tim</button>
+  </div>
+  <div class="footer">♡ Một chút yêu thương, gửi đến bạn ♡</div>
+  <div class="counter">06 / 06</div>
+ </div>
+</section>
 </main>
 
 <script>
-
 let current=0;
-
-const pages=document.querySelectorAll(".page");
-
+const pages=[...document.querySelectorAll('.page')];
 function go(n){
-
- pages[current].classList.remove("active");
-
+ pages[current].classList.remove('active');
  current=n;
-
- pages[current].classList.add("active");
-
- document.getElementById("progress").textContent=
-
- String(current+1).padStart(2,"0")+" / 06";
-
- window.scrollTo({top:0,behavior:"smooth"});
-
+ pages[current].classList.add('active');
+ window.scrollTo({top:0,behavior:'smooth'});
 }
-
 function openLetter(){
-
- const letter=document.getElementById("letter");
-
- letter.style.display="block";
-
- document.querySelector(".envelope").textContent="💗";
-
+ const l=document.getElementById('letter');
+ l.style.display='block';
+ document.getElementById('env').textContent='💝';
+ burst(20);
+}
+function makeParticle(symbol){
+ const p=document.createElement('span');
+ p.className='particle';
+ p.textContent=symbol;
+ p.style.left=Math.random()*100+'vw';
+ p.style.fontSize=(14+Math.random()*23)+'px';
+ p.style.animationDuration=(5+Math.random()*6)+'s';
+ document.getElementById('particles').appendChild(p);
+ setTimeout(()=>p.remove(),11500);
+}
+setInterval(()=>{
+ if(!document.hidden)makeParticle(['♡','💕','🌸','✨','💗'][Math.floor(Math.random()*5)]);
+},600);
+function burst(count){
+ for(let i=0;i<count;i++){
+  setTimeout(()=>makeParticle(['💖','💗','✨','🌸','💕'][Math.floor(Math.random()*5)]),i*55);
+ }
+}
+function celebrate(){
+ burst(65);
+ const b=document.querySelector('.signature-box');
+ b.animate([
+  {transform:'rotate(-2deg) scale(1)'},
+  {transform:'rotate(2deg) scale(1.08)'},
+  {transform:'rotate(-2deg) scale(1)'}
+ ],{duration:700});
+}
+for(let i=0;i<7;i++){
+ const o=document.createElement('div');
+ o.className='orb';
+ const size=70+Math.random()*150;
+ o.style.width=size+'px';o.style.height=size+'px';
+ o.style.left=Math.random()*100+'%';
+ o.style.top=Math.random()*100+'%';
+ o.style.animationDelay=Math.random()*5+'s';
+ document.getElementById('sky').appendChild(o);
 }
 
-function createHeart(){
-
- const h=document.createElement("span");
-
- h.className="heart";
-
- h.textContent=["♡","💗","💕","🌸","✨"][Math.floor(Math.random()*5)];
-
- h.style.left=Math.random()*100+"%";
-
- h.style.fontSize=(15+Math.random()*20)+"px";
-
- h.style.animationDuration=(5+Math.random()*6)+"s";
-
- document.getElementById("hearts").appendChild(h);
-
- setTimeout(()=>h.remove(),11000);
-
+/* Nhạc nền tùy chọn: không tự phát khi chưa được bấm */
+let audioCtx=null,oscillators=[],musicOn=false;
+function toggleMusic(){
+ const btn=document.getElementById('musicBtn');
+ if(musicOn){
+  oscillators.forEach(o=>{try{o.stop()}catch(e){}});
+  oscillators=[];musicOn=false;
+  btn.textContent='♫ Bật nhạc';return;
+ }
+ try{
+  audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+  const notes=[523.25,659.25,783.99,659.25,587.33,698.46,783.99,1046.5];
+  notes.forEach((freq,i)=>{
+   const osc=audioCtx.createOscillator();
+   const gain=audioCtx.createGain();
+   osc.type='sine';osc.frequency.value=freq;
+   gain.gain.value=0;
+   osc.connect(gain);gain.connect(audioCtx.destination);
+   osc.start();
+   const start=audioCtx.currentTime+i*.48;
+   gain.gain.setValueAtTime(0,start);
+   gain.gain.linearRampToValueAtTime(.035,start+.08);
+   gain.gain.linearRampToValueAtTime(0,start+.42);
+   oscillators.push(osc);
+  });
+  musicOn=true;btn.textContent='♫ Tắt nhạc';
+  setTimeout(()=>{
+   if(musicOn){
+    oscillators.forEach(o=>{try{o.stop()}catch(e){}});
+    oscillators=[];musicOn=false;btn.textContent='♫ Bật nhạc';
+   }
+  },4500);
+ }catch(e){btn.textContent='Không hỗ trợ âm thanh';}
 }
-
-setInterval(createHeart,500);
-
 </script>
-
 </body>
-
 </html>
