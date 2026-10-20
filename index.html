@@ -2,359 +2,111 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>For You ♡ 20/10</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@500;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Block World Mobile — Sinh tồn</title>
 <style>
-:root{
- --pink:#ff4c91;--rose:#c72e69;--ink:#783652;
- --glass:rgba(255,249,252,.83);
-}
-*{box-sizing:border-box}
-body{
- margin:0;min-height:100vh;font-family:'Quicksand',sans-serif;
- color:var(--ink);overflow-x:hidden;
- background:linear-gradient(155deg,#ffedf3,#ffe0ec 48%,#f0ddff);
-}
-body:before{
- content:"";position:fixed;inset:0;z-index:-2;
- background:
- radial-gradient(ellipse at 15% 20%,#fff 0,transparent 35%),
- radial-gradient(ellipse at 85% 80%,#ffb7d2 0,transparent 40%),
- linear-gradient(140deg,#fff1f5,#ffdce9,#f1e2ff);
-}
-#sky{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
-.orb{
- position:absolute;border-radius:50%;filter:blur(2px);
- background:linear-gradient(135deg,#ffffffa8,#ff9cbd50);
- animation:drift 9s ease-in-out infinite alternate;
-}
-header{
- position:fixed;top:0;left:0;right:0;z-index:20;
- display:flex;justify-content:space-between;align-items:center;
- padding:15px 20px;
- background:linear-gradient(#fff9,transparent);
-}
-.logo{font-weight:800;letter-spacing:2px;color:#c63876;font-size:12px}
-.music{
- border:1px solid #fff;background:#ffffffb8;color:#b83d73;
- border-radius:30px;padding:10px 13px;cursor:pointer;
- font:600 12px 'Quicksand';
-}
-main{
- min-height:100svh;display:flex;align-items:center;
- justify-content:center;padding:78px 14px 30px;
-}
-.page{
- display:none;position:relative;isolation:isolate;
- width:100%;max-width:550px;min-height:610px;
- padding:38px 27px 25px;border-radius:30px;
- background:var(--glass);border:1px solid #ffffffed;
- box-shadow:0 25px 80px #bd578b26;
- backdrop-filter:blur(16px);text-align:center;overflow:hidden;
-}
-.page:before{
- content:"";position:absolute;inset:8px;z-index:-1;
- border:1px solid #efb5ce;border-radius:24px;
-}
-.page:after{
- content:"✧";position:absolute;top:19px;right:23px;
- color:#e77da5;font-size:25px;opacity:.8;
-}
-.page.active{display:flex;flex-direction:column;justify-content:center;animation:enter .65s ease}
-.inner{width:100%;position:relative;z-index:1}
-.eyebrow{font-size:11px;letter-spacing:4px;font-weight:700;color:#b95b84}
-h1,h2{font-family:'Playfair Display',serif}
-h1{font-size:clamp(34px,8vw,48px);line-height:1.25;color:#d83d7b;margin:17px 0}
-h2{font-size:27px;line-height:1.4;color:#cf3977;margin:15px 0}
-.script{font-family:'Great Vibes',cursive;color:#e94d8a}
-.hero-script{font-size:clamp(42px,10vw,64px);line-height:1.15}
-p{font-size:15px;line-height:1.95;margin:13px 0}
-.flower{font-size:70px;display:block;animation:sway 4s ease-in-out infinite}
-.line{letter-spacing:7px;color:#e77da5;margin:15px 0}
-.actions{display:flex;justify-content:center;flex-wrap:wrap;gap:9px;margin-top:22px}
-button{font-family:'Quicksand',sans-serif}
-.btn{
- border:0;border-radius:30px;padding:13px 20px;
- color:white;font-size:13px;font-weight:700;cursor:pointer;
- background:linear-gradient(110deg,#fa73a3,#d878c9);
- box-shadow:0 7px 20px #d55a9330;transition:.25s;
-}
-.btn:hover{transform:translateY(-3px);box-shadow:0 10px 24px #d55a9350}
-.btn.secondary{background:#fff;color:#bd5382;border:1px solid #f0c2d5;box-shadow:none}
-.counter{font-size:11px;letter-spacing:4px;color:#b97896;margin-top:23px}
-.envelope{
- font-size:96px;display:block;margin:18px auto;cursor:pointer;
- filter:drop-shadow(0 10px 12px #d77b9c30);
- animation:float 3s ease-in-out infinite;
-}
-.letter{
- display:none;text-align:left;background:#fff8fb;
- border:1px solid #f3c5d7;border-radius:18px;padding:18px;
- animation:enter .5s ease;
-}
-.letter p{margin:0}
-.photo-frame{
- border-radius:24px;padding:24px 15px;
- background:linear-gradient(135deg,#fff7fa,#ffe0ec);
- border:1px solid white;margin:15px 0;
-}
-.big-heart{font-size:100px;display:block;animation:heartbeat 1.8s infinite}
-.quote{font-family:'Playfair Display',serif;font-style:italic;font-size:18px;color:#ae4774}
-.signature-box{
- margin:22px auto 12px;padding:20px 8px 18px;
- position:relative;max-width:420px;
- border-radius:19px;
- background:linear-gradient(115deg,#ff5c9a,#eb4389 55%,#bd4ca5);
- box-shadow:0 12px 28px #d9387945;
- transform:rotate(-2deg);
-}
-.signature-box:before{
- content:"";position:absolute;inset:5px;
- border:1px dashed #ffffffa8;border-radius:14px;
-}
-.signature{
- position:relative;z-index:1;
- font-family:'Great Vibes',cursive;
- font-size:clamp(43px,10vw,67px);
- line-height:1.2;color:#fff;
- text-shadow:0 2px 0 #c42e6c,0 0 12px #fff8;
-}
-.signature-sub{
- font-size:10px;letter-spacing:4px;color:#fff;
- position:relative;z-index:1;margin-top:8px;
-}
-.footer{font-size:11px;letter-spacing:1px;color:#bd7896;margin-top:16px}
-.corner{position:absolute;font-size:25px;opacity:.7}
-.c1{left:20px;top:18px}.c2{right:20px;bottom:18px}
-#particles{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:10}
-.particle{position:absolute;bottom:-45px;animation:rise linear forwards}
-@keyframes enter{from{opacity:0;transform:translateY(20px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
-@keyframes sway{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-@keyframes heartbeat{0%,100%{transform:scale(1)}15%{transform:scale(1.1)}30%{transform:scale(1)}45%{transform:scale(1.06)}}
-@keyframes rise{to{transform:translateY(-115vh) rotate(330deg);opacity:0}}
-@keyframes drift{to{transform:translate(25px,-25px) scale(1.15)}}
-@media(max-width:400px){
- .page{min-height:570px;padding:32px 20px 20px}
- p{font-size:14px}
- h2{font-size:24px}
-}
-@media(prefers-reduced-motion:reduce){
- *,*:before,*:after{animation-duration:.01ms!important;transition:none!important}
-}
-</style>
-</head>
-<body>
-<div id="sky"></div>
-<div id="particles"></div>
-<header>
- <div class="logo">♡ A LITTLE GIFT FOR YOU</div>
- <button class="music" id="musicBtn" onclick="toggleMusic()">♫ Bật nhạc</button>
-</header>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#87ceeb;font-family:system-ui,-apple-system,sans-serif;touch-action:none}canvas{display:block;width:100%;height:100%}
+#hud{position:fixed;inset:0;color:white;text-shadow:0 2px 3px #18231c;pointer-events:none}.panel{background:#14251bd9;border:1px solid #ffffff55;border-radius:12px;padding:8px 10px;backdrop-filter:blur(5px);font-size:12px}
+#top{position:absolute;top:8px;left:8px;right:8px;display:flex;justify-content:space-between;gap:7px;align-items:flex-start}#brand{font-weight:900;font-size:15px}#stats{line-height:1.6}
+#bars{display:flex;gap:4px;margin-top:5px}.bar{width:68px;height:8px;border:1px solid #fff9;border-radius:8px;background:#333;overflow:hidden}.fill{height:100%;width:100%;background:#e94d55}.food{background:#e6ad43}
+#hint{position:absolute;top:85px;left:50%;transform:translateX(-50%);font-size:11px;background:#14251bbf;padding:6px 9px;border-radius:8px;white-space:nowrap}
+#cross{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:23px}
+#joy{position:absolute;left:13px;bottom:20px;width:132px;height:132px;pointer-events:auto}#joybase{position:absolute;inset:8px;border-radius:50%;background:#14251b66;border:2px solid #ffffff8a}#knob{position:absolute;left:42px;top:42px;width:40px;height:40px;border-radius:50%;background:#ffffffb8;border:2px solid white}
+#actions{position:absolute;right:10px;bottom:16px;display:grid;grid-template-columns:60px 60px;gap:7px;pointer-events:auto}.btn{pointer-events:auto;background:#14251be8;color:white;border:1px solid #ffffffa0;border-radius:12px;min-height:48px;padding:5px;font-weight:800;font-size:11px;text-shadow:0 1px 2px #000}.btn:active{background:#507d40}.wide{grid-column:span 2}
+#hotbar{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:3px;pointer-events:auto}.slot{width:37px;height:43px;border:2px solid #ffffff80;background:#14251be8;border-radius:7px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:9px}.slot b{font-size:16px}.slot.sel{border:3px solid #ffe76a;transform:translateY(-4px)}
+#toast{position:absolute;top:125px;left:50%;transform:translateX(-50%);background:#14251be8;border-radius:10px;padding:8px 12px;font-size:12px;opacity:0;transition:opacity .2s;max-width:85%;text-align:center}
+.overlay{position:fixed;inset:0;background:#07110edb;display:none;align-items:center;justify-content:center;padding:14px;pointer-events:auto;color:#fff;text-shadow:none;z-index:5}.modal{width:min(520px,100%);max-height:88vh;overflow:auto;background:#24372c;border:2px solid #90a995;border-radius:16px;padding:15px;box-shadow:0 12px 50px #0009}.modal h2{margin:0 0 10px;font-size:20px}.muted{color:#c5d7c9;font-size:12px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:10px 0}.item{background:#17251d;border:1px solid #78917e;border-radius:10px;padding:9px 5px;text-align:center;font-size:12px}.item b{font-size:19px;display:block}.item button{margin-top:5px;width:100%;font-size:11px}.rowbtn{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.rowbtn .btn{flex:1}.recipe{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:9px;background:#17251d;border-radius:9px;margin:6px 0;font-size:12px}.recipe button{min-width:82px}.hidden{display:none!important}
+@media(max-width:390px){.slot{width:32px}.bar{width:56px}#actions{grid-template-columns:55px 55px}.btn{font-size:10px}#hint{font-size:10px}}
+</style></head><body>
+<canvas id="game"></canvas><div id="hud">
+<div id="top"><div class="panel"><div id="brand">▦ BLOCK WORLD</div><div>SINH TỒN</div><div id="bars"><div><small>❤️ Máu</small><div class="bar"><div id="hpfill" class="fill"></div></div></div><div><small>🍗 Đói</small><div class="bar"><div id="foodfill" class="fill food"></div></div></div></div></div><div class="panel" id="stats">Ngày 1 • 08:00<br>Đang tải...</div></div>
+<div id="hint">Joystick để đi • Vuốt để nhìn • Thu thập tài nguyên</div><div id="cross">＋</div><div id="toast"></div>
 
-<main>
-<!-- TRANG 1 -->
-<section class="page active">
- <div class="inner">
-  <div class="eyebrow">20 · 10 · 2026</div>
-  <span class="flower">💐</span>
-  <div class="script hero-script">Happy Women's Day</div>
-  <h1>Chúc mừng<br>20 tháng 10</h1>
-  <div class="line">♡ ── ♥ ── ♡</div>
-  <p>Gửi đến những cô gái tuyệt vời nhất,<br>một món quà nhỏ chứa đầy yêu thương.</p>
-  <p class="quote">"Mong hôm nay của bạn ngọt ngào như một giấc mơ."</p>
-  <div class="actions">
-   <button class="btn" onclick="go(1)">Mở món quà của bạn ♡ →</button>
-  </div>
-  <div class="counter">01 / 06</div>
- </div>
-</section>
+<div id="joy"><div id="joybase"></div><div id="knob"></div></div>
+<div id="actions"><button class="btn" id="mine">⛏️<br>ĐÀO / ĐÁNH</button><button class="btn" id="put">🧱<br>ĐẶT KHỐI</button><button class="btn" id="jump">⬆️ NHẢY</button><button class="btn" id="inv">🎒 TÚI ĐỒ</button><button class="btn wide" id="craft">🛠️ CHẾ TẠO</button><button class="btn wide" id="save">💾 LƯU THẾ GIỚI</button></div><div id="hotbar"></div></div>
+<div class="overlay" id="inventory"><div class="modal"><h2>🎒 Túi đồ</h2><div class="muted">Chọn vật phẩm trên thanh nhanh để đặt khối. Tài nguyên thu thập được sẽ lưu theo thế giới.</div><div id="items" class="grid"></div><div class="rowbtn"><button class="btn" id="invclose">ĐÓNG</button><button class="btn" id="invcraft">🛠️ Chế tạo</button></div></div></div>
+<div class="overlay" id="crafting"><div class="modal"><h2>🛠️ Bàn chế tạo</h2><div class="muted">Cần đủ nguyên liệu trong túi đồ. Chế tạo các công cụ cơ bản để sinh tồn.</div><div id="recipes"></div><div class="rowbtn"><button class="btn" id="craftclose">ĐÓNG</button></div></div></div>
+<div class="overlay" id="dead"><div class="modal"><h2>💀 Bạn đã gục ngã</h2><p>Thế giới vẫn còn đó. Hồi sinh tại điểm bắt đầu, giữ nguyên tài nguyên.</p><button class="btn wide" id="respawn">HỒI SINH</button></div></div>
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script><script>
+(()=>{'use strict';
+const $=id=>document.getElementById(id), canvas=$('game');
+let renderer,scene,camera;
+try{renderer=new THREE.WebGLRenderer({canvas,antialias:true});}catch(e){$('hint').textContent='Trình duyệt chưa hỗ trợ WebGL. Hãy mở bằng Safari/Chrome mới.';return}
+renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;
+scene=new THREE.Scene();scene.background=new THREE.Color(0x88cfff);scene.fog=new THREE.Fog(0x88cfff,19,48);camera=new THREE.PerspectiveCamera(74,innerWidth/innerHeight,.1,100);
+scene.add(new THREE.HemisphereLight(0xe2f5ff,0x64734a,1.8));const sun=new THREE.DirectionalLight(0xffffff,2);sun.position.set(-10,18,8);sun.castShadow=true;scene.add(sun);
+const defs={
+ grass:['Cỏ',0x68b94b,'🌿'],dirt:['Đất',0x8a5a35,'🟫'],stone:['Đá',0x89949c,'🪨'],wood:['Gỗ',0x91643b,'🪵'],leaves:['Lá',0x2f8b42,'🍃'],sand:['Cát',0xdcc77a,'🟨'],plank:['Ván gỗ',0xb98a52,'🪚'],stick:['Que',0xc4a06a,'🥢'],coal:['Than',0x34383a,'⚫'],iron:['Quặng sắt',0xb5a9a0,'⛓️'],water:['Nước',0x3b9ee8,'💧'],lava:['Dung nham',0xff5b18,'🌋'],apple:['Táo',0xd73b38,'🍎'],meat:['Thịt sống',0xc56a69,'🥩'],wood_pick:['Cuốc gỗ',0xa8753d,'⛏️'],sword:['Kiếm gỗ',0xc6a16d,'⚔️']
+};
+const mats={};Object.keys(defs).forEach(k=>mats[k]=new THREE.MeshLambertMaterial({color:defs[k][1],transparent:k==='water'||k==='lava',opacity:k==='water'?.72:1}));
+const cube=new THREE.BoxGeometry(1,1,1), world=new Map(),meshMap=new Map(),animals=[],mobs=[];
+const key=(x,y,z)=>`${x},${y},${z}`, rnd=(x,z)=>{let v=Math.sin(x*127.1+z*311.7)*43758.5453;return v-Math.floor(v)};
+const terrain=(x,z)=>Math.floor(1+Math.sin(x*.27)*.7+Math.cos(z*.24)*.55+Math.sin((x+z)*.17)*.35);
+let inventory={grass:8,dirt:8,stone:0,wood:0,leaves:0,sand:0,plank:0,stick:0,coal:0,iron:0,apple:2,meat:0,wood_pick:0,sword:0};
+let player={x:0,y:5,z:5,vy:0,hp:100,food:100,ground:false,dead:false};let yaw=0,pitch=-.1,selected='dirt',dayTime=8,days=1,elapsed=0,autosave=0;
+function addBlock(x,y,z,type,save=true){x=Math.round(x);y=Math.round(y);z=Math.round(z);let k=key(x,y,z);if(world.has(k)||!mats[type])return false;world.set(k,type);let m=new THREE.Mesh(cube,mats[type]);m.position.set(x,y,z);m.castShadow=type!=='water'&&type!=='lava';m.receiveShadow=true;scene.add(m);meshMap.set(k,m);return true}
+function delBlock(x,y,z){let k=key(x,y,z),m=meshMap.get(k);if(!m)return false;scene.remove(m);meshMap.delete(k);world.delete(k);return true}
+function tree(x,y,z){for(let i=0;i<3;i++)addBlock(x,y+i,z,'wood');for(let dx=-2;dx<=2;dx++)for(let dz=-2;dz<=2;dz++)for(let dy=2;dy<=4;dy++)if(Math.abs(dx)+Math.abs(dz)+(dy===4?1:0)<=4&&rnd(x+dx*3+dy,z+dz*2)>.1)addBlock(x+dx,y+dy,z+dz,'leaves')}
 
-<!-- TRANG 2 -->
-<section class="page">
- <div class="inner">
-  <div class="eyebrow">A LITTLE SURPRISE</div>
-  <h2>Một bức thư dành riêng cho bạn</h2>
-  <div class="envelope" onclick="openLetter()" id="env">💌</div>
-  <p>Trong chiếc phong bì nhỏ này<br>có vài điều mình muốn gửi đến bạn.</p>
-  <div class="letter" id="letter">
-   <p>🌷 Xin chào cô gái! Hôm nay hãy cho phép bản thân được vui vẻ, được yêu chiều và được nhận thật nhiều điều tốt đẹp nhé. Bạn xứng đáng với tất cả sự dịu dàng của thế giới.</p>
-  </div>
-  <div class="actions">
-   <button class="btn secondary" onclick="go(0)">← Quay lại</button>
-   <button class="btn" onclick="go(2)">Nhận lời chúc tiếp theo →</button>
-  </div>
-  <div class="counter">02 / 06</div>
- </div>
-</section>
+function generate(){for(let x=-15;x<=15;x++)for(let z=-15;z<=15;z++){let h=terrain(x,z);for(let y=-3;y<=h;y++){let t=y===h?'grass':y>=h-2?'dirt':'stone';if(h<=0&&y===h)t='sand';if(y<-1&&rnd(x+y,z)>.965)t='coal';if(y<-2&&rnd(x*3+y,z*2)>.985)t='iron';addBlock(x,y,z,t)}if(h<=0&&rnd(x+5,z)>.78)addBlock(x,h+1,z,'water');if(rnd(x,z)>.976&&Math.abs(x)+Math.abs(z)>5)tree(x,h+1,z)}
+// a small cave tunnel with stone shell and a lava pocket
+for(let x=5;x<11;x++)for(let z=-3;z<2;z++){let h=terrain(x,z);for(let y=-2;y<=0;y++)delBlock(x,h+y,z);for(let y=-3;y<=-1;y++){addBlock(x,y,z,'stone')} }
+for(let x=8;x<=9;x++)for(let z=-1;z<=0;z++)addBlock(x,-1,z,'lava');
+for(let i=0;i<8;i++){const x=Math.floor(rnd(i,9)*25-12),z=Math.floor(rnd(i+8,4)*25-12),h=terrain(x,z);spawnAnimal(x,h+1,z,i%3===0?'pig':'sheep')}
+for(let i=0;i<5;i++){const x=Math.floor(rnd(i+32,2)*24-12),z=Math.floor(rnd(i+2,45)*24-12);spawnMob(x,terrain(x,z)+1,z)}
+}
+function spawnAnimal(x,y,z,type){const g=new THREE.Group();const color=type==='pig'?0xe99b9b:0xe8e8d8;const body=new THREE.Mesh(new THREE.BoxGeometry(.8,.55,.48),new THREE.MeshLambertMaterial({color}));body.position.y=.45;g.add(body);const head=new THREE.Mesh(new THREE.BoxGeometry(.36,.38,.36),new THREE.MeshLambertMaterial({color}));head.position.set(.45,.65,0);g.add(head);g.position.set(x,y,z);scene.add(g);animals.push({g,type,x,y,z,phase:rnd(x,z)*6})}
+function spawnMob(x,y,z){const g=new THREE.Group();const body=new THREE.Mesh(new THREE.BoxGeometry(.65,1.15,.48),new THREE.MeshLambertMaterial({color:0x517d4c}));body.position.y=.7;g.add(body);const head=new THREE.Mesh(new THREE.BoxGeometry(.55,.5,.5),new THREE.MeshLambertMaterial({color:0x638e58}));head.position.y=1.5;g.add(head);for(let s of [-1,1]){const eye=new THREE.Mesh(new THREE.BoxGeometry(.09,.08,.04),new THREE.MeshBasicMaterial({color:0xff3322}));eye.position.set(s*.14,1.55,-.26);g.add(eye)}g.position.set(x,y,z);scene.add(g);mobs.push({g,x,y,z,hit:0})}
+function clearWorld(){for(const m of meshMap.values())scene.remove(m);meshMap.clear();world.clear();animals.forEach(a=>scene.remove(a.g));animals.length=0;mobs.forEach(a=>scene.remove(a.g));mobs.length=0}
+function saveGame(){try{const data={world:[...world.entries()],inventory,player:{x:player.x,y:player.y,z:player.z,hp:player.hp,food:player.food},selected,dayTime,days,version:1};localStorage.setItem('blockWorldMobileSave',JSON.stringify(data));toast('Đã lưu thế giới trên thiết bị này')}catch(e){toast('Không lưu được: bộ nhớ trình duyệt bị chặn hoặc đầy')}}
+function loadGame(){try{const raw=localStorage.getItem('blockWorldMobileSave');if(!raw)return false;const d=JSON.parse(raw);if(!d.world||!Array.isArray(d.world))return false;clearWorld();d.world.forEach(([k,t])=>{const [x,y,z]=k.split(',').map(Number);addBlock(x,y,z,t)});inventory=Object.assign(inventory,d.inventory||{});Object.assign(player,d.player||{});selected=d.selected||'dirt';dayTime=d.dayTime||8;days=d.days||1;for(let i=0;i<8;i++){const x=Math.floor(rnd(i,9)*25-12),z=Math.floor(rnd(i+8,4)*25-12);spawnAnimal(x,terrain(x,z)+1,z,i%3===0?'pig':'sheep')}for(let i=0;i<5;i++){const x=Math.floor(rnd(i+32,2)*24-12),z=Math.floor(rnd(i+2,45)*24-12);spawnMob(x,terrain(x,z)+1,z)}return true}catch(e){return false}}
+function toast(s){const e=$('toast');e.textContent=s;e.style.opacity=1;clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.opacity=0,1600)}
+function open(id){$(id).style.display='flex'}function close(id){$(id).style.display='none'}
+function addItem(k,n=1){inventory[k]=(inventory[k]||0)+n;refreshInventory()}
+function refreshInventory(){const entries=Object.keys(defs).filter(k=>(inventory[k]||0)>0);$('items').innerHTML=entries.map(k=>`<div class="item"><b>${defs[k][2]}</b>${defs[k][0]}<br>× ${inventory[k]}<button class="btn" data-sel="${k}">Chọn</button></div>`).join('')||'<p>Túi đồ đang trống.</p>';document.querySelectorAll('[data-sel]').forEach(b=>b.onclick=()=>{selected=b.dataset.sel;refreshHotbar();close('inventory');toast('Đã chọn '+defs[selected][0])});refreshHotbar()}
 
-<!-- TRANG 3 -->
-<section class="page">
- <div class="inner">
-  <div class="eyebrow">WISH NO. 01</div>
-  <span class="flower">🌸</span>
-  <h2>Chúc bạn luôn rạng rỡ</h2>
-  <div class="line">✧ ── ♡ ── ✧</div>
-  <p>Chúc bạn luôn xinh đẹp theo cách riêng của mình, luôn tự tin mỗi khi bước ra ngoài và luôn có một nụ cười thật tươi trên môi.</p>
-  <p>Mong mỗi ngày đều mang đến cho bạn một niềm vui nho nhỏ, một điều bất ngờ dễ thương và những người khiến bạn cảm thấy cuộc sống thật đáng yêu.</p>
-  <p class="quote">"Hãy cứ tỏa sáng, vì thế giới này cần ánh sáng của bạn." ✨</p>
-  <div class="actions">
-   <button class="btn secondary" onclick="go(1)">← Trở lại</button>
-   <button class="btn" onclick="go(3)">Lời chúc tiếp theo →</button>
-  </div>
-  <div class="counter">03 / 06</div>
- </div>
-</section>
+function refreshHotbar(){const ks=['grass','dirt','stone','wood','plank','sand','apple'];$('hotbar').innerHTML=ks.map(k=>`<div class="slot ${selected===k?'sel':''}" data-hot="${k}"><b>${defs[k][2]}</b>${(inventory[k]||0)>0?inventory[k]:0}</div>`).join('');document.querySelectorAll('[data-hot]').forEach(e=>e.onclick=()=>{selected=e.dataset.hot;refreshHotbar()})}
+const recipes=[
+ {out:'plank',n:4,need:{wood:1},label:'4 ván gỗ'},
+ {out:'stick',n:4,need:{plank:2},label:'4 que gỗ'},
+ {out:'wood_pick',n:1,need:{plank:3,stick:2},label:'Cuốc gỗ'},
+ {out:'sword',n:1,need:{plank:2,stick:1},label:'Kiếm gỗ'}
+];
+function canCraft(r){return Object.entries(r.need).every(([k,n])=>(inventory[k]||0)>=n)}
+function craft(r){if(!canCraft(r)){toast('Không đủ nguyên liệu');return}Object.entries(r.need).forEach(([k,n])=>inventory[k]-=n);inventory[r.out]=(inventory[r.out]||0)+r.n;refreshInventory();showRecipes();toast('Đã chế tạo '+r.label)}
+function showRecipes(){$('recipes').innerHTML=recipes.map((r,i)=>`<div class="recipe"><div><b>${defs[r.out][2]} ${r.label}</b><div class="muted">Cần: ${Object.entries(r.need).map(([k,n])=>`${defs[k][0]} ×${n}`).join(', ')}</div></div><button class="btn" data-recipe="${i}" ${canCraft(r)?'':'disabled'}>Chế tạo</button></div>`).join('');document.querySelectorAll('[data-recipe]').forEach(b=>b.onclick=()=>craft(recipes[+b.dataset.recipe]))}
+function updateUI(){ $('hpfill').style.width=Math.max(0,player.hp)+'%';$('foodfill').style.width=Math.max(0,player.food)+'%';$('stats').innerHTML=`Ngày ${days} • ${String(Math.floor(dayTime)).padStart(2,'0')}:${String(Math.floor((dayTime%1)*60)).padStart(2,'0')}<br>🧱 ${world.size} khối • ${Math.round(player.x)}, ${Math.round(player.z)}`;refreshHotbar()}
+function rayHit(){const ray=new THREE.Raycaster();ray.setFromCamera(new THREE.Vector2(0,0),camera);return ray.intersectObjects([...meshMap.values()],false).find(h=>h.distance<5)}
+function mine(){const hit=rayHit();if(hit){const p=hit.object.position,k=key(Math.round(p.x),Math.round(p.y),Math.round(p.z)),t=world.get(k);if(t==='water'||t==='lava'){toast('Không thể thu thập chất lỏng');return}delBlock(p.x,p.y,p.z);addItem(t,1);if(t==='leaves'&&Math.random()<.15)addItem('apple',1);updateUI();return}
+ let nearest=null,dist=2.2;for(const m of mobs){const d=Math.hypot(m.x-player.x,m.z-player.z);if(d<dist){dist=d;nearest=m}}for(const a of animals){const d=Math.hypot(a.x-player.x,a.z-player.z);if(d<dist){dist=d;nearest=a}}
+ if(nearest){if(nearest.type){addItem('meat',1);scene.remove(nearest.g);animals.splice(animals.indexOf(nearest),1);toast('Thu được thịt sống')}else{nearest.hit=1;player.hp=Math.min(100,player.hp+0);toast('Đánh quái vật!')}return}toast('Nhìn vào khối hoặc đến gần sinh vật')}
+function place(){const hit=rayHit();if(!hit){toast('Nhìn vào mặt khối để đặt');return}if(!defs[selected]||!['grass','dirt','stone','wood','leaves','sand','plank'].includes(selected)){toast('Vật phẩm này không thể đặt');return}if((inventory[selected]||0)<1){toast('Không đủ '+defs[selected][0]);return}const p=hit.object.position,n=hit.face.normal,x=Math.round(p.x+n.x),y=Math.round(p.y+n.y),z=Math.round(p.z+n.z);if(Math.hypot(x-player.x,z-player.z)<.8&&Math.abs(y-player.y)<1.8){toast('Không thể đặt vào người chơi');return}if(addBlock(x,y,z,selected)){inventory[selected]--;updateUI()}}
+function eat(){if(inventory.apple>0){inventory.apple--;player.food=Math.min(100,player.food+28);player.hp=Math.min(100,player.hp+5);toast('Ăn táo: hồi no')}else if(inventory.meat>0){inventory.meat--;player.food=Math.min(100,player.food+18);toast('Ăn thịt sống: có thể gây hại')}else toast('Không có thức ăn')}
+$('mine').onclick=mine;$('put').onclick=place;$('jump').onpointerdown=e=>{e.preventDefault();if(player.ground){player.vy=6.4;player.ground=false}};
+$('inv').onclick=()=>{refreshInventory();open('inventory')};$('invclose').onclick=()=>close('inventory');$('invcraft').onclick=()=>{close('inventory');showRecipes();open('crafting')};$('craft').onclick=()=>{showRecipes();open('crafting')};$('craftclose').onclick=()=>close('crafting');$('save').onclick=saveGame;$('respawn').onclick=()=>{player.dead=false;player.hp=100;player.food=80;player.x=0;player.z=5;player.y=terrain(0,5)+3;player.vy=0;close('dead');toast('Đã hồi sinh')};
 
-<!-- TRANG 4 -->
-<section class="page">
- <div class="inner">
-  <div class="eyebrow">WISH NO. 02</div>
-  <span class="flower">🦋</span>
-  <h2>Chúc mọi điều như ý</h2>
-  <div class="line">✧ ── ♡ ── ✧</div>
-  <p>Chúc cho những ước mơ bạn đang theo đuổi sẽ dần trở thành hiện thực. Việc học thật thuận lợi, công việc thật suôn sẻ và mọi nỗ lực đều nhận lại những thành quả xứng đáng.</p>
-  <p>Nếu có ngày mệt mỏi, mong bạn vẫn đủ kiên cường để bước tiếp, đủ dịu dàng để yêu thương bản thân và đủ can đảm để bắt đầu lại.</p>
-  <p class="quote">"Chậm một chút cũng không sao, miễn là bạn vẫn đang tiến về phía trước."</p>
-  <div class="actions">
-   <button class="btn secondary" onclick="go(2)">← Trở lại</button>
-   <button class="btn" onclick="go(4)">Lời chúc tiếp theo →</button>
-  </div>
-  <div class="counter">04 / 06</div>
- </div>
-</section>
-
-<!-- TRANG 5 -->
-<section class="page">
- <div class="inner">
-  <div class="eyebrow">WISH NO. 03</div>
-  <span class="flower">💗</span>
-  <h2>Luôn được yêu thương</h2>
-  <div class="line">✧ ── ♡ ── ✧</div>
-  <p>Mong bạn gặp được những người chân thành, được lắng nghe khi cần tâm sự, được ở bên những người mang lại bình yên và được trân trọng đúng với giá trị của mình.</p>
-  <p>Chúc trái tim bạn luôn ấm áp, những ngày bình thường cũng có điều đáng nhớ, những lúc buồn luôn có người sẻ chia và tương lai luôn có những điều khiến bạn háo hức mong chờ.</p>
-  <p class="quote">"Đừng quên rằng bạn cũng xứng đáng nhận lại tất cả yêu thương mà mình trao đi."</p>
-  <div class="actions">
-   <button class="btn secondary" onclick="go(3)">← Trở lại</button>
-   <button class="btn" onclick="go(5)">Món quà cuối cùng 💝 →</button>
-  </div>
-  <div class="counter">05 / 06</div>
- </div>
-</section>
-
-<!-- TRANG 6 -->
-<section class="page">
- <div class="inner">
-  <div class="eyebrow">A MESSAGE FROM THE HEART</div>
-  <div class="script" style="font-size:37px">Happy Women's Day!</div>
-  <span class="big-heart" style="font-size:75px">💖</span>
-  <h2>Gửi bạn ngàn điều tốt đẹp</h2>
-  <p>Chúc bạn một ngày 20/10 thật vui, hạnh phúc và ngập tràn yêu thương. Mong không chỉ hôm nay mà cả những ngày sau, bạn luôn bình an, tự tin và sống thật rực rỡ.</p>
-  <p>Cảm ơn bạn đã dành thời gian mở món quà nhỏ này. Hy vọng khi khép lại trang cuối, bạn sẽ mang theo một nụ cười thật xinh. 🌷</p>
-  <div class="signature-box">
-   <div class="signature">dev trong dung</div>
-   <div class="signature-sub">MADE WITH LOVE · 20/10</div>
-  </div>
-  <div class="actions">
-   <button class="btn secondary" onclick="go(4)">← Đọc lại</button>
-   <button class="btn" onclick="celebrate()">🎉 Gửi một trái tim</button>
-  </div>
-  <div class="footer">♡ Một chút yêu thương, gửi đến bạn ♡</div>
-  <div class="counter">06 / 06</div>
- </div>
-</section>
-</main>
-
-<script>
-let current=0;
-const pages=[...document.querySelectorAll('.page')];
-function go(n){
- pages[current].classList.remove('active');
- current=n;
- pages[current].classList.add('active');
- window.scrollTo({top:0,behavior:'smooth'});
+generate();if(loadGame())toast('Đã tải thế giới đã lưu');player.y=Math.max(player.y,terrain(0,5)+2.5);refreshInventory();updateUI();
+let joy={x:0,y:0},drag=null;const joyEl=$('joy'),knob=$('knob');
+function joyMove(e){const r=joyEl.getBoundingClientRect(),dx0=e.clientX-(r.left+r.width/2),dy0=e.clientY-(r.top+r.height/2),len=Math.hypot(dx0,dy0)||1,max=39,dx=dx0*Math.min(1,max/len),dy=dy0*Math.min(1,max/len);joy={x:dx/max,y:dy/max};knob.style.left=(r.width/2-20+dx)+'px';knob.style.top=(r.height/2-20+dy)+'px'}
+joyEl.addEventListener('pointerdown',e=>{drag=e.pointerId;joyEl.setPointerCapture(drag);joyMove(e)});joyEl.addEventListener('pointermove',e=>{if(drag===e.pointerId)joyMove(e)});function joyEnd(e){if(drag===e.pointerId){drag=null;joy={x:0,y:0};knob.style.left='42px';knob.style.top='42px'}}joyEl.addEventListener('pointerup',joyEnd);joyEl.addEventListener('pointercancel',joyEnd);
+let look=null,lx=0,ly=0;canvas.addEventListener('pointerdown',e=>{look=e.pointerId;lx=e.clientX;ly=e.clientY;canvas.setPointerCapture(look)});canvas.addEventListener('pointermove',e=>{if(look!==e.pointerId)return;let dx=e.clientX-lx,dy=e.clientY-ly;lx=e.clientX;ly=e.clientY;yaw-=dx*.004;pitch=Math.max(-1.35,Math.min(1.35,pitch-dy*.004))});canvas.addEventListener('pointerup',e=>{if(look===e.pointerId)look=null});canvas.addEventListener('pointercancel',e=>{if(look===e.pointerId)look=null});
+let prev=performance.now(),autos=0,damageTick=0;
+function loop(now){requestAnimationFrame(loop);let dt=Math.min((now-prev)/1000,.04);prev=now;elapsed+=dt;autos+=dt;damageTick+=dt;
+ dayTime+=dt*.045;if(dayTime>=24){dayTime-=24;days++}let night=dayTime<6||dayTime>18;scene.background.set(night?0x18233e:0x88cfff);scene.fog.color.set(night?0x18233e:0x88cfff);sun.intensity=night?.3:2;
+ let f=-joy.y,r=joy.x,speed=3.5,dx=(-Math.sin(yaw)*f+Math.cos(yaw)*r)*speed*dt,dz=(-Math.cos(yaw)*f-Math.sin(yaw)*r)*speed*dt;
+ let nx=player.x+dx,nz=player.z+dz;
+ if(!world.has(key(Math.round(nx),Math.floor(player.y-1.2),Math.round(player.z))))player.x=nx;
+ if(!world.has(key(Math.round(player.x),Math.floor(player.y-1.2),Math.round(nz))))player.z=nz;
+ player.vy-=15*dt;player.y+=player.vy*dt;let gy=terrain(Math.round(player.x),Math.round(player.z))+1.8;if(player.y<gy){player.y=gy;player.vy=0;player.ground=true}
+ // food decreases over time; hunger and lava cause damage
+ player.food=Math.max(0,player.food-dt*.16);if(player.food===0&&damageTick>2){player.hp-=1;damageTick=0}
+ for(const m of mobs){let d=Math.hypot(player.x-m.x,player.z-m.z);if(night&&d<8){m.x+=(player.x-m.x)/Math.max(d,.1)*dt*.65;m.z+=(player.z-m.z)/Math.max(d,.1)*dt*.65;if(d<1.2&&damageTick>1.3){player.hp-=7;damageTick=0;toast('Quái vật tấn công!')}}else{m.x+=Math.sin(elapsed*.6+m.z)*dt*.12;m.z+=Math.cos(elapsed*.5+m.x)*dt*.12}m.g.position.set(m.x,m.y,m.z)}
+ for(const a of animals){a.x+=Math.sin(elapsed*.5+a.phase)*dt*.18;a.z+=Math.cos(elapsed*.4+a.phase)*dt*.18;a.g.position.set(a.x,a.y,a.z)}
+ if(player.hp<=0&&!player.dead){player.hp=0;player.dead=true;open('dead')}
+ if(player.y<-8){player.hp=Math.max(1,player.hp-20);player.y=terrain(0,5)+3;player.x=0;player.z=5}
+ camera.position.set(player.x,player.y,player.z);camera.rotation.order='YXZ';camera.rotation.set(pitch,yaw,0,'YXZ');renderer.render(scene,camera);
+ if(autos>1){updateUI();autos=0}if(elapsed>4&&elapsed%60<dt)saveGame();
 }
-function openLetter(){
- const l=document.getElementById('letter');
- l.style.display='block';
- document.getElementById('env').textContent='💝';
- burst(20);
-}
-function makeParticle(symbol){
- const p=document.createElement('span');
- p.className='particle';
- p.textContent=symbol;
- p.style.left=Math.random()*100+'vw';
- p.style.fontSize=(14+Math.random()*23)+'px';
- p.style.animationDuration=(5+Math.random()*6)+'s';
- document.getElementById('particles').appendChild(p);
- setTimeout(()=>p.remove(),11500);
-}
-setInterval(()=>{
- if(!document.hidden)makeParticle(['♡','💕','🌸','✨','💗'][Math.floor(Math.random()*5)]);
-},600);
-function burst(count){
- for(let i=0;i<count;i++){
-  setTimeout(()=>makeParticle(['💖','💗','✨','🌸','💕'][Math.floor(Math.random()*5)]),i*55);
- }
-}
-function celebrate(){
- burst(65);
- const b=document.querySelector('.signature-box');
- b.animate([
-  {transform:'rotate(-2deg) scale(1)'},
-  {transform:'rotate(2deg) scale(1.08)'},
-  {transform:'rotate(-2deg) scale(1)'}
- ],{duration:700});
-}
-for(let i=0;i<7;i++){
- const o=document.createElement('div');
- o.className='orb';
- const size=70+Math.random()*150;
- o.style.width=size+'px';o.style.height=size+'px';
- o.style.left=Math.random()*100+'%';
- o.style.top=Math.random()*100+'%';
- o.style.animationDelay=Math.random()*5+'s';
- document.getElementById('sky').appendChild(o);
-}
-
-/* Nhạc nền tùy chọn: không tự phát khi chưa được bấm */
-let audioCtx=null,oscillators=[],musicOn=false;
-function toggleMusic(){
- const btn=document.getElementById('musicBtn');
- if(musicOn){
-  oscillators.forEach(o=>{try{o.stop()}catch(e){}});
-  oscillators=[];musicOn=false;
-  btn.textContent='♫ Bật nhạc';return;
- }
- try{
-  audioCtx=new (window.AudioContext||window.webkitAudioContext)();
-  const notes=[523.25,659.25,783.99,659.25,587.33,698.46,783.99,1046.5];
-  notes.forEach((freq,i)=>{
-   const osc=audioCtx.createOscillator();
-   const gain=audioCtx.createGain();
-   osc.type='sine';osc.frequency.value=freq;
-   gain.gain.value=0;
-   osc.connect(gain);gain.connect(audioCtx.destination);
-   osc.start();
-   const start=audioCtx.currentTime+i*.48;
-   gain.gain.setValueAtTime(0,start);
-   gain.gain.linearRampToValueAtTime(.035,start+.08);
-   gain.gain.linearRampToValueAtTime(0,start+.42);
-   oscillators.push(osc);
-  });
-  musicOn=true;btn.textContent='♫ Tắt nhạc';
-  setTimeout(()=>{
-   if(musicOn){
-    oscillators.forEach(o=>{try{o.stop()}catch(e){}});
-    oscillators=[];musicOn=false;btn.textContent='♫ Bật nhạc';
-   }
-  },4500);
- }catch(e){btn.textContent='Không hỗ trợ âm thanh';}
-}
-</script>
-</body>
-</html>
+function resize(){camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)}addEventListener('resize',resize);requestAnimationFrame(loop);
+})();
+</script></body></html>
