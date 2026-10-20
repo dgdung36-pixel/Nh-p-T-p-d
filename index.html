@@ -1,588 +1,107 @@
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FILE MOD LQ - MOD SKIN VIP</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        aurora: {
-                            bg: '#05070f',
-                            card: '#0d1322',
-                            border: '#1a243b',
-                            cyan: '#00f2fe',
-                            blue: '#4facfe',
-                            pink: '#ff0844',
-                            purple: '#9b51e0'
-                        }
-                    },
-                    fontFamily: {
-                        heading: ['Space Grotesk', 'sans-serif'],
-                        sans: ['Plus Jakarta Sans', 'sans-serif']
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        body {
-            background-color: #05070f;
-            color: #f3f4f6;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        /* Ambient Glowing Background Orbs */
-        .aurora-orb-1 {
-            position: fixed;
-            top: -10%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 550px;
-            height: 550px;
-            background: radial-gradient(circle, rgba(0, 242, 254, 0.15) 0%, rgba(79, 172, 254, 0.1) 40%, transparent 70%);
-            filter: blur(90px);
-            pointer-events: none;
-            z-index: 0;
-            animation: orbPulse 8s infinite alternate ease-in-out;
-        }
-
-        .aurora-orb-2 {
-            position: fixed;
-            bottom: -15%;
-            right: -10%;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(255, 8, 68, 0.12) 0%, rgba(155, 81, 224, 0.1) 50%, transparent 70%);
-            filter: blur(100px);
-            pointer-events: none;
-            z-index: 0;
-            animation: orbPulse 10s infinite alternate-reverse ease-in-out;
-        }
-
-        @keyframes orbPulse {
-            0% { transform: translateY(0) scale(1); }
-            100% { transform: translateY(25px) scale(1.08); }
-        }
-
-        /* Glassmorphic VIP Cards */
-        .aurora-glass {
-            background: rgba(13, 19, 34, 0.75);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 12px 40px -10px rgba(0, 0, 0, 0.7);
-        }
-
-        /* Shimmer Title */
-        .aurora-title {
-            font-family: 'Space Grotesk', sans-serif;
-            background: linear-gradient(135deg, #00f2fe 0%, #ffffff 40%, #ff0844 80%, #9b51e0 100%);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: shimmerGradient 6s linear infinite;
-        }
-
-        @keyframes shimmerGradient {
-            to { background-position: 200% center; }
-        }
-
-        /* Modern Gradient Buttons */
-        .btn-aurora-ios {
-            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
-            box-shadow: 0 4px 15px rgba(0, 242, 254, 0.3);
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .btn-aurora-ios:hover {
-            box-shadow: 0 6px 22px rgba(0, 242, 254, 0.55);
-            transform: translateY(-2px);
-        }
-
-        .btn-aurora-adr {
-            background: linear-gradient(135deg, #ff0844 0%, #9b51e0 100%);
-            box-shadow: 0 4px 15px rgba(255, 8, 68, 0.3);
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .btn-aurora-adr:hover {
-            box-shadow: 0 6px 22px rgba(255, 8, 68, 0.55);
-            transform: translateY(-2px);
-        }
-
-        /* Marquee Continuous Text */
-        .marquee-wrapper {
-            display: flex;
-            width: 100%;
-            overflow: hidden;
-        }
-
-        .marquee-content {
-            display: flex;
-            flex-shrink: 0;
-            white-space: nowrap;
-            animation: marqueeContinuous 16s linear infinite;
-        }
-
-        @keyframes marqueeContinuous {
-            0% { transform: translateX(0%); }
-            100% { transform: translateX(-100%); }
-        }
-
-        /* Loading Screen Fade Out */
-        #loadingScreen.fade-out {
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.4s ease-out;
-        }
-
-        /* Modal Animation */
-        .modal-pop {
-            animation: modalPop 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        @keyframes modalPop {
-            from { opacity: 0; transform: scale(0.95) translateY(10px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
-        }
-
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-track { background: #05070f; }
-        ::-webkit-scrollbar-thumb { background: #1a243b; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #00f2fe; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Women's Day 20/10 💗</title>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;overflow-x:hidden;
+  font-family:"Segoe UI",sans-serif;
+  background:linear-gradient(135deg,#ffe4ec,#fff0f5,#f8d7ff);
+  display:flex;justify-content:center;align-items:center;
+  color:#a12e60;text-align:center;padding:24px;
+}
+.card{
+  position:relative;z-index:2;width:100%;max-width:430px;
+  padding:35px 24px;border:1px solid #ffffffbd;
+  border-radius:28px;background:#ffffffb8;
+  box-shadow:0 15px 50px #d96b9b30;
+  backdrop-filter:blur(12px);
+  animation:appear 1s ease;
+}
+.flower{font-size:65px;animation:sway 3s infinite ease-in-out}
+h1{font-size:32px;margin:12px 0;color:#e34f87}
+h2{font-size:22px;color:#ba4880}
+p{line-height:1.8;font-size:16px}
+button{
+  border:0;border-radius:30px;padding:14px 23px;
+  margin-top:15px;background:linear-gradient(90deg,#ff76a8,#d77bdb);
+  color:white;font-size:16px;font-weight:bold;
+  box-shadow:0 6px 18px #e77aaa55;cursor:pointer;
+  transition:.3s;
+}
+button:active{transform:scale(.96)}
+#letter{display:none;margin-top:22px;animation:appear .8s ease}
+.signature{font-style:italic;color:#dc5790}
+.heart{
+  position:fixed;bottom:-30px;z-index:1;
+  animation:floatUp linear forwards;pointer-events:none;
+}
+.sparkle{position:fixed;pointer-events:none;animation:twinkle 2s infinite}
+@keyframes appear{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes sway{0%,100%{transform:rotate(-7deg)}50%{transform:rotate(7deg)}}
+@keyframes floatUp{to{transform:translateY(-110vh) rotate(360deg);opacity:0}}
+@keyframes twinkle{0%,100%{opacity:.3}50%{opacity:1}}
+</style>
 </head>
-<body class="min-h-screen pb-12 flex flex-col justify-between items-center relative">
+<body>
 
-    <!-- 3-SECOND LOADING SCREEN OVERLAY -->
-    <div id="loadingScreen" class="fixed inset-0 z-50 bg-[#05070f] flex flex-col items-center justify-center p-4">
-        <div class="w-64 h-64 rounded-full bg-cyan-500/10 blur-3xl absolute animate-pulse"></div>
-        
-        <div class="relative z-10 text-center max-w-sm w-full">
-            <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-cyan-500/20 to-pink-500/20 border border-cyan-400/30 flex items-center justify-center mx-auto mb-5 shadow-2xl">
-                <i class="fa-solid fa-bolt text-2xl text-cyan-400 animate-pulse"></i>
-            </div>
+<div class="card">
+  <div class="flower">💐</div>
+  <p>🌷 20 THÁNG 10 🌷</p>
+  <h1>Happy Women's Day!</h1>
+  <h2>Chúc mừng ngày Phụ nữ Việt Nam 💗</h2>
+  <p>
+    Hôm nay là một ngày thật đặc biệt,<br>
+    dành riêng cho những bông hoa xinh đẹp nhất.
+  </p>
 
-            <h2 class="aurora-title text-2xl font-black tracking-tight mb-2">MOD SKIN VIP</h2>
-            <p class="text-xs text-gray-400 font-semibold mb-6">Đang đồng bộ dữ liệu thời gian thực...</p>
+  <button onclick="openLetter()">💌 Mở lời chúc bí mật</button>
 
-            <div class="w-full bg-aurora-card border border-aurora-border h-2.5 rounded-full p-0.5 mb-3 shadow-inner overflow-hidden">
-                <div id="progressBar" class="h-full rounded-full bg-gradient-to-r from-aurora-cyan via-aurora-blue to-aurora-pink w-0 transition-all duration-100 ease-linear shadow-sm"></div>
-            </div>
+  <div id="letter">
+    <h2>Gửi đến cô gái đặc biệt 🌸</h2>
+    <p>
+      Chúc bạn luôn xinh đẹp, vui vẻ và hạnh phúc.
+      Mong mọi điều tốt đẹp nhất sẽ đến với bạn,
+      nụ cười luôn nở trên môi và những ước mơ
+      đều trở thành hiện thực.
+    </p>
+    <p>
+      Chúc bạn có một ngày 20/10 thật ngọt ngào,
+      được yêu thương thật nhiều và luôn là phiên
+      bản rực rỡ nhất của chính mình! 💕
+    </p>
+    <div class="signature">🌹 Bạn xứng đáng với những điều tuyệt vời nhất 🌹</div>
+  </div>
+</div>
 
-            <div class="flex items-center justify-between text-xs text-gray-400 font-mono font-bold px-1">
-                <span>Vui lòng chờ: <span id="countdownText" class="text-aurora-cyan">3</span>s</span>
-                <span id="progressPercent" class="text-aurora-pink">0%</span>
-            </div>
-        </div>
-    </div>
+<script>
+function openLetter(){
+  const letter=document.getElementById("letter");
+  letter.style.display="block";
+  document.querySelector("button").textContent="💖 Một ngày 20/10 thật vui nhé!";
+  for(let i=0;i<30;i++){
+    setTimeout(createHeart,i*70);
+  }
+}
+function createHeart(){
+  const heart=document.createElement("div");
+  heart.className="heart";
+  heart.textContent=["💗","💕","🌸","💖","✨"][Math.floor(Math.random()*5)];
+  heart.style.left=Math.random()*100+"vw";
+  heart.style.fontSize=(16+Math.random()*22)+"px";
+  heart.style.animationDuration=(3+Math.random()*4)+"s";
+  document.body.appendChild(heart);
+  setTimeout(()=>heart.remove(),7000);
+}
+setInterval(()=>{
+  if(document.hidden)return;
+  createHeart();
+},650);
+</script>
 
-    <!-- POPUP HƯỚNG DẪN CÀI ĐẶT TRƯỚC KHI VƯỢT LINK -->
-    <div id="instructionModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
-        <div class="aurora-glass max-w-md w-full rounded-3xl p-6 border border-aurora-border relative text-center modal-pop shadow-2xl">
-            
-            <button type="button" onclick="closeInstructionModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-aurora-card border border-aurora-border text-gray-400 hover:text-white flex items-center justify-center transition-all">
-                <i class="fa-solid fa-xmark text-sm"></i>
-            </button>
-
-            <div class="w-12 h-12 rounded-2xl bg-cyan-500/10 border border-cyan-400/30 text-cyan-400 flex items-center justify-center mx-auto mb-4">
-                <i class="fa-solid fa-circle-info text-xl"></i>
-            </div>
-            <h3 class="font-heading font-black text-lg text-white uppercase tracking-wider mb-2">HƯỚNG DẪN MOD</h3>
-            
-            <p id="instructionText" class="text-sm text-cyan-200 font-semibold leading-relaxed mb-6 bg-aurora-card/90 p-4 rounded-2xl border border-aurora-border">
-                <!-- Nội dung hiển thị động -->
-            </p>
-
-            <button id="confirmBypassBtn" class="btn-aurora-ios w-full py-3.5 rounded-2xl font-heading font-black text-xs text-white uppercase tracking-wider flex items-center justify-center gap-2">
-                <span>OK (VƯỢT LINK)</span>
-                <i class="fa-solid fa-arrow-right-long text-xs"></i>
-            </button>
-        </div>
-    </div>
-
-    <!-- Background Orbs -->
-    <div class="aurora-orb-1"></div>
-    <div class="aurora-orb-2"></div>
-
-    <div class="w-full relative z-10">
-        <!-- HEADER SECTION -->
-        <header class="pt-6 pb-3 px-4 text-center max-w-lg mx-auto">
-            
-            <!-- MARQUEE RUNNING TEXT -->
-            <div class="w-full overflow-hidden bg-aurora-card/80 border border-aurora-border rounded-2xl py-2 px-3 mb-4 shadow-lg backdrop-blur-md flex items-center">
-                <i class="fa-solid fa-bullhorn text-pink-400 text-xs mr-2.5 shrink-0 animate-pulse"></i>
-                <div class="marquee-wrapper">
-                    <div class="marquee-content font-semibold text-xs text-cyan-200 pr-12">
-                        file mod được mình share tổng hợp từ một số file của bạn mình làm và tập hợp từ vài nguồn khác, nếu có sẽ ghi cre &nbsp;•&nbsp;&nbsp;
-                    </div>
-                    <div class="marquee-content font-semibold text-xs text-cyan-200 pr-12" aria-hidden="true">
-                        file mod được mình share tổng hợp từ một số file của bạn mình làm và tập hợp từ vài nguồn khác, nếu có sẽ ghi cre &nbsp;•&nbsp;&nbsp;
-                    </div>
-                </div>
-            </div>
-
-            <!-- Clock & Status Badge -->
-            <div class="inline-flex items-center gap-2 bg-aurora-card/90 border border-aurora-border px-4 py-1.5 rounded-full mb-3 shadow-lg backdrop-blur-md">
-                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-                <span id="liveClock" class="font-mono text-[11px] font-bold text-gray-300">00:00:00 - 01/01/2026</span>
-            </div>
-
-            <!-- Main Title -->
-            <h1 class="aurora-title text-4xl sm:text-5xl font-black tracking-tight mb-1">MOD SKIN VIP</h1>
-            
-            <p class="text-[11px] font-bold text-gray-400 tracking-widest uppercase mb-5 flex items-center justify-center gap-2">
-                <span class="h-[1px] w-6 bg-cyan-500/30"></span>
-                TRONG DUNG • FILE MOD LIÊN QUÂN
-                <span class="h-[1px] w-6 bg-cyan-500/30"></span>
-            </p>
-
-            <!-- REAL-TIME ANALYTICS DASHBOARD -->
-            <div class="grid grid-cols-3 gap-2.5 max-w-md mx-auto mb-5">
-                <!-- Total Web Visits -->
-                <div class="aurora-glass p-2.5 rounded-2xl border border-aurora-border text-center">
-                    <div class="text-[10px] text-gray-400 font-bold uppercase mb-0.5 flex items-center justify-center gap-1">
-                        <i class="fa-solid fa-chart-line text-cyan-400"></i> Lượt Truy Cập
-                    </div>
-                    <span id="statTotalVisits" class="font-heading font-black text-sm text-cyan-300">0</span>
-                </div>
-                <!-- Live Online Users -->
-                <div class="aurora-glass p-2.5 rounded-2xl border border-aurora-border text-center">
-                    <div class="text-[10px] text-gray-400 font-bold uppercase mb-0.5 flex items-center justify-center gap-1">
-                        <i class="fa-solid fa-users text-emerald-400 animate-pulse"></i> Đang Online
-                    </div>
-                    <span id="statOnlineUsers" class="font-heading font-black text-sm text-emerald-400">1</span>
-                </div>
-                <!-- Total Mod Files -->
-                <div class="aurora-glass p-2.5 rounded-2xl border border-aurora-border text-center">
-                    <div class="text-[10px] text-gray-400 font-bold uppercase mb-0.5 flex items-center justify-center gap-1">
-                        <i class="fa-solid fa-folder-open text-pink-400"></i> Tổng File
-                    </div>
-                    <span id="statTotalFiles" class="font-heading font-black text-sm text-pink-400">0</span>
-                </div>
-            </div>
-
-            <!-- Social Links Panel -->
-            <div class="grid grid-cols-3 gap-2.5 max-w-md mx-auto">
-                <!-- Youtube -->
-                <a href="https://youtube.com/@trdunxx?si=tGWPnDMwmzyX1BaU" target="_blank" class="aurora-glass px-2.5 py-2.5 rounded-2xl border border-red-500/20 hover:border-red-500/50 text-red-400 hover:text-white flex items-center justify-center gap-2 transition-all group">
-                    <i class="fa-brands fa-youtube text-base group-hover:scale-110 transition-transform"></i>
-                    <span class="font-heading text-[11px] font-bold">YOUTUBE</span>
-                </a>
-                <!-- Telegram -->
-                <a href="https://t.me/TrongDung05" target="_blank" class="aurora-glass px-2.5 py-2.5 rounded-2xl border border-sky-400/20 hover:border-sky-400/50 text-sky-400 hover:text-white flex items-center justify-center gap-2 transition-all group">
-                    <i class="fa-brands fa-telegram text-base group-hover:scale-110 transition-transform"></i>
-                    <span class="font-heading text-[11px] font-bold">TELEGRAM</span>
-                </a>
-                <!-- Zalo -->
-                <a href="https://zalo.me/0836376886" target="_blank" class="aurora-glass px-2.5 py-2.5 rounded-2xl border border-blue-500/20 hover:border-blue-500/50 text-blue-400 hover:text-white flex items-center justify-center gap-2 transition-all group">
-                    <i class="fa-solid fa-comment-dots text-base group-hover:scale-110 transition-transform"></i>
-                    <span class="font-heading text-[11px] font-bold">ZALO</span>
-                </a>
-            </div>
-        </header>
-
-        <!-- MAIN CONTENT -->
-        <main class="max-w-lg mx-auto px-4 mt-1">
-
-            <!-- OS Switcher Tabs -->
-            <div class="grid grid-cols-2 gap-2 mb-5 p-1.5 aurora-glass rounded-2xl border border-aurora-border">
-                <button id="tabIosBtn" onclick="switchPlatform('ios')" class="py-3 rounded-xl font-heading font-black text-xs sm:text-sm tracking-wider flex items-center justify-center gap-2 transition-all bg-gradient-to-r from-aurora-cyan to-aurora-blue text-white shadow-lg shadow-cyan-500/20">
-                    <i class="fa-brands fa-apple text-base"></i>
-                    MOD IOS
-                </button>
-                <button id="tabAdrBtn" onclick="switchPlatform('adr')" class="py-3 rounded-xl font-heading font-black text-xs sm:text-sm tracking-wider flex items-center justify-center gap-2 transition-all text-gray-400 hover:text-white">
-                    <i class="fa-brands fa-android text-base"></i>
-                    MOD ADR
-                </button>
-            </div>
-
-            <!-- Dynamic File Container -->
-            <div id="contentContainer" class="space-y-4">
-                <!-- Content injected via JS -->
-            </div>
-
-            <!-- Security Badge Box -->
-            <div class="mt-6 aurora-glass p-3.5 rounded-2xl border border-aurora-border text-center">
-                <p class="text-xs text-gray-400 font-semibold flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-shield-halved text-cyan-400"></i>
-                    Tất cả File Mod đã được kiểm duyệt an toàn 100%
-                </p>
-            </div>
-
-        </main>
-    </div>
-
-    <!-- FOOTER -->
-    <footer class="mt-10 text-center text-[11px] text-gray-500 font-medium relative z-10">
-        <p>© 2026 MOD SKIN VIP • Developed by <span class="text-cyan-400 font-bold">TRONG DUNG</span></p>
-    </footer>
-
-    <!-- JAVASCRIPT -->
-    <script>
-        // DATA CONFIGURATION
-        const FILE_DATA = {
-            ios: [
-                {
-                    categoryName: 'File Mod iOS',
-                    links: [
-                        {
-                            id: 'ios_1',
-                            title: 'Edras VTK',
-                            url: 'https://link4m.net/xZ5QEUUJ',
-                            badge: 'VIP',
-                            views: 1250
-                        },
-                        {
-                            id: 'ios_2',
-                            title: 'Edras Sí Sương Trảm',
-                            url: 'https://link4m.org/oBjNF',
-                            badge: 'NEW',
-                            views: 640
-                        }
-                    ]
-                }
-            ],
-            adr: [
-                {
-                    categoryName: 'File Mod Android',
-                    links: [
-                        {
-                            id: 'adr_1',
-                            title: 'Edras VTK [Fix lỗi Mạng]',
-                            url: 'https://link4m.org/L2HY8u',
-                            badge: 'VIP',
-                            views: 890
-                        },
-                        {
-                            id: 'adr_2',
-                            title: 'Edras Sí Sương Trảm Adr',
-                            url: 'https://link4m.org/cc6LuqJ',
-                            badge: 'NEW',
-                            views: 520
-                        }
-                    ]
-                }
-            ]
-        };
-
-        let currentPlatform = 'ios';
-        let pendingTargetUrl = '';
-        let pendingLinkId = '';
-
-        // REAL-TIME ANALYTICS LOGIC
-        function initAnalytics() {
-            // 1. Tích lũy tổng lượt truy cập Web qua LocalStorage
-            let visits = localStorage.getItem('mod_vip_web_visits');
-            if (!visits) {
-                visits = 3480; // Số khởi tạo mặc định
-            } else {
-                visits = parseInt(visits);
-            }
-            visits += 1;
-            localStorage.setItem('mod_vip_web_visits', visits);
-            document.getElementById('statTotalVisits').innerText = visits.toLocaleString('vi-VN');
-
-            // 2. Tính tổng số file mod
-            let totalFiles = 0;
-            for (let plat in FILE_DATA) {
-                FILE_DATA[plat].forEach(cat => {
-                    totalFiles += cat.links.length;
-                });
-            }
-            document.getElementById('statTotalFiles').innerText = totalFiles;
-
-            // 3. Biến thiên người dùng Online thời gian thực
-            updateOnlineUsers();
-            setInterval(updateOnlineUsers, 5000); // Cập nhật ngẫu nhiên mỗi 5 giây
-        }
-
-        function updateOnlineUsers() {
-            // Tạo giả lập số người online dao động từ 18 - 45 người
-            const randomOnline = Math.floor(Math.random() * (45 - 18 + 1)) + 18;
-            const el = document.getElementById('statOnlineUsers');
-            if (el) el.innerText = randomOnline;
-        }
-
-        // Instruction Modal Handling
-        function openBypassInstruction(id, url) {
-            pendingTargetUrl = url;
-            pendingLinkId = id;
-
-            const modal = document.getElementById('instructionModal');
-            const textEl = document.getElementById('instructionText');
-
-            if (currentPlatform === 'ios') {
-                textEl.innerText = "file này có thể dùng 3015/menu để mod";
-            } else {
-                textEl.innerText = "file này có thể dùng zachiver để mod";
-            }
-
-            modal.classList.remove('hidden');
-        }
-
-        function closeInstructionModal() {
-            const modal = document.getElementById('instructionModal');
-            if (modal) {
-                modal.classList.add('hidden');
-            }
-        }
-
-        // Confirm & Execute Bypass
-        document.getElementById('confirmBypassBtn').addEventListener('click', function() {
-            if (pendingLinkId) {
-                // Tăng số lượt xem của file cụ thể
-                for (let plat in FILE_DATA) {
-                    FILE_DATA[plat].forEach(cat => {
-                        cat.links.forEach(l => {
-                            if (l.id === pendingLinkId) l.views += 1;
-                        });
-                    });
-                }
-                renderContent();
-            }
-
-            closeInstructionModal();
-
-            if (pendingTargetUrl) {
-                window.open(pendingTargetUrl, '_blank');
-            }
-        });
-
-        // 3-SECOND LOADING SCREEN LOGIC
-        function startLoadingScreen() {
-            const duration = 3000; // 3 giây
-            const intervalTime = 30;
-            let elapsedTime = 0;
-
-            const progressBar = document.getElementById('progressBar');
-            const progressPercent = document.getElementById('progressPercent');
-            const countdownText = document.getElementById('countdownText');
-            const loadingScreen = document.getElementById('loadingScreen');
-
-            const timer = setInterval(() => {
-                elapsedTime += intervalTime;
-                const percentage = Math.min(Math.floor((elapsedTime / duration) * 100), 100);
-                const secondsRemaining = Math.max(Math.ceil((duration - elapsedTime) / 1000), 0);
-
-                if (progressBar) progressBar.style.width = percentage + '%';
-                if (progressPercent) progressPercent.innerText = percentage + '%';
-                if (countdownText) countdownText.innerText = secondsRemaining;
-
-                if (elapsedTime >= duration) {
-                    clearInterval(timer);
-                    if (loadingScreen) {
-                        loadingScreen.classList.add('fade-out');
-                        setTimeout(() => {
-                            loadingScreen.style.display = 'none';
-                        }, 400);
-                    }
-                }
-            }, intervalTime);
-        }
-
-        // Live Clock
-        function updateClock() {
-            const now = new Date();
-            const timeStr = now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-            const dateStr = now.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' });
-            document.getElementById('liveClock').innerText = `${timeStr} - ${dateStr}`;
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
-
-        // Platform Switcher
-        function switchPlatform(plat) {
-            currentPlatform = plat;
-            const isIos = plat === 'ios';
-            
-            document.getElementById('tabIosBtn').className = isIos 
-                ? 'py-3 rounded-xl font-heading font-black text-xs sm:text-sm tracking-wider flex items-center justify-center gap-2 transition-all bg-gradient-to-r from-aurora-cyan to-aurora-blue text-white shadow-lg shadow-cyan-500/20'
-                : 'py-3 rounded-xl font-heading font-black text-xs sm:text-sm tracking-wider flex items-center justify-center gap-2 transition-all text-gray-400 hover:text-white';
-
-            document.getElementById('tabAdrBtn').className = !isIos 
-                ? 'py-3 rounded-xl font-heading font-black text-xs sm:text-sm tracking-wider flex items-center justify-center gap-2 transition-all bg-gradient-to-r from-aurora-pink to-aurora-purple text-white shadow-lg shadow-pink-500/20'
-                : 'py-3 rounded-xl font-heading font-black text-xs sm:text-sm tracking-wider flex items-center justify-center gap-2 transition-all text-gray-400 hover:text-white';
-
-            renderContent();
-        }
-
-        // Render File Cards
-        function renderContent() {
-            const container = document.getElementById('contentContainer');
-            const categories = FILE_DATA[currentPlatform] || [];
-
-            container.innerHTML = '';
-
-            if (categories.length === 0) {
-                container.innerHTML = `
-                    <div class="aurora-glass rounded-3xl p-8 text-center border border-aurora-border">
-                        <i class="fa-solid fa-folder-open text-3xl text-gray-600 mb-2 block"></i>
-                        <p class="text-xs text-gray-400 font-medium">Chưa có file mod nào cho nền tảng này</p>
-                    </div>
-                `;
-                return;
-            }
-
-            categories.forEach(cat => {
-                const catBox = document.createElement('div');
-                catBox.className = 'aurora-glass rounded-3xl p-4 sm:p-5 border border-aurora-border';
-
-                let linksHtml = '';
-                cat.links.forEach(link => {
-                    let badgeColor = 'bg-amber-500/10 text-amber-300 border-amber-500/20';
-                    if (link.badge === 'HOT') badgeColor = 'bg-red-500/10 text-red-400 border-red-500/20';
-                    if (link.badge === 'NEW') badgeColor = 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20';
-
-                    linksHtml += `
-                        <div class="flex items-center justify-between gap-3 p-3.5 bg-aurora-card/80 rounded-2xl border border-aurora-border/80 hover:border-cyan-400/40 transition-all">
-                            <div class="flex-1 min-w-0 pr-2">
-                                <div class="flex items-center gap-2 mb-1">
-                                    <span class="inline-block px-2 py-0.5 rounded-md text-[10px] font-black border ${badgeColor}">${link.badge}</span>
-                                    <h5 class="text-sm font-bold text-white leading-snug break-words">${link.title}</h5>
-                                </div>
-                                <div class="text-[11px] text-gray-400 flex items-center gap-2 font-medium">
-                                    <span><i class="fa-regular fa-eye text-cyan-400 mr-1"></i>${link.views.toLocaleString('vi-VN')} lượt xem</span>
-                                </div>
-                            </div>
-                            <button onclick="openBypassInstruction('${link.id}', '${link.url}')" class="${currentPlatform === 'ios' ? 'btn-aurora-ios' : 'btn-aurora-adr'} px-4 py-2.5 rounded-xl font-heading font-black text-[11px] text-white flex items-center gap-1.5 shrink-0">
-                                <span>VƯỢT LINK</span>
-                                <i class="fa-solid fa-arrow-right-long text-[10px]"></i>
-                            </button>
-                        </div>
-                    `;
-                });
-
-                catBox.innerHTML = `
-                    <div class="flex items-center justify-between mb-3.5 pb-2.5 border-b border-aurora-border">
-                        <div class="flex items-center gap-2">
-                            <i class="fa-solid fa-folder-closed text-cyan-400 text-sm"></i>
-                            <h4 class="font-heading font-black text-xs text-gray-200 uppercase tracking-wider">${cat.categoryName}</h4>
-                        </div>
-                        <span class="text-[11px] bg-aurora-card px-2.5 py-0.5 rounded-full text-cyan-300 border border-aurora-border font-bold">${cat.links.length} FILE</span>
-                    </div>
-                    <div class="space-y-2.5">
-                        ${linksHtml}
-                    </div>
-                `;
-
-                container.appendChild(catBox);
-            });
-        }
-
-        // Initialize Page
-        initAnalytics();
-        startLoadingScreen();
-        renderContent();
-    </script>
 </body>
 </html>
