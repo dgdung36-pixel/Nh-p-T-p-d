@@ -1,112 +1,210 @@
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Block World Mobile — Sinh tồn</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Block World Mobile</title>
 <style>
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#87ceeb;font-family:system-ui,-apple-system,sans-serif;touch-action:none}canvas{display:block;width:100%;height:100%}
-#hud{position:fixed;inset:0;color:white;text-shadow:0 2px 3px #18231c;pointer-events:none}.panel{background:#14251bd9;border:1px solid #ffffff55;border-radius:12px;padding:8px 10px;backdrop-filter:blur(5px);font-size:12px}
-#top{position:absolute;top:8px;left:8px;right:8px;display:flex;justify-content:space-between;gap:7px;align-items:flex-start}#brand{font-weight:900;font-size:15px}#stats{line-height:1.6}
-#bars{display:flex;gap:4px;margin-top:5px}.bar{width:68px;height:8px;border:1px solid #fff9;border-radius:8px;background:#333;overflow:hidden}.fill{height:100%;width:100%;background:#e94d55}.food{background:#e6ad43}
-#hint{position:absolute;top:85px;left:50%;transform:translateX(-50%);font-size:11px;background:#14251bbf;padding:6px 9px;border-radius:8px;white-space:nowrap}
-#cross{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:23px}
-#joy{position:absolute;left:13px;bottom:20px;width:132px;height:132px;pointer-events:auto}#joybase{position:absolute;inset:8px;border-radius:50%;background:#14251b66;border:2px solid #ffffff8a}#knob{position:absolute;left:42px;top:42px;width:40px;height:40px;border-radius:50%;background:#ffffffb8;border:2px solid white}
-#actions{position:absolute;right:10px;bottom:16px;display:grid;grid-template-columns:60px 60px;gap:7px;pointer-events:auto}.btn{pointer-events:auto;background:#14251be8;color:white;border:1px solid #ffffffa0;border-radius:12px;min-height:48px;padding:5px;font-weight:800;font-size:11px;text-shadow:0 1px 2px #000}.btn:active{background:#507d40}.wide{grid-column:span 2}
-#hotbar{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:3px;pointer-events:auto}.slot{width:37px;height:43px;border:2px solid #ffffff80;background:#14251be8;border-radius:7px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:9px}.slot b{font-size:16px}.slot.sel{border:3px solid #ffe76a;transform:translateY(-4px)}
-#toast{position:absolute;top:125px;left:50%;transform:translateX(-50%);background:#14251be8;border-radius:10px;padding:8px 12px;font-size:12px;opacity:0;transition:opacity .2s;max-width:85%;text-align:center}
-.overlay{position:fixed;inset:0;background:#07110edb;display:none;align-items:center;justify-content:center;padding:14px;pointer-events:auto;color:#fff;text-shadow:none;z-index:5}.modal{width:min(520px,100%);max-height:88vh;overflow:auto;background:#24372c;border:2px solid #90a995;border-radius:16px;padding:15px;box-shadow:0 12px 50px #0009}.modal h2{margin:0 0 10px;font-size:20px}.muted{color:#c5d7c9;font-size:12px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:10px 0}.item{background:#17251d;border:1px solid #78917e;border-radius:10px;padding:9px 5px;text-align:center;font-size:12px}.item b{font-size:19px;display:block}.item button{margin-top:5px;width:100%;font-size:11px}.rowbtn{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.rowbtn .btn{flex:1}.recipe{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:9px;background:#17251d;border-radius:9px;margin:6px 0;font-size:12px}.recipe button{min-width:82px}.hidden{display:none!important}
-@media(max-width:390px){.slot{width:32px}.bar{width:56px}#actions{grid-template-columns:55px 55px}.btn{font-size:10px}#hint{font-size:10px}}
-</style></head><body>
-<canvas id="game"></canvas><div id="hud">
-<div id="top"><div class="panel"><div id="brand">▦ BLOCK WORLD</div><div>SINH TỒN</div><div id="bars"><div><small>❤️ Máu</small><div class="bar"><div id="hpfill" class="fill"></div></div></div><div><small>🍗 Đói</small><div class="bar"><div id="foodfill" class="fill food"></div></div></div></div></div><div class="panel" id="stats">Ngày 1 • 08:00<br>Đang tải...</div></div>
-<div id="hint">Joystick để đi • Vuốt để nhìn • Thu thập tài nguyên</div><div id="cross">＋</div><div id="toast"></div>
-
-<div id="joy"><div id="joybase"></div><div id="knob"></div></div>
-<div id="actions"><button class="btn" id="mine">⛏️<br>ĐÀO / ĐÁNH</button><button class="btn" id="put">🧱<br>ĐẶT KHỐI</button><button class="btn" id="jump">⬆️ NHẢY</button><button class="btn" id="inv">🎒 TÚI ĐỒ</button><button class="btn wide" id="craft">🛠️ CHẾ TẠO</button><button class="btn wide" id="save">💾 LƯU THẾ GIỚI</button></div><div id="hotbar"></div></div>
-<div class="overlay" id="inventory"><div class="modal"><h2>🎒 Túi đồ</h2><div class="muted">Chọn vật phẩm trên thanh nhanh để đặt khối. Tài nguyên thu thập được sẽ lưu theo thế giới.</div><div id="items" class="grid"></div><div class="rowbtn"><button class="btn" id="invclose">ĐÓNG</button><button class="btn" id="invcraft">🛠️ Chế tạo</button></div></div></div>
-<div class="overlay" id="crafting"><div class="modal"><h2>🛠️ Bàn chế tạo</h2><div class="muted">Cần đủ nguyên liệu trong túi đồ. Chế tạo các công cụ cơ bản để sinh tồn.</div><div id="recipes"></div><div class="rowbtn"><button class="btn" id="craftclose">ĐÓNG</button></div></div></div>
-<div class="overlay" id="dead"><div class="modal"><h2>💀 Bạn đã gục ngã</h2><p>Thế giới vẫn còn đó. Hồi sinh tại điểm bắt đầu, giữ nguyên tài nguyên.</p><button class="btn wide" id="respawn">HỒI SINH</button></div></div>
-<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script><script>
-(()=>{'use strict';
-const $=id=>document.getElementById(id), canvas=$('game');
-let renderer,scene,camera;
-try{renderer=new THREE.WebGLRenderer({canvas,antialias:true});}catch(e){$('hint').textContent='Trình duyệt chưa hỗ trợ WebGL. Hãy mở bằng Safari/Chrome mới.';return}
-renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;
-scene=new THREE.Scene();scene.background=new THREE.Color(0x88cfff);scene.fog=new THREE.Fog(0x88cfff,19,48);camera=new THREE.PerspectiveCamera(74,innerWidth/innerHeight,.1,100);
-scene.add(new THREE.HemisphereLight(0xe2f5ff,0x64734a,1.8));const sun=new THREE.DirectionalLight(0xffffff,2);sun.position.set(-10,18,8);sun.castShadow=true;scene.add(sun);
-const defs={
- grass:['Cỏ',0x68b94b,'🌿'],dirt:['Đất',0x8a5a35,'🟫'],stone:['Đá',0x89949c,'🪨'],wood:['Gỗ',0x91643b,'🪵'],leaves:['Lá',0x2f8b42,'🍃'],sand:['Cát',0xdcc77a,'🟨'],plank:['Ván gỗ',0xb98a52,'🪚'],stick:['Que',0xc4a06a,'🥢'],coal:['Than',0x34383a,'⚫'],iron:['Quặng sắt',0xb5a9a0,'⛓️'],water:['Nước',0x3b9ee8,'💧'],lava:['Dung nham',0xff5b18,'🌋'],apple:['Táo',0xd73b38,'🍎'],meat:['Thịt sống',0xc56a69,'🥩'],wood_pick:['Cuốc gỗ',0xa8753d,'⛏️'],sword:['Kiếm gỗ',0xc6a16d,'⚔️']
-};
-const mats={};Object.keys(defs).forEach(k=>mats[k]=new THREE.MeshLambertMaterial({color:defs[k][1],transparent:k==='water'||k==='lava',opacity:k==='water'?.72:1}));
-const cube=new THREE.BoxGeometry(1,1,1), world=new Map(),meshMap=new Map(),animals=[],mobs=[];
-const key=(x,y,z)=>`${x},${y},${z}`, rnd=(x,z)=>{let v=Math.sin(x*127.1+z*311.7)*43758.5453;return v-Math.floor(v)};
-const terrain=(x,z)=>Math.floor(1+Math.sin(x*.27)*.7+Math.cos(z*.24)*.55+Math.sin((x+z)*.17)*.35);
-let inventory={grass:8,dirt:8,stone:0,wood:0,leaves:0,sand:0,plank:0,stick:0,coal:0,iron:0,apple:2,meat:0,wood_pick:0,sword:0};
-let player={x:0,y:5,z:5,vy:0,hp:100,food:100,ground:false,dead:false};let yaw=0,pitch=-.1,selected='dirt',dayTime=8,days=1,elapsed=0,autosave=0;
-function addBlock(x,y,z,type,save=true){x=Math.round(x);y=Math.round(y);z=Math.round(z);let k=key(x,y,z);if(world.has(k)||!mats[type])return false;world.set(k,type);let m=new THREE.Mesh(cube,mats[type]);m.position.set(x,y,z);m.castShadow=type!=='water'&&type!=='lava';m.receiveShadow=true;scene.add(m);meshMap.set(k,m);return true}
-function delBlock(x,y,z){let k=key(x,y,z),m=meshMap.get(k);if(!m)return false;scene.remove(m);meshMap.delete(k);world.delete(k);return true}
-function tree(x,y,z){for(let i=0;i<3;i++)addBlock(x,y+i,z,'wood');for(let dx=-2;dx<=2;dx++)for(let dz=-2;dz<=2;dz++)for(let dy=2;dy<=4;dy++)if(Math.abs(dx)+Math.abs(dz)+(dy===4?1:0)<=4&&rnd(x+dx*3+dy,z+dz*2)>.1)addBlock(x+dx,y+dy,z+dz,'leaves')}
-
-function generate(){for(let x=-15;x<=15;x++)for(let z=-15;z<=15;z++){let h=terrain(x,z);for(let y=-3;y<=h;y++){let t=y===h?'grass':y>=h-2?'dirt':'stone';if(h<=0&&y===h)t='sand';if(y<-1&&rnd(x+y,z)>.965)t='coal';if(y<-2&&rnd(x*3+y,z*2)>.985)t='iron';addBlock(x,y,z,t)}if(h<=0&&rnd(x+5,z)>.78)addBlock(x,h+1,z,'water');if(rnd(x,z)>.976&&Math.abs(x)+Math.abs(z)>5)tree(x,h+1,z)}
-// a small cave tunnel with stone shell and a lava pocket
-for(let x=5;x<11;x++)for(let z=-3;z<2;z++){let h=terrain(x,z);for(let y=-2;y<=0;y++)delBlock(x,h+y,z);for(let y=-3;y<=-1;y++){addBlock(x,y,z,'stone')} }
-for(let x=8;x<=9;x++)for(let z=-1;z<=0;z++)addBlock(x,-1,z,'lava');
-for(let i=0;i<8;i++){const x=Math.floor(rnd(i,9)*25-12),z=Math.floor(rnd(i+8,4)*25-12),h=terrain(x,z);spawnAnimal(x,h+1,z,i%3===0?'pig':'sheep')}
-for(let i=0;i<5;i++){const x=Math.floor(rnd(i+32,2)*24-12),z=Math.floor(rnd(i+2,45)*24-12);spawnMob(x,terrain(x,z)+1,z)}
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
-function spawnAnimal(x,y,z,type){const g=new THREE.Group();const color=type==='pig'?0xe99b9b:0xe8e8d8;const body=new THREE.Mesh(new THREE.BoxGeometry(.8,.55,.48),new THREE.MeshLambertMaterial({color}));body.position.y=.45;g.add(body);const head=new THREE.Mesh(new THREE.BoxGeometry(.36,.38,.36),new THREE.MeshLambertMaterial({color}));head.position.set(.45,.65,0);g.add(head);g.position.set(x,y,z);scene.add(g);animals.push({g,type,x,y,z,phase:rnd(x,z)*6})}
-function spawnMob(x,y,z){const g=new THREE.Group();const body=new THREE.Mesh(new THREE.BoxGeometry(.65,1.15,.48),new THREE.MeshLambertMaterial({color:0x517d4c}));body.position.y=.7;g.add(body);const head=new THREE.Mesh(new THREE.BoxGeometry(.55,.5,.5),new THREE.MeshLambertMaterial({color:0x638e58}));head.position.y=1.5;g.add(head);for(let s of [-1,1]){const eye=new THREE.Mesh(new THREE.BoxGeometry(.09,.08,.04),new THREE.MeshBasicMaterial({color:0xff3322}));eye.position.set(s*.14,1.55,-.26);g.add(eye)}g.position.set(x,y,z);scene.add(g);mobs.push({g,x,y,z,hit:0})}
-function clearWorld(){for(const m of meshMap.values())scene.remove(m);meshMap.clear();world.clear();animals.forEach(a=>scene.remove(a.g));animals.length=0;mobs.forEach(a=>scene.remove(a.g));mobs.length=0}
-function saveGame(){try{const data={world:[...world.entries()],inventory,player:{x:player.x,y:player.y,z:player.z,hp:player.hp,food:player.food},selected,dayTime,days,version:1};localStorage.setItem('blockWorldMobileSave',JSON.stringify(data));toast('Đã lưu thế giới trên thiết bị này')}catch(e){toast('Không lưu được: bộ nhớ trình duyệt bị chặn hoặc đầy')}}
-function loadGame(){try{const raw=localStorage.getItem('blockWorldMobileSave');if(!raw)return false;const d=JSON.parse(raw);if(!d.world||!Array.isArray(d.world))return false;clearWorld();d.world.forEach(([k,t])=>{const [x,y,z]=k.split(',').map(Number);addBlock(x,y,z,t)});inventory=Object.assign(inventory,d.inventory||{});Object.assign(player,d.player||{});selected=d.selected||'dirt';dayTime=d.dayTime||8;days=d.days||1;for(let i=0;i<8;i++){const x=Math.floor(rnd(i,9)*25-12),z=Math.floor(rnd(i+8,4)*25-12);spawnAnimal(x,terrain(x,z)+1,z,i%3===0?'pig':'sheep')}for(let i=0;i<5;i++){const x=Math.floor(rnd(i+32,2)*24-12),z=Math.floor(rnd(i+2,45)*24-12);spawnMob(x,terrain(x,z)+1,z)}return true}catch(e){return false}}
-function toast(s){const e=$('toast');e.textContent=s;e.style.opacity=1;clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.opacity=0,1600)}
-function open(id){$(id).style.display='flex'}function close(id){$(id).style.display='none'}
-function addItem(k,n=1){inventory[k]=(inventory[k]||0)+n;refreshInventory()}
-function refreshInventory(){const entries=Object.keys(defs).filter(k=>(inventory[k]||0)>0);$('items').innerHTML=entries.map(k=>`<div class="item"><b>${defs[k][2]}</b>${defs[k][0]}<br>× ${inventory[k]}<button class="btn" data-sel="${k}">Chọn</button></div>`).join('')||'<p>Túi đồ đang trống.</p>';document.querySelectorAll('[data-sel]').forEach(b=>b.onclick=()=>{selected=b.dataset.sel;refreshHotbar();close('inventory');toast('Đã chọn '+defs[selected][0])});refreshHotbar()}
-
-function refreshHotbar(){const ks=['grass','dirt','stone','wood','plank','sand','apple'];$('hotbar').innerHTML=ks.map(k=>`<div class="slot ${selected===k?'sel':''}" data-hot="${k}"><b>${defs[k][2]}</b>${(inventory[k]||0)>0?inventory[k]:0}</div>`).join('');document.querySelectorAll('[data-hot]').forEach(e=>e.onclick=()=>{selected=e.dataset.hot;refreshHotbar()})}
-const recipes=[
- {out:'plank',n:4,need:{wood:1},label:'4 ván gỗ'},
- {out:'stick',n:4,need:{plank:2},label:'4 que gỗ'},
- {out:'wood_pick',n:1,need:{plank:3,stick:2},label:'Cuốc gỗ'},
- {out:'sword',n:1,need:{plank:2,stick:1},label:'Kiếm gỗ'}
-];
-function canCraft(r){return Object.entries(r.need).every(([k,n])=>(inventory[k]||0)>=n)}
-function craft(r){if(!canCraft(r)){toast('Không đủ nguyên liệu');return}Object.entries(r.need).forEach(([k,n])=>inventory[k]-=n);inventory[r.out]=(inventory[r.out]||0)+r.n;refreshInventory();showRecipes();toast('Đã chế tạo '+r.label)}
-function showRecipes(){$('recipes').innerHTML=recipes.map((r,i)=>`<div class="recipe"><div><b>${defs[r.out][2]} ${r.label}</b><div class="muted">Cần: ${Object.entries(r.need).map(([k,n])=>`${defs[k][0]} ×${n}`).join(', ')}</div></div><button class="btn" data-recipe="${i}" ${canCraft(r)?'':'disabled'}>Chế tạo</button></div>`).join('');document.querySelectorAll('[data-recipe]').forEach(b=>b.onclick=()=>craft(recipes[+b.dataset.recipe]))}
-function updateUI(){ $('hpfill').style.width=Math.max(0,player.hp)+'%';$('foodfill').style.width=Math.max(0,player.food)+'%';$('stats').innerHTML=`Ngày ${days} • ${String(Math.floor(dayTime)).padStart(2,'0')}:${String(Math.floor((dayTime%1)*60)).padStart(2,'0')}<br>🧱 ${world.size} khối • ${Math.round(player.x)}, ${Math.round(player.z)}`;refreshHotbar()}
-function rayHit(){const ray=new THREE.Raycaster();ray.setFromCamera(new THREE.Vector2(0,0),camera);return ray.intersectObjects([...meshMap.values()],false).find(h=>h.distance<5)}
-function mine(){const hit=rayHit();if(hit){const p=hit.object.position,k=key(Math.round(p.x),Math.round(p.y),Math.round(p.z)),t=world.get(k);if(t==='water'||t==='lava'){toast('Không thể thu thập chất lỏng');return}delBlock(p.x,p.y,p.z);addItem(t,1);if(t==='leaves'&&Math.random()<.15)addItem('apple',1);updateUI();return}
- let nearest=null,dist=2.2;for(const m of mobs){const d=Math.hypot(m.x-player.x,m.z-player.z);if(d<dist){dist=d;nearest=m}}for(const a of animals){const d=Math.hypot(a.x-player.x,a.z-player.z);if(d<dist){dist=d;nearest=a}}
- if(nearest){if(nearest.type){addItem('meat',1);scene.remove(nearest.g);animals.splice(animals.indexOf(nearest),1);toast('Thu được thịt sống')}else{nearest.hit=1;player.hp=Math.min(100,player.hp+0);toast('Đánh quái vật!')}return}toast('Nhìn vào khối hoặc đến gần sinh vật')}
-function place(){const hit=rayHit();if(!hit){toast('Nhìn vào mặt khối để đặt');return}if(!defs[selected]||!['grass','dirt','stone','wood','leaves','sand','plank'].includes(selected)){toast('Vật phẩm này không thể đặt');return}if((inventory[selected]||0)<1){toast('Không đủ '+defs[selected][0]);return}const p=hit.object.position,n=hit.face.normal,x=Math.round(p.x+n.x),y=Math.round(p.y+n.y),z=Math.round(p.z+n.z);if(Math.hypot(x-player.x,z-player.z)<.8&&Math.abs(y-player.y)<1.8){toast('Không thể đặt vào người chơi');return}if(addBlock(x,y,z,selected)){inventory[selected]--;updateUI()}}
-function eat(){if(inventory.apple>0){inventory.apple--;player.food=Math.min(100,player.food+28);player.hp=Math.min(100,player.hp+5);toast('Ăn táo: hồi no')}else if(inventory.meat>0){inventory.meat--;player.food=Math.min(100,player.food+18);toast('Ăn thịt sống: có thể gây hại')}else toast('Không có thức ăn')}
-$('mine').onclick=mine;$('put').onclick=place;$('jump').onpointerdown=e=>{e.preventDefault();if(player.ground){player.vy=6.4;player.ground=false}};
-$('inv').onclick=()=>{refreshInventory();open('inventory')};$('invclose').onclick=()=>close('inventory');$('invcraft').onclick=()=>{close('inventory');showRecipes();open('crafting')};$('craft').onclick=()=>{showRecipes();open('crafting')};$('craftclose').onclick=()=>close('crafting');$('save').onclick=saveGame;$('respawn').onclick=()=>{player.dead=false;player.hp=100;player.food=80;player.x=0;player.z=5;player.y=terrain(0,5)+3;player.vy=0;close('dead');toast('Đã hồi sinh')};
-
-generate();if(loadGame())toast('Đã tải thế giới đã lưu');player.y=Math.max(player.y,terrain(0,5)+2.5);refreshInventory();updateUI();
-let joy={x:0,y:0},drag=null;const joyEl=$('joy'),knob=$('knob');
-function joyMove(e){const r=joyEl.getBoundingClientRect(),dx0=e.clientX-(r.left+r.width/2),dy0=e.clientY-(r.top+r.height/2),len=Math.hypot(dx0,dy0)||1,max=39,dx=dx0*Math.min(1,max/len),dy=dy0*Math.min(1,max/len);joy={x:dx/max,y:dy/max};knob.style.left=(r.width/2-20+dx)+'px';knob.style.top=(r.height/2-20+dy)+'px'}
-joyEl.addEventListener('pointerdown',e=>{drag=e.pointerId;joyEl.setPointerCapture(drag);joyMove(e)});joyEl.addEventListener('pointermove',e=>{if(drag===e.pointerId)joyMove(e)});function joyEnd(e){if(drag===e.pointerId){drag=null;joy={x:0,y:0};knob.style.left='42px';knob.style.top='42px'}}joyEl.addEventListener('pointerup',joyEnd);joyEl.addEventListener('pointercancel',joyEnd);
-let look=null,lx=0,ly=0;canvas.addEventListener('pointerdown',e=>{look=e.pointerId;lx=e.clientX;ly=e.clientY;canvas.setPointerCapture(look)});canvas.addEventListener('pointermove',e=>{if(look!==e.pointerId)return;let dx=e.clientX-lx,dy=e.clientY-ly;lx=e.clientX;ly=e.clientY;yaw-=dx*.004;pitch=Math.max(-1.35,Math.min(1.35,pitch-dy*.004))});canvas.addEventListener('pointerup',e=>{if(look===e.pointerId)look=null});canvas.addEventListener('pointercancel',e=>{if(look===e.pointerId)look=null});
-let prev=performance.now(),autos=0,damageTick=0;
-function loop(now){requestAnimationFrame(loop);let dt=Math.min((now-prev)/1000,.04);prev=now;elapsed+=dt;autos+=dt;damageTick+=dt;
- dayTime+=dt*.045;if(dayTime>=24){dayTime-=24;days++}let night=dayTime<6||dayTime>18;scene.background.set(night?0x18233e:0x88cfff);scene.fog.color.set(night?0x18233e:0x88cfff);sun.intensity=night?.3:2;
- let f=-joy.y,r=joy.x,speed=3.5,dx=(-Math.sin(yaw)*f+Math.cos(yaw)*r)*speed*dt,dz=(-Math.cos(yaw)*f-Math.sin(yaw)*r)*speed*dt;
- let nx=player.x+dx,nz=player.z+dz;
- if(!world.has(key(Math.round(nx),Math.floor(player.y-1.2),Math.round(player.z))))player.x=nx;
- if(!world.has(key(Math.round(player.x),Math.floor(player.y-1.2),Math.round(nz))))player.z=nz;
- player.vy-=15*dt;player.y+=player.vy*dt;let gy=terrain(Math.round(player.x),Math.round(player.z))+1.8;if(player.y<gy){player.y=gy;player.vy=0;player.ground=true}
- // food decreases over time; hunger and lava cause damage
- player.food=Math.max(0,player.food-dt*.16);if(player.food===0&&damageTick>2){player.hp-=1;damageTick=0}
- for(const m of mobs){let d=Math.hypot(player.x-m.x,player.z-m.z);if(night&&d<8){m.x+=(player.x-m.x)/Math.max(d,.1)*dt*.65;m.z+=(player.z-m.z)/Math.max(d,.1)*dt*.65;if(d<1.2&&damageTick>1.3){player.hp-=7;damageTick=0;toast('Quái vật tấn công!')}}else{m.x+=Math.sin(elapsed*.6+m.z)*dt*.12;m.z+=Math.cos(elapsed*.5+m.x)*dt*.12}m.g.position.set(m.x,m.y,m.z)}
- for(const a of animals){a.x+=Math.sin(elapsed*.5+a.phase)*dt*.18;a.z+=Math.cos(elapsed*.4+a.phase)*dt*.18;a.g.position.set(a.x,a.y,a.z)}
- if(player.hp<=0&&!player.dead){player.hp=0;player.dead=true;open('dead')}
- if(player.y<-8){player.hp=Math.max(1,player.hp-20);player.y=terrain(0,5)+3;player.x=0;player.z=5}
- camera.position.set(player.x,player.y,player.z);camera.rotation.order='YXZ';camera.rotation.set(pitch,yaw,0,'YXZ');renderer.render(scene,camera);
- if(autos>1){updateUI();autos=0}if(elapsed>4&&elapsed%60<dt)saveGame();
+html, body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  touch-action: none;
+  font-family: Arial, sans-serif;
+  background: #87c9f4;
+  color: white;
 }
-function resize(){camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)}addEventListener('resize',resize);requestAnimationFrame(loop);
-})();
-</script></body></html>
+#game {
+  position: fixed;
+  inset: 0;
+}
+canvas {
+  display: block;
+}
+button {
+  border: 1px solid #ffffff55;
+  border-radius: 12px;
+  background: #17232dcc;
+  color: white;
+  padding: 10px;
+  font-size: 13px;
+  font-weight: bold;
+  touch-action: manipulation;
+}
+#top {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+  pointer-events: none;
+}
+#status, #topbuttons {
+  pointer-events: auto;
+}
+#status {
+  background: #17232dcc;
+  padding: 10px;
+  border-radius: 12px;
+  font-size: 12px;
+}
+#topbuttons {
+  display: flex;
+  gap: 5px;
+}
+#leftControls {
+  position: fixed;
+  bottom: 20px;
+  left: 18px;
+  width: 120px;
+  height: 120px;
+}
+#joyBase {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: #10182066;
+  border: 2px solid #ffffff66;
+}
+#joyKnob {
+  position: absolute;
+  left: 35px;
+  top: 35px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #ffffffdd;
+}
+#actions {
+  position: fixed;
+  right: 12px;
+  bottom: 18px;
+  display: grid;
+  grid-template-columns: repeat(2, 58px);
+  gap: 6px;
+}
+.action {
+  height: 54px;
+  padding: 4px;
+  font-size: 11px;
+}
+#bottomBar {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 155px;
+  display: flex;
+  gap: 4px;
+  padding: 5px;
+  background: #17232daa;
+  border-radius: 12px;
+}
+.slot {
+  width: 42px;
+  height: 44px;
+  padding: 3px;
+  font-size: 10px;
+}
+.slot.selected {
+  border: 2px solid #ffe66d;
+}
+#inventory {
+  display: none;
+  position: fixed;
+  inset: 0;
+  align-items: center;
+  justify-content: center;
+  background: #0009;
+}
+#inventory.show {
+  display: flex;
+}
+#invCard {
+  width: 90%;
+  max-width: 420px;
+  max-height: 80vh;
+  overflow: auto;
+  padding: 16px;
+  border-radius: 16px;
+  background: #17232df5;
+}
+#invGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.invItem {
+  padding: 12px 4px;
+  text-align: center;
+}
+#message {
+  position: fixed;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 10px 14px;
+  background: #111d;
+  border-radius: 12px;
+  opacity: 0;
+  pointer-events: none;
+}
+@media (max-width: 600px) {
+  #bottomBar {
+    max-width: calc(100vw - 16px);
+    overflow-x: auto;
+  }
+}
+</style>
+</head>
+<body>
+<div id="game"></div>
+
+<div id="top">
+  <div id="status">
+    <div id="health">♥ ♥ ♥ ♥ ♥</div>
+    <div id="coords">X 0 · Y 0 · Z 0</div>
+    <div>Sinh tồn</div>
+  </div>
+  <div id="topbuttons">
+    <button id="invBtn">🎒 Túi đồ</button>
+    <button id="saveBtn">💾 Lưu</button>
+    <button id="menuBtn">Ⅱ</button>
+  </div>
+</div>
+
+<div id="leftControls">
+  <div id="joyBase"></div>
+  <div id="joyKnob"></div>
+</div>
+
+<div id="bottomBar"></div>
+
+<div id="actions">
+  <button class="action" id="jumpBtn">⬆<br>Nhảy</button>
+  <button class="action" id="mineBtn">⛏<br>Phá khối</button>
+  <button class="action" id="placeBtn">▧<br>Đặt khối</button>
+  <button class="action" id="eatBtn">🍎<br>Ăn</button>
+</div>
+
+<div id="inventory">
+  <div id="invCard">
+    <h2>🎒 Túi đồ</h2>
+    <div id="invGrid"></div>
+    <p><button id="craftBtn">🪵 Chế tạo ván gỗ</button></p>
+    <button id="closeInv">Đóng</button>
+  </div>
+</div>
+
+<div id="message"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+<script>
