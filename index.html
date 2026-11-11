@@ -1,1106 +1,173 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Max Verstappen #3 | Official F1 Driver Profile & Career Journal</title>
-
-<!-- Fonts: Titillium Web & Orbitron -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#060509">
+<meta name="description" content="Cristiano Ronaldo — Obrigado, Capitão. Một bảo tàng 3D tương tác tri ân 23 năm cùng đội tuyển Bồ Đào Nha.">
+<title>OBRIGADO CR7 | The Last Dance — 3D Experience</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Titillium+Web:ital,wght@0,300;0,400;0,600;0,700;0,900;1,700&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root {
-  --f1-red: #e10600;
-  --f1-red-glow: rgba(225, 6, 0, 0.4);
-  --rb-blue: #06002e;
-  --rb-navy: #090e1a;
-  --gold: #ffb800;
-  --cyan: #00f0ff;
-  --bg-dark: #07080c;
-  --card-bg: #11141e;
-  --card-border: #1f2638;
-  --text-main: #f3f5f8;
-  --text-muted: #8c97ab;
-  --f1-font: 'Titillium Web', sans-serif;
-  --speed-font: 'Orbitron', sans-serif;
-}
-
-* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-html { scroll-behavior: smooth; background: var(--bg-dark); color: var(--text-main); font-family: var(--f1-font); }
-body { margin: 0; padding: 0; overflow-x: hidden; width: 100%; line-height: 1.5; }
-
-/* --- HEADER HUD --- */
-header {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 1000;
-  background: rgba(7, 8, 12, 0.92);
-  backdrop-filter: blur(16px);
-  border-bottom: 2px solid var(--f1-red);
-}
-
-.nav-container {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 20px;
-  height: 65px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.f1-brand {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-family: var(--speed-font);
-  font-weight: 900;
-  font-size: 1.1rem;
-  letter-spacing: 1px;
-  color: #fff;
-  text-decoration: none;
-}
-
-.f1-logo-badge {
-  background: var(--f1-red);
-  color: #fff;
-  padding: 2px 8px;
-  font-size: 0.9rem;
-  font-weight: 900;
-  font-style: italic;
-  clip-path: polygon(0 0, 100% 0, 85% 100%, 0 100%);
-}
-
-.nav-links {
-  display: flex;
-  gap: 22px;
-}
-
-.nav-links a {
-  color: var(--text-muted);
-  text-decoration: none;
-  font-weight: 700;
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  transition: 0.2s;
-  padding: 6px 0;
-}
-
-.nav-links a:hover { color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.8); }
-
-.audio-btn {
-  background: rgba(225, 6, 0, 0.15);
-  border: 1px solid var(--f1-red);
-  color: #fff;
-  padding: 6px 14px;
-  font-family: var(--speed-font);
-  font-size: 0.72rem;
-  font-weight: 800;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transition: 0.3s;
-  clip-path: polygon(0 0, 100% 0, 92% 100%, 0 100%);
-}
-
-.audio-btn:hover { background: var(--f1-red); box-shadow: 0 0 15px var(--f1-red-glow); }
-.audio-btn .dot { width: 6px; height: 6px; border-radius: 50%; background: #555; }
-.audio-btn.playing .dot { background: #00ff66; box-shadow: 0 0 8px #00ff66; }
-
-/* --- HERO SECTION (F1 FORMULA1.COM STYLE) --- */
-.hero {
-  position: relative;
-  padding-top: 100px;
-  padding-bottom: 50px;
-  background: 
-    linear-gradient(135deg, rgba(6, 0, 46, 0.95) 0%, rgba(7, 8, 12, 0.98) 70%),
-    repeating-linear-gradient(45deg, rgba(255,255,255,0.01) 0px, rgba(255,255,255,0.01) 2px, transparent 2px, transparent 10px);
-  overflow: hidden;
-  border-bottom: 1px solid var(--card-border);
-}
-
-.hero::after {
-  content: "";
-  position: absolute;
-  top: 0; right: 0; width: 50%; height: 100%;
-  background: radial-gradient(circle at 70% 30%, rgba(225, 6, 0, 0.15), transparent 60%);
-  pointer-events: none;
-}
-
-.container { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
-
-.hero-grid {
-  display: grid;
-  grid-template-columns: 1.1fr 1fr;
-  gap: 40px;
-  align-items: center;
-  position: relative;
-  z-index: 2;
-}
-
-.driver-number {
-  font-family: var(--speed-font);
-  font-size: clamp(4rem, 12vw, 9rem);
-  font-weight: 900;
-  line-height: 0.8;
-  color: transparent;
-  -webkit-text-stroke: 2px rgba(255,255,255,0.2);
-  position: absolute;
-  top: -30px;
-  left: 0;
-  user-select: none;
-  z-index: -1;
-}
-
-.driver-flag {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 15px;
-}
-
-.flag-img {
-  width: 32px;
-  height: 22px;
-  object-fit: cover;
-  border-radius: 2px;
-  box-shadow: 0 0 8px rgba(0,0,0,0.5);
-}
-
-.driver-country {
-  font-family: var(--speed-font);
-  font-size: 0.85rem;
-  font-weight: 800;
-  letter-spacing: 2px;
-  color: var(--text-muted);
-}
-
-h1.driver-name {
-  font-family: var(--speed-font);
-  font-size: clamp(2.5rem, 5.5vw, 4.8rem);
-  font-weight: 900;
-  text-transform: uppercase;
-  line-height: 0.95;
-  margin: 0 0 20px 0;
-  letter-spacing: -1px;
-}
-
-h1.driver-name span {
-  display: block;
-  color: var(--f1-red);
-  text-shadow: 0 0 20px var(--f1-red-glow);
-}
-
-/* DRIVER PORTRAIT CONTAINER WITH FALLBACK */
-.portrait-card {
-  position: relative;
-  width: 100%;
-  max-width: 480px;
-  margin: 0 auto;
-  background: radial-gradient(circle at bottom, rgba(225,6,0,0.2) 0%, transparent 70%);
-  border-bottom: 4px solid var(--f1-red);
-  overflow: hidden;
-}
-
-.driver-img {
-  width: 100%;
-  height: auto;
-  display: block;
-  object-fit: contain;
-  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.8));
-  transition: transform 0.4s ease;
-}
-
-.portrait-card:hover .driver-img {
-  transform: scale(1.02);
-}
-
-/* DRIVER BIOGRAPHY BIOCARD */
-.bio-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  padding: 18px;
-  margin-top: 25px;
-}
-
-.bio-item {
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-  padding-bottom: 8px;
-}
-
-.bio-label {
-  font-size: 0.72rem;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.bio-val {
-  font-family: var(--speed-font);
-  font-weight: 800;
-  font-size: 1rem;
-  color: #fff;
-  margin-top: 2px;
-}
-
-/* --- STATS COUNTER STRIP --- */
-.stats-strip {
-  background: #0c0e16;
-  border-bottom: 1px solid var(--card-border);
-  padding: 30px 0;
-}
-
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  text-align: center;
-}
-
-.stat-card {
-  border-right: 1px solid var(--card-border);
-  padding: 0 10px;
-}
-.stat-card:last-child { border-right: none; }
-
-.stat-num {
-  font-family: var(--speed-font);
-  font-size: clamp(2rem, 4.5vw, 3.5rem);
-  font-weight: 900;
-  color: #fff;
-  line-height: 1;
-}
-
-.stat-num span { color: var(--f1-red); }
-
-.stat-title {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  margin-top: 6px;
-  font-weight: 700;
-}
-
-/* --- CAREER TIMELINE 2018-2026 --- */
-.timeline-section {
-  padding: 80px 0;
-  background: var(--bg-dark);
-}
-
-.section-head {
-  margin-bottom: 40px;
-  position: relative;
-  border-left: 4px solid var(--f1-red);
-  padding-left: 15px;
-}
-
-.section-head .tag {
-  font-family: var(--speed-font);
-  color: var(--f1-red);
-  font-size: 0.8rem;
-  font-weight: 800;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-}
-
-.section-head h2 {
-  font-family: var(--speed-font);
-  font-size: clamp(1.8rem, 3.8vw, 2.8rem);
-  text-transform: uppercase;
-  margin: 4px 0 0 0;
-  letter-spacing: -1px;
-}
-
-.timeline-hub {
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-}
-
-.year-card {
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  display: grid;
-  grid-template-columns: 180px 1fr 300px;
-  gap: 20px;
-  padding: 24px;
-  position: relative;
-  transition: 0.3s;
-}
-
-.year-card::before {
-  content: "";
-  position: absolute;
-  top: 0; left: 0; width: 4px; height: 100%;
-  background: var(--card-border);
-  transition: 0.3s;
-}
-
-.year-card:hover {
-  border-color: rgba(225, 6, 0, 0.4);
-  transform: translateX(6px);
-}
-
-.year-card:hover::before { background: var(--f1-red); }
-
-.yc-year {
-  font-family: var(--speed-font);
-  font-size: 2.2rem;
-  font-weight: 900;
-  color: var(--f1-red);
-  line-height: 1;
-}
-
-.yc-team {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  font-weight: 700;
-  margin-top: 4px;
-}
-
-.yc-title {
-  font-family: var(--speed-font);
-  font-size: 1.25rem;
-  font-weight: 800;
-  margin: 0 0 8px 0;
-  text-transform: uppercase;
-}
-
-.yc-desc {
-  color: var(--text-muted);
-  font-size: 0.92rem;
-  line-height: 1.6;
-  margin: 0;
-}
-
-.yc-stats {
-  background: #090c14;
-  border: 1px solid rgba(255,255,255,0.05);
-  padding: 15px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 8px;
-}
-
-.yc-stat-row {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.82rem;
-  font-weight: 700;
-}
-
-.yc-stat-row span:last-child {
-  font-family: var(--speed-font);
-  color: var(--gold);
-}
-
-.yc-media {
-  width: 100%;
-  height: 120px;
-  object-fit: cover;
-  border: 1px solid var(--card-border);
-  margin-top: 10px;
-}
-
-/* --- TELEMETRY CALCULATOR & COMPARISON --- */
-.telemetry-section {
-  padding: 80px 0;
-  background: #0a0d16;
-  border-block: 1px solid var(--card-border);
-}
-
-.season-selector {
-  display: flex;
-  gap: 10px;
-  overflow-x: auto;
-  padding-bottom: 10px;
-  margin-bottom: 30px;
-}
-
-.season-btn {
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  color: var(--text-muted);
-  padding: 12px 22px;
-  font-family: var(--speed-font);
-  font-weight: 800;
-  font-size: 0.85rem;
-  cursor: pointer;
-  transition: 0.2s;
-  white-space: nowrap;
-}
-
-.season-btn.active, .season-btn:hover {
-  background: var(--f1-red);
-  border-color: var(--f1-red);
-  color: #fff;
-  box-shadow: 0 0 15px var(--f1-red-glow);
-}
-
-.telemetry-board {
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  padding: 30px;
-  display: grid;
-  grid-template-columns: 1fr 1.5fr;
-  gap: 30px;
-}
-
-.tb-rank-box {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background: #080a10;
-  border: 1px solid var(--card-border);
-  padding: 30px;
-  text-align: center;
-}
-
-.tb-rank {
-  font-family: var(--speed-font);
-  font-size: 4.5rem;
-  font-weight: 900;
-  color: var(--f1-red);
-  line-height: 1;
-}
-
-.bar-wrap { margin-bottom: 20px; }
-.bar-label { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 700; margin-bottom: 6px; }
-.bar-bg { height: 10px; background: #1a2030; width: 100%; overflow: hidden; }
-.bar-fill { height: 100%; background: linear-gradient(90deg, var(--f1-red), var(--gold)); width: 0%; transition: width 0.8s ease; }
-
-/* --- ICONIC RACES MODAL HUB --- */
-.races-section { padding: 80px 0; }
-.races-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
-
-.race-card {
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  padding: 20px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.race-card:hover {
-  transform: translateY(-5px);
-  border-color: var(--f1-red);
-  box-shadow: 0 10px 25px rgba(225, 6, 0, 0.2);
-}
-
-.race-badge {
-  background: var(--gold);
-  color: #000;
-  font-family: var(--speed-font);
-  font-size: 0.7rem;
-  font-weight: 900;
-  padding: 3px 8px;
-  float: right;
-}
-
-.race-title { font-family: var(--speed-font); font-size: 1.1rem; font-weight: 800; margin: 10px 0 5px 0; }
-.race-circuit { font-size: 0.85rem; color: var(--text-muted); }
-
-/* MODAL */
-.modal-overlay {
-  position: fixed;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(0,0,0,0.85);
-  backdrop-filter: blur(12px);
-  z-index: 2000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0; pointer-events: none;
-  transition: 0.3s;
-  padding: 20px;
-}
-.modal-overlay.active { opacity: 1; pointer-events: all; }
-
-.modal-body {
-  background: var(--card-bg);
-  border: 1px solid var(--f1-red);
-  max-width: 600px;
-  width: 100%;
-  padding: 30px;
-  position: relative;
-  box-shadow: 0 0 40px var(--f1-red-glow);
-}
-
-.modal-close {
-  position: absolute;
-  top: 15px; right: 20px;
-  background: none; border: none; color: #fff; font-size: 1.8rem; cursor: pointer;
-}
-
-/* --- PROMINENT F1 DEV FOOTER --- */
-footer {
-  background: #040508;
-  border-top: 3px solid var(--f1-red);
-  padding: 60px 0 30px 0;
-  position: relative;
-  overflow: hidden;
-}
-
-footer::before {
-  content: "";
-  position: absolute;
-  bottom: 0; left: 50%; transform: translateX(-50%);
-  width: 100%; max-width: 1280px; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--f1-red), transparent);
-}
-
-.footer-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 40px;
-  align-items: center;
-  margin-bottom: 40px;
-}
-
-.dev-signature-box {
-  background: linear-gradient(135deg, rgba(225,6,0,0.1) 0%, rgba(9,14,26,0.8) 100%);
-  border: 1px solid var(--f1-red);
-  padding: 30px;
-  position: relative;
-  clip-path: polygon(0 0, 100% 0, 96% 100%, 0 100%);
-}
-
-.dev-title {
-  font-family: var(--speed-font);
-  font-size: 0.8rem;
-  color: var(--gold);
-  letter-spacing: 3px;
-  font-weight: 800;
-  text-transform: uppercase;
-}
-
-.dev-name {
-  font-family: var(--speed-font);
-  font-size: clamp(2rem, 5vw, 3.8rem);
-  font-weight: 900;
-  color: #fff;
-  text-transform: uppercase;
-  line-height: 1;
-  margin: 8px 0;
-  letter-spacing: -1px;
-  text-shadow: 0 0 15px rgba(255,255,255,0.3);
-}
-
-.dev-name span {
-  color: var(--f1-red);
-  text-shadow: 0 0 20px var(--f1-red-glow);
-}
-
-.dev-sub {
-  color: var(--text-muted);
-  font-size: 0.9rem;
-}
-
-.footer-bottom {
-  border-top: 1px solid var(--card-border);
-  padding-top: 20px;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 15px;
-  font-size: 0.8rem;
-  color: var(--text-muted);
-}
-
-/* --- RESPONSIVE MOBILE FIXES --- */
-@media (max-width: 960px) {
-  .hero-grid { grid-template-columns: 1fr; text-align: center; }
-  .driver-flag { justify-content: center; }
-  .year-card { grid-template-columns: 1fr; }
-  .telemetry-board { grid-template-columns: 1fr; }
-  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
-  .stat-card { border-right: none; border-bottom: 1px solid var(--card-border); padding-bottom: 15px; }
-  .footer-grid { grid-template-columns: 1fr; }
-}
-
-@media (max-width: 580px) {
-  .nav-links { display: none; }
-  h1.driver-name { font-size: 2.5rem; }
-  .dev-signature-box { clip-path: none; padding: 20px; }
-}
+:root{--gold:#eac38a;--red:#dc2646;--ink:#08070b;--white:#f8f0e5}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--ink);color:var(--white);font-family:'DM Sans',sans-serif;overflow-x:hidden}button,a{-webkit-tap-highlight-color:transparent}button{font:inherit}a{color:inherit}
+#scene{position:fixed;inset:0;z-index:0;width:100%;height:100%;display:block}
+#grain{position:fixed;z-index:2;inset:0;pointer-events:none;opacity:.16;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.15'/%3E%3C/svg%3E")}
+#vignette{position:fixed;z-index:1;inset:0;pointer-events:none;background:linear-gradient(90deg,#060509e8 0%,#0605098b 33%,transparent 77%),linear-gradient(0deg,#060509bb 0%,transparent 23%,transparent 72%,#06050955 100%)}
+#transition{position:fixed;inset:0;z-index:3;background:radial-gradient(ellipse,#e2ac6e21,transparent 55%);pointer-events:none;opacity:0;transition:opacity .4s}
+#loading{position:fixed;inset:0;z-index:90;background:#060509;display:grid;place-items:center;text-align:center;transition:opacity .9s,visibility .9s}#loading.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.load-num{font:900 clamp(100px,28vw,260px)/.75 'Barlow Condensed';color:var(--gold);text-shadow:0 0 75px #d5303b44}.load-copy{font-size:10px;letter-spacing:.45em;color:#d2aa8e;margin-top:32px}.load-line{width:180px;height:1px;background:#6b4739;margin:21px auto;overflow:hidden}.load-line:before{content:"";display:block;width:60%;height:100%;background:var(--gold);animation:load 1.25s ease infinite}@keyframes load{from{transform:translateX(-120%)}to{transform:translateX(280%)}}
+header{position:fixed;z-index:20;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:26px 4.6vw;background:linear-gradient(#060509b0,transparent)}
+.brand{font:900 34px/.8 'Barlow Condensed';letter-spacing:-.06em;text-decoration:none}.brand span{color:var(--gold)}.header-mid{font-size:10px;letter-spacing:.35em;color:#eac38ac9}.header-right{display:flex;gap:20px;align-items:center}.header-right a,.header-right button{background:none;border:0;color:var(--white);font-size:10px;font-weight:700;letter-spacing:.16em;text-decoration:none;cursor:pointer}.sound{border:1px solid #eac38a65!important;border-radius:99px!important;padding:10px 13px!important}
+#bar{position:fixed;z-index:30;top:0;left:0;height:2px;background:linear-gradient(90deg,#c52442,var(--gold));width:0%;box-shadow:0 0 20px var(--gold)}
+main{position:relative;z-index:4;pointer-events:none}section{min-height:100svh;min-height:100dvh;display:flex;align-items:center;padding:120px 9vw 100px;position:relative}.copy{max-width:750px;pointer-events:auto}.eyebrow{display:flex;align-items:center;gap:13px;font-size:10px;font-weight:700;letter-spacing:.34em;color:var(--gold);text-transform:uppercase;margin-bottom:30px}.eyebrow:before{content:"";display:block;width:25px;height:1px;background:var(--gold)}h1,h2{font:900 clamp(76px,13.5vw,215px)/.78 'Barlow Condensed',Impact,sans-serif;letter-spacing:-.045em;margin:0 0 32px;text-transform:uppercase;text-shadow:0 4px 46px #0008}h2{font-size:clamp(75px,11.7vw,170px)}.outline{color:transparent;-webkit-text-stroke:1.5px #e5d7ca}.highlight{color:var(--gold)}.red{color:#fc4e5f}.lead{color:#d2c6bf;font-size:15px;line-height:1.85;max-width:430px;margin:0 0 18px}.quote{font:600 clamp(22px,3vw,35px)/1.15 'Barlow Condensed';letter-spacing:.01em;color:#e7c7a9;max-width:600px;margin:18px 0 25px}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}.btn{background:#111014a8;border:1px solid #cda9769f;padding:15px 19px;text-decoration:none;color:var(--white);display:inline-flex;align-items:center;gap:22px;cursor:pointer;letter-spacing:.15em;font-size:10px;font-weight:700;backdrop-filter:blur(13px);transition:background .25s,transform .25s}.btn:hover{background:#9c2338a6;transform:translateY(-3px)}.btn strong{font-size:19px;font-weight:400;color:var(--gold)}.btn-primary{background:var(--gold);color:#1e1010}.btn-primary strong{color:#1e1010}.btn-primary:hover{background:#ffdfad}
+.label-bottom{position:absolute;left:9vw;bottom:40px;color:#e6b98383;letter-spacing:.28em;font-size:10px}.chapter{display:inline-flex;border:1px solid #eac38a55;padding:8px 12px;letter-spacing:.24em;font-size:9px;color:var(--gold);margin-bottom:25px}
+.numbers{display:flex;gap:28px;flex-wrap:wrap;margin:30px 0}.number{border-top:1px solid #caa77882;padding-top:12px}.number b{display:block;font:900 55px/.9 'Barlow Condensed';color:var(--white)}.number small{font-size:9px;letter-spacing:.16em;color:var(--gold)}
+#farewell{text-align:center;justify-content:center}#farewell .copy{max-width:900px}#farewell .lead{margin-left:auto;margin-right:auto}#farewell .actions{justify-content:center}#farewell .eyebrow{justify-content:center}#farewell .eyebrow:after{content:"";height:1px;width:25px;background:var(--gold)}
+.side{position:fixed;right:3.5vw;top:50%;transform:translateY(-50%);z-index:19;display:flex;flex-direction:column;gap:18px}.side a{display:block;width:8px;height:8px;border:1px solid #d9b37a;border-radius:50%;opacity:.55;transition:.25s}.side a.on{background:var(--gold);box-shadow:0 0 18px #ffd18c;opacity:1;transform:scale(1.5)}
+.vertical{position:fixed;bottom:30px;right:4vw;font-size:9px;color:#d9b37a8a;letter-spacing:.2em;writing-mode:vertical-rl;z-index:19}.credits{position:absolute;bottom:23px;left:9vw;font-size:9px;color:#ddc7ab9c;letter-spacing:.06em}.credits a{pointer-events:auto}
+#player{position:fixed;inset:0;z-index:80;display:none;place-items:center;background:#020203ee;padding:7vw}#player.open{display:grid}.player-box{width:min(100%,960px);aspect-ratio:16/9;position:relative}.player-box iframe{width:100%;height:100%;border:1px solid #d1a66b}.close{position:absolute;right:0;top:-50px;background:none;border:0;color:white;font-size:35px;cursor:pointer}
+#notice{display:none;position:fixed;z-index:100;inset:0;align-items:center;justify-content:center;background:#08070b;color:#ffdbb0;padding:24px;text-align:center}
+.reveal>*{opacity:0;transform:translateY(22px);transition:opacity .8s,transform .8s}.reveal.visible>*{opacity:1;transform:translateY(0)}.reveal>*:nth-child(2){transition-delay:.07s}.reveal>*:nth-child(3){transition-delay:.15s}.reveal>*:nth-child(4){transition-delay:.22s}.reveal>*:nth-child(5){transition-delay:.3s}
+@media(max-width:750px){header{padding:23px 22px}.header-mid,.header-right a{display:none}.brand{font-size:32px}section{padding:120px 25px 90px}h1{font-size:clamp(84px,22vw,140px)}h2{font-size:clamp(79px,18vw,125px)}.lead{max-width:325px;font-size:12px}.quote{font-size:26px}.eyebrow{font-size:9px}.side{right:13px}.label-bottom{left:25px;bottom:33px;font-size:8px}.vertical{display:none}.credits{left:25px;font-size:8px}#vignette{background:linear-gradient(90deg,#060509e0,#06050965 72%,transparent),linear-gradient(0deg,#060509bb,transparent 40%)}.numbers{gap:16px}.number b{font-size:47px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal>*{transition:none}}
 </style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.1/examples/jsm/"}}</script>
 </head>
-
 <body>
+<div id="loading"><div><div class="load-num">7</div><div class="load-copy">ENTERING THE LEGACY</div><div class="load-line"></div></div></div>
+<canvas id="scene" aria-label="Không gian WebGL 3D của Ronaldo"></canvas>
+<div id="grain"></div><div id="vignette"></div><div id="transition"></div><div id="bar"></div>
+<header><a class="brand" href="#home">CR<span>7</span>.</a><span class="header-mid">PORTUGAL — AN IMMORTAL LEGACY</span><div class="header-right"><a href="#glory">THE STORY</a><a href="#farewell">OBRIGADO</a><button class="sound" id="sound">♫ SOUND OFF</button></div></header>
+<nav class="side" aria-label="Chương"><a href="#home" class="on" aria-label="Mở đầu"></a><a href="#beginning" aria-label="2003"></a><a href="#glory" aria-label="2016"></a><a href="#memories" aria-label="Di sản"></a><a href="#farewell" aria-label="Tri ân"></a></nav><div class="vertical">SCROLL TO ENTER THE STORY ↓</div>
+<main>
+ <section id="home"><div class="copy reveal"><div class="eyebrow">THE FINAL WHISTLE · 2026</div><h1>ONE<br><span class="outline">LAST</span><br>DANCE<span class="red">.</span></h1><p class="lead">Một chàng trai. Một chiếc áo số 7. Hai mươi ba năm viết nên lịch sử Bồ Đào Nha. Và một lời cảm ơn không bao giờ là đủ.</p><div class="actions"><a class="btn btn-primary" href="#beginning">BƯỚC VÀO HÀNH TRÌNH <strong>↘</strong></a></div></div><span class="label-bottom">01 / 05 · A LEGEND IS FOREVER</span></section>
+ <section id="beginning"><div class="copy reveal"><div class="eyebrow">CHAPTER I — THE DREAM</div><div class="chapter">20 AUGUST 2003</div><h2>EVERY<br>LEGEND<br><span class="outline">BEGINS.</span></h2><p class="lead">Ngày Ronaldo lần đầu khoác áo đội tuyển. Từ Madeira đến những sân vận động lớn nhất thế giới, giấc mơ ấy trở thành nguồn cảm hứng cho cả một thế hệ.</p><p class="quote">“He arrived as a boy. He leaves as a legend.”</p></div><span class="label-bottom">02 / 05 · THE BEGINNING</span></section>
+ <section id="glory"><div class="copy reveal"><div class="eyebrow">CHAPTER II — THE GLORY</div><div class="chapter">10 JULY 2016 · PARIS</div><h2>THE<br><span class="highlight">GOLDEN</span><br>NIGHT.</h2><p class="lead">Khi tiếng còi cuối cùng vang lên tại Paris, Bồ Đào Nha lần đầu đứng trên đỉnh châu Âu. Đó không đơn thuần là một chiếc cúp — đó là giấc mơ của một đất nước.</p><div class="actions"><button class="btn" id="watch">XEM VIDEO KỶ NIỆM <strong>▶</strong></button></div></div><span class="label-bottom">03 / 05 · EURO 2016</span></section>
+ <section id="memories"><div class="copy reveal"><div class="eyebrow">CHAPTER III — THE MEMORIES</div><h2>MORE<br>THAN<br><span class="outline">FOOTBALL.</span></h2><p class="lead">Những khoảnh khắc, những giọt nước mắt, những màn ăn mừng và từng bước chân trong màu áo đỏ. Mỗi tấm ảnh là một phần của lịch sử.</p><div class="numbers"><div class="number"><b>234</b><small>TRẬN ĐẤU</small></div><div class="number"><b>146</b><small>BÀN THẮNG</small></div><div class="number"><b>23</b><small>NĂM CỐNG HIẾN</small></div></div><p class="lead" style="font-size:11px">Số liệu theo FIFA công bố ngày 05/11/2026.</p></div><span class="label-bottom">04 / 05 · FOREVER NUMBER SEVEN</span></section>
+ <section id="farewell"><div class="copy reveal"><div class="eyebrow">05 NOVEMBER 2026 · THE FAREWELL</div><h2>OBRIGADO,<br><span class="highlight">CRISTIANO.</span></h2><p class="lead">Cảm ơn vì đã khiến chúng tôi tin rằng không có giới hạn nào dành cho những người dám mơ. Chiếc áo có thể được trao lại, nhưng di sản số 7 sẽ sống mãi.</p><p class="quote">PORTUGAL. PASSION. FOREVER.</p><div class="actions"><a class="btn btn-primary" href="#home">XEM LẠI TỪ ĐẦU <strong>↑</strong></a></div></div><div class="credits">Fan-made tribute · Ảnh: <a href="https://commons.wikimedia.org/wiki/File:Cristiano_Ronaldo_Euro_2016.jpg" target="_blank" rel="noopener">Liondartois</a>, <a href="https://commons.wikimedia.org/wiki/File:Euro_2016_Cristiano_Ronaldo.jpg" target="_blank" rel="noopener">Chensiyuan</a> (CC BY-SA 4.0), <a href="https://commons.wikimedia.org/wiki/File:Cristiano_Ronaldo_2018.jpg" target="_blank" rel="noopener">Анна Нэсси</a> (CC BY-SA 3.0) · Dùng ảnh nguyên bản</div></section>
+</main>
+<div id="player" role="dialog" aria-modal="true" aria-label="Video kỷ niệm"><div class="player-box"><button class="close" id="close" aria-label="Đóng video">×</button><div id="video-root" style="height:100%"></div></div></div>
+<div id="notice">Trình duyệt không thể chạy WebGL. Hãy mở trang bằng Safari hoặc Chrome mới nhất với kết nối Internet.</div>
+<script type="module">
+import * as THREE from 'three';
+import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
+import {RenderPass} from 'three/addons/postprocessing/RenderPass.js';
+import {UnrealBloomPass} from 'three/addons/postprocessing/UnrealBloomPass.js';
+import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
 
-<!-- HEADER HUD NAV -->
-<header>
-  <div class="nav-container">
-    <a href="#" class="f1-brand">
-      <span class="f1-logo-badge">F1</span>
-      VERSTAPPEN #1
-    </a>
+const $=s=>document.querySelector(s);
+const mobile=matchMedia('(max-width:750px)').matches;
+const reduced=matchMedia('(prefers-reduced-motion:reduce)').matches;
+let renderer;
+try{renderer=new THREE.WebGLRenderer({canvas:$('#scene'),antialias:mobile,powerPreference:'high-performance',alpha:false});}
+catch(e){$('#loading').classList.add('hidden');$('#notice').style.display='flex';throw e;}
+renderer.setPixelRatio(Math.min(devicePixelRatio,mobile?1.25:1.6));
+renderer.setSize(innerWidth,innerHeight);
+renderer.outputColorSpace=THREE.SRGBColorSpace;
+renderer.toneMapping=THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure=1.3;
+const scene=new THREE.Scene();scene.background=new THREE.Color(0x08050a);scene.fog=new THREE.FogExp2(0x130710,.009);
+const cam=new THREE.PerspectiveCamera(mobile?60:49,innerWidth/innerHeight,.1,380);
+scene.add(new THREE.HemisphereLight(0x7c83b1,0x24090a,1.15));
+function light(color,power,range,x,y,z){const l=new THREE.PointLight(color,power,range,2);l.position.set(x,y,z);scene.add(l);return l;}
+light(0xe9b17b,190,52,9,14,0);light(0xb60c2e,130,52,-12,6,-21);light(0xffdc98,200,49,9,10,-61);light(0xa50d25,135,55,-9,6,-101);
+const M=(color,metalness=.1,roughness=.5,emissive=0x000000)=>new THREE.MeshStandardMaterial({color,metalness,roughness,emissive,side:THREE.DoubleSide});
+const gold=new THREE.MeshPhysicalMaterial({color:0xefc584,metalness:.82,roughness:.2,clearcoat:1,clearcoatRoughness:.15});
+const red=M(0x9c1830,.4,.3),ivory=M(0xf1d8ad,.65,.3),black=M(0x150e16,.4,.47);
+function mesh(parent,g,m,x=0,y=0,z=0){const q=new THREE.Mesh(g,m);q.position.set(x,y,z);parent.add(q);return q;}
+function ring(parent,r,t,color,x,y,z,rot=0){const m=mesh(parent,new THREE.TorusGeometry(r,t,10,110),new THREE.MeshBasicMaterial({color,transparent:true,opacity:.9}),x,y,z);m.rotation.z=rot;return m;}
+function glow(parent,x,y,z,scale,color){const c=document.createElement('canvas');c.width=c.height=128;const ctx=c.getContext('2d'),gr=ctx.createRadialGradient(64,64,0,64,64,64);gr.addColorStop(0,'rgba(255,255,255,.95)');gr.addColorStop(.2,'rgba(255,255,255,.4)');gr.addColorStop(1,'rgba(255,255,255,0)');ctx.fillStyle=gr;ctx.fillRect(0,0,128,128);const map=new THREE.CanvasTexture(c);const sp=new THREE.Sprite(new THREE.SpriteMaterial({map,color,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending}));sp.position.set(x,y,z);sp.scale.set(scale,scale,1);parent.add(sp);return sp;}
 
-    <nav class="nav-links">
-      <a href="#overview">Tổng quan</a>
-      <a href="#timeline">Hành trình 2018-2026</a>
-      <a href="#telemetry">Thống kê dữ liệu</a>
-      <a href="#races">Chặng đua di sản</a>
-    </nav>
+// SCENE 1 — monumental extruded number 7, rotating gold rings
+const monument=new THREE.Group();monument.position.set(4,0,-5);scene.add(monument);
+const shape=new THREE.Shape();[[-2.7,3.7],[2.6,3.7],[2.6,2.45],[-.25,-4],[-2.05,-4],[.5,2.05],[-2.7,2.05]].forEach(([x,y],i)=>i?shape.lineTo(x,y):shape.moveTo(x,y));shape.closePath();
+const seven=mesh(monument,new THREE.ExtrudeGeometry(shape,{depth:.85,steps:1,bevelEnabled:true,bevelThickness:.12,bevelSize:.16,bevelSegments:4}),gold,0,2,0);
+seven.rotation.y=-.18;
+const pedestal=mesh(monument,new THREE.CylinderGeometry(5.3,5.8,.55,64),black,0,-2.6,0);mesh(monument,new THREE.TorusGeometry(5.35,.08,10,100),gold,0,-2.28,0).rotation.x=Math.PI/2;
+const halos=[];[5,6.2,7.25].forEach((r,i)=>{const h=ring(monument,r,.025,i===1?0xe93050:0xffd18b,0,2,-1.5-i*.25,i*.32);halos.push(h);});
+for(let i=0;i<15;i++){const a=i*Math.PI*2/15;glow(monument,Math.cos(a)*6,Math.sin(a)*6+2,-2.4,.35,i%3?0xffb974:0xff224a);}
 
-    <button class="audio-btn" id="audioToggle" onclick="toggleEngineAudio()">
-      <span class="dot"></span> TIẾNG ĐỘNG CƠ F1
-    </button>
-  </div>
-</header>
+// TRANSITION TUNNEL — moving three-dimensional arches
+const tunnel=new THREE.Group();tunnel.position.set(0,2,-25);scene.add(tunnel);
+const tunnelRings=[];
+for(let i=0;i<22;i++){const z=-i*2.05;const g=ring(tunnel,5.6,.045,i%3===0?0xf6bd7e:0x9c283c,0,0,z,i*.16);tunnelRings.push(g);if(i%4===0)glow(tunnel,5*Math.cos(i),5*Math.sin(i),z,.8,0xefad73);}
 
-<!-- HERO SECTION: FORMULA1.COM DRIVER STYLE -->
-<section class="hero" id="overview">
-  <div class="container hero-grid">
-    <div style="position:relative;">
-      <div class="driver-number">1</div>
-      <div class="driver-flag">
-        <img src="https://flagcdn.com/w40/nl.png" alt="Netherlands" class="flag-img">
-        <span class="driver-country">HÀ LẠN · RED BULL RACING</span>
-      </div>
+// SCENE 2 — real three-dimensional stadium architecture
+const arena=new THREE.Group();arena.position.set(0,-5,-37);scene.add(arena);
+const field=mesh(arena,new THREE.CircleGeometry(22,100),M(0x143524,0,.95),0,0,0);field.rotation.x=-Math.PI/2;
+for(let i=0;i<8;i++){const radius=22+i*1.25;const b=mesh(arena,new THREE.CylinderGeometry(radius+1.2,radius+1.6,1.2,100,1,true),M(i%2?0x381423:0x230e18,.1,.8),0,1+i*.95,0);b.material.side=THREE.DoubleSide;const edge=mesh(arena,new THREE.TorusGeometry(radius+1.3,.07,8,100),M(i%2?0xd7a45a:0xac243c,.35,.4),0,1.65+i*.95,0);edge.rotation.x=Math.PI/2;}
+const seatCount=mobile?600:1300,seatGeom=new THREE.SphereGeometry(.085,4,4),seatMat=new THREE.MeshBasicMaterial({color:0xffcf99});const seats=new THREE.InstancedMesh(seatGeom,seatMat,seatCount);const dummy=new THREE.Object3D();for(let i=0;i<seatCount;i++){const a=Math.random()*Math.PI*2,r=23+Math.random()*10;dummy.position.set(Math.cos(a)*r,1+Math.random()*6.3,Math.sin(a)*r);dummy.scale.setScalar(Math.random()*.85+.35);dummy.updateMatrix();seats.setMatrixAt(i,dummy.matrix);}arena.add(seats);
+for(let i=0;i<16;i++){const a=i*Math.PI/8;const r=32;const x=Math.cos(a)*r,z=Math.sin(a)*r;mesh(arena,new THREE.CylinderGeometry(.12,.19,10,8),M(0x47444d,.4,.5),x,10,z);glow(arena,x,16,z,3.8,0xffe4b5);}
+const pitch=mesh(arena,new THREE.RingGeometry(3.5,3.57,80),new THREE.MeshBasicMaterial({color:0xd0cab4}),0,.03,0);pitch.rotation.x=-Math.PI/2;
 
-      <h1 class="driver-name">Max <span>Verstappen</span></h1>
+// SCENE 3 — metal trophy, ribbons and floating victory particles
+const victory=new THREE.Group();victory.position.set(3,-2,-75);scene.add(victory);
+const trophyPts=[[0,0],[2.2,0],[2.25,.36],[1.0,.5],[.8,1.7],[1.2,2],[1.7,2.9],[2.2,4],[2.35,5.2],[2.55,5.4]].map(p=>new THREE.Vector2(...p));
+mesh(victory,new THREE.LatheGeometry(trophyPts,90),gold,0,0,0);
+mesh(victory,new THREE.CylinderGeometry(3.2,3.6,.65,70),black,0,-.35,0);
+for(const s of [-1,1]){const h=mesh(victory,new THREE.TorusGeometry(1.65,.22,15,60,Math.PI*1.55),gold,s*2.6,3.95,0);h.rotation.z=s===1?-.35:Math.PI+.35;}
+const victoryHalo=ring(victory,7,.045,0xf4ce8d,0,2.4,-1,.2);
+for(let i=0;i<3;i++)glow(victory,(i-1)*3.2,6,-2,3.5,0xffe2aa);
+const ribbons=[];for(let s=0;s<2;s++){const pts=[];for(let i=0;i<16;i++)pts.push(new THREE.Vector3((s?1:-1)*(2.2+i*.13),4.65-i*.32,Math.sin(i*.45)*.32));const crv=new THREE.CatmullRomCurve3(pts);const rib=mesh(victory,new THREE.TubeGeometry(crv,50,.12,5,false),M(s?0xc51634:0x066b44,.15,.5));ribbons.push(rib);}
 
-      <p style="color:var(--text-muted); font-size:1.05rem; max-width:520px; line-height:1.7;">
-        Trang hồ sơ chính thức mô phỏng theo chuẩn Formula1.com. Cập nhật chi tiết hành trình sự nghiệp đỉnh cao từ mùa giải 2018 đến 2026 của tay đua 4 lần vô địch thế giới F1.
-      </p>
+// SCENE 4 — photo frames floating as actual 3D objects
+const gallery=new THREE.Group();gallery.position.set(0,0,-110);scene.add(gallery);
+const photos=[
+ {x:-6,z:0,ry:.18,url:'https://thumb.wikimedia.org/wikipedia/commons/thumb/d/dd/Euro_2016_Cristiano_Ronaldo.jpg/500px-Euro_2016_Cristiano_Ronaldo.jpg',name:'EURO 2016'},
+ {x:0,z:-3,ry:0,url:'https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f4/Cristiano_Ronaldo_Euro_2016.jpg/500px-Cristiano_Ronaldo_Euro_2016.jpg',name:'THE CAPTAIN'},
+ {x:6,z:0,ry:-.18,url:'https://commons.wikimedia.org/wiki/Special:FilePath/Cristiano_Ronaldo_2018.jpg',name:'WORLD CUP'}
+];
+const photoGroups=[];const loader=new THREE.TextureLoader();loader.setCrossOrigin('anonymous');
+for(let i=0;i<photos.length;i++){const p=photos[i],g=new THREE.Group();g.position.set(p.x,2,p.z);g.rotation.y=p.ry;gallery.add(g);photoGroups.push(g);mesh(g,new THREE.BoxGeometry(4.1,6.2,.2),gold);mesh(g,new THREE.BoxGeometry(3.85,5.95,.23),black,0,0,.05);const holder=mesh(g,new THREE.PlaneGeometry(3.65,5.75),new THREE.MeshBasicMaterial({color:0x301722,side:THREE.DoubleSide}),0,0,.19);loader.load(p.url,t=>{t.colorSpace=THREE.SRGBColorSpace;holder.material=new THREE.MeshBasicMaterial({map:t,side:THREE.DoubleSide});},undefined,()=>{});glow(g,0,3.35,.1,1.35,0xffdfaa);}
 
-      <!-- DRIVER BIO TABLE -->
-      <div class="bio-grid">
-        <div class="bio-item">
-          <div class="bio-label">Đội đua hiện tại</div>
-          <div class="bio-val">Red Bull Racing</div>
-        </div>
-        <div class="bio-item">
-          <div class="bio-label">Quốc tịch</div>
-          <div class="bio-val">Hà Lan (Netherlands)</div>
-        </div>
-        <div class="bio-item">
-          <div class="bio-label">Số lần vô địch thế giới</div>
-          <div class="bio-val" style="color:var(--gold);">4 (2021, 2022, 2023, 2024)</div>
-        </div>
-        <div class="bio-item">
-          <div class="bio-label">Ngày sinh / Nơi sinh</div>
-          <div class="bio-val">30/09/1997 (Hasselt, Bỉ)</div>
-        </div>
-      </div>
-    </div>
+// SCENE 5 — farewell gate and monumental 7
+const gate=new THREE.Group();gate.position.set(0,0,-146);scene.add(gate);
+for(let s of [-1,1])mesh(gate,new THREE.BoxGeometry(1.3,15,1.4),black,s*7,3,-3);
+mesh(gate,new THREE.BoxGeometry(15,1.5,1.4),gold,0,10.3,-3);
+for(let i=0;i<3;i++)ring(gate,6.5+i*1.4,.04,i%2?0xce2343:0xffd096,0,2,-7-i*1.1,i*.24);
+const endSeven=mesh(gate,new THREE.ExtrudeGeometry(shape,{depth:.6,bevelEnabled:true,bevelThickness:.08,bevelSize:.12,bevelSegments:3}),gold,0,.4,-6);endSeven.scale.setScalar(1.35);glow(gate,0,7,-8,6,0xffc387);
 
-    <!-- OFFICIAL F1 DRIVER PORTRAIT -->
-    <div class="portrait-card">
-      <img src="https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/M/MAXVER01_Max_Verstappen/maxver01.png" 
-           alt="Max Verstappen Official F1 Portrait" 
-           class="driver-img"
-           onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=800&q=80';">
-    </div>
-  </div>
-</section>
+// atmospheric glitter, with a second golden confetti field
+function points(n,spread,center,color,size){const positions=new Float32Array(n*3);for(let i=0;i<n;i++){positions[i*3]=(Math.random()-.5)*spread;positions[i*3+1]=(Math.random()-.5)*25;positions[i*3+2]=(Math.random()-.5)*70+center;}const geom=new THREE.BufferGeometry();geom.setAttribute('position',new THREE.BufferAttribute(positions,3));const o=new THREE.Points(geom,new THREE.PointsMaterial({color,size,transparent:true,opacity:.77,depthWrite:false,blending:THREE.AdditiveBlending}));scene.add(o);return o;}
+const stars=points(mobile?480:1250,90,-65,0xf0bd7c,.09);
+const sparks=points(mobile?130:330,18,-76,0xffd28a,.2);
 
-<!-- COUNTER STATS STRIP -->
-<section class="stats-strip">
-  <div class="container stats-grid">
-    <div class="stat-card">
-      <div class="stat-num" data-target="4">0</div>
-      <div class="stat-title">Chức vô địch thế giới</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-num" data-target="63">0</div>
-      <div class="stat-title">Chiến thắng Grand Prix</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-num" data-target="111">0</div>
-      <div class="stat-title">Podiums (Bục trao giải)</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-num" data-target="40">0</div>
-      <div class="stat-title">Pole Positions</div>
-    </div>
-  </div>
-</section>
-
-<!-- CAREER TIMELINE SECTION 2018 - 2026 -->
-<section class="timeline-section" id="timeline">
-  <div class="container">
-    <div class="section-head">
-      <div class="tag">01 / DÒNG THỜI GIAN SỰ NGHIỆP</div>
-      <h2>Hành trình từ 2018 - 2026</h2>
-    </div>
-
-    <div class="timeline-hub">
-
-      <!-- 2026 -->
-      <div class="year-card">
-        <div>
-          <div class="yc-year">2026</div>
-          <div class="yc-team">Oracle Red Bull Racing</div>
-        </div>
-        <div>
-          <h3 class="yc-title">Kỷ nguyên Động cơ mới & Chiến thuật Ford Powertrains</h3>
-          <p class="yc-desc">Bước vào kỷ nguyên luật động cơ 2026 của F1 với bộ truyền động Red Bull Ford Powertrains. Max Verstappen tiếp tục dẫn dắt đội đua duy trì vị thế cạnh tranh top đầu trên bảng xếp hạng thế giới.</p>
-        </div>
-        <div class="yc-stats">
-          <div class="yc-stat-row"><span>Hạng mùa giải:</span><span>P1 (Đang diễn ra)</span></div>
-          <div class="yc-stat-row"><span>Động cơ:</span><span>Red Bull-Ford V6</span></div>
-          <div class="yc-stat-row"><span>Số chặng thắng:</span><span>6 Wins</span></div>
-        </div>
-      </div>
-
-      <!-- 2025 -->
-      <div class="year-card">
-        <div>
-          <div class="yc-year">2025</div>
-          <div class="yc-team">Oracle Red Bull Racing</div>
-        </div>
-        <div>
-          <h3 class="yc-title">Cuộc đua vô địch nghẹt thở đến chặng cuối</h3>
-          <p class="yc-desc">Mùa giải chứng kiến sự trỗi dậy mạnh mẽ từ McLaren và Ferrari. Max xuất sắc cán đích ở vị trí Á quân sau những trận chiến phân hạng sát sao từng miligiây.</p>
-        </div>
-        <div class="yc-stats">
-          <div class="yc-stat-row"><span>Hạng mùa giải:</span><span>P2 (Á quân)</span></div>
-          <div class="yc-stat-row"><span>Điểm số:</span><span>421 PTS</span></div>
-          <div class="yc-stat-row"><span>Số chặng thắng:</span><span>8 Wins</span></div>
-        </div>
-      </div>
-
-      <!-- 2024 -->
-      <div class="year-card">
-        <div>
-          <div class="yc-year">2024</div>
-          <div class="yc-team">Oracle Red Bull Racing</div>
-        </div>
-        <div>
-          <h3 class="yc-title">Bảo vệ thành công chức vô địch thế giới thứ 4</h3>
-          <p class="yc-desc">Chính thức đi vào ngôi đền huyền thoại F1 khi giành chức vô địch thế giới thứ 4 liên tiếp (2021-2024) nhờ màn trình diễn đỉnh cao dưới mưa tại Brazil Grand Prix.</p>
-        </div>
-        <div class="yc-stats">
-          <div class="yc-stat-row"><span>Hạng mùa giải:</span><span>P1 (Vô địch thế giới)</span></div>
-          <div class="yc-stat-row"><span>Điểm số:</span><span>429 PTS</span></div>
-          <div class="yc-stat-row"><span>Số chặng thắng:</span><span>9 Wins</span></div>
-        </div>
-      </div>
-
-      <!-- 2023 -->
-      <div class="year-card">
-        <div>
-          <div class="yc-year">2023</div>
-          <div class="yc-team">Oracle Red Bull Racing</div>
-        </div>
-        <div>
-          <h3 class="yc-title">Kỷ lục vô tiền khoáng hậu - Kỷ nguyên thống trị RB19</h3>
-          <p class="yc-desc">Mùa giải thống trị tuyệt đối lịch sử F1: Thắng 19/22 chặng đua, lập kỷ lục 10 chiến thắng liên tiếp và đạt tổng số điểm cao nhất từ trước đến nay (575 điểm).</p>
-        </div>
-        <div class="yc-stats">
-          <div class="yc-stat-row"><span>Hạng mùa giải:</span><span>P1 (Vô địch thế giới)</span></div>
-          <div class="yc-stat-row"><span>Điểm số:</span><span>575 PTS (Kỷ lục)</span></div>
-          <div class="yc-stat-row"><span>Tỷ lệ thắng:</span><span>86.3%</span></div>
-        </div>
-      </div>
-
-      <!-- 2022 -->
-      <div class="year-card">
-        <div>
-          <div class="yc-year">2022</div>
-          <div class="yc-team">Oracle Red Bull Racing</div>
-        </div>
-        <div>
-          <h3 class="yc-title">Thống trị Kỷ nguyên khí động học Ground-Effect</h3>
-          <p class="yc-desc">Red Bull trình làng mẫu xe RB18 cực mạnh. Max giành 15 chiến thắng trong mùa giải, đăng quang ngôi vô địch thế giới lần thứ 2 sớm trước 4 chặng tại Suzuka, Nhật Bản.</p>
-        </div>
-        <div class="yc-stats">
-          <div class="yc-stat-row"><span>Hạng mùa giải:</span><span>P1 (Vô địch thế giới)</span></div>
-          <div class="yc-stat-row"><span>Điểm số:</span><span>454 PTS</span></div>
-          <div class="yc-stat-row"><span>Số chặng thắng:</span><span>15 Wins</span></div>
-        </div>
-      </div>
-
-      <!-- 2021 -->
-      <div class="year-card">
-        <div>
-          <div class="yc-year">2021</div>
-          <div class="yc-team">Red Bull Racing Honda</div>
-        </div>
-        <div>
-          <h3 class="yc-title">Chức vô địch thế giới đầu tiên - Đêm Abu Dhabi lịch sử</h3>
-          <p class="yc-desc">Trận đại chiến kinh điển cùng Lewis Hamilton. Max Verstappen vượt qua ở vòng đua cuối cùng tại Abu Dhabi GP để trở thành tay đua Hà Lan đầu tiên vô địch thế giới F1.</p>
-        </div>
-        <div class="yc-stats">
-          <div class="yc-stat-row"><span>Hạng mùa giải:</span><span>P1 (Vô địch thế giới)</span></div>
-          <div class="yc-stat-row"><span>Điểm số:</span><span>395.5 PTS</span></div>
-          <div class="yc-stat-row"><span>Pole Positions:</span><span>10 Poles</span></div>
-        </div>
-      </div>
-
-      <!-- 2018-2020 -->
-      <div class="year-card">
-        <div>
-          <div class="yc-year">2018-20</div>
-          <div class="yc-team">Red Bull Racing TAG Heuer / Honda</div>
-        </div>
-        <div>
-          <h3 class="yc-title">Giai đoạn tôi luyện & Trở thành Kẻ thách thức số 1</h3>
-          <p class="yc-desc">Chuyển sang sử dụng động cơ Honda từ 2019, Max liên tục đánh bại các đối thủ sừng sỏ, mang về những chiến thắng nghẹt thở tại Austria, Germany và Brazil GP.</p>
-        </div>
-        <div class="yc-stats">
-          <div class="yc-stat-row"><span>Thắng 2018:</span><span>2 Wins (P4)</span></div>
-          <div class="yc-stat-row"><span>Thắng 2019:</span><span>3 Wins (P3)</span></div>
-          <div class="yc-stat-row"><span>Thắng 2020:</span><span>2 Wins (P3)</span></div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- TELEMETRY & PERFORMANCE BOARD -->
-<section class="telemetry-section" id="telemetry">
-  <div class="container">
-    <div class="section-head">
-      <div class="tag">02 / PHÂN TÍCH HIỆU SUẤT TỪNG MÙA</div>
-      <h2>Telemetry & Interactive Stats</h2>
-    </div>
-
-    <div class="season-selector">
-      <button class="season-btn active" onclick="updateTelemetry('2026', this)">MÙA 2026</button>
-      <button class="season-btn" onclick="updateTelemetry('2025', this)">MÙA 2025</button>
-      <button class="season-btn" onclick="updateTelemetry('2024', this)">MÙA 2024</button>
-      <button class="season-btn" onclick="updateTelemetry('2023', this)">MÙA 2023</button>
-      <button class="season-btn" onclick="updateTelemetry('2022', this)">MÙA 2022</button>
-      <button class="season-btn" onclick="updateTelemetry('2021', this)">MÙA 2021</button>
-    </div>
-
-    <div class="telemetry-board" id="telemetryDisplay">
-      <!-- Dynamic JS content -->
-    </div>
-  </div>
-</section>
-
-<!-- RACES HUB MODAL -->
-<section class="races-section" id="races">
-  <div class="container">
-    <div class="section-head">
-      <div class="tag">03 / NHỮNG CHẶNG ĐƯỜNG DI SẠN</div>
-      <h2>Iconic Race Victories</h2>
-    </div>
-
-    <div class="races-grid">
-      <div class="race-card" onclick="openRaceModal('Abu Dhabi GP 2021', 'Chặng đua định mệnh vòng 58. Max vượt Lewis Hamilton ở góc cua số 5 để lần đầu đăng quang ngôi Vô địch Thế giới.', '58 Laps', 'P1 WINNER', '1:26.103')">
-        <span class="race-badge">WORLD TITLE</span>
-        <div class="race-title">🇦🇪 Abu Dhabi Grand Prix 2021</div>
-        <div class="race-circuit">Yas Marina Circuit</div>
-      </div>
-
-      <div class="race-card" onclick="openRaceModal('Spa-Francorchamps 2022', 'Xuất phát từ vị trí P14 do phạt thay động cơ, Max hủy diệt toàn bộ đoàn đua để về đích P1 với khoảng cách 17 giây.', '44 Laps', 'P1 WINNER', '1:49.354')">
-        <span class="race-badge">P14 TO P1</span>
-        <div class="race-title">🇧🇪 Belgian Grand Prix 2022</div>
-        <div class="race-circuit">Circuit de Spa-Francorchamps</div>
-      </div>
-
-      <div class="race-card" onclick="openRaceModal('São Paulo GP 2024', 'Màn trình diễn dưới mưa bão lịch sử. Xuất phát P17, Max vượt 16 xe để giành chiến thắng áp đảo, chạm tay vào chức vô địch thứ 4.', '69 Laps', 'P1 WINNER', '1:20.472')">
-        <span class="race-badge">RAIN MASTER</span>
-        <div class="race-title">🇧🇷 São Paulo Grand Prix 2024</div>
-        <div class="race-circuit">Autódromo José Carlos Pace</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- MODAL OVERLAY -->
-<div class="modal-overlay" id="raceModal">
-  <div class="modal-body">
-    <button class="modal-close" onclick="closeRaceModal()">×</button>
-    <div style="font-family:var(--speed-font); color:var(--f1-red); font-weight:800; font-size:0.8rem;" id="mBadge">TELEMETRY BREAKDOWN</div>
-    <h3 style="font-family:var(--speed-font); font-size:1.6rem; margin:10px 0;" id="mTitle">Race Title</h3>
-    <p style="color:var(--text-muted); font-size:0.95rem; line-height:1.6;" id="mDesc">Description</p>
-
-    <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; margin-top:20px; background:#080b12; padding:15px; border:1px solid var(--card-border);">
-      <div>
-        <div style="font-size:0.7rem; color:var(--text-muted);">SỐ VÒNG ĐUA</div>
-        <div style="font-family:var(--speed-font); font-weight:800; font-size:1.1rem;" id="mLaps">58</div>
-      </div>
-      <div>
-        <div style="font-size:0.7rem; color:var(--text-muted);">KẾT QUẢ</div>
-        <div style="font-family:var(--speed-font); font-weight:800; font-size:1.1rem; color:var(--gold);" id="mPos">P1</div>
-      </div>
-      <div>
-        <div style="font-size:0.7rem; color:var(--text-muted);">FASTEST LAP</div>
-        <div style="font-family:var(--speed-font); font-weight:800; font-size:1.1rem; color:var(--cyan);" id="mBest">1:26.103</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- PROMINENT F1 SIGNATURE FOOTER -->
-<footer>
-  <div class="container">
-    <div class="footer-grid">
-      <div class="dev-signature-box">
-        <div class="dev-title">LEAD WEB DEVELOPER & DESIGNER</div>
-        <div class="dev-name">DEV <span>TRONG DUNG</span></div>
-        <div class="dev-sub">
-          Thiết kế & Lập trình giao diện F1 High-Performance Telemetry Journal.
-          Tối ưu trải nghiệm UI/UX chuẩn Formula1.com cho mọi thiết bị di động.
-        </div>
-      </div>
-
-      <div style="text-align:right;">
-        <div style="font-family:var(--speed-font); font-size:1.5rem; font-weight:900; color:#fff;">MAX VERSTAPPEN</div>
-        <div style="color:var(--f1-red); font-family:var(--speed-font); font-weight:800;">OFFICIAL FAN RACE JOURNAL</div>
-        <div style="color:var(--text-muted); font-size:0.8rem; margin-top:10px;">Data source referenced from Formula1.com</div>
-      </div>
-    </div>
-
-    <div class="footer-bottom">
-      <div>© 2026 DESIGNED BY DEV TRONG DUNG. ALL RIGHTS RESERVED.</div>
-      <div>FORMULA 1 & MAX VERSTAPPEN TRIBUTE PLATFORM</div>
-    </div>
-  </div>
-</footer>
-
-<script>
-/* REAL AUDIO ENGINE SYNTHESIZER & EXTERNAL F1 SOUND ENGINE */
-let audioCtx = null;
-let isAudioPlaying = false;
-
-function toggleEngineAudio() {
-  const btn = document.getElementById('audioToggle');
-  
-  if (!audioCtx) {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  }
-
-  if (!isAudioPlaying) {
-    isAudioPlaying = true;
-    btn.classList.add('playing');
-    playF1V6EngineSound();
-  } else {
-    isAudioPlaying = false;
-    btn.classList.remove('playing');
-  }
+// CINEMATIC CAMERA PATHS; scroll interpolates between genuinely different 3D worlds
+const shots=[
+ {pos:[mobile?7:8,4,16],look:[2,2,-5],fov:48},
+ {pos:[-4,2,-12],look:[0,0,-35],fov:57},
+ {pos:[mobile?5:8,3,-57],look:[2,1,-75],fov:50},
+ {pos:[mobile?1:0,3,-94],look:[0,2,-112],fov:53},
+ {pos:[0,3,-129],look:[0,2,-147],fov:49}
+];
+let composer=null;
+// Bloom is heavy on phones; only activate on wider screens.
+if(!mobile&&!reduced){composer=new EffectComposer(renderer);composer.addPass(new RenderPass(scene,cam));composer.addPass(new UnrealBloomPass(new THREE.Vector2(innerWidth,innerHeight),.67,.5,.85));composer.addPass(new OutputPass());}
+let targetScroll=0,scrollMix=0,mx=0,my=0,previousChapter=0;
+const clamp=(n,min,max)=>Math.max(min,Math.min(max,n));
+function onScroll(){const max=Math.max(1,document.documentElement.scrollHeight-innerHeight);targetScroll=clamp(scrollY/max*4,0,4);$('#bar').style.width=(targetScroll/4*100)+'%';const ch=Math.round(targetScroll);document.querySelectorAll('.side a').forEach((e,i)=>e.classList.toggle('on',i===ch));if(ch!==previousChapter){$('#transition').style.opacity='.7';clearTimeout(onScroll.tm);onScroll.tm=setTimeout(()=>$('#transition').style.opacity='0',450);previousChapter=ch;}}
+addEventListener('scroll',onScroll,{passive:true});onScroll();
+addEventListener('pointermove',e=>{mx=e.clientX/innerWidth-.5;my=e.clientY/innerHeight-.5;},{passive:true});
+const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:.18});document.querySelectorAll('.reveal').forEach(e=>observer.observe(e));
+const clock=new THREE.Clock(),pos=new THREE.Vector3(),look=new THREE.Vector3(2,2,-5),newLook=new THREE.Vector3();let frame=0;
+function loop(){requestAnimationFrame(loop);const dt=Math.min(clock.getDelta(),.05),t=clock.elapsedTime;scrollMix=THREE.MathUtils.damp(scrollMix,targetScroll,reduced?12:2.7,dt);
+ const i=Math.min(3,Math.floor(scrollMix)),u=scrollMix-i,s=u*u*(3-2*u),a=shots[i],b=shots[i+1];
+ pos.fromArray(a.pos).lerp(new THREE.Vector3(...b.pos),s);newLook.fromArray(a.look).lerp(new THREE.Vector3(...b.look),s);
+ const par=mobile?.18:.65;pos.x+=mx*par;pos.y-=my*par;cam.position.lerp(pos,1-Math.exp(-dt*4));look.lerp(newLook,1-Math.exp(-dt*5));cam.lookAt(look);cam.fov=THREE.MathUtils.lerp(a.fov,b.fov,s);cam.updateProjectionMatrix();
+ if(!reduced){seven.rotation.y=-.18+Math.sin(t*.55)*.15;monument.position.y=Math.sin(t*.7)*.17;halos.forEach((h,j)=>h.rotation.z+=dt*(j%2?.07:-.05));tunnelRings.forEach((h,j)=>h.rotation.z+=dt*(j%2?.09:-.06));victory.rotation.y=Math.sin(t*.37)*.24;victoryHalo.rotation.z=t*.06;photoGroups.forEach((g,j)=>g.position.y=2+Math.sin(t*.75+j)*.22);gate.rotation.y=Math.sin(t*.25)*.015;stars.rotation.y=t*.00013;sparks.rotation.y=t*.005;}
+ if(composer)composer.render();else renderer.render(scene,cam);frame++;
 }
+cam.position.set(...shots[0].pos);cam.lookAt(...shots[0].look);loop();
+addEventListener('resize',()=>{cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix();renderer.setPixelRatio(Math.min(devicePixelRatio,innerWidth<750?1.25:1.6));renderer.setSize(innerWidth,innerHeight);composer?.setSize(innerWidth,innerHeight);});
+setTimeout(()=>$('#loading').classList.add('hidden'),700);
 
-function playF1V6EngineSound() {
-  if (!isAudioPlaying || !audioCtx) return;
+// Original synthesized ambient soundtrack; starts only after user interaction
+let audioCtx=null,oscNodes=[];
+$('#sound').addEventListener('click',()=>{const btn=$('#sound');if(audioCtx){oscNodes.forEach(o=>{try{o.stop()}catch{}});oscNodes=[];audioCtx.close();audioCtx=null;btn.textContent='♫ SOUND OFF';return;}const AudioContext=window.AudioContext||window.webkitAudioContext;audioCtx=new AudioContext();[110,164.81,220].forEach((hz,i)=>{const osc=audioCtx.createOscillator(),gain=audioCtx.createGain();osc.type=i===1?'triangle':'sine';osc.frequency.value=hz;gain.gain.value=.008;osc.connect(gain).connect(audioCtx.destination);osc.start();oscNodes.push(osc);});btn.textContent='♫ SOUND ON';});
 
-  const osc = audioCtx.createOscillator();
-  const gain = audioCtx.createGain();
-
-  // Simulate High Pitch V6 Turbo Hybrid F1 Engine Rev
-  osc.type = 'sawtooth';
-  osc.frequency.setValueAtTime(220, audioCtx.currentTime);
-  osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.6); // Upshift
-  osc.frequency.exponentialRampToValueAtTime(350, audioCtx.currentTime + 1.2); // Downshift
-  osc.frequency.exponentialRampToValueAtTime(1050, audioCtx.currentTime + 2.0); // Pure Acceleration
-
-  gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 2.2);
-
-  osc.connect(gain);
-  gain.connect(audioCtx.destination);
-
-  osc.start();
-  osc.stop(audioCtx.currentTime + 2.2);
-
-  setTimeout(() => {
-    if (isAudioPlaying) btn.classList.remove('playing'), isAudioPlaying = false;
-  }, 2300);
-}
-
-/* DYNAMIC TELEMETRY DATA 2021-2026 */
-const telemetryData = {
-  "2026": { rank: "P1", points: 280, wins: 6, podiums: 9, winRate: "68%", team: "Red Bull Ford RB22" },
-  "2025": { rank: "P2", points: 421, wins: 8, podiums: 15, winRate: "60%", team: "Red Bull Honda RB21" },
-  "2024": { rank: "P1", points: 429, wins: 9, podiums: 14, winRate: "70%", team: "Red Bull Honda RB20" },
-  "2023": { rank: "P1", points: 575, wins: 19, podiums: 21, winRate: "86%", team: "Red Bull Honda RB19" },
-  "2022": { rank: "P1", points: 454, wins: 15, podiums: 17, winRate: "68%", team: "Red Bull Honda RB18" },
-  "2021": { rank: "P1", points: 395, wins: 10, podiums: 18, winRate: "45%", team: "Red Bull Honda RB16B" }
-};
-
-function updateTelemetry(year, btn) {
-  document.querySelectorAll('.season-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-
-  const data = telemetryData[year];
-  const container = document.getElementById('telemetryDisplay');
-
-  container.innerHTML = `
-    <div class="tb-rank-box">
-      <div style="font-size:0.8rem; color:var(--text-muted); font-family:var(--speed-font);">BẢNG XẾP HẠNG CHUNG CUỘC</div>
-      <div class="tb-rank">${data.rank}</div>
-      <div style="color:#fff; font-weight:800; font-size:1.1rem; margin-top:10px;">${data.team}</div>
-    </div>
-    <div>
-      <div class="bar-wrap">
-        <div class="bar-label"><span>TỔNG ĐIỂM MÙA GIẢI</span><span>${data.points} PTS</span></div>
-        <div class="bar-bg"><div class="bar-fill" style="width: ${(data.points/575)*100}%"></div></div>
-      </div>
-      <div class="bar-wrap">
-        <div class="bar-label"><span>SỐ CHẶNG THẮNG (WINS)</span><span>${data.wins} WINS</span></div>
-        <div class="bar-bg"><div class="bar-fill" style="width: ${(data.wins/22)*100}%"></div></div>
-      </div>
-      <div class="bar-wrap">
-        <div class="bar-label"><span>TỶ LỆ CHIẾN THẮNG</span><span>${data.winRate}</span></div>
-        <div class="bar-bg"><div class="bar-fill" style="width: ${data.winRate}"></div></div>
-      </div>
-    </div>
-  `;
-
-  playF1V6EngineSound();
-}
-
-/* MODAL CONTROL */
-function openRaceModal(title, desc, laps, pos, best) {
-  document.getElementById('mTitle').innerText = title;
-  document.getElementById('mDesc').innerText = desc;
-  document.getElementById('mLaps').innerText = laps;
-  document.getElementById('mPos').innerText = pos;
-  document.getElementById('mBest').innerText = best;
-  document.getElementById('raceModal').classList.add('active');
-}
-
-function closeRaceModal() {
-  document.getElementById('raceModal').classList.remove('active');
-}
-
-/* ANIMATED COUNTER ON SCROLL */
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      const target = +entry.target.getAttribute('data-target');
-      let count = 0;
-      const speed = target / 25;
-      const update = () => {
-        count += speed;
-        if (count < target) {
-          entry.target.innerText = Math.ceil(count);
-          setTimeout(update, 30);
-        } else {
-          entry.target.innerText = target;
-        }
-      };
-      update();
-      observer.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.5 });
-
-document.querySelectorAll('.stat-num').forEach(el => observer.observe(el));
-
-// INIT DEFAULT TELEMETRY
-updateTelemetry('2026', document.querySelector('.season-btn.active'));
+// Verified UEFA video: "Cristiano Ronaldo celebrates Portugal's EURO glory".
+$('#watch').addEventListener('click',()=>{const root=$('#video-root');root.innerHTML='<iframe loading="lazy" title="UEFA - Cristiano Ronaldo celebrates Portugal\'s EURO glory" src="https://www.youtube-nocookie.com/embed/9SgaWPFdfhI?autoplay=1&rel=0" allow="accelerometer;autoplay;encrypted-media;picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe><a style="position:absolute;bottom:-34px;left:0;color:#eac38a;font-size:11px" href="https://www.youtube.com/watch?v=9SgaWPFdfhI" target="_blank" rel="noopener">Nếu video không phát, mở trên YouTube ↗</a>';$('#player').classList.add('open');});
+const close=()=>{$('#player').classList.remove('open');$('#video-root').innerHTML='';};$('#close').addEventListener('click',close);$('#player').addEventListener('click',e=>{if(e.target.id==='player')close();});addEventListener('keydown',e=>{if(e.key==='Escape')close();});
 </script>
-
-</body>
-</html>
-
+</body></html>
